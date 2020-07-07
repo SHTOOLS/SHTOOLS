@@ -1,4 +1,4 @@
-# MakeGravGradGridDH
+# MakeGravGradGridDH()
 
 Create 2D cylindrical maps on a flattened ellipsoid of the components of the gravity "gradient" tensor in a local north-oriented reference frame.
 
@@ -96,7 +96,3 @@ the short wave length components of the gravity field by satellite gradiometry, 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
 Petrovskaya, M.S. and A.N. Vershkov, Non-singular expressions for the gravity gradients in the local north-oriented and orbital reference frames, J. Geod., 80, 117-127, 2006.
-
-# See also
-
-[makegravgriddh](pymakegravgriddh.html), [makegeoidgriddh](pymakegeoidgriddh.html), [makegriddh](pymakegriddh.html)

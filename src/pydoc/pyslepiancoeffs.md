@@ -1,4 +1,4 @@
-# SlepianCoeffs
+# SlepianCoeffs()
 
 Determine the expansion coefficients of a function for a given set of input Slepian functions.
 
@@ -27,7 +27,3 @@ Determine the expansion coefficients of a function for a given set of input Slep
 `SlepianCoeffs` will compute the Slepian coefficients of a global input function `flm` given the Slepian functions `galpha`. The Slepian functions are determined by a call to either (1) `SHReturnTapers` and then `SHRotateTapers`, or (2) `SHReturnTapersMap`. Each row of `galpha` contains the (`lmax`+1)\*\*2 spherical harmonic coefficients of a Slepian function that can be unpacked using `SHVectorToCilm`. The Slepian functions must be normalized to have unit power (that is the sum of the coefficients squared is 1), and the Slepian coefficients are calculated as
 
 `f_alpha = sum_{lm}^{lmax} f_lm g(alpha)_lm`  
-
-# See also
-
-[slepiancoeffstosh](pyslepiancoeffstosh.html), [shslepianvar](pyshslepianvar.html), [shreturntapers](pyshreturntapers.html), [shreturntapersmap](pyshreturntapersmap.html), [shrotatetapers](pyshrotatetapers.html), [shvectortocilm](pyshvectortocilm.html), [shscouplingmatrix](pyshscouplingmatrix.html), [shscouplingmatrixcap](pyshscouplingmatrixcap.html), [shmtcouplingmatrix](pyshmtcouplingmatrix.html)

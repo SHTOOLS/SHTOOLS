@@ -1,5 +1,5 @@
 ---
-title: CilmPlusDH (Python)
+title: CilmPlusDH()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pycilmplusdh.html
@@ -57,7 +57,3 @@ This routine uses geodesy 4-pi normalized spherical harmonics that exclude the C
 ## References
 
 Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.
-
-## See also
-
-[cilmplusrhohdh](pycilmplusrhohdh.html), [cilmminusdh](pycilmminusdh.html), [cilmminusrhohdh](pycilmminusrhohdh.html), [makegriddh](pymakegriddh.html)

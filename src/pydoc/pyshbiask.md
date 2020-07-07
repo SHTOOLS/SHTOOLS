@@ -1,4 +1,4 @@
-# SHBiasK
+# SHBiasK()
 
 Calculate the multitaper (cross-)power spectrum expectation of a function localized by spherical cap windows.
 
@@ -50,7 +50,3 @@ Simons, F. J., F. A. Dahlen and M. A. Wieczorek, Spatiospectral concentration on
 
 Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
 Geophys. J. Int., 162, 655-675, doi:10.1111/j.1365-246X.2005.02687.x, 2005.
-
-# See also
-
-[shbias](pyshbias.html), [shmtvaropt](pyshmtvaropt.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmtvaropt](pyshmtvaropt.html), [shbiasadmitcorr](pyshbiasadmitcorr.html), [shmtcouplingmatrix](pyshmtcouplingmatrix.html)

@@ -1,4 +1,4 @@
-# SHctor
+# SHctor()
 
 Convert complex spherical harmonics to real form.
 
@@ -28,7 +28,3 @@ Convert complex spherical harmonics to real form.
 # Description
 
 `SHctor` will convert complex spherical harmonics of a real function to real form. The normalization of the input and output coefficients are by default the same, but if the optional argument `convention` is set to 2, this routine will convert from geodesy 4-pi normalized coefficients to orthonormalized coefficients. The Condon-Shortley phase convention between the input an output coefficients can be modified by the optional argument `switchcs`.
-
-# See also
-
-[shrtoc](pyshrtoc.html)

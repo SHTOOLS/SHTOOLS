@@ -1,4 +1,4 @@
-# CilmPlusRhoHDH
+# CilmPlusRhoHDH()
 
 Calculate the gravitational potential exterior to relief with lateral variations in density referenced to a spherical interface using the finite-amplitude algorithm of Wieczorek and Phillips (1998).
 
@@ -50,7 +50,3 @@ This routine uses geodesy 4-pi normalized spherical harmonics that exclude the C
 Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.
 
 Wieczorek, M. A., Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, doi:10.1016/B978-044452748-6/00156-5, 2007.
-
-# See also
-
-[cilmplusdh](pycilmplusdh.html), [cilmminusdh](pycilmminusdh.html), [cilmminusrhohdh](pycilmminusrhohdh.html), [makegriddh](pymakegriddh.html)

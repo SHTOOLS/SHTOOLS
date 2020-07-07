@@ -1,4 +1,4 @@
-# MakeGeoidGridDH
+# MakeGeoidGridDH()
 
 Create a global map of the geoid.
 
@@ -65,7 +65,3 @@ The default is to use an input grid that is equally sampled (`n` by `n`), but th
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
 Wieczorek, M. A. Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, 2007.
-
-# See also
-
-[makegrid2d](pymakegrid2d.html), [makegridglq](pymakegridglq.html), [makegriddh](pymakegriddh.html), [makegravgriddh](pymakegravgriddh.html), [makegravgradgriddh](pymakegravgradgriddh.html)

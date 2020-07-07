@@ -1,4 +1,4 @@
-# djpi2
+# djpi2()
 
 Compute the rotation matrix d(pi/2) used in rotating data expressed in spherical harmonics.
 
@@ -21,7 +21,3 @@ Compute the rotation matrix d(pi/2) used in rotating data expressed in spherical
 `djpi2` will calculate the rotation matrix `d_{mM}^j (pi/2)` that is used in rotating spherical harmonics in the routines `SHRotateRealCoef` and `SHRotateCoef`.
 
 This routine is based on code originally written by Guy Masters.
-
-# See also
-
-[shrotatecoef](pyshrotatecoef.html), [shrotaterealcoef](pyshrotaterealcoef.html)

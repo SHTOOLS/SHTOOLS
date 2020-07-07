@@ -1,5 +1,5 @@
 ---
-title: SHBiasKMask (Python)
+title: SHBiasKMask()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshbiaskmask.html
@@ -59,7 +59,3 @@ Simons, F. J., F. A. Dahlen and M. A. Wieczorek, Spatiospectral concentration on
 
 Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
 Geophys. J. Int., 162, 655-675, doi:10.1111/j.1365-246X.2005.02687.x, 2005.
-
-## See also
-
-[shbias](pyshbias.html), [shreturntapersmap](pyshreturntapersmap.html), [shmtcouplingmatrix](pyshmtcouplingmatrix.html)

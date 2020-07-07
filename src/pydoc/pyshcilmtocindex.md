@@ -1,4 +1,4 @@
-# SHCilmToCindex
+# SHCilmToCindex()
 
 Convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.
 
@@ -22,7 +22,3 @@ Convert a three-dimensional array of spherical harmonic coefficients to a two-di
 # Description
 
 `SHCilmToCindex` will convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.  The degree `l` and order `m` corresponds to the index `l*(l+1)/2+m`.
-
-# See also
-
-[shcindextocilm](pyshcindextocilm.html), [shcilmtovector](pyshcilmtovector.html), [shvectortocilm](pyshvectortocilm.html)

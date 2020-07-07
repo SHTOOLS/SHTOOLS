@@ -1,4 +1,4 @@
-# SHSCouplingMatrix
+# SHSCouplingMatrix()
 
 This routine returns the spherical harmonic coupling matrix for a given set of Slepian basis functions. This matrix relates the power spectrum expectation of the function expressed in a subset of the best-localized Slepian functions to the expectation of the global power spectrum.
 
@@ -30,7 +30,3 @@ The relationship between the global and localized power spectra is given by:
 where `S_{\tilde{f}}` is the expectation of the power spectrum at degree l of the function expressed in Slepian functions, `S_{f}(l')` is the expectation of the global power spectrum, and `< ... >` is the expectation operator. The coupling matrix is given explicitly by
 
 `K_{ll'} = \frac{1}{2l'+1} Sum_{m=-l}^l Sum_{m'=-l'}^l' ( Sum_{alpha=1}^nmax g_{l'm'}(alpha) g_{lm}(alpha) )**2`
-
-# See also
-
-[shreturntapers](pyshreturntapers.html), [shrotatetapers](pyshrotatetapers.html), [shreturntapersmap](pyshreturntapersmap.html), [shvectorrocilm](pyshvectortocilm.html), [shscouplingmatrix](pyshmtcouplingmatrix.html), [shmtcouplingmatrix](pyshmtcouplingmatrix.html)

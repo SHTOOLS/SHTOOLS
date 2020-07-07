@@ -1,4 +1,4 @@
-# SHGLQ
+# SHGLQ()
 
 Precompute the weights and nodes used in the Gauss-Legendre quadrature based spherical harmonics routines.
 
@@ -22,7 +22,3 @@ Precompute the weights and nodes used in the Gauss-Legendre quadrature based sph
 # Description
 
 `SHGLQ` will calculate the weights and zeros used in the Gauss-Legendre quadrature based spherical harmonic routines `SHExpandGLQ`, `MakeGridGLQ`, `SHExpandGLQC`, and `MakeGridGLQC`.
-
-# See also
-
-[shexpandglq](pyshexpandglq.html), [makegridglq](pymakegridglq.html), [shexpandglqc](pyshexpandglqc.html), [makegridglqc](pymakegridglqc.html), [glqgridcoord](pyglqgridcoord.html)

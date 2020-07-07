@@ -70,6 +70,8 @@ from ..shtools import SHMultiply
 from .spharm_functions import spharm
 from .spharm_functions import spharm_lm
 
+del spharm_functions  # noqa: F821
+
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['SHExpandDH', 'MakeGridDH', 'SHExpandDHC', 'MakeGridDHC',

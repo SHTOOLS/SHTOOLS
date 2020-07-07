@@ -1,4 +1,4 @@
-# ComputeDM
+# ComputeDM()
 
 Compute the space-concentration kernel of a spherical cap.
 
@@ -32,7 +32,3 @@ Compute the space-concentration kernel of a spherical cap.
 # References
 
 Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.
-
-# See also
-
-[computedg82](pycomputedg82.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html)

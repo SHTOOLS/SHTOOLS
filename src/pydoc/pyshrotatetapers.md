@@ -1,4 +1,4 @@
-# SHRotateTapers
+# SHRotateTapers()
 
 Rotate orthogonal spherical-cap Slepian functions centered at the North pole to a different location.
 
@@ -59,7 +59,3 @@ To perform the inverse transform of `x(alpha, beta, gamma)`, use `x(-gamma, -bet
 Note that this routine uses the "y convention", where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were originally defined in terms of the "x convention", where the second rotation was with respect to the new x axis, the Euler angles according to the y convention would be `alpha_y=alpha_x-pi/2`, `beta_x=beta_y`, and `gamma_y=gamma_x+pi/2`.
 
 This routine first converts the real coefficients to complex form using `SHrtoc`. Then the coefficients are converted to indexed form using `SHCilmToCindex`, these are sent to `SHRotateCoef`, the result if converted back to `cilm` complex form using `SHCindexToCilm`, and these are finally converted back to real form using `SHctor`.
-
-# See also
-
-[djpi2](pydjpi2.html), [shreturntapers](pyshreturntapers.html), [shctor](pyshctor.html), [shrtoc](pyshrtoc.html), [shcilmtocindex](pyshcilmtocindex.html), [shcindextocilm](pyshcindextocilm.html), [shvectortocilm](pyshvectortocilm.html)

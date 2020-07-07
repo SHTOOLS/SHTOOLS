@@ -99,7 +99,8 @@
 #       the distribution. To remake these files for a new release, it will be
 #       necessary to install "pandoc", "ghc" and "cabal-install" (all using
 #       brew on macOS), and then execute "cabal update" and
-#       "cabal install --lib pandoc-types".
+#       "cabal install --lib pandoc-types". If errors are encountered try
+#       "brew uninstall pandoc" and "cabal install pandoc".
 #
 #   make remove-doc
 #       Remove the man and html-man pages.
@@ -296,7 +297,7 @@ doc:
 
 remove-doc:
 	@-rm -f man/man1/*.1
-	@-rm -f doc/pages/mydoc/fdoc/*.md
+	@-rm -f doc/pages/fortran/fdoc/*.md
 	@-rm -f doc/pages/mydoc/pydoc/*.md
 	@echo "--> Removed man files and web site source md files"
 

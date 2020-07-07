@@ -1,4 +1,4 @@
-# SHBias
+# SHBias()
 
 Calculate the (cross-)power spectrum expectation of a windowed function from its global spectrum.
 
@@ -44,7 +44,3 @@ Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere,
 Geophys. J. Int., 162, 655-675, doi:10.1111/j.1365-246X.2005.02687.x, 2005.
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on a sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.
-
-# See also
-
-[spectrum](spectrum.html),[cross_spectrum](cross_spectrum.html), [wigner3j](pywigner3j.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shbiasadmitcorr](pyshbiasadmitcorr.html)

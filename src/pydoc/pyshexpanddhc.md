@@ -1,4 +1,4 @@
-# SHExpandDHC
+# SHExpandDHC()
 
 Expand an equally sampled or equally spaced complex grid into complex spherical harmonics using Driscoll and Healy's (1994) sampling theorem.
 
@@ -41,7 +41,3 @@ The employed spherical harmonic normalization and Condon-Shortley phase conventi
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, 2002.
-
-# See also
-
-[makegriddhc](pymakegriddhc.html), [makegriddh](pymakegriddh.html), [shexpanddh](pyshexpanddh.html), [makegridglq](pymakegridglq.html), [shexpandglq](pyshexpandglq.html), [makegridglqc](pymakegridglqc.html), [shexpandglqc](pyshexpandglqc.html), [shexpandlsq](pyshexpandlsq.html)

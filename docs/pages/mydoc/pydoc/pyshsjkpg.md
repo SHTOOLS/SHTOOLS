@@ -1,5 +1,5 @@
 ---
-title: SHSjkPG (Python)
+title: SHSjkPG()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshsjkpg.html
@@ -65,7 +65,3 @@ The global cross-power spectrum of `f` and `g` is input as `incspectra`, and the
 ## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
-
-## See also
-
-[shreturntapers](pyshreturntapers.html), [shmtvaropt](pyshmtvaropt.html)

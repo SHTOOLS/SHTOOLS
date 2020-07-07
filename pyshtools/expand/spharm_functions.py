@@ -189,7 +189,7 @@ def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
 
     Usage
     -----
-    ylm = spharm (l, m, theta, phi, [normalization, kind, csphase, degrees])
+    ylm = spharm_lm (l, m, theta, phi, [normalization, kind, csphase, degrees])
 
     Returns
     -------

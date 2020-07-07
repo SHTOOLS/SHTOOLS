@@ -1,5 +1,5 @@
 ---
-title: SHMTVar (Python)
+title: SHMTVar()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshmtvar.html
@@ -53,7 +53,3 @@ Calculate the theoretical variance of a multitaper spectral estimate for a given
 ## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
-
-## See also
-
-[shmtvaropt](pyshmtvaropt.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html); [shlocalizedadmitcorr](pyshlocalizedadmitcorr.html), [shbiasadmitcorr](pyshbiasadmitcorr.html), [shbiask](pyshbiask.html), [shmtdebias](pyshmtdebias.html)

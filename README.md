@@ -8,7 +8,7 @@
 [![Chat at gitter](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Twitter](https://img.shields.io/twitter/follow/pyshtools.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=pyshtools)
 
-SHTOOLS/pysthools is a Fortran-95/Python library that can be used to perform
+SHTOOLS/pyshtools is a Fortran-95/Python library that can be used to perform
 spherical harmonic transforms, multitaper spectral analyses, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
 
 ### FEATURES ###

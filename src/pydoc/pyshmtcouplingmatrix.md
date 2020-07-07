@@ -1,4 +1,4 @@
-# SHMTCouplingMatrix
+# SHMTCouplingMatrix()
 
 This routine returns the multitaper coupling matrix for a given set of power spectra of arbitrary localization windows. This matrix relates the expectation of the localized multitaper spectrum to the expectation of the power spectrum of the global function.
 
@@ -45,7 +45,3 @@ Note that this routine returns the "full" coupling matrix of dimension (`lmax` +
 # References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.
-
-# See also
-
-[shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html), [shreturntapers](pyshreturntapers.html), [shmtvaropt](pyshmtvaropt.html), [shmtdebias](pyshmtdebias.html)

@@ -1,4 +1,4 @@
-# SHExpandWLSQ
+# SHExpandWLSQ()
 
 Expand a set of irregularly sampled data points into spherical harmonics using a weighted least squares inversion.
 
@@ -44,9 +44,4 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 A weighted least squares inversion will be performed if the optional vector
 `weights` is specified. In this case, the problem must be overdetermined, and it is assumed that each measurement is statistically independent (i.e., the weighting matrix is diagonal). The inversion is performed using the LAPACK routine DGGGLM.
 
-
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
-
-# See also
-
-[makegriddh](pymakegriddh.html), [shexpanddh](pyshexpanddh.html), [makegriddhc](pymakegriddhc.html), [shexpanddhc](pyshexpanddhc.html), [makegridglq](pymakegridglq.html), [shexpandglq](pyshexpandglq.html), [makegridglqc](pymakegridglqc.html), [shexpandglqc](pyshexpandglqc.html), dgels(1), dggglm(1)

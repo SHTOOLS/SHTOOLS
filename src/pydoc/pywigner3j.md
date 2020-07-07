@@ -1,4 +1,4 @@
-# Wigner3j
+# Wigner3j()
 
 Compute the Wigner-3j symbols for all allowable values of J.
 

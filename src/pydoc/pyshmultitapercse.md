@@ -1,4 +1,4 @@
-# SHMultiTaperCSE
+# SHMultiTaperCSE()
 
 Perform a localized multitaper cross-spectral analysis using spherical cap windows.
 
@@ -66,7 +66,3 @@ The employed spherical harmonic normalization and Condon-Shortley phase conventi
 # References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
-
-# See also
-
-[shmultitaperse](pyshmultitaperse.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmtvaropt](pyshmtvaropt.html)

@@ -1,4 +1,4 @@
-# SphericalCapCoef
+# SphericalCapCoef()
 
 Calculate the spherical harmonic coefficients of a spherical cap.
 

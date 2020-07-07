@@ -1,4 +1,4 @@
-# SHSjkPG
+# SHSjkPG()
 
 Calculate the expectation of the product of two functions, each multiplied by a different data taper, for a given spherical harmonic degree and two different angular orders.
 
@@ -56,7 +56,3 @@ The global cross-power spectrum of `f` and `g` is input as `incspectra`, and the
 # References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
-
-# See also
-
-[shreturntapers](pyshreturntapers.html), [shmtvaropt](pyshmtvaropt.html)

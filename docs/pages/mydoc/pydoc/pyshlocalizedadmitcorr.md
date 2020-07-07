@@ -1,5 +1,5 @@
 ---
-title: SHLocalizedAdmitCorr (Python)
+title: SHLocalizedAdmitCorr()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshlocalizedadmitcorr.html
@@ -89,8 +89,3 @@ Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere,
 Geophys. J. Int., 162, 655-675, 2005.
 
 Simons, M., S. C. Solomon and B. H. Hager, Localization of gravity and topography: constrains on the tectonics and mantle dynamics of Venus, Geophys. J. Int., 131, 24-44, 1997.
-
-## See also
-
-[shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html)
-

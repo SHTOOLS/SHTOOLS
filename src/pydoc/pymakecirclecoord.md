@@ -1,4 +1,4 @@
-# MakeCircleCoord
+# MakeCircleCoord()
 
 Compute the coordinates of a circle placed at a given latitude and longitude.
 
@@ -28,7 +28,3 @@ Compute the coordinates of a circle placed at a given latitude and longitude.
 # Description
 
 `MakeCircleCoord` will calculate the latitude and longitude coordinates of a circle of angular radius `theta0` placed on a sphere at position (`lat`, `lon`). This is useful for plotting circles on geographic maps. The first index in the output vectors corresponds to the point directly north of the cirlce origin, and subsequent points are arranged in a clockwise manner. Input and output units are in degrees.
-
-# See also
-
-[makeellipsecoord](pymakeellipsecoord.html)

@@ -1,4 +1,4 @@
-# SHAdmitCorr
+# SHAdmitCorr()
 
 Calculate the admittance and correlation spectra of two real functions.
 
@@ -31,7 +31,3 @@ Calculate the admittance and correlation spectra of two real functions.
 # Description
 
 `SHAdmitCorr` will calculate the admittance, admittance error, and correlation spectra associated with two real functions expressed in real spherical harmonics. The admittance is defined as `Sgt/Stt`, where `Sgt` is the cross-power spectrum of two functions `G` and `T`. The degree-correlation spectrum is defined as `Sgt/sqrt(Sgg Stt)`, which can possess values between -1 and 1. The error of the admittance is calculated assuming that `G` and `T` are related by a linear isotropic transfer function:` Gilm = Ql Tilm + Nilm`, where `N` is noise that is uncorrelated with the topography. It is important to note that the relationship between two fields is often not described by such an isotropic expression.
-
-# See also
-
-[spectrum](spectrum.html), [cross_spectrum](cross_spectrum.html)

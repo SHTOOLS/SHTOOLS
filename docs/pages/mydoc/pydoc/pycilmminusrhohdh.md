@@ -1,5 +1,5 @@
 ---
-title: CilmMinusRhoHDH (Python)
+title: CilmMinusRhoHDH()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pycilmminusrhohdh.html
@@ -59,7 +59,3 @@ This routine uses geodesy 4-pi normalized spherical harmonics that exclude the C
 Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.
 
 Wieczorek, M. A., Gravity and topography of the terrestrial planets, Treatise on Geophysics, 10, 165-206, doi:10.1016/B978-044452748-6/00156-5, 2007.
-
-## See also
-
-[cilmminusdh](pycilmminusdh.html) [cilmplusdh](pycilmplusdh.html), [cilmplusrhohdh](pycilmplusrhohdh.html), [makegriddh](pymakegriddh.html)

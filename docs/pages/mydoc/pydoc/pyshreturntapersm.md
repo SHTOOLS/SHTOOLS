@@ -1,5 +1,5 @@
 ---
-title: SHReturnTapersM (Python)
+title: SHReturnTapersM()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshreturntapersm.html
@@ -51,7 +51,3 @@ Simons, F. J., F. A. Dahlen, and M. A. Wieczorek, Spatiospectral concentration o
 
 Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
 `Geophys. J. Int.`, 162, 655-675, 2005.
-
-## See also
-
-[shreturntapers](pyshreturntapers.html), [computedg82](pycomputedg82.html), [computedm](pycomputedm.html)

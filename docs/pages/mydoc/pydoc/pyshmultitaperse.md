@@ -1,5 +1,5 @@
 ---
-title: SHMultiTaperSE (Python)
+title: SHMultiTaperSE()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshmultitaperse.html
@@ -69,7 +69,3 @@ The employed spherical harmonic normalization and Condon-Shortley phase conventi
 ## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
-
-## See also
-
-[shmultitapercse](pyshmultitapercse.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmtvaropt](pyshmtvaropt.html)

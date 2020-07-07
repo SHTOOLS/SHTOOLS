@@ -1,4 +1,4 @@
-# BAtoHilmRhoHDH
+# BAtoHilmRhoHDH()
 
 Calculate iteratively the relief along an interface with lateral density variations that corresponds to a given Bouguer anomaly using the algorithm of Wieczorek and Phillips (1998).
 
@@ -62,7 +62,3 @@ This routine uses geodesy 4-pi normalized spherical harmonics that exclude the C
 # References
 
 Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.
-
-# See also
-
-[batohilm](pybatohilmdh.html), [cilmplusdh](pycilmplusdh.html), [cilmplusrhohdh](pycilmplusrhohdh.html), [shexpanddh](pyshexpanddh.html), [makegriddh](pymakegriddh.html), [downcontfilterma](pydowncontfilterma.html), [downcontfiltermc](pydowncontfiltermc.html)

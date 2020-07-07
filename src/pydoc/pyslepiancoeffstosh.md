@@ -1,4 +1,4 @@
-# SlepianCoeffsToSH
+# SlepianCoeffsToSH()
 
 Convert a function expressed in Slepian coefficients to spherical harmonic coefficients.
 
@@ -27,7 +27,3 @@ Convert a function expressed in Slepian coefficients to spherical harmonic coeff
 `SlepianCoeffsToSH` will compute the spherical harmonic coefficients of a global function `flm` given the Slepian functions `galpha` and the corresponding Slepian coefficients `falpha`. The Slepian functions are determined by a call to either (1) `SHReturnTapers` and then `SHRotateTapers`, or (2) `SHReturnTapersMap`. Each row of `galpha` contains the (`lmax`+1)\*\*2 spherical harmonic coefficients of a Slepian function that can be unpacked using `SHVectorToCilm`. The Slepian functions must be normalized to have unit power (that is the sum of the coefficients squared is 1), and the spherical harmonic coefficients are calculated as
 
 `f_lm = sum_{alpha}^{nmax} f_alpha g(alpha)_lm`  
-
-# See also
-
-[slepiancoeffst](pyslepiancoeffs.html), [shslepianvar](pyshslepianvar.html), [shreturntapers](pyshreturntapers.html), [shreturntapersmap](pyshreturntapersmap.html), [shrotatetapers](pyshrotatetapers.html), [shvectortocilm](pyshvectortocilm.html), [shscouplingmatrix](pyshscouplingmatrix.html), [shscouplingmatrixcap](pyshscouplingmatrixcap.html), [shmtcouplingmatrix](pyshmtcouplingmatrix.html)
