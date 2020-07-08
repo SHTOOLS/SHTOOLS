@@ -13,7 +13,9 @@ Convert a three-dimensional array of real spherical harmonic coefficients to a 1
 
 ## Usage
 
+```python
 `vector` = SHCilmToVector (`cilm`, [`lmax`])
+```
 
 ## Returns
 

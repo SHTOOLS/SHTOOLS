@@ -13,7 +13,9 @@ Create 2D cylindrical maps on a flattened ellipsoid of all three vector componen
 
 ## Usage
 
+```python
 `rad`, `theta`, `phi`, `total`, `pot` = MakeMagGridDH (`cilm`, `r0`, [`lmax`, `a`, `f`, `sampling`, `lmax_calc`, `extend`])
+```
 
 ## Returns
 

@@ -13,7 +13,9 @@ Read spherical harmonic coefficients from a JPL ascii-formatted file.
 
 ## Usage
 
+```python
 `cilm`, `lmax`, `gm` = SHReadJPL (`filename`, `lmaxin`, [`formatstring`])
+```
 
 ## Returns
 

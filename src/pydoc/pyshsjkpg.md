@@ -4,7 +4,9 @@ Calculate the expectation of the product of two functions, each multiplied by a 
 
 # Usage
 
+```python
 `value` = SHSjkPG (`incspectra`, `l`, `m`, `mprime`, `hj_real`, `hk_real`, `mj`, `mk`, `lwin`, `hkcc`)
+```
 
 # Returns
 

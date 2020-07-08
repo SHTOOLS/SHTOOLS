@@ -13,7 +13,9 @@ Calculate the multitaper (cross-)power spectrum expectation of a function locali
 
 ## Usage
 
+```python
 `outcspectra` = SHBiasK (`tapers`, `incspectra`, [`lwin`, `k`, `ldata`, `taper_wt`, `save_cg`])
+```
 
 ## Returns
 

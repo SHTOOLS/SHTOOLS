@@ -4,7 +4,9 @@ Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature
 
 # Usage
 
+```python
 `latglq`, `longlq` = GLQGridCoord (`lmax`, [`extend`])
+```
 
 # Returns
 

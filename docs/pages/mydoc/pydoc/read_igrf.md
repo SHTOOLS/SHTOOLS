@@ -12,6 +12,12 @@ editdoc: pydoc
 Read IGRF real spherical harmonic coefficients, and return the magnetic
 potential coefficients for the specified year.
 
+## Usage
+
+```python
+read_igrm(filename, [year])
+```
+
 ## Returns
 
 **clm : ndarray, size (2, 14, 14)**
@@ -20,7 +26,10 @@ potential coefficients for the specified year.
 ## Parameters
 
 **filename : str**
-:   The filename containing the IGRF formatted spherical harmonic coefficients. filename will be treated as a URL if it starts with 'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or '.zip', the file will be uncompressed before parsing.
+:   The filename containing the IGRF formatted spherical harmonic
+        coefficients. filename will be treated as a URL if it starts with
+        'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or
+        '.zip', the file will be uncompressed before parsing.
 
 **year : float, optional, default = 2020.**
 :   The year to compute the coefficients.

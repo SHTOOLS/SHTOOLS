@@ -4,7 +4,9 @@ Determine the expansion coefficients of a function for a given set of input Slep
 
 # Usage
 
+```python
 `falpha` = SlepianCoeffs(`galpha`, `flm`, `nmax`)
+```
 
 # Returns
 

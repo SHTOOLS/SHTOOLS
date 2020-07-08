@@ -13,7 +13,9 @@ Compute all the unnormalized associated Legendre functions.
 
 ## Usage
 
+```python
 `p` = PLegendreA (`lmax`, `z`, [`csphase`])
+```
 
 ## Returns
 

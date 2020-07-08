@@ -4,7 +4,9 @@ Convert a three-dimensional array of spherical harmonic coefficients to a two-di
 
 # Usage
 
+```python
 `cindex` = SHCilmToCindex (`cilm`, [`lmax`])
+```
 
 # Returns
 

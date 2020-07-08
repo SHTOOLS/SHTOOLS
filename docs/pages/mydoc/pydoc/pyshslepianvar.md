@@ -13,7 +13,9 @@ Calculate the theoretical variance of the power of a function expanded in spheri
 
 ## Usage
 
+```python
 `variance` = SHSlepianVar (`l`, `galpha`, `galpha_order`, `sff`, [`kmax`])
+```
 
 ## Returns
 

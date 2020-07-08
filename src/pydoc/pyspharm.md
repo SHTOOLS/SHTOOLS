@@ -4,12 +4,19 @@ Compute all the spherical harmonic functions up to a maximum degree.
 
 # Usage
 
-ylm = spharm (lmax, theta, phi, [normalization, kind, csphase, packed, degrees])
+```python
+ylm = spharm (lmax, theta, phi, [normalization, kind, csphase, packed,
+    degrees])
+```
 
 # Returns
 
 **ylm : float or complex, dimension (2, lmax+1, lmax+1) or (2, (lmax+1)\*(lmax+2)/2)**
-:   An array of spherical harmonic functions, ylm[i, l, m], where l and m are the spherical harmonic degree and (positive) order, respectively. The index i provides the positive (0) and negative (1) order. If packed is True, the array is 2-dimensional with the index of the second column corresponding to l\*(l+1)/2+m.
+:   An array of spherical harmonic functions, ylm[i, l, m], where l and m
+        are the spherical harmonic degree and (positive) order, respectively.
+        The index i provides the positive (0) and negative (1) order. If packed
+        is True, the array is 2-dimensional with the index of the second column
+        corresponding to l\*(l+1)/2+m.
 
 # Parameters
 
@@ -23,16 +30,22 @@ ylm = spharm (lmax, theta, phi, [normalization, kind, csphase, packed, degrees])
 :   The longitude in degrees. Use radians if 'degrees' is set to False.
 
 **normalization : str, optional, default = '4pi'**
-:   '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized, orthonormalized, Schmidt semi-normalized, or unnormalized spherical harmonic functions, respectively.
+:   '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
+        orthonormalized, Schmidt semi-normalized, or unnormalized spherical
+        harmonic functions, respectively.
 
 **kind : str, optional, default = 'real'**
 :   'real' or 'complex' spherical harmonic coefficients.
 
 **csphase : optional, integer, default = 1**
-:   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the Condon-Shortley phase of (-1)^m will be appended to the spherical harmonic functions.
+:   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
+        Condon-Shortley phase of (-1)^m will be appended to the spherical
+        harmonic functions.
 
 **packed : optional, bool, default = False**
-:   If True, return a 2-dimensional packed array where the index of the second column corresponds to l\*(l+1)/2+m, where l and m are respectively the degree and order.
+:   If True, return a 2-dimensional packed array where the index of the
+        second column corresponds to l\*(l+1)/2+m, where l and m are
+        respectively the degree and order.
 
 **degrees : optional, bool, default = True**
 :   If True, `theta` and `phi` are expressed in degrees.

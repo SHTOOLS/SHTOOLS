@@ -13,7 +13,9 @@ Expand an equally sampled or equally spaced complex grid into complex spherical 
 
 ## Usage
 
+```python
 `cilm` = SHExpandDHC (`griddh`, [`norm`, `sampling`, `csphase`, `lmax_calc`])
+```
 
 ## Returns
 

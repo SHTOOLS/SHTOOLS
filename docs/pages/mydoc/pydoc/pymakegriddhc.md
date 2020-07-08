@@ -13,7 +13,9 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients th
 
 ## Usage
 
+```python
 `griddh` = MakeGridDHC (`cilm`, [`lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`, `extend`])
+```
 
 ## Returns
 

@@ -4,8 +4,10 @@ Read shtools-formatted spherical harmonic coefficients from a text file.
 
 # Usage
 
+```python
 coeffs, [errors], lmaxout, [header], [header2] = shread(
-filename, [error=True, header=True, header2=True, lmax, skip])
+    filename, [error=True, header=True, header2=True, lmax, skip])
+```
 
 # Returns
 
@@ -19,27 +21,36 @@ filename, [error=True, header=True, header2=True, lmax, skip])
 :   The maximum spherical harmonic degree read from the file.
 
 **header : list of type str**
-:   A list of values in the header line found before the start of the spherical harmonic coefficients.
+:   A list of values in the header line found before the start of the
+        spherical harmonic coefficients.
 
 **header2 : list of type str**
-:   A list of values in the second header line found before the start of the spherical harmonic coefficients.
+:   A list of values in the second header line found before the start of
+        the spherical harmonic coefficients.
 
 # Parameters
 
 **filename : str**
-:   File name or URL that contains the text-formatted spherical harmonic coefficients. filename will be treated as a URL if it starts with 'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or '.zip', the file will be uncompressed before parsing.
+:   File name or URL that contains the text-formatted spherical harmonic
+        coefficients. filename will be treated as a URL if it starts with
+        'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or
+        '.zip', the file will be uncompressed before parsing.
 
 **lmax : int, optional, default = None**
-:   The maximum spherical harmonic degree to read from the file. The default is to read the entire file.
+:   The maximum spherical harmonic degree to read from the file. The
+        default is to read the entire file.
 
 **error : bool, optional, default = False**
-:   If True, return the errors associated with the spherical harmonic coefficients as a separate array.
+:   If True, return the errors associated with the spherical harmonic
+        coefficients as a separate array.
 
 **header : bool, optional, default = False**
-:   If True, return a list of values in the header line found before the start of the spherical harmonic coefficients.
+:   If True, return a list of values in the header line found before the
+        start of the spherical harmonic coefficients.
 
 **header2 : bool, optional, default = False**
-:   If True, return a list of values in the second header line found before the start of the spherical harmonic coefficients.
+:   If True, return a list of values in the second header line found before
+        the start of the spherical harmonic coefficients.
 
 **skip : int, optional, default = 0**
 :   The number of lines to skip before parsing the file.

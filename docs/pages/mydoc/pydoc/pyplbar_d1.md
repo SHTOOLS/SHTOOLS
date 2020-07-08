@@ -13,7 +13,9 @@ Compute all the 4-pi (geodesy) normalized Legendre polynomials and first derivat
 
 ## Usage
 
+```python
 `p`, `dp` = PlBar_d1 (`lmax`, `z`)
+```
 
 ## Returns
 

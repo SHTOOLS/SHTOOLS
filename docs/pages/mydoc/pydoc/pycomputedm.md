@@ -13,7 +13,9 @@ Compute the space-concentration kernel of a spherical cap.
 
 ## Usage
 
+```python
 `dm` = ComputeDM (`lmax`, `m`, `theta0`, [`degrees`])
+```
 
 ## Returns
 

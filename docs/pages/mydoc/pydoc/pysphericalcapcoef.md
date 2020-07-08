@@ -13,7 +13,9 @@ Calculate the spherical harmonic coefficients of a spherical cap.
 
 ## Usage
 
+```python
 `coef` = SphericalCapCoef (`theta`, `lmax`)
+```
 
 ## Returns
 

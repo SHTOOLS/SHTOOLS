@@ -17,6 +17,11 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
     Read real spherical harmonic gravity coefficients from an ICGEM formatted
     file.
 
+    Usage
+    -----
+    cilm, gm, r0, [errors] = read_icgem_gfc(filename,
+                                            [errors, lmax, epoch, encoding)
+
     Returns
     -------
     cilm : ndarray, size (2, lmax + 1, lmax + 1)
@@ -210,6 +215,11 @@ def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
     """
     Write real spherical harmonic gravity coefficients to an ICGEM formatted
     file.
+
+    Usage
+    -----
+    write_icgem_gfc(filename, coeffs, [errors, header, lmax, modelname, gm, r0,
+        product_type, earth_gm, error_kind, tide_system, normalization, format)
 
     Parameters
     ----------

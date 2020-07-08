@@ -40,12 +40,15 @@ for func, file in functions:
             lines[i] = lines[i].replace('*', '\*')
             if lines[i].isspace():
                 kind[i] = 'blank'
+            elif lines[i].strip() == 'Usage':
+                kind[i] = 'header_usage'
             elif lines[i].strip()[0] == '-':
                 kind[i] = 'underline'
-                kind[i-1] = 'header'
+                if kind[i-1] != 'header_usage':
+                    kind[i-1] = 'header'
             elif len(lines[i].strip().split()) == 1:
                 if len(lines[i]) > 8:
-                    if lines[i][0:9] == '         ':
+                    if lines[i][0:8] == '        ' and kind[i-1] != 'blank':
                         kind[i] = 'continuation'
                     else:
                         kind[i] = 'text'
@@ -58,22 +61,32 @@ for func, file in functions:
                     kind[i] = 'usage'
                 elif len(lines[i]) > 8:
                     if lines[i][0:9] == '         ':
-                        kind[i] = 'continuation'
+                        if kind[i-1] == 'parameter':
+                            kind[i] = 'continuation'
+                        else:
+                            kind[i] = 'continuation'
+                    elif lines[i][0:8] == '        ':
+                        if kind[i-1] == 'parameter':
+                            kind[i] = 'desc'
+                        elif kind[i-1] == 'continuation' and kind[i-2] == \
+                                'parameter':
+                            kind[i] = 'desc'
+                        else:
+                            kind[i] = 'continuation'
                     else:
                         kind[i] = 'text'
                 else:
                     kind[i] = 'text'
+
             else:
                 kind[i] = 'text'
 
             if kind[i] == 'text':
-                if kind[i-1] == 'desc' or kind[i-1] == 'parameter':
-                    kind[i] = 'desc'
-                elif kind[i-1] == 'continuation' and kind[i-2] == 'parameter':
-                    kind[i] = 'desc'
+                if kind[i-2] == 'header_usage':
+                    kind[i] = 'usage'
 
         for i in range(len(lines)):
-            if kind[i] == 'header':
+            if kind[i] == 'header' or kind[i] == 'header_usage':
                 lines[i] = '# ' + lines[i].strip() + '\n'
             elif kind[i] == 'underline':
                 lines[i] = '\n'
@@ -82,13 +95,13 @@ for func, file in functions:
                 if lines[i-1] != '\n':
                     lines[i-1] = lines[i-1] + '\n'
             elif kind[i] == 'usage':
-                lines[i] = lines[i].strip() + '\n'
+                lines[i] = '```python\n' + lines[i].strip() + '\n```\n'
             elif kind[i] == 'continuation' and kind[i-1] == 'parameter':
                 lines[i] = lines[i].strip() + '**\n'
                 lines[i-1] = lines[i-1].strip()[:-2] + ' '
             elif kind[i] == 'continuation' and kind[i-1] == 'usage':
-                lines[i] = lines[i].strip() + '\n'
-                lines[i-1] = lines[i-1].strip() + ' '
+                lines[i] = '    ' + lines[i].strip() + '\n```\n'
+                lines[i-1] = lines[i-1].strip()[:-4] + '\n'
             elif kind[i] == 'desc' and kind[i-1] == 'parameter':
                 lines[i] = ':   ' + lines[i].strip() + '\n'
             elif kind[i] == 'desc' and kind[i-1] == 'continuation':

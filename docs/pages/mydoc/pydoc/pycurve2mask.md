@@ -13,7 +13,9 @@ Given a set of latitude and longitude coordinates representing a closed curve, o
 
 ## Usage
 
+```python
 `mask_dh` = Curve2Mask (`n`, `profile`, `np`, [`nprofile`, `sampling`, `extend`])
+```
 
 ## Returns
 

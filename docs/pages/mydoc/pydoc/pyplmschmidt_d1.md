@@ -13,7 +13,9 @@ Compute all the Schmidt semi-normalized associated Legendre functions and first 
 
 ## Usage
 
+```python
 `p`, `dp` = PlmSchmidt_d1 (`lmax`, `z`, [`csphase`, `cnorm`])
+```
 
 ## Returns
 

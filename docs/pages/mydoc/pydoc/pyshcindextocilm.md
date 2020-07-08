@@ -13,7 +13,9 @@ Convert a two-dimensional indexed array of spherical harmonic coefficients to a 
 
 ## Usage
 
+```python
 `cilm` = SHCindexToCilm (`cindex`, [`lmax`])
+```
 
 ## Returns
 

@@ -13,7 +13,9 @@ Expand an equally sampled or equally spaced grid into spherical harmonics using 
 
 ## Usage
 
+```python
 `cilm` = SHExpandDH (`griddh`, [`norm`, `sampling`, `csphase`, `lmax_calc`])
+```
 
 ## Returns
 

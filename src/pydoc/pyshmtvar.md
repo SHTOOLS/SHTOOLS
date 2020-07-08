@@ -4,7 +4,9 @@ Calculate the theoretical variance of a multitaper spectral estimate for a given
 
 # Usage
 
+```python
 `variance` = SHMTVar (`l`, `tapers`, `taper_order`, `sff`, [`kmax`, `lwin`, `taper_wt`, `nocross`])
+```
 
 # Returns
 

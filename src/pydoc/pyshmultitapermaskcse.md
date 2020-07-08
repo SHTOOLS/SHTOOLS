@@ -4,7 +4,9 @@ Perform a localized multitaper cross-spectral analysis using arbitrary windows d
 
 # Usage
 
+```python
 `mtse`, `sd` = SHMultiTaperMaskCSE (`sh1`, `sh2`, `tapers`, [`lmax1`, `lmax2`, `lmaxt`, `k`, `taper_wt`, `norm`, `csphase`])
+```
 
 # Returns
 

@@ -13,7 +13,9 @@ Compute all the orthonormalized associated Legendre functions.
 
 ## Usage
 
+```python
 `p` = PlmON (`lmax`, `z`, [`csphase`, `cnorm`])
+```
 
 ## Returns
 

@@ -4,7 +4,9 @@ Compute the latitudinal weights used in the Driscoll and Healy (1994) spherical 
 
 # Usage
 
+```python
 `aj` = DHaj (`n`, [extend])
+```
 
 # Returns
 

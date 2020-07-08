@@ -4,7 +4,9 @@ Compute the coordinates of a circle placed at a given latitude and longitude.
 
 # Usage
 
+```python
 `coord` = MakeCircleCoord (`lat`, `lon`, `theta0`, [`cinterval`])
+```
 
 # Returns
 

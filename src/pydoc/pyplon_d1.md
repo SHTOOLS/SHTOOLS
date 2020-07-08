@@ -4,7 +4,9 @@ Compute all the orthonormalized Legendre polynomials and first derivatives.
 
 # Usage
 
+```python
 `p`, `dp` = PlON_d1 (`lmax`, `z`)
+```
 
 # Returns
 

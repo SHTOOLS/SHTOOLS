@@ -4,7 +4,9 @@ This routine returns the spherical harmonic coupling matrix for a given set of s
 
 # Usage
 
+```python
 `kij` = SHSCouplingMatrixCap (`galpha`, `galpha_order`, `nmax`)
+```
 
 # Returns
 

@@ -14,6 +14,10 @@ def read_igrf(filename, year=2020.):
     Read IGRF real spherical harmonic coefficients, and return the magnetic
     potential coefficients for the specified year.
 
+    Usage
+    -----
+    read_igrm(filename, [year])
+
     Returns
     -------
     clm : ndarray, size (2, 14, 14)

@@ -13,7 +13,9 @@ Compute all the 4-pi (geodesy) normalized associated Legendre functions and firs
 
 ## Usage
 
+```python
 `p`, `dp` = PlmBar_d1 (`lmax`, `z`, [`csphase`, `cnorm`])
+```
 
 ## Returns
 

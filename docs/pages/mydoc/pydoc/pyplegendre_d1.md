@@ -13,7 +13,9 @@ Compute all the unnormalized Legendre polynomials and first derivatives.
 
 ## Usage
 
+```python
 `p`, `dp` = PLegendre_d1 (`lmax`, `z`)
+```
 
 ## Returns
 

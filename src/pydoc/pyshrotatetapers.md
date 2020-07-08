@@ -4,7 +4,9 @@ Rotate orthogonal spherical-cap Slepian functions centered at the North pole to 
 
 # Usage
 
+```python
 `tapersrot` = SHRotateTapers(`tapers`, `taper_order`, `nrot`, `x`, `dj`)
+```
 
 # Returns
 

@@ -13,7 +13,9 @@ Compute the minimum-amplitude downward continuation filter of Wieczorek and Phil
 
 ## Usage
 
+```python
 `wl` = DownContFilterMA (`l`, `half`, `r`, `d`)
+```
 
 ## Returns
 

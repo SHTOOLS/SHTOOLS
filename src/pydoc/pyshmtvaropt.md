@@ -4,7 +4,9 @@ Calculate the theoretical minimum variance of a localized multitaper spectral es
 
 # Usage
 
+```python
 `var_opt`, `var_unit`, `weight_opt` = SHMTVarOpt (`l`, `tapers`, `taper_order`, `sff`, [`lwin`, `kmax`, `nocross`])
+```
 
 # Returns
 

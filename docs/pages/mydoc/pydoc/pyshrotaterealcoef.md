@@ -13,7 +13,9 @@ Determine the spherical harmonic coefficients of a real function rotated by thre
 
 ## Usage
 
+```python
 `cilmrot` = SHRotateRealCoef (`cilm`, `x`, `dj`, [`lmax`])
+```
 
 ## Returns
 

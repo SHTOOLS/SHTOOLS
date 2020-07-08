@@ -13,7 +13,9 @@ Calculate the admittance and correlation spectra of two real functions.
 
 ## Usage
 
+```python
 `admit`, `error`, `corr` = SHAdmitCorr (`gilm`, `tilm`, [`lmax`])
+```
 
 ## Returns
 

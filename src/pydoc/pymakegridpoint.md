@@ -4,7 +4,9 @@ Evaluate a real function expressed in real spherical harmonics at a single point
 
 # Usage
 
+```python
 `value` = MakeGridPoint (`cilm`, `lat`, `lon`, [`lmax`, `norm`, `csphase`, `dealloc`])
+```
 
 # Returns
 

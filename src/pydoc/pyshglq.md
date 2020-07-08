@@ -4,7 +4,9 @@ Precompute the weights and nodes used in the Gauss-Legendre quadrature based sph
 
 # Usage
 
+```python
 `zero`, `w` = SHGLQ (`lmax`)
+```
 
 # Returns
 

@@ -13,7 +13,9 @@ This routine returns the spherical harmonic coupling matrix for a given set of S
 
 ## Usage
 
+```python
 `kij` = SHSCouplingMatrix (`galpha`, `nmax`)
+```
 
 ## Returns
 

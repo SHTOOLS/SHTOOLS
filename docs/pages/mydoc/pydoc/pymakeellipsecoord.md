@@ -13,7 +13,9 @@ Compute the coordinates of an ellipse placed at a given latitude and longitude.
 
 ## Usage
 
+```python
 `coord` = MakeEllipseCoord (`lat`, `lon`, `dec`, `a_theta`, `b_theta`, [`cinterval`])
+```
 
 ## Returns
 

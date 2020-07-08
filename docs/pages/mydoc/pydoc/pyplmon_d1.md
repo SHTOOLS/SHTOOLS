@@ -13,7 +13,9 @@ Compute all the orthonormalized associated Legendre functions and first derivati
 
 ## Usage
 
+```python
 `p`, `dp` = PlmON_d1 (`lmax`, `z`, [`csphase`, `cnorm`])
+```
 
 ## Returns
 

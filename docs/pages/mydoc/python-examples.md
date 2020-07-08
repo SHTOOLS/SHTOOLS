@@ -21,7 +21,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 The tutorials are designed for python users who are encountering pyshtools for the first time. Each Jupyter notebook takes the user by the hand and shows how to perform the most basic operations. Each tutorial should take under 15 minutes to read, and at the end of each you will be able to do simple tasks, like make grids of data from spherical harmonic coefficients, and project these in map form.
 
-Clicking on the links below will open the ipython notebook in a read-only Jupyter notebook viewer. From this page, you have the option to either download the original source, or to execute and modify the notebook in an interactive binder session.
+{% include tip.html content="Clicking on the links below will open the ipython notebook in a read-only *Jupyter notebook viewer*. From this page, you have the option to either download the original source, or to execute and modify the notebook in an interactive *binder* session." %}
 
 | Tutorial | Description |
 | ------------- | ----------- |

@@ -4,7 +4,9 @@ Compute the rotation matrix d(pi/2) used in rotating data expressed in spherical
 
 # Usage
 
+```python
 `dj` = djpi2 (`lmax`)
+```
 
 # Returns
 

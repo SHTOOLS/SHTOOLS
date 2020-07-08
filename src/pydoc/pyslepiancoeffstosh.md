@@ -4,7 +4,9 @@ Convert a function expressed in Slepian coefficients to spherical harmonic coeff
 
 # Usage
 
+```python
 `flm` = SlepianCoeffsToSH(`falpha`, `galpha`, `nmax`)
+```
 
 # Returns
 

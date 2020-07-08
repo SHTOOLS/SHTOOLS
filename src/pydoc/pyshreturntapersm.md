@@ -4,7 +4,9 @@ Calculate the eigenfunctions of the spherical-cap concentration problem for a si
 
 # Usage
 
+```python
 `tapers`, `eigenvalues` = SHReturnTapersM (`theta0`, `lmax`, `m`, [`degrees`])
+```
 
 # Returns
 

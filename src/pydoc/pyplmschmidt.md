@@ -4,7 +4,9 @@ Compute all the Schmidt semi-normalized associated Legendre functions.
 
 # Usage
 
+```python
 `p` = PlmSchmidt (`lmax`, `z`, [`csphase`, `cnorm`])
+```
 
 # Returns
 

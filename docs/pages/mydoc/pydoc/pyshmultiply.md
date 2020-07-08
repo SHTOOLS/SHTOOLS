@@ -13,7 +13,9 @@ Multiply two functions and determine the spherical harmonic coefficients of the 
 
 ## Usage
 
+```python
 `shout` = SHMultiply (`sh1`, `sh2`, [`lmax1`, `lmax2`, `norm`, `csphase`])
+```
 
 ## Returns
 

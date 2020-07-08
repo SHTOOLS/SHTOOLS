@@ -13,7 +13,9 @@ Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted 
 
 ## Usage
 
+```python
 `cilm`, `lmax`, `gm`, `r0_pot`, `dot`, `doystart`, `doyend`, `epoch` = SHRead2 (`filename`, `lmaxin`)
+```
 
 ## Returns
 

@@ -4,7 +4,9 @@ Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical h
 
 # Usage
 
+```python
 `cilm` = SHExpandGLQ (`gridglq`, `w`, `zero`, [`norm`, `csphase`, `lmax_calc`])
+```
 
 # Returns
 

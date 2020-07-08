@@ -13,7 +13,9 @@ Create a global map of the geoid.
 
 ## Usage
 
+```python
 `geoid` = MakeGeoidGridDH (`cilm`, `r0`, `gm`, `potref`, [`lmax`, `omega`, `r`, `order`, `lmax_calc`, `a`, `f`, `sampling`, `extend`])
+```
 
 ## Returns
 

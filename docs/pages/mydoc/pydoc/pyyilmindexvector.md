@@ -14,17 +14,21 @@ corresponding to i, l, and m.
 
 ## Usage
 
+```python
 index = YilmIndexVector (i, l, m)
+```
 
 ## Returns
 
 **index : integer**
-:   Index of a 1D array of spherical harmonic coefficients corresponding to i, l, and m.
+:   Index of a 1D array of spherical harmonic coefficients corresponding
+        to i, l, and m.
 
 ## Parameters
 
 **i : integer**
-:   1 corresponds to the cosine coefficient Ylm = cilm[0,:,:], and 2 corresponds to the sine coefficient Yl,-m = cilm[1,:,:].
+:   1 corresponds to the cosine coefficient Ylm = cilm[0,:,:], and 2
+        corresponds to the sine coefficient Yl,-m = cilm[1,:,:].
 
 **l : integer**
 :   The spherical harmonic degree.

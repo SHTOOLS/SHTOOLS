@@ -4,7 +4,9 @@ Read real spherical harmonic coefficients from a binary bshc file.
 
 # Usage
 
+```python
 coeffs, lmaxout = read_bshc(filename, [lmax])
+```
 
 # Returns
 
@@ -17,10 +19,14 @@ coeffs, lmaxout = read_bshc(filename, [lmax])
 # Parameters
 
 **filename : str**
-:   File name or URL that contains the spherical harmonic coefficients. filename will be treated as a URL if it starts with 'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or '.zip', the file will be uncompressed before parsing.
+:   File name or URL that contains the spherical harmonic coefficients.
+        filename will be treated as a URL if it starts with 'http://',
+        'https://', or 'ftp://'. If filename ends with '.gz' or '.zip', the
+        file will be uncompressed before parsing.
 
 **lmax : int, optional, default = None**
-:   The maximum spherical harmonic degree to read from the file. The default is to read the entire file.
+:   The maximum spherical harmonic degree to read from the file. The
+        default is to read the entire file.
 
 # Notes
 

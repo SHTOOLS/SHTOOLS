@@ -13,7 +13,9 @@ Create a 2D complex map from a set of complex spherical harmonic coefficients sa
 
 ## Usage
 
+```python
 `gridglq` = MakeGridGLQC (`cilm`, `zero`, [`lmax`, `norm`, `csphase`, `lmax_calc`, `extend`])
+```
 
 ## Returns
 

@@ -13,7 +13,9 @@ Compute all the unnormalized associated Legendre functions and first derivatives
 
 ## Usage
 
+```python
 `p`, `dp` = PLegendreA_d1 (`lmax`, `z`, [`csphase`])
+```
 
 ## Returns
 

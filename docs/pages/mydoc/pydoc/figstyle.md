@@ -13,7 +13,9 @@ Set matplotlib parameters for creating publication quality graphics.
 
 ## Usage
 
+```python
 figstyle([rel_width, screen_dpi, aspect_ratio, max_width, figsize, units])
+```
 
 ## Parameters
 
@@ -21,7 +23,8 @@ figstyle([rel_width, screen_dpi, aspect_ratio, max_width, figsize, units])
 :   The relative width of the plot (from 0 to 1) wih respect to width.
 
 **screen_dpi : int, optional, default = 114**
-:   The screen resolution of the display in dpi, which determines the size of the plot on the display.
+:   The screen resolution of the display in dpi, which determines the
+        size of the plot on the display.
 
 **aspect_ratio : float, optional, default = 4/3**
 :   The aspect ratio (horizontal/vertical) of the plot.
@@ -33,7 +36,8 @@ figstyle([rel_width, screen_dpi, aspect_ratio, max_width, figsize, units])
 :   A list containing the width and height of the figure.
 
 **units : str, optional, default = 'i'**
-:   The measurement units of max_width and figsize, either 'i' for inches or 'c' or 'cm' for centimeters.
+:   The measurement units of max_width and figsize, either 'i' for inches
+        or 'c' or 'cm' for centimeters.
 
 ## Notes
 

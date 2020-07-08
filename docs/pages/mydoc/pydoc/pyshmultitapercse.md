@@ -13,7 +13,9 @@ Perform a localized multitaper cross-spectral analysis using spherical cap windo
 
 ## Usage
 
+```python
 `mtse`, `sd` = SHMultiTaperCSE (`sh1`, `sh2`, `tapers`, `taper_order`, [`lmax1`, `lmax2`, `lmaxt`, `k`, `lat`, `lon`, `taper_wt`, `norm`, `csphase`])
+```
 
 ## Returns
 

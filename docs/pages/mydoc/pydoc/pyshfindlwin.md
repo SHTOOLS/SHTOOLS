@@ -13,7 +13,9 @@ Determine the spherical-harmonic bandwidth that is necessary to achieve a certai
 
 ## Usage
 
+```python
 `lwin` = SHFindLWin (`theta0`, `m`, `alpha`, [`taper_number`])
+```
 
 ## Returns
 

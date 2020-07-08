@@ -80,7 +80,7 @@ For more specialized operations related to map projections, it will be necessary
 
 ## How to install Cartopy
 
-The easiest way to install Cartopy is with conda
+The easiest way to install Cartopy is with conda:
 ```bash
 conda install -c conda-forge cartopy
 ```

@@ -4,7 +4,9 @@ Create 2D cylindrical maps on a flattened ellipsoid of the components of the mag
 
 # Usage
 
+```python
 `vxx`, `vyy`, `vzz`, `vxy`, `vxz`, `vyz` = MakeMagGradGridDH (`cilm`, `r0`, [`a`, `f`, `lmax`, `sampling`, `lmax_calc`, `extend`])
+```
 
 # Returns
 

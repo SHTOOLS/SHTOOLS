@@ -13,7 +13,9 @@ Convert complex spherical harmonics to real form.
 
 ## Usage
 
+```python
 `rcilm` = SHctor (`ccilm`, [`lmax`, `convention`, `switchcs`])
+```
 
 ## Returns
 

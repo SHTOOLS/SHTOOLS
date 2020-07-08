@@ -4,7 +4,9 @@ Evaluate a complex function expressed in complex spherical harmonics at a single
 
 # Usage
 
+```python
 `value` = MakeGridPointC (`cilm`, `lat`, `lon`, [`lmax`, `norm`, `csphase`, `dealloc`])
+```
 
 # Returns
 

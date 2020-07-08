@@ -4,7 +4,9 @@ Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates 
 
 # Usage
 
+```python
 `value` = NormalGravity (`geocentriclat`, `gm`, `omega`, `a`, `b`)
+```
 
 # Returns
 

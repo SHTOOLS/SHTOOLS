@@ -4,7 +4,9 @@ Calculate the localized admittance and correlation spectra of two functions at a
 
 # Usage
 
+```python
 `admit`, `corr`, `admit_error`, `corr_error` = SHLocalizedAdmitCorr (`gilm`, `tilm`, `tapers`, `taper_order`, `lat`, `lon`, [`k`, `lwin`, `lmax`, `taper_wt`, `mtdef`, `k1linsig`])
+```
 
 # Returns
 

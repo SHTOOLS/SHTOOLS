@@ -4,7 +4,9 @@ Determine the spherical harmonic coefficients of a real function expressed in co
 
 # Usage
 
+```python
 `rcoef` = SHRotateCoef (`x`, `coef`, `dj`, [`lmax`])
+```
 
 # Returns
 

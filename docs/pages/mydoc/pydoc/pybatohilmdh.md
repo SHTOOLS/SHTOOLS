@@ -13,7 +13,9 @@ Calculate iteratively the relief along an interface of constant density contrast
 
 ## Usage
 
+```python
 `cilm` = BAtoHilmDH (`ba`, `grid`, `nmax`, `mass`, `r0`, `rho`, [`filter_type`, `filter_deg`, `lmax`, `lmax_calc`, `smapling`])
+```
 
 ## Returns
 

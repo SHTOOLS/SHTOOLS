@@ -4,12 +4,15 @@ Compute the spherical harmonic function for a specific degree and order.
 
 # Usage
 
+```python
 ylm = spharm_lm (l, m, theta, phi, [normalization, kind, csphase, degrees])
+```
 
 # Returns
 
 **ylm : float or complex**
-:   The spherical harmonic function ylm, where l and m are the spherical harmonic degree and order, respectively.
+:   The spherical harmonic function ylm, where l and m are the spherical
+        harmonic degree and order, respectively.
 
 # Parameters
 
@@ -26,13 +29,17 @@ ylm = spharm_lm (l, m, theta, phi, [normalization, kind, csphase, degrees])
 :   The longitude in degrees. Use radians if 'degrees' is set to False.
 
 **normalization : str, optional, default = '4pi'**
-:   '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized, orthonormalized, Schmidt semi-normalized, or unnormalized spherical harmonic functions, respectively.
+:   '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
+        orthonormalized, Schmidt semi-normalized, or unnormalized spherical
+        harmonic functions, respectively.
 
 **kind : str, optional, default = 'real'**
 :   'real' or 'complex' spherical harmonic coefficients.
 
 **csphase : optional, integer, default = 1**
-:   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the Condon-Shortley phase of (-1)^m will be appended to the spherical harmonic functions.
+:   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
+        Condon-Shortley phase of (-1)^m will be appended to the spherical
+        harmonic functions.
 
 **degrees : optional, bool, default = True**
 :   If True, `theta` and `phi` are expressed in degrees.

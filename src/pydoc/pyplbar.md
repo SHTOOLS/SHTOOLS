@@ -4,7 +4,9 @@ Compute all the 4-pi (geodesy) normalized Legendre polynomials.
 
 # Usage
 
+```python
 `p` = PlBar (`lmax`, `z`)
+```
 
 # Returns
 

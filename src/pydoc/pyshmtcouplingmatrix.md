@@ -4,7 +4,9 @@ This routine returns the multitaper coupling matrix for a given set of power spe
 
 # Usage
 
+```python
 `Mmt` = SHMTCouplingMatrix (`lmax`, `tapers_power`, [`lwin`, `k`, `taper_wt`])
+```
 
 # Returns
 

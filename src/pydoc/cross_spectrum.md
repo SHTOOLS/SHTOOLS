@@ -5,7 +5,10 @@ function of spherical harmonic degree.
 
 # Usage
 
-array = cross_spectrum(clm1, clm2, [normalization, degrees, lmax, convention, unit, base])
+```python
+array = cross_spectrum(clm1, clm2, [normalization, degrees, lmax,
+    convention, unit, base])
+```
 
 # Returns
 
@@ -21,19 +24,27 @@ array = cross_spectrum(clm1, clm2, [normalization, degrees, lmax, convention, un
 :   ndarray containing the second set of spherical harmonic coefficients.
 
 **normalization : str, optional, default = '4pi'**
-:   '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized, orthonormalized, Schmidt semi-normalized, or unnormalized coefficients, respectively.
+:   '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
+        orthonormalized, Schmidt semi-normalized, or unnormalized coefficients,
+        respectively.
 
 **lmax : int, optional, default = len(clm[0,:,0]) - 1.**
 :   Maximum spherical harmonic degree to output.
 
 **degrees : ndarray, optional, default = numpy.arange(lmax+1)**
-:   Array containing the spherical harmonic degrees where the spectrum is computed.
+:   Array containing the spherical harmonic degrees where the spectrum
+        is computed.
 
 **convention : str, optional, default = 'power'**
-:   The type of spectrum to return: 'power' for power spectrum, 'energy' for energy spectrum, and 'l2norm' for the l2-norm spectrum.
+:   The type of spectrum to return: 'power' for power spectrum, 'energy'
+        for energy spectrum, and 'l2norm' for the l2-norm spectrum.
 
 **unit : str, optional, default = 'per_l'**
-:   If 'per_l', return the total contribution to the spectrum for each spherical harmonic degree l. If 'per_lm', return the average contribution to the spectrum for each coefficient at spherical harmonic degree l. If 'per_dlogl', return the spectrum per log interval dlog_a(l).
+:   If 'per_l', return the total contribution to the spectrum for each
+        spherical harmonic degree l. If 'per_lm', return the average
+        contribution to the spectrum for each coefficient at spherical
+        harmonic degree l. If 'per_dlogl', return the spectrum per log
+        interval dlog_a(l).
 
 **base : float, optional, default = 10.**
 :   The logarithm base when calculating the 'per_dlogl' spectrum.

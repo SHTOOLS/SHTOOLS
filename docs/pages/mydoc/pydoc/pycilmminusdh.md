@@ -13,7 +13,9 @@ Calculate the gravitational potential interior to relief referenced to a spheric
 
 ## Usage
 
+```python
 `cilm`, `d` = CilmMinusDH (`gridin`, `nmax`, `mass`, `rho`, [`lmax`,  `n`, `sampling`])
+```
 
 ## Returns
 

@@ -5,12 +5,15 @@ l and angular order m.
 
 # Usage
 
+```python
 index = PlmIndex (l, m)
+```
 
 # Returns
 
 **index : integer**
-:   Index of an array of associated Legendre functions corresponding to degree l and angular order m.
+:   Index of an array of associated Legendre functions corresponding to
+        degree l and angular order m.
 
 # Parameters
 

@@ -13,7 +13,9 @@ Calculate the expected multitaper admittance and correlation spectra associated 
 
 ## Usage
 
+```python
 `admit`, `corr` = SHAdmitCorr (`sgt`, `sgg`, `stt`, `tapers`, [`lmax`, `lwin`, `k`, `mtdef`, `taper_wt`])
+```
 
 ## Returns
 

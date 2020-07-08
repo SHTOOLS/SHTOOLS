@@ -4,7 +4,9 @@ Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the 
 
 # Usage
 
+```python
 `dg82` = ComputeDG82 (`lmax`, `m`, `theta0`)
+```
 
 # Returns
 

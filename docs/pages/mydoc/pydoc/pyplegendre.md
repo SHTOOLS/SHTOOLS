@@ -13,7 +13,9 @@ Compute all the unnormalized Legendre polynomials.
 
 ## Usage
 
+```python
 `p` = PLegendre (`lmax`, `z`)
+```
 
 ## Returns
 

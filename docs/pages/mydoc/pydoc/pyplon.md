@@ -13,7 +13,9 @@ Compute all the orthonormalized Legendre polynomials.
 
 ## Usage
 
+```python
 `p` = PlON (`lmax`, `z`)
+```
 
 ## Returns
 
