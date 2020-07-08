@@ -3202,7 +3202,7 @@ class SHGrid(object):
     copy()      : Return a copy of the class instance.
     plot()      : Plot the data.
     plotgmt()   : Plot projected data using the generic mapping tools (GMT).
-    plot3d()    : Plot the raw data on a 3d sphere.
+    plot3d()    : Plot a 3-dimensional representation of the data.
     info()      : Print a summary of the data stored in the SHGrid instance.
     """
 
@@ -3936,17 +3936,16 @@ class SHGrid(object):
             return self._lons()
 
     # ---- Plotting routines ----
-    def plot3d(self, elevation=20, azimuth=30, cmap='RdBu_r', show=True,
-               fname=None):
+    def plot3d(self, elevation=20, azimuth=30, cmap='viridis',
+               cmap_limits=None, cmap_reverse=False, title=False,
+               titlesize=None, scale=4., ax=None, show=True, fname=None):
         """
-        Plot the raw data on a 3d sphere.
-
-        This routines becomes slow for large grids because it is based on
-        matplotlib3d.
+        Plot a 3-dimensional representation of the data.
 
         Usage
         -----
-        x.plot3d([elevation, azimuth, show, fname])
+        x.plot3d([elevation, azimuth, cmap, cmap_limits, cmap_reverse, title,
+                  titlesize, scale, ax, show, fname])
 
         Parameters
         ----------
@@ -3954,17 +3953,63 @@ class SHGrid(object):
             elev parameter for the 3d projection.
         azimuth : float, optional, default = 30
             azim parameter for the 3d projection.
-        cmap : str, optional, default = 'RdBu_r'
+        cmap : str, optional, default = 'viridis'
             Name of the color map to use.
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If the
+            interval is specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        titlesize : int, optional, default = None
+            The font size of the title.
+        scale : float, optional, default = 4.
+            The data will be divided by scale before being added to the unit
+            sphere.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
             If present, save the image to the specified file.
+
+        Notes
+        -----
+        This 3-dimensional plotting routine plots the function
+
+            1 + self.data/scale
+
+        from a given elevation and azimuth.
+
+        This routines becomes slow for large grids because it is based on
+        matplotlib3d.
         """
         from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 
-        nlat, nlon = self.nlat, self.nlon
-        cmap = _plt.get_cmap(cmap)
+        if titlesize is None:
+            titlesize = _mpl.rcParams['axes.titlesize']
+
+        # make colormap
+        if cmap_limits is None:
+            cmap_limits = [self.min(), self.max()]
+        if len(cmap_limits) == 3:
+            num = int((cmap_limits[1] - cmap_limits[0]) / cmap_limits[2])
+            if isinstance(cmap, _mpl.colors.Colormap):
+                cmap_scaled = cmap._resample(num)
+            else:
+                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+        else:
+            cmap_scaled = _mpl.cm.get_cmap(cmap)
+        if cmap_reverse:
+            cmap_scaled = cmap_scaled.reversed()
+
+        if ax is None:
+            fig = _plt.figure()
+            ax3d = fig.add_subplot(1, 1, 1, projection='3d')
+        else:
+            ax3d = ax
 
         if self.kind == 'real':
             data = self.data
@@ -3974,16 +4019,23 @@ class SHGrid(object):
             raise ValueError('Grid has to be either real or complex, not {}.'
                              .format(self.kind))
 
+        nlat, nlon = self.nlat, self.nlon
         lats = self.lats()
         lons = self.lons()
 
         if self.grid == 'DH':
-            # add south pole
-            lats_circular = _np.append(lats, [-90.])
+            if self.extend:
+                lats_circular = lats
+            else:
+                # add south pole
+                lats_circular = _np.append(lats, [-90.])
         elif self.grid == 'GLQ':
             # add north and south pole
             lats_circular = _np.hstack(([90.], lats, [-90.]))
-        lons_circular = _np.append(lons, [lons[0]])
+        if self.extend:
+            lons_circular = lons
+        else:
+            lons_circular = _np.append(lons, [lons[0]])
 
         nlats_circular = len(lats_circular)
         nlons_circular = len(lons_circular)
@@ -4000,19 +4052,29 @@ class SHGrid(object):
 
         points = _np.vstack((x.flatten(), y.flatten(), z.flatten()))
 
-        # fill data for all points. 0 lon has to be repeated (circular mesh)
-        # and the south pole has to be added in the DH grid
+        # The data need to be on a grid that spans 0-360 longitude and
+        # -90-90 latitude. Need to add extra rows and columns at the edges
+        # of the grid.
         if self.grid == 'DH':
-            magn_point = _np.zeros((nlat + 1, nlon + 1))
-            magn_point[:-1, :-1] = data
-            magn_point[-1, :] = _np.mean(data[-1])  # not exact !
-            magn_point[:-1, -1] = data[:, 0]
+            if self.extend:
+                magn_point = data
+            else:
+                magn_point = _np.zeros((nlat + 1, nlon + 1))
+                magn_point[:-1, :-1] = data
+                magn_point[-1, :] = _np.mean(data[-1])  # not exact !
+                magn_point[:-1, -1] = data[:, 0]
         if self.grid == 'GLQ':
-            magn_point = _np.zeros((nlat + 2, nlon + 1))
-            magn_point[1:-1, :-1] = data
-            magn_point[0, :] = _np.mean(data[0])  # not exact !
-            magn_point[-1, :] = _np.mean(data[-1])  # not exact !
-            magn_point[1:-1, -1] = data[:, 0]
+            if self.extend:
+                magn_point = _np.zeros((nlat + 2, nlon))
+                magn_point[1:-1, :] = data
+                magn_point[0, :] = _np.mean(data[0])  # not exact !
+                magn_point[-1, :] = _np.mean(data[-1])  # not exact !
+            else:
+                magn_point = _np.zeros((nlat + 2, nlon + 1))
+                magn_point[1:-1, :-1] = data
+                magn_point[0, :] = _np.mean(data[0])  # not exact !
+                magn_point[-1, :] = _np.mean(data[-1])  # not exact !
+                magn_point[1:-1, -1] = data[:, 0]
 
         # compute face color, which is the average of all neighbour points
         magn_face = 1./4. * (magn_point[1:, 1:] + magn_point[:-1, 1:] +
@@ -4022,33 +4084,32 @@ class SHGrid(object):
         magnmax_point = _np.max(_np.abs(magn_point))
 
         # compute colours and displace the points
-        norm = _plt.Normalize(-magnmax_face / 2., magnmax_face / 2., clip=True)
-        colors = cmap(norm(magn_face.flatten()))
+        norm = _plt.Normalize(cmap_limits[0], cmap_limits[1])
+        colors = cmap_scaled(norm(magn_face.flatten()))
         colors = colors.reshape(nlats_circular - 1, nlons_circular - 1, 4)
-        points *= (1. + magn_point.flatten() / magnmax_point / 2.)
+        points *= (1. + magn_point.flatten() / magnmax_point / scale)
         x = points[0].reshape(sshape)
         y = points[1].reshape(sshape)
         z = points[2].reshape(sshape)
 
-        # plot 3d radiation pattern
-        fig = _plt.figure()
-        ax3d = fig.add_subplot(1, 1, 1, projection='3d')
-
+        # plot data
         ax3d.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=colors)
         ax3d.set(xlim=(-1., 1.), ylim=(-1., 1.), zlim=(-1., 1.),
                  xticks=[-1, 1], yticks=[-1, 1], zticks=[-1, 1])
         ax3d.set_axis_off()
         ax3d.view_init(elev=elevation, azim=azimuth)
 
-        # show or save output
-        fig.tight_layout(pad=0.5)
-        if show:
-            fig.show()
+        if title:
+            ax3d.set_title(title, fontsize=titlesize)
 
-        if fname is not None:
-            fig.savefig(fname)
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            if show:
+                fig.show()
 
-        return fig, ax3d
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, ax3d
 
     def plot(self, projection=None, tick_interval=[30, 30], ticks='WSen',
              minor_tick_interval=[None, None], title=None, titlesize=None,
