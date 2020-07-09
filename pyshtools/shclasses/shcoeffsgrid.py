@@ -3950,9 +3950,9 @@ class SHGrid(object):
         Parameters
         ----------
         elevation : float, optional, default = 20
-            elev parameter for the 3d projection.
+            The elevation angle (co-latitude), in degrees.
         azimuth : float, optional, default = 30
-            azim parameter for the 3d projection.
+            The azimuth angle phi in degrees.
         cmap : str, optional, default = 'viridis'
             Name of the color map to use.
         cmap_reverse : bool, optional, default = False
@@ -3966,10 +3966,12 @@ class SHGrid(object):
         titlesize : int, optional, default = None
             The font size of the title.
         scale : float, optional, default = 4.
-            The data will be divided by scale before being added to the unit
-            sphere.
+            The data (normalized by the maximum value) will be divided by scale
+            before being added to the unit sphere.
         ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
+            A single matplotlib axes object where the plot will appear. This
+            axes will be removed from the figure and replaced with an
+            Axes3DSubplot object.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -3979,12 +3981,15 @@ class SHGrid(object):
         -----
         This 3-dimensional plotting routine plots the function
 
-            1 + self.data/scale
+            1 + self.data / abs(self.data).max() / scale
 
-        from a given elevation and azimuth.
+        from a given elevation and azimuth viewing geometry. The data are first
+        normalized by the maximum value, divived by scale, and then added to
+        the unit sphere. If the data are complex, the magnitude of the data
+        will be plotted. The color map corresponds to the values in self.data.
 
-        This routines becomes slow for large grids because it is based on
-        matplotlib3d.
+        This routine makes use of matplotlib3d and is very slow for large
+        grids.
         """
         from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 
@@ -4009,7 +4014,11 @@ class SHGrid(object):
             fig = _plt.figure()
             ax3d = fig.add_subplot(1, 1, 1, projection='3d')
         else:
-            ax3d = ax
+            #ax3d = ax
+            fig = ax.get_figure()
+            geometry = ax.get_geometry()
+            ax.remove()
+            ax3d = fig.add_subplot(*geometry, projection='3d')
 
         if self.kind == 'real':
             data = self.data
@@ -4035,45 +4044,41 @@ class SHGrid(object):
         if self.extend:
             lons_circular = lons
         else:
-            lons_circular = _np.append(lons, [lons[0]])
+            lons_circular = _np.append(lons, [360.])
 
         nlats_circular = len(lats_circular)
         nlons_circular = len(lons_circular)
-
         sshape = nlats_circular, nlons_circular
 
         # make uv sphere and store all points
-        u = _np.radians(lons_circular)
-        v = _np.radians(90. - lats_circular)
-
-        x = _np.sin(v)[:, None] * _np.cos(u)[None, :]
-        y = _np.sin(v)[:, None] * _np.sin(u)[None, :]
-        z = _np.cos(v)[:, None] * _np.ones_like(lons_circular)[None, :]
-
+        phi = _np.radians(lons_circular)
+        theta = _np.radians(90. - lats_circular)
+        x = _np.sin(theta)[:, None] * _np.cos(phi)[None, :]
+        y = _np.sin(theta)[:, None] * _np.sin(phi)[None, :]
+        z = _np.cos(theta)[:, None] * _np.ones_like(lons_circular)[None, :]
         points = _np.vstack((x.flatten(), y.flatten(), z.flatten()))
 
         # The data need to be on a grid that spans 0-360 longitude and
-        # -90-90 latitude. Need to add extra rows and columns at the edges
-        # of the grid.
+        # -90-90 latitude. Add extra rows and columns if needed.
         if self.grid == 'DH':
             if self.extend:
                 magn_point = data
             else:
                 magn_point = _np.zeros((nlat + 1, nlon + 1))
                 magn_point[:-1, :-1] = data
-                magn_point[-1, :] = _np.mean(data[-1])  # not exact !
+                magn_point[-1, :] = _np.mean(data[-1])
                 magn_point[:-1, -1] = data[:, 0]
         if self.grid == 'GLQ':
             if self.extend:
                 magn_point = _np.zeros((nlat + 2, nlon))
                 magn_point[1:-1, :] = data
-                magn_point[0, :] = _np.mean(data[0])  # not exact !
-                magn_point[-1, :] = _np.mean(data[-1])  # not exact !
+                magn_point[0, :] = _np.mean(data[0])
+                magn_point[-1, :] = _np.mean(data[-1])
             else:
                 magn_point = _np.zeros((nlat + 2, nlon + 1))
                 magn_point[1:-1, :-1] = data
-                magn_point[0, :] = _np.mean(data[0])  # not exact !
-                magn_point[-1, :] = _np.mean(data[-1])  # not exact !
+                magn_point[0, :] = _np.mean(data[0])
+                magn_point[-1, :] = _np.mean(data[-1])
                 magn_point[1:-1, -1] = data[:, 0]
 
         # compute face color, which is the average of all neighbour points
@@ -4093,14 +4098,15 @@ class SHGrid(object):
         z = points[2].reshape(sshape)
 
         # plot data
-        ax3d.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=colors)
+        ax3d.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=colors,
+                          shade=False)
         ax3d.set(xlim=(-1., 1.), ylim=(-1., 1.), zlim=(-1., 1.),
                  xticks=[-1, 1], yticks=[-1, 1], zticks=[-1, 1])
         ax3d.set_axis_off()
         ax3d.view_init(elev=elevation, azim=azimuth)
 
         if title:
-            ax3d.set_title(title, fontsize=titlesize)
+            ax3d.set_title(title, fontsize=titlesize, pad=0.)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
