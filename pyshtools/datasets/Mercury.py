@@ -25,8 +25,7 @@ def GTMES150(lmax=150):
     GTMES150 is a GSFC 150 degree and order spherical harmonic model of the
     shape of the planet Mercury. This model is based on 26 million laser
     altimeter measurements and 557 radio occultations. The coefficients are in
-    units of meters. Errors for the coefficients are given in the original
-    file, but are not output in this dataset.
+    units of meters.
 
     Documentation for this model can be found on the PDS web site at
     https://pds-geosciences.wustl.edu/
@@ -42,7 +41,11 @@ def GTMES150(lmax=150):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, header=True) * 1000.
+    temp = _SHCoeffs.from_file(
+        fname, lmax=lmax, header=True, errors=True, units='m')
+    temp.coeffs *= 1000.
+    temp.errors *= 1000.
+    return temp
 
 
 def JGMESS160A(lmax=160):

@@ -1,25 +1,25 @@
 """
-Functions for reading spherical harmonic coefficients from text files.
+Functions for reading 'shtools' formatted spherical harmonic coefficients
+from text files.
 """
-import os
-import io
-import gzip
-import zipfile
+import os as _os
+import io as _io
+import gzip as _gzip
+import zipfile as _zipfile
 import numpy as _np
 import requests as _requests
+import shutil as _shutil
 
 
-def shread(filename, lmax=None, error=False, header=False, skip=0):
+def shread(filename, lmax=None, error=False, header=False, header2=False,
+           skip=0):
     """
-    Read spherical harmonic coefficients from a text file.
+    Read shtools-formatted spherical harmonic coefficients from a text file.
 
     Usage
     -----
-    coeffs, lmaxout = shread(filename, [lmax, skip])
-    coeffs, lmaxout, header = shread(filename, header=True, [lmax, skip])
-    coeffs, errors, lmaxout = shread(filename, error=True, [lmax, skip])
-    coeffs, errors, lmaxout, header = shread(filename, error=True,
-                                             header=True, [lmax, skip])
+    coeffs, [errors], lmaxout, [header], [header2] = shread(
+        filename, [error=True, header=True, header2=True, lmax, skip])
 
     Returns
     -------
@@ -32,6 +32,9 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     header : list of type str
         A list of values in the header line found before the start of the
         spherical harmonic coefficients.
+    header2 : list of type str
+        A list of values in the second header line found before the start of
+        the spherical harmonic coefficients.
 
     Parameters
     ----------
@@ -49,16 +52,19 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     header : bool, optional, default = False
         If True, return a list of values in the header line found before the
         start of the spherical harmonic coefficients.
+    header2 : bool, optional, default = False
+        If True, return a list of values in the second header line found before
+        the start of the spherical harmonic coefficients.
     skip : int, optional, default = 0
         The number of lines to skip before parsing the file.
 
     Notes
     -----
     This function will read spherical harmonic coefficients from an
-    ascii-formatted text file. The errors associated with the spherical
-    harmonic coefficients, as well as the values in a single header line, can
-    be read optionally by setting the parameters error and header to
-    True. The optional parameter skip specifies how many lines should be
+    shtools-formatted text file. The errors associated with the spherical
+    harmonic coefficients, as well as the values in one or two header lines,
+    can be read optionally by setting the parameters error, header, and header2
+    to True. The optional parameter skip specifies how many lines should be
     skipped before attempting to parse the file, and the optional parameter
     lmax specifies the maximum degree to read from the file. Both real and
     complex spherical harmonic coefficients are supported.
@@ -76,7 +82,7 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     For each value of increasing l, all the angular orders are listed in
     inceasing order, from 0 to l.
 
-    If a header line is to be read, it should be located directly after the
+    If header lines are to be read, they should be located directly after the
     first lines to be skipped, before the start of the spherical harmonic
     coefficents. The header values are returned as a list, where each value is
     formatted as a string. Comment lines will be ignored, where comments start
@@ -94,13 +100,13 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     if _isurl(filename):
         _response = _requests.get(filename)
         if filename[-4:] == '.zip':
-            zf = zipfile.ZipFile(io.BytesIO(_response.content))
+            zf = _zipfile.ZipFile(_io.BytesIO(_response.content))
             if len(zf.namelist()) > 1:
                 raise Exception('shread can only process zip archives '
                                 'that contain a single file. Archive '
                                 'contents:\n{}'.format(zf.namelist()))
     elif filename[-4:] == '.zip':
-        zf = zipfile.ZipFile(filename, 'r')
+        zf = _zipfile.ZipFile(filename, 'r')
         if len(zf.namelist()) > 1:
             raise Exception('shread can only process zip archives that '
                             'contain a single file. Archive contents: \n'
@@ -111,11 +117,11 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     # files. Consider using indexed_gzip when SEEK_END is supported.)
     if lmax is None:
         if _isurl(filename):
-            f = io.BytesIO(_response.content)
+            f = _io.BytesIO(_response.content)
             if filename[-4:] == '.zip':
                 f = zf.open(zf.namelist()[0])
         elif filename[-3:] == '.gz':
-            f = gzip.open(filename, mode='rb')
+            f = _gzip.open(filename, mode='rb')
         elif filename[-4:] == '.zip':
             f = zf.open(zf.namelist()[0])
         else:
@@ -124,18 +130,18 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
         # determine lmax by reading the last non-comment line of the file
         with f:
             line = ''
-            if f.seek(0, os.SEEK_END) == 0:
+            if f.seek(0, _os.SEEK_END) == 0:
                 raise RuntimeError('File is empty.')
             else:
-                f.seek(-1, os.SEEK_CUR)
+                f.seek(-1, _os.SEEK_CUR)
 
             # read backwards to end of preceding line and then read the line
             while _iscomment(line):
                 while f.read(1) != b'\n':
                     try:
-                        f.seek(-2, os.SEEK_CUR)
+                        f.seek(-2, _os.SEEK_CUR)
                     except:
-                        f.seek(-1, os.SEEK_CUR)  # beginning of file
+                        f.seek(-1, _os.SEEK_CUR)  # beginning of file
                         break
 
                 if f.tell() <= 1:
@@ -150,7 +156,7 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
                     line = f.readline().decode()
                     line = line.replace(',', ' ')
                     try:
-                        f.seek(-len(line)-2, os.SEEK_CUR)
+                        f.seek(-len(line)-2, _os.SEEK_CUR)
                     except:
                         raise RuntimeError('Encountered beginning of file '
                                            'while attempting to determine '
@@ -164,13 +170,13 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
     # open file, skip lines, read header, determine lstart, and then read
     # coefficients one line at a time
     if _isurl(filename):
-        f = io.StringIO(_response.text)
+        f = _io.StringIO(_response.text)
         if filename[-4:] == '.zip':
-            f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
+            f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
     elif filename[-3:] == '.gz':
-        f = gzip.open(filename, mode='rt')
+        f = _gzip.open(filename, mode='rt')
     elif filename[-4:] == '.zip':
-        f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
+        f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
     else:
         f = open(filename, 'r')
 
@@ -182,7 +188,7 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
                     raise RuntimeError('End of file encountered when '
                                        'skipping lines.')
 
-        # read header
+        # read headers
         if header is True:
             line = f.readline()
             if line == '':
@@ -195,6 +201,18 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
                                        'reading header line.')
             line = line.replace(',', ' ')
             header_list = line.split()
+        if header2 is True:
+            line = f.readline()
+            if line == '':
+                raise RuntimeError('End of file encountered when '
+                                   'reading second header line.')
+            while _iscomment(line):
+                line = f.readline()
+                if line == '':
+                    raise RuntimeError('End of file encountered when '
+                                       'reading second header line.')
+            line = line.replace(',', ' ')
+            header2_list = line.split()
 
         # determine the starting degree
         start_position = f.tell()
@@ -283,13 +301,105 @@ def shread(filename, lmax=None, error=False, header=False, skip=0):
                         errors[1, l, m] = complex(line.split()[5])
 
     if error is True and header is True:
-        return coeffs, errors, lmaxout, header_list
+        if header2:
+            return coeffs, errors, lmaxout, header_list, header2_list
+        else:
+            return coeffs, errors, lmaxout, header_list
     elif error is True and header is False:
         return coeffs, errors, lmaxout
     elif error is False and header is True:
-        return coeffs, lmaxout, header_list
+        if header2:
+            return coeffs, lmaxout, header_list, header2_list
+        else:
+            return coeffs, lmaxout, header_list
     else:
         return coeffs, lmaxout
+
+
+def shwrite(filename, coeffs, errors=None, header=None, header2=None,
+            lmax=None):
+    """
+    Write shtools-formatted spherical harmonic coefficients to a text file.
+
+    Usage
+    -----
+    shwrite(filename, coeffs, [errors, header, header2, lmax])
+
+    Parameters
+    ----------
+    filename : str
+        File name of the shtools-formatted spherical harmonic coefficients. If
+        filename ends with '.gz' the file will be automatically compressed with
+        gzip.
+    coeffs : ndarray, size(2, lmaxin+1, lmaxin+1)
+        The spherical harmonic coefficients.
+    errors : ndarray, size(2, lmaxin+1, lmaxin+1), optional, default = None
+        The errors associated with the spherical harmonic coefficients.
+    header : str, optional default = None
+        A string to be written directly before the spherical harmonic
+        coefficients.
+    header2 : str, optional default = None
+        A second string to be written directly before the spherical harmonic
+        coefficients.
+    lmax : int, optional, default = None
+        The maximum spherical harmonic degree to write to the file.
+
+    Notes
+    -----
+    This function will write spherical harmonic coefficients (and optionally
+    the errors) to an shtools-formatted text file. If header or header2 are
+    specified, these strings will be written first, directly before the
+    spherical harmonic coefficients. Both real and complex spherical harmonic
+    coefficients are supported.
+
+    The spherical harmonic coefficients in the file will be formatted as
+
+    l, m, coeffs[0, l, m], coeffs[1, l, m]
+
+    where l and m are the spherical harmonic degree and order, respectively.
+    If the errors are included, each line will be formatted as
+
+    l, m, coeffs[0, l, m], coeffs[1, l, m], errors[0, l, m], errors[1, l, m]
+
+    For each value of increasing l, all the angular orders are listed in
+    inceasing order, from 0 to l.
+
+    If the filename ends with '.gz', the file will be automatically compressed
+    using gzip.
+    """
+    if lmax is None:
+        lmax = coeffs.shape[1] - 1
+    else:
+        if lmax > coeffs.shape[1] - 1:
+            raise ValueError('lmax is greater than the input coefficients. '
+                             'lmax = {:d}, lmax of input coefficients = {:d}.'
+                             .format(lmax, coeffs.shape[1] - 1))
+
+    if filename[-3:] == '.gz':
+        filebase = filename[:-3]
+    else:
+        filebase = filename
+
+    with open(filebase, mode='w') as file:
+        if header is not None:
+            file.write(header + '\n')
+        if header2 is not None:
+            file.write(header2 + '\n')
+        for l in range(lmax+1):
+            for m in range(l+1):
+                if errors is not None:
+                    file.write('{:d}, {:d}, {:.16e}, {:.16e}, '
+                               '{:.16e}, {:.16e}\n'
+                               .format(l, m, coeffs[0, l, m], coeffs[1, l, m],
+                                       errors[0, l, m], errors[1, l, m]))
+                else:
+                    file.write('{:d}, {:d}, {:.16e}, {:.16e}\n'
+                               .format(l, m, coeffs[0, l, m], coeffs[1, l, m]))
+
+    if filename[-3:] == '.gz':
+        with open(filebase, 'rb') as f_in:
+            with _gzip.open(filename, 'wb') as f_out:
+                _shutil.copyfileobj(f_in, f_out)
 
 
 def _iscomment(line):

@@ -40,6 +40,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | --------- | ----------- |
 | `lmax` | The maximum spherical harmonic degree of the coefficients. |
 | `coeffs` | The raw coefficients with the specified normalization and phase conventions. |
+| `errors` | The uncertainties of the spherical harmonic coefficients. |
+| `error_kind` | An arbitrary string describing the kind of errors, such as `None`, `'unspecified'`, `'calibrated'` or `'formal'`. |
 | `gm` | The gravitational constant times the mass that is associated with the gravitational potential coefficients. |
 | `r0` | The reference radius of the gravitational potential coefficients. |
 | `omega` | The angular rotation rate of the body. |
@@ -47,7 +49,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `csphase` | Defines whether the Condon-Shortley phase is used (`1`) or not (`-1`). |
 | `mask` | A boolean mask that is `True` for the permissible values of degree `l` and order `m`. |
 | `kind` | The coefficient data type (only `'real'` is permissible). |
+| `epoch` | The epoch time of the spherical harmonic coefficients. |
 | `header` | A list of values from the header line of the input file used to initialize the class. |
+| `header2` | A list of values from the second header line of the input file used to initialize the class. |
+| `epoch` | The epoch time of the spherical harmonic coefficients. |
 
 ## Class methods
 

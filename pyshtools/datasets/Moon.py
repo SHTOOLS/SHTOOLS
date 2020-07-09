@@ -48,24 +48,20 @@ def MoonTopo2600p(lmax=2600):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax)
+    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
 
 
-def T2015_449(lmax=449, nt=True):
+def T2015_449(lmax=449):
     '''
     T2015_449 is a 449 degree and order spherical harmonic model of the
     magnetic potential of the Moon. This model was used in Wieczorek (2018) and
     is a spherical harmonic expansion of the global magnetic field model of
-    Tsunakawa et al. (2015). By default, the coefficients will be output in
-    units of nT.
+    Tsunakawa et al. (2015). The coefficients are output in units of nT.
 
     Parameters
     ----------
     lmax : int, optional
         The maximum spherical harmonic degree to return.
-    nt : bool, optional, default = True
-        If true, the returned coefficients will be in units of nT. If false,
-        the coefficients will have units of Teslas.
 
     References
     ----------
@@ -84,11 +80,8 @@ def T2015_449(lmax=449, nt=True):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    temp = _SHMagCoeffs.from_file(fname, lmax=lmax, header=True)
-    if nt:
-        return temp * 1.e9
-    else:
-        return temp
+    return _SHMagCoeffs.from_file(fname, lmax=lmax, header=True,
+                                  file_units='T', units='nT')
 
 
 def GRGM900C(lmax=900):
