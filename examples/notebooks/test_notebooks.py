@@ -4,9 +4,10 @@ This script will run all jupyter notebooks in order to test for errors.
 """
 import sys
 import os
-
 import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
+
+os.chdir(os.path.dirname(sys.argv[0]))
 
 notebooks = ('grids-and-coefficients.ipynb',
              'localized-spectral-analysis.ipynb',
