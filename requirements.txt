@@ -6,3 +6,5 @@ xarray
 requests
 pooch
 tqdm
+palettable
+jupyter

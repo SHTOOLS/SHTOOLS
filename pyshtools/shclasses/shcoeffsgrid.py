@@ -4014,7 +4014,6 @@ class SHGrid(object):
             fig = _plt.figure()
             ax3d = fig.add_subplot(1, 1, 1, projection='3d')
         else:
-            #ax3d = ax
             fig = ax.get_figure()
             geometry = ax.get_geometry()
             ax.remove()
@@ -4085,7 +4084,6 @@ class SHGrid(object):
         magn_face = 1./4. * (magn_point[1:, 1:] + magn_point[:-1, 1:] +
                              magn_point[1:, :-1] + magn_point[:-1, :-1])
 
-        magnmax_face = _np.max(_np.abs(magn_face))
         magnmax_point = _np.max(_np.abs(magn_point))
 
         # compute colours and displace the points
@@ -4316,7 +4314,9 @@ class SHGrid(object):
                 cmap_reverse=False, cmap_continuous=False, colorbar=None,
                 cb_triangles='both', cb_label=None, cb_ylabel=None,
                 cb_tick_interval=None, cb_minor_tick_interval=None,
-                cb_offset=None, horizon=60, offset=[None, None], fname=None):
+                cb_offset=None, titlesize=None, axes_labelsize=None,
+                tick_labelsize=None, horizon=60, offset=[None, None],
+                fname=None):
         """
         Plot projected data using the Generic Mapping Tools (pygmt).
 
@@ -4333,7 +4333,8 @@ class SHGrid(object):
                          cmap, cmap_limits, cmap_limits_complex, cmap_reverse,
                          cmap_continuous, colorbar, cb_triangles, cb_label,
                          cb_ylabel, cb_tick_interval, cb_minor_tick_interval,
-                         cb_offset, horizon, offset, fname])
+                         cb_offset, titlesize, axes_labelssize, tick_labelsize,
+                         horizon, offset, fname])
 
         Returns
         -------
@@ -4408,6 +4409,12 @@ class SHGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        titlesize : int, optional, default = None
+            The font size of the title.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         horizon : float, optional, default = 60
             The horizon (number of degrees from the center to the edge) used
             with the Gnomonic projection.
@@ -4462,6 +4469,16 @@ class SHGrid(object):
                 raise ValueError("colorbar must be 'top', 'bottom', 'left' or "
                                  "'right'. Input value is {:s}."
                                  .format(repr(colorbar)))
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if axes_labelsize == 'medium':
+                axes_labelsize = _mpl.rcParams['font.size']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+            if tick_labelsize == 'medium':
+                tick_labelsize = _mpl.rcParams['font.size']
+        if titlesize is None:
+            titlesize = _mpl.rcParams['axes.titlesize']
 
         figure = self._plot_pygmt(
             fig=fig, projection=projection, region=region, width=width,
@@ -4474,8 +4491,9 @@ class SHGrid(object):
             cmap_continuous=cmap_continuous, colorbar=colorbar,
             cb_triangles=cb_triangles, cb_label=cb_label, cb_ylabel=cb_ylabel,
             cb_tick_interval=cb_tick_interval, cb_offset=cb_offset,
-            cb_minor_tick_interval=cb_minor_tick_interval, horizon=horizon,
-            offset=offset)
+            cb_minor_tick_interval=cb_minor_tick_interval, titlesize=titlesize,
+            axes_labelsize=axes_labelsize, tick_labelsize=tick_labelsize,
+            horizon=horizon, offset=offset)
 
         if fname is not None:
             figure.savefig(fname)
@@ -4906,8 +4924,9 @@ class DHRealGrid(SHGrid):
                     cmap_limits_complex=None, cmap_reverse=None,
                     cmap_continuous=None, colorbar=None, cb_triangles=None,
                     cb_label=None, cb_ylabel=None, cb_tick_interval=None,
-                    cb_minor_tick_interval=None, horizon=None, offset=None,
-                    cb_offset=None):
+                    cb_minor_tick_interval=None, titlesize=None,
+                    axes_labelsize=None, tick_labelsize=None, horizon=None,
+                    offset=None, cb_offset=None):
         """
         Plot projected data using pygmt.
         """
@@ -5003,13 +5022,13 @@ class DHRealGrid(SHGrid):
                                      .format(repr(cb_triangles)))
             cb_str = []
             x_str = 'x'
-            if cb_label is not None:
-                cb_str.extend(['x+l"{:s}"'.format(cb_label)])
             if cb_tick_interval is not None:
                 x_str += 'a' + str(cb_tick_interval)
             if cb_minor_tick_interval is not None:
                 x_str += 'f' + str(cb_minor_tick_interval)
             cb_str.extend([x_str])
+            if cb_label is not None:
+                cb_str.extend(['x+l"{:s}"'.format(cb_label)])
             if cb_ylabel is not None:
                 cb_str.extend(['y+l"{:s}"'.format(cb_ylabel)])
 
@@ -5030,13 +5049,15 @@ class DHRealGrid(SHGrid):
         if cmap_limits is None:
             cmap_limits = [self.min(), self.max()]
 
-        _pygmt.makecpt(series=cmap_limits, cmap=cmap, reverse=cmap_reverse,
-                       continuous=cmap_continuous)
-        figure.grdimage(self.to_xarray(), region=region, projection=proj_str,
-                        frame=frame, X=xshift, Y=yshift)
-
-        if colorbar is not None:
-            figure.colorbar(position=position, frame=cb_str)
+        with _pygmt.config(FONT_TITLE=titlesize, FONT_LABEL=axes_labelsize,
+                           FONT_ANNOT=tick_labelsize):
+            _pygmt.makecpt(series=cmap_limits, cmap=cmap, reverse=cmap_reverse,
+                           continuous=cmap_continuous)
+            figure.grdimage(self.to_xarray(), region=region,
+                            projection=proj_str, frame=frame, X=xshift,
+                            Y=yshift)
+            if colorbar is not None:
+                figure.colorbar(position=position, frame=cb_str)
 
         return figure
 
@@ -5197,8 +5218,9 @@ class DHComplexGrid(SHGrid):
                     cmap_limits_complex=None, cmap_reverse=None,
                     cmap_continuous=None, colorbar=None, cb_triangles=None,
                     cb_label=None, cb_ylabel=None, cb_tick_interval=None,
-                    cb_minor_tick_interval=None, horizon=None, offset=None,
-                    cb_offset=None):
+                    cb_minor_tick_interval=None, titlesize=None,
+                    axes_labelsize=None, tick_labelsize=None, horizon=None,
+                    offset=None, cb_offset=None):
         """
         Plot projected data using pygmt.
         """
@@ -5221,7 +5243,10 @@ class DHComplexGrid(SHGrid):
                                cb_label=cb_label, cb_ylabel=cb_ylabel,
                                cb_tick_interval=cb_tick_interval,
                                cb_minor_tick_interval=cb_minor_tick_interval,
-                               horizon=horizon, offset=offset)
+                               titlesize=titlesize,
+                               axes_labelsize=axes_labelsize,
+                               tick_labelsize=tick_labelsize, horizon=horizon,
+                               offset=offset)
 
         offset_real = _np.copy(offset)
         if offset_real[1] is None:
@@ -5243,6 +5268,9 @@ class DHComplexGrid(SHGrid):
                                cb_label=cb_label, cb_ylabel=cb_ylabel,
                                cb_tick_interval=cb_tick_interval,
                                cb_minor_tick_interval=cb_minor_tick_interval,
+                               titlesize=titlesize,
+                               axes_labelsize=axes_labelsize,
+                               tick_labelsize=tick_labelsize,
                                horizon=horizon, offset=offset_real)
 
         return figure
