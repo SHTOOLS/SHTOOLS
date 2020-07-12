@@ -7,7 +7,7 @@ import matplotlib.pyplot as _plt
 import copy as _copy
 import xarray as _xr
 
-from .shcoeffsgrid import SHGrid as _SHGrid
+from .shgrid import SHGrid as _SHGrid
 
 
 class SHGravGrid(object):

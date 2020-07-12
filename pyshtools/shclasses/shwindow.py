@@ -12,8 +12,8 @@ import copy as _copy
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
 
-from .shcoeffsgrid import SHCoeffs
-from .shcoeffsgrid import SHGrid
+from .shcoeffs import SHCoeffs
+from .shgrid import SHGrid
 
 
 __all__ = ['SHWindow', 'SHWindowCap', 'SHWindowMask']

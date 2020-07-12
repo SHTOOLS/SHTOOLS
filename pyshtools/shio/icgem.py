@@ -325,7 +325,7 @@ def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
             file.write('end_of_head ' + 115*'=' + '\n')
         else:
             file.write('\nkey   {:>5}   {:>5}   {:>24}   {:>24}\n'
-                       .format('L', 'M', 'C', 'S', 'sigma C', 'sigma S'))
+                       .format('L', 'M', 'C', 'S'))
             file.write('end_of_head ' + 61*'=' + '\n')
 
         # write the coefficients

@@ -11,9 +11,9 @@ from scipy.special import factorial as _factorial
 import gzip as _gzip
 import shutil as _shutil
 
-from .shcoeffsgrid import SHCoeffs as _SHCoeffs
-from .shcoeffsgrid import SHRealCoeffs as _SHRealCoeffs
-from .shcoeffsgrid import DHRealGrid as _DHRealGrid
+from .shcoeffs import SHCoeffs as _SHCoeffs
+from .shcoeffs import SHRealCoeffs as _SHRealCoeffs
+from .shgrid import DHRealGrid as _DHRealGrid
 from .shgravgrid import SHGravGrid as _SHGravGrid
 from .shtensor import SHGravTensor as _SHGravTensor
 from .shgeoid import SHGeoid as _SHGeoid

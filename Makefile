@@ -116,6 +116,9 @@
 #   make remove-www
 #       Remove the directory containing the static html web site.
 #
+#   make check
+#       Check syntax of python files using flake8
+#
 ###############################################################################
 
 VERSION = 4.7
@@ -126,6 +129,7 @@ F95 = gfortran
 PYTHON = python3
 JUPYTER = jupyter nbconvert --ExecutePreprocessor.kernel_name=python3
 JEKYLL = bundle exec jekyll
+FLAKE8 = flake8
 
 PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
@@ -151,6 +155,8 @@ PYPATH = $(PWD)
 SYSMODPATH = $(PREFIX)/include
 PY3EXT = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
 SYSSHAREPATH = $(PREFIX)/share
+
+FLAKE8_FILES = setup.py pyshtools examples/python
 
 ifeq ($(F95), f95)
 # Default Absoft f95 flags
@@ -213,7 +219,7 @@ endif
 	run-fortran-tests-no-timing doc remove-doc python-tests \
 	python-tests-no-timing uninstall clean clean-fortran-tests \
 	clean-python-tests clean-python clean-libs remove-notebooks notebooks \
-	run-notebooks www remove-www help
+	run-notebooks www remove-www help check
 
 help:
 	@echo "Commands:"
@@ -410,3 +416,6 @@ python-tests-no-timing:
 	@$(MAKE) -C $(PEXDIR) -f Makefile no-timing PYTHON=$(PYTHON)
 	@echo
 	@echo "--> Ran all Python tests"
+
+check:
+	@$(FLAKE8) $(FLAKE8_FILES)

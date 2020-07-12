@@ -11,7 +11,7 @@ from scipy.special import factorial as _factorial
 import gzip as _gzip
 import shutil as _shutil
 
-from .shcoeffsgrid import SHCoeffs as _SHCoeffs
+from .shcoeffs import SHCoeffs as _SHCoeffs
 from .shmaggrid import SHMagGrid as _SHMagGrid
 from .shtensor import SHMagTensor as _SHMagTensor
 

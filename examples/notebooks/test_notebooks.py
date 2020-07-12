@@ -7,7 +7,8 @@ import os
 import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
 
-os.chdir(os.path.dirname(sys.argv[0]))
+if os.path.dirname(sys.argv[0]) != '':
+    os.chdir(os.path.dirname(sys.argv[0]))
 
 notebooks = ('grids-and-coefficients.ipynb',
              'localized-spectral-analysis.ipynb',

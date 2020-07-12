@@ -6,8 +6,8 @@ import copy as _copy
 
 from .. import shtools as _shtools
 
-from .shcoeffsgrid import SHCoeffs
-from .shcoeffsgrid import SHGrid
+from .shcoeffs import SHCoeffs
+from .shgrid import SHGrid
 
 
 __all__ = ['SlepianCoeffs']

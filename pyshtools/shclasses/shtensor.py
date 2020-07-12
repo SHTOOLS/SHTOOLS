@@ -8,7 +8,7 @@ import copy as _copy
 from scipy.linalg import eigvalsh as _eigvalsh
 import xarray as _xr
 
-from .shcoeffsgrid import SHGrid as _SHGrid
+from .shgrid import SHGrid as _SHGrid
 
 
 class Tensor(object):
