@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-installing.html
 summary: pyshtools can be installed using the pip package manager or conda.
 toc: true
+folder: mydoc
 ---
 
 ## Python package installer (pip)

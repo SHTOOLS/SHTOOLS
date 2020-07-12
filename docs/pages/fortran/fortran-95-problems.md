@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: fortran-95-problems.html
 summary: 
 toc: true
+folder: fortran
 ---
 
 ## SHTOOLS won't compile on my computer

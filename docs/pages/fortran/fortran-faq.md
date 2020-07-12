@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: fortran-faq.html
 summary: 
 toc: true
+folder: fortran
 ---
 
 ## I have a question

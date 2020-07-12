@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: license.html
 summary: SHTOOLS is open source software and can be distributed in accordance with the 3-clause BSD license.
 toc: false
+folder: mydoc
 ---
 
 Copyright &copy; 2005-2020, SHTOOLS<br>

@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-utilities.html
 summary: 
 toc: false
+folder: mydoc
 ---
 
 <style>

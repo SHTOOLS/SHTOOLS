@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: legendre-functions.html
 summary: 
 toc: true
+folder: fortran
 ---
 
 <style>

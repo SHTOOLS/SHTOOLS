@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: fortran-grid-formats.html
 summary: SHTOOLS supports equally sampled, equally spaced, and Gauss-Legendre quadrature grids.
 toc: true
+folder: fortran
 ---
 
 <style>

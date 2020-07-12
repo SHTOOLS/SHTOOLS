@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-spherical-harmonic-transforms.html
 summary: 
 toc: true
+folder: mydoc
 ---
 
 <style>

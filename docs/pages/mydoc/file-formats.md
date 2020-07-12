@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: file-formats.html
 summary: pyshtools can read spherical harmonic coefficients using several standard file formats.
 toc: true
+folder: mydoc
 ---
 
 <style>

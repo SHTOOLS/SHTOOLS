@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-io.html
 summary: 
 toc: true
+folder: mydoc
 ---
 
 <style>

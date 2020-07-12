@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-examples.html
 summary: The easiest way to start learning about pyshtools is to see it in action in a Jupyter notebook.
 toc: true
+folder: mydoc
 ---
 
 <style>

@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: contributors.html
 summary:
 toc: true
+folder: mydoc
 ---
 
 ## Maintainers

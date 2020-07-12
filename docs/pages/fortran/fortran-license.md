@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: fortran-license.html
 summary: SHTOOLS is open source software and can be distributed in accordance with the 3-clause BSD license.
 toc: false
+folder: fortran
 ---
 
 Copyright &copy; 2005-2020, SHTOOLS<br>

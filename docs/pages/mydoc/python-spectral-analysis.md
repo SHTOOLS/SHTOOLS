@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-spectral-analysis.html
 summary: 
 toc: true
+folder: mydoc
 ---
 
 <style>

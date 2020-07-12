@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: fortran-real-spherical-harmonics.html
 summary: SHTOOLS uses by default 4&pi;-normalized spherical harmonic functions that exclude the Condon-Shortley phase factor. Schmidt semi-normalized, orthonormalized, and unnormalized harmonics can be employed in most routines by specifying optional parameters.
 toc: true
+folder: fortran
 ---
 
 <style>

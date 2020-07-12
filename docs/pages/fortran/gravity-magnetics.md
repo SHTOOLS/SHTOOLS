@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: gravity-magnetics.html
 summary: 
 toc: true
+folder: fortran
 ---
 
 <style>

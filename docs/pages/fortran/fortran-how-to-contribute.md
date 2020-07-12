@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: fortran-how-to-contribute.html
 summary: SHTOOLS is an open source project whose success depends upon contributions from people like you. Even if you can not contribute code, you can report issues at GitHub and help us improve the documentation.
 toc: true
+folder: fortran
 ---
 
 ## I would like to contribute to the code base

@@ -6,6 +6,7 @@ permalink: planets-constants.html
 summary:
 tags: [fortran]
 toc: true
+folder: fortran
 ---
 
 <style>

@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: index-fortran.html
 summary: SHTOOLS is an archive of Fortran 95 software that can be used to perform spherical harmonic transforms, multitaper spectral analyses, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
 toc: false
+folder: fortran
 ---
 
 {% include note.html content="You are reading the Fortran 95 **SHTOOLS** documentation. Click [here](index.html) to access the **pyshtools** documentation." %}

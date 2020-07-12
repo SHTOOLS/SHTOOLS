@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-datasets-constants.html
 summary: pyshtools provides easy access to many research-grade datasets and common physical constants.
 toc: true
+folder: mydoc
 ---
 
 <style>

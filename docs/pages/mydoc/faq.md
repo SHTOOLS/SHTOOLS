@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: faq.html
 summary: 
 toc: true
+folder: mydoc
 ---
 
 ## I have a question

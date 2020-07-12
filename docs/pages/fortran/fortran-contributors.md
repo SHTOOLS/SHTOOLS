@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: fortran-contributors.html
 summary:
 toc: true
+folder: fortran
 ---
 
 ## Maintainers

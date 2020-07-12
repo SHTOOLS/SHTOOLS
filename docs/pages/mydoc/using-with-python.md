@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: using-with-python.html
 summary: To use pyshtools in Python, it is only necessary to import the pyshtools module.
 toc: true
+folder: mydoc
 ---
 
 <style>

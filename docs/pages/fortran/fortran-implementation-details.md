@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: fortran-implementation-details.html
 summary: The spherical harmonic transforms in SHTOOLS make use of integrations over longitude that involve fast Fourier transforms and integrations over latitude that utilize either Gauss-Legendre quadrature or exact quadrature rules for regularly spaced grids. The transforms and reconstructions are accurate to about degree 2800.
 toc: true
+folder: fortran
 ---
 
 <style>

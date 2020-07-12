@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: fortran-release-notes-v4.html
 summary:
 toc: true
+folder: fortran
 ---
 ## Version 4.6
 

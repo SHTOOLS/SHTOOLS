@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: localized-spectral-analysis.html
 summary: 
 toc: true
+folder: fortran
 ---
 
 <style>

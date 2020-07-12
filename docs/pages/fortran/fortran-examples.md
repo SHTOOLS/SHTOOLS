@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: fortran-examples.html
 summary: If you want to learn how to incorporate shtools routines in your fortran programs, the following example programs are a good starting point to see shtools in action.
 toc: false
+folder: fortran
 ---
 
 <style>

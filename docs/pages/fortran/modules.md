@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: f95-modules.html
 summary: 
 toc: false
+folder: fortran
 ---
 
 <style>

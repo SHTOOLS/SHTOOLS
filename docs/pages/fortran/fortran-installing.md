@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: fortran-installing.html
 summary: SHTOOLS can be installed manually using the Makefile or by using the macOS package manager brew.
 toc: true
+folder: fortran
 ---
 
 ## Fortran 95 library using brew (macOS)

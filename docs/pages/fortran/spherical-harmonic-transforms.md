@@ -5,6 +5,7 @@ sidebar: fortran_sidebar
 permalink: spherical-harmonic-transforms.html
 summary: 
 toc: true
+folder: fortran
 ---
 
 <style>

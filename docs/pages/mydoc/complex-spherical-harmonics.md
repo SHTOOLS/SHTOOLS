@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: complex-spherical-harmonics.html
 summary: pyshtools uses by default 4&pi;-normalized spherical harmonic functions that exclude the Condon-Shortley phase factor. Schmidt semi-normalized, orthonormalized, and unnormalized harmonics can be employed in most routines by specifying optional parameters.
 toc: true
+folder: mydoc
 ---
 
 <style>

@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-gravity-magnetics.html
 summary: 
 toc: true
+folder: mydoc
 ---
 
 <style>

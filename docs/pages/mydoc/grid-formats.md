@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: grid-formats.html
 summary: pyshtools supports equally sampled, equally spaced, and Gauss-Legendre quadrature grids.
 toc: true
+folder: mydoc
 ---
 
 <style>
