@@ -2,10 +2,8 @@
 pyshtools
 =========
 
-pyshtools is an archive of scientific routines that can be used to
-perform spherical harmonic transforms and reconstructions, rotations
-of data expressed in spherical harmonics, and multitaper spectral
-analyses on the sphere.
+pyshtools a scientific package that can be used to perform spherical harmonic
+transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere.
 
 This module imports the following classes and subpackages into the
 main namespace:
@@ -45,9 +43,7 @@ and the GitHub project page at
 
    https://github.com/SHTOOLS/SHTOOLS
 """
-__version__ = '4.7'
-__author__ = 'SHTOOLS developers'
-
+from ._version import get_versions as _get_versions
 
 # ---- Import shtools subpackages ----
 from . import shtools
@@ -75,6 +71,10 @@ from .shclasses import SHGeoid
 from .shclasses import SHMagCoeffs
 from .shclasses import SHMagGrid
 from .shclasses import SHMagTensor
+
+__version__ = _get_versions()["version"]
+__commit__ = _get_versions()["full-revisionid"]
+__author__ = 'SHTOOLS developers'
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constants', 'shclasses', 'legendre', 'expand', 'shio', 'shtools',

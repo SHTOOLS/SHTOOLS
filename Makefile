@@ -418,4 +418,4 @@ python-tests-no-timing:
 	@echo "--> Ran all Python tests"
 
 check:
-	@$(FLAKE8) $(FLAKE8_FILES)
+	@$(FLAKE8) --extend-ignore=E741,W605 --exclude=versioneer.py,pyshtools/_version.py $(FLAKE8_FILES)

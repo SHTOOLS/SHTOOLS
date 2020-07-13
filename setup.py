@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""Setup script for SHTOOLS."""
+"""Setup script for pyshtools"""
 
 import sys
 
@@ -9,31 +9,29 @@ min_version = (3, 6)
 
 if sys.version_info < min_version:
     error = """\n
-*** Beginning with pysthools 4.6, Python {0} or above is required.   ***
+*** Beginning with pyshtools 4.6, Python {0} or above is required.   ***
 *** This error may be a result of using a python-2.7 version of pip. ***
 """.format('.'.join(str(n) for n in min_version))
     raise SystemError(error)
 
-import os
-import re
-import sysconfig
-# the setuptools import dummy patches the distutil commands such that
-# python setup.py develop works
-import setuptools
-import numpy
-
-from numpy.distutils.core import setup
-from numpy.distutils.command.build import build as _build
-from numpy.distutils.command.install import install as _install
-from numpy.distutils.command.develop import develop as _develop
-from numpy.distutils.fcompiler import FCompiler, get_default_fcompiler
-from numpy.distutils.misc_util import Configuration
-from numpy.distutils.system_info import get_info, dict_append
-from subprocess import CalledProcessError, check_output, check_call
+import os  # noqa: E402
+import sysconfig  # noqa: E402
+import setuptools  # noqa: E402
+import numpy  # noqa: E402
+import versioneer  # noqa: E402
+from numpy.distutils.core import setup  # noqa: E402
+from numpy.distutils.command.build import build as _build  # noqa: E402
+from numpy.distutils.command.install import install as _install  # noqa: E402
+from numpy.distutils.command.develop import develop as _develop  # noqa: E402
+from numpy.distutils.fcompiler import FCompiler  # noqa: E402
+from numpy.distutils.fcompiler import get_default_fcompiler  # noqa: E402
+from numpy.distutils.misc_util import Configuration  # noqa: E402
+from numpy.distutils.system_info import get_info, dict_append  # noqa: E402
+from subprocess import check_call  # noqa: E402
 
 
 # Convert markdown README.md to restructured text (.rst) for PyPi, and
-# remove the first 5 lines that contain a reference to the shtools LOGO.
+# remove the first 5 lines that contain a reference to the shtools logo.
 # pandoc can be installed either by conda or pip:
 # conda install -c conda-forge pandoc pypandoc
 # pip install pypandoc
@@ -47,52 +45,45 @@ except(IOError, ImportError):
     long_description = open('README.md').read()
 
 
-# This flag has to be True if the version number indicated in the file
-# VERSION has already been released and to False if this is a development
-# version of a future release.
-ISRELEASED = False
+VERSION = versioneer.get_version()
 
+CLASSIFIERS = [
+    'Development Status :: 5 - Production/Stable',
+    'Environment :: Console',
+    'Intended Audience :: Science/Research',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: BSD License',
+    'Natural Language :: English',
+    'Operating System :: OS Independent',
+    'Programming Language :: Fortran',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Topic :: Scientific/Engineering',
+    'Topic :: Scientific/Engineering :: GIS',
+    'Topic :: Scientific/Engineering :: Mathematics',
+    'Topic :: Scientific/Engineering :: Physics'
+]
 
-def get_version():
-    """Get version from git and VERSION file.
+KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Slepian Functions',
+            'Legendre Functions', 'Gravity Field', 'Magnetic Field']
 
-    In the case where the version is not tagged in git, this function appends
-    .post0+commit if the version has been released and .dev0+commit if the
-    version has not yet been released.
+PYTHON_REQUIRES = '>={}'.format('.'.join(str(n) for n in min_version))
 
-    Derived from: https://github.com/Changaco/version.py
-    """
-    d = os.path.dirname(__file__)
-    # get release number from VERSION
-    with open(os.path.join(d, 'VERSION.txt')) as f:
-        vre = re.compile('.Version: (.+)$', re.M)
-        version = vre.search(f.read()).group(1)
+INSTALL_REQUIRES = [
+    'numpy>=' + str(numpy.__version__),
+    'scipy>=0.14.0',
+    'matplotlib',
+    'astropy',
+    'xarray',
+    'requests',
+    'pooch',
+    'tqdm'
+]
 
-    if os.path.isdir(os.path.join(d, '.git')):
-        # Get the version using "git describe".
-        cmd = 'git describe --tags'
-        try:
-            git_version = check_output(cmd.split()).decode().strip()[1:]
-        except CalledProcessError:
-            print('Unable to get version number from git tags\n'
-                  'Setting to x.x')
-            git_version = 'x.x'
+EXTRAS_REQUIRE = {
+    'maps': ['cartopy', 'pygmt', 'palettable']
+}
 
-        # PEP440 compatibility
-        if '-' in git_version:
-            git_revision = check_output(['git', 'rev-parse', 'HEAD'])
-            git_revision = git_revision.strip().decode('ascii')
-            # add post0 if the version is released
-            # otherwise add dev0 if the version is not yet released
-            if ISRELEASED:
-                version += '.post0+' + git_revision[:7]
-            else:
-                version += '.dev0+' + git_revision[:7]
-
-    return version
-
-
-VERSION = get_version()
 print('INSTALLING SHTOOLS {}'.format(VERSION))
 
 
@@ -153,49 +144,7 @@ class develop(_develop):
         print('---- ALL DONE ----')
 
 
-CLASSIFIERS = [
-    'Development Status :: 5 - Production/Stable',
-    'Environment :: Console',
-    'Intended Audience :: Science/Research',
-    'Intended Audience :: Developers',
-    'License :: OSI Approved :: BSD License',
-    'Natural Language :: English',
-    'Operating System :: OS Independent',
-    'Programming Language :: Fortran',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3',
-    'Topic :: Scientific/Engineering',
-    'Topic :: Scientific/Engineering :: GIS',
-    'Topic :: Scientific/Engineering :: Mathematics',
-    'Topic :: Scientific/Engineering :: Physics'
-]
-
-
-KEYWORDS = ['Spherical Harmonics', 'Spectral Estimation', 'Slepian Functions',
-            'Wigner Symbols', 'Legendre Functions', 'Gravity Field',
-            'Magnetic Field']
-
-
-PYTHON_REQUIRES = '>={}'.format('.'.join(str(n) for n in min_version))
-
-
-INSTALL_REQUIRES = [
-    'numpy>=' + str(numpy.__version__),
-    'scipy>=0.14.0',
-    'matplotlib',
-    'astropy',
-    'xarray',
-    'requests',
-    'pooch',
-    'tqdm'
-]
-
-EXTRAS_REQUIRE = {
-    'maps': ['cartopy', 'pygmt', 'palettable']
-}
-
 # configure python extension to be compiled with f2py
-
 
 def configuration(parent_package='', top_path=None):
     """Configure all packages that need to be built."""
@@ -261,6 +210,10 @@ def configuration(parent_package='', top_path=None):
     return config
 
 
+CMDCLASS = {'build': build, 'install': install, 'develop': develop}
+CMDCLASS.update(versioneer.get_cmdclass())
+
+
 metadata = dict(
     name='pyshtools',
     version=VERSION,
@@ -279,7 +232,7 @@ metadata = dict(
     packages=setuptools.find_packages(),
     classifiers=CLASSIFIERS,
     configuration=configuration,
-    cmdclass={'build': build, 'install': install, 'develop': develop}
+    cmdclass=CMDCLASS
 )
 
 
