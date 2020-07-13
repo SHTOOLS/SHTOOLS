@@ -144,6 +144,7 @@ PEXDIR = examples/python
 NBDIR = examples/notebooks
 WWWSRC = docs
 WWWDEST = www
+BUILD_DIR ?= 
 
 LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
