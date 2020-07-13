@@ -293,12 +293,12 @@ uninstall:
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
 	-rm -r $(SYSSHAREPATH)/shtools/examples/
-	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
-	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
+	$(MAKE) -C $(FDOCDIR) -f Makefile uninstall
+	$(MAKE) -C $(PYDOCDIR) -f Makefile uninstall
 
 doc:
 	@$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
-	@$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION)
+	@$(MAKE) -C $(PYDOCDIR) -f Makefile
 	@echo "--> Documentation created successfully"
 
 remove-doc:
