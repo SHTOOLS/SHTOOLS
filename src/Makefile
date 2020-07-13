@@ -21,7 +21,9 @@ RLIBFLAGS =
 LDFLAGS = -s
 
 LIBNAME = SHTOOLS
-PROG = ../lib/lib$(LIBNAME).a
+LIBDIR = lib
+INCDIR = modules
+PROG = ../$(LIBDIR)/lib$(LIBNAME).a
 
 ifeq ($(F95),f95)
 # Default Absoft Pro Fortran flags
@@ -123,9 +125,9 @@ $(PROG): $(OBJS)
 	@echo
 	@echo "--> Creation of static library successful"
 #	@rm -f $(OBJS)
-#	@mv -f *.mod ../modules/
-	@cp -f *.mod ../modules/
-	@echo "--> Library and module files moved to ../lib and ../modules"
+#	@mv -f *.mod ../$(INCDIR)/
+	@cp -f *.mod ../$(INCDIR)/
+	@echo "--> Library and module files moved to ../$(LIBDIR) and ../$(INCDIR)"
 	@echo "--> Archive created successfully"
 
 .PHONY: clean clean-obs-mod clean-prog-mod all
@@ -142,7 +144,7 @@ clean-obs-mod:
 
 clean-prog-mod:
 	@-rm -f $(PROG)
-	@-rm -f ../modules/*.mod
+	@-rm -f ../$(INCDIR)/*.mod
 
 %.mod: %.f95
 	$(F95) -c $(F95FLAGS) $<

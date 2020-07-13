@@ -233,9 +233,9 @@ help:
 all: fortran
 
 fortran:
-	mkdir -pv lib
-	mkdir -pv modules
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)"
+	mkdir -pv $(LIBDIR)
+	mkdir -pv $(INCDIR)
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)" LIBDIR="$(LIBDIR)" INCDIR="$(INCDIR)"
 	@echo "--> make fortran successful!"
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
@@ -245,10 +245,10 @@ fortran:
 
 fortran-mp:
 # Delete .o files before and after compiling with OpenMP to avoid issues with "fortran" build.
-	mkdir -pv lib
-	mkdir -pv modules
+	mkdir -pv $(LIBDIR)
+	mkdir -pv $(INCDIR)
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" LIBDIR="$(LIBDIR)" INCDIR="$(INCDIR)"
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
 	@echo "--> make fortran-mp successful!"
 	@echo
@@ -270,8 +270,8 @@ install-fortran: fortran
 	cp -R examples $(DESTDIR)$(SYSSHAREPATH)/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
 	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
-	awk '{gsub("../../lib","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
-	awk '{gsub("../../modules","$(PREFIX)/include");print}' "temp.txt" > "temp2.txt"
+	awk '{gsub("../../$(LIBDIR)","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
+	awk '{gsub("../../$(INCDIR)","$(PREFIX)/include");print}' "temp.txt" > "temp2.txt"
 	cp temp2.txt "$(DESTDIR)$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"
 	rm temp.txt
 	rm temp2.txt
@@ -344,8 +344,8 @@ clean-python:
 
 clean-libs:
 	@-$(MAKE) -C $(SRCDIR) -f Makefile clean
-	@-rm -rf lib
-	@-rm -rf modules
+	@-rm -rf $(LIBDIR)
+	@-rm -rf $(INCDIR)
 	@-rm -rf NONE
 	@-rm -rf build
 	@-rm -rf pyshtools.egg-info
