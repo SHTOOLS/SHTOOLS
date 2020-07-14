@@ -12,6 +12,11 @@ F95 = gfortran
 
 SHELL = /bin/sh
 
+LIBNAME = SHTOOLS
+LIBDIR = lib
+INCDIR = modules
+PROG = ../$(LIBDIR)/lib$(LIBNAME).a
+
 LIBTOOL = libtool
 LIBTOOLFLAGS = -static
 AR = ar
@@ -19,11 +24,6 @@ ARFLAGS = -r
 RLIB = ranlib
 RLIBFLAGS =
 LDFLAGS = -s
-
-LIBNAME = SHTOOLS
-LIBDIR = lib
-INCDIR = modules
-PROG = ../$(LIBDIR)/lib$(LIBNAME).a
 
 ifeq ($(F95),f95)
 # Default Absoft Pro Fortran flags

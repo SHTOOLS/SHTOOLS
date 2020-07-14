@@ -119,21 +119,18 @@
 ###############################################################################
 
 VERSION = 4.7
+
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
+
+LAPACK_UNDERSCORE = 0
 
 F95 = gfortran
 PYTHON = python3
 JUPYTER = jupyter nbconvert --ExecutePreprocessor.kernel_name=python3
 JEKYLL = bundle exec jekyll
-
-PREFIX = /usr/local
-SYSLIBPATH = $(PREFIX)/lib
-
-FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
-LAPACK_UNDERSCORE = 0
-
 SHELL = /bin/sh
+
 FDOCDIR = src/fdoc
 PYDOCDIR = src/pydoc
 SRCDIR = src
@@ -144,11 +141,14 @@ PEXDIR = examples/python
 NBDIR = examples/notebooks
 WWWSRC = docs
 WWWDEST = www
-BUILD_DIR ?= 
-
 LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(INCDIR)
 PYPATH = $(PWD)
+
+PREFIX = /usr/local
+
+SYSLIBPATH = $(PREFIX)/lib
+FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
 SYSMODPATH = $(PREFIX)/include
 PY3EXT = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
 SYSSHAREPATH = $(PREFIX)/share
