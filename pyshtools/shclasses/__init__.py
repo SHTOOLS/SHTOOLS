@@ -47,15 +47,15 @@ Class structure:
 
 For more information, see the documentation for the top level classes.
 """
-from .shcoeffsgrid import SHCoeffs
-from .shcoeffsgrid import SHRealCoeffs
-from .shcoeffsgrid import SHComplexCoeffs
+from .shcoeffs import SHCoeffs
+from .shcoeffs import SHRealCoeffs
+from .shcoeffs import SHComplexCoeffs
 
-from .shcoeffsgrid import SHGrid
-from .shcoeffsgrid import DHRealGrid
-from .shcoeffsgrid import DHComplexGrid
-from .shcoeffsgrid import GLQRealGrid
-from .shcoeffsgrid import GLQComplexGrid
+from .shgrid import SHGrid
+from .shgrid import DHRealGrid
+from .shgrid import DHComplexGrid
+from .shgrid import GLQRealGrid
+from .shgrid import GLQComplexGrid
 
 from .shwindow import SHWindow
 from .shwindow import SHWindowCap

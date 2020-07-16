@@ -1,5 +1,5 @@
 ---
-title: Wigner3j (Python)
+title: Wigner3j()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pywigner3j.html
@@ -13,7 +13,9 @@ Compute the Wigner-3j symbols for all allowable values of J.
 
 ## Usage
 
+```python
 `w3j`, `jmin`, `jmax` = Wigner3j (`j2`, `j3`, `m1`, `m2`, `m3`)
+```
 
 ## Returns
 

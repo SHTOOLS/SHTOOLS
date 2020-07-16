@@ -1,5 +1,5 @@
 ---
-title: MakeGridPointC (Python)
+title: MakeGridPointC()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pymakegridpointc.html
@@ -13,7 +13,9 @@ Evaluate a complex function expressed in complex spherical harmonics at a single
 
 ## Usage
 
+```python
 `value` = MakeGridPointC (`cilm`, `lat`, `lon`, [`lmax`, `norm`, `csphase`, `dealloc`])
+```
 
 ## Returns
 
@@ -46,8 +48,3 @@ Evaluate a complex function expressed in complex spherical harmonics at a single
 ## Description
 
 `MakeGridPointC` will expand a complex function expressed in complex spherical harmonics at a single point. The input latitude and longitude are in degrees, and the maximum degree used in evaluating the function is the smaller of `lmaxin` and `lmax`. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
-
-## See also
-
-[makegridpoint](pymakegridpoint.html), [makegriddh](pymakegriddh.html), [makegriddhc](pymakegriddhc.html), [makegridglq](pymakegridglq.html), [makegridglqc](pymakegridglqc.html)
-

@@ -1,10 +1,12 @@
-# SHCindexToCilm
+# SHCindexToCilm()
 
 Convert a two-dimensional indexed array of spherical harmonic coefficients to a three-dimensional array.
 
 # Usage
 
+```python
 `cilm` = SHCindexToCilm (`cindex`, [`lmax`])
+```
 
 # Returns
 
@@ -22,7 +24,3 @@ Convert a two-dimensional indexed array of spherical harmonic coefficients to a 
 # Description
 
 `SHCindexToCilm` will convert a two-dimensional indexed array of spherical harmonic coefficients to a three-dimensional array of complex spherical harmonic coefficients.  The degree `l` and order `m` corresponds to the index `l*(l+1)/2+m`.
-
-# See also
-
-[shcilmtocindex](pyshcilmtocindex.html), [shcilmtovector](pyshcilmtovector.html), [shvectortocilm](pyshvectortocilm.html)

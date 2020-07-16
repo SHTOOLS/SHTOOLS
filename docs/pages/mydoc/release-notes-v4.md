@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: release-notes-v4.html
 summary:
 toc: true
+folder: mydoc
 ---
 ## Version 4.6
 

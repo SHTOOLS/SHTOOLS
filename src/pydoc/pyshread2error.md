@@ -1,10 +1,12 @@
-# SHRead2Error
+# SHRead2Error()
 
 Read spherical harmonic coefficients from a CHAMP or GRACE-like ascii-formatted file.
 
 # Usage
 
+```python
 `cilm`, `error`, `lmax`, `gm`, `r0_pot`, `dot`, `doystart`, `doyend`, `epoch` = SHRead2Error (`filename`, `lmaxin`)
+```
 
 # Returns
 
@@ -54,7 +56,3 @@ Each line of the file starts with a character string describing what follows.
 - `EARTH` or `GGM`: `GM`, `R0_POT`
 - `SHM`: Maximum spherical harmonic degree of file.
 - `GRCOF2`, `CALSDV`, or `gfc`: spherical harmonic coefficients, formatted as (`l`, `m`, `clm`, `slm`) or (`l`, `m`, `clm`, `slm`, `clm_error`, `slm_error`).
-
-# See also
-
-[shread](pyshread.html), [shread2](pyshread2.html), [shreadjpl](pyshreadjpl.html)

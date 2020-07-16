@@ -1,5 +1,5 @@
 ---
-title: ComputeDG82 (Python)
+title: ComputeDG82()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pycomputedg82.html
@@ -13,7 +13,9 @@ Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the 
 
 ## Usage
 
+```python
 `dg82` = ComputeDG82 (`lmax`, `m`, `theta0`)
+```
 
 ## Returns
 
@@ -40,7 +42,3 @@ Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the 
 Grunbaum, F.A., L. Longhi, and M. Perlstadt, Differential operators commuting with finite convolution integral operators: some non-abelian examples, SIAM J. Appl. Math., 42, 941-955, 1982.
 
 Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.
-
-## See also
-
-[computedm](pycomputedm.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html)

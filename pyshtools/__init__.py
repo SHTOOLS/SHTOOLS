@@ -2,10 +2,8 @@
 pyshtools
 =========
 
-pyshtools is an archive of scientific routines that can be used to
-perform spherical harmonic transforms and reconstructions, rotations
-of data expressed in spherical harmonics, and multitaper spectral
-analyses on the sphere.
+pyshtools a scientific package that can be used to perform spherical harmonic
+transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere.
 
 This module imports the following classes and subpackages into the
 main namespace:
@@ -27,7 +25,7 @@ main namespace:
 
     shclasses         : All pyshtools classes and subclasses.
     shtools           : All Python-wrapped Fortran 95 routines.
-    constant          : pyshtools constants.
+    constants         : pyshtools constants.
     legendre          : Legendre functions.
     expand            : Spherical harmonic expansion routines.
     shio              : Spherical harmonic I/O, storage, and conversion
@@ -45,13 +43,11 @@ and the GitHub project page at
 
    https://github.com/SHTOOLS/SHTOOLS
 """
-__version__ = '4.7'
-__author__ = 'SHTOOLS developers'
-
+from ._version import get_versions as _get_versions
 
 # ---- Import shtools subpackages ----
 from . import shtools
-from . import constant
+from . import constants
 from . import datasets
 from . import shclasses
 from . import legendre
@@ -76,8 +72,12 @@ from .shclasses import SHMagCoeffs
 from .shclasses import SHMagGrid
 from .shclasses import SHMagTensor
 
+__version__ = _get_versions()["version"]
+__commit__ = _get_versions()["full-revisionid"]
+__author__ = 'SHTOOLS developers'
+
 # ---- Define __all__ for use with: from pyshtools import * ----
-__all__ = ['constant', 'shclasses', 'legendre', 'expand', 'shio', 'shtools',
+__all__ = ['constants', 'shclasses', 'legendre', 'expand', 'shio', 'shtools',
            'spectralanalysis', 'rotate', 'gravmag', 'utils', 'SHCoeffs',
            'SHGrid', 'SHWindow', 'Slepian', 'SlepianCoeffs', 'SHGravCoeffs',
            'SHGravGrid', 'SHGravTensor', 'SHGeoid', 'SHMagCoeffs', 'SHMagGrid',

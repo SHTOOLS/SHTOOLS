@@ -1,5 +1,5 @@
 ---
-title: MakeEllipseCoord (Python)
+title: MakeEllipseCoord()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pymakeellipsecoord.html
@@ -13,7 +13,9 @@ Compute the coordinates of an ellipse placed at a given latitude and longitude.
 
 ## Usage
 
+```python
 `coord` = MakeEllipseCoord (`lat`, `lon`, `dec`, `a_theta`, `b_theta`, [`cinterval`])
+```
 
 ## Returns
 
@@ -43,7 +45,3 @@ Compute the coordinates of an ellipse placed at a given latitude and longitude.
 ## Description
 
 `MakeEllipseCoord` will calculate the (lat, long) coordinates of an ellipse placed on a sphere at position (`lat`, `lon`). The semi-major and semi-minor axes, expressed in angular radii in degrees, are given by `a_theta` and `b_theta`, respectively. The semimajor axis of the ellipse is initially directed due north, and it is then rotated clockwise by the angle `dec`. This is useful for plotting ellipses on geographic maps. The first index in the output vectors corresponds to the northern rotated semimajor axis, and subsequent points are arranged in a clockwise manner. Input and output units are in degrees.
-
-## See also
-
-[makecirclecoord](pymakecirclecoord.html)

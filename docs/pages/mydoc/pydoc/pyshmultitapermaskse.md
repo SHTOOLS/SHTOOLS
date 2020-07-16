@@ -1,5 +1,5 @@
 ---
-title: SHMultiTaperMaskSE (Python)
+title: SHMultiTaperMaskSE()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshmultitapermaskse.html
@@ -13,7 +13,9 @@ Perform a localized multitaper spectral analysis using arbitrary windows derived
 
 ## Usage
 
+```python
 `mtse`, `sd` = SHMultiTaperMaskSE (`sh`, `tapers`, [`lmax`,  `lmaxt`, `k`, `taper_wt`, `norm`, `csphase`])
+```
 
 ## Returns
 
@@ -60,7 +62,3 @@ The employed spherical harmonic normalization and Condon-Shortley phase conventi
 ## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
-
-## See also
-
-[shmultitapermaskcse](pyshmultitapermaskcse.html), [shreturntapersmap](pyshreturntapersmap.html), [shcilmtovector](pyshcilmtovector.html)

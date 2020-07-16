@@ -1,10 +1,12 @@
-# SHMTVarOpt
+# SHMTVarOpt()
 
 Calculate the theoretical minimum variance of a localized multitaper spectral estimate and the corresponding optimal weights to apply to each localized spectrum.
 
 # Usage
 
+```python
 `var_opt`, `var_unit`, `weight_opt` = SHMTVarOpt (`l`, `tapers`, `taper_order`, `sff`, [`lwin`, `kmax`, `nocross`])
+```
 
 # Returns
 
@@ -49,7 +51,3 @@ If the optional argument `nocross` is set to 1, then only the diagnonal terms of
 # References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
-
-# See also
-
-[shmtvar](pyshmtvar.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html); [shlocalizedadmitcorr](pyshlocalizedadmitcorr.html), [shbiasadmitcorr](pyshbiasadmitcorr.html), [shbiask](pyshbiask.html), [shmtdebias](pyshmtdebias.html)

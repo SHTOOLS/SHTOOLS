@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-slepian.html
 summary: 
 toc: true
+folder: mydoc
 ---
 
 <style>

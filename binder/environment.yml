@@ -1,0 +1,18 @@
+name: pyshtools
+channels:
+    - conda-forge
+dependencies:
+    - python=3.7
+    - numpy
+    - pyshtools>=4.7
+    - scipy>=0.14.0
+    - matplotlib
+    - astropy
+    - xarray
+    - requests
+    - pooch
+    - tqdm
+    - cartopy
+    - pygmt
+    - gmt
+    - palettable

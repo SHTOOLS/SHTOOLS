@@ -1,10 +1,12 @@
-# MakeGridPoint
+# MakeGridPoint()
 
 Evaluate a real function expressed in real spherical harmonics at a single point.
 
 # Usage
 
+```python
 `value` = MakeGridPoint (`cilm`, `lat`, `lon`, [`lmax`, `norm`, `csphase`, `dealloc`])
+```
 
 # Returns
 
@@ -37,8 +39,3 @@ Evaluate a real function expressed in real spherical harmonics at a single point
 # Description
 
 `MakeGridPoint` will expand a function expressed in spherical harmonics at a single point. The input latitude and longitude are in degrees, and the maximum degree used in evaluating the function is the smaller of `lmaxin` and `lmax`. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
-
-# See also
-
-[makegridpointc](pymakegridpointc.html), [makegriddh](pymakegriddh.html), [makegriddhc](pymakegriddhc.html), [makegridglq](pymakegridglq.html), [makegridglqc](pymakegridglqc.html)
-

@@ -1,5 +1,5 @@
 ---
-title: Curve2Mask (Python)
+title: Curve2Mask()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pycurve2mask.html
@@ -13,7 +13,9 @@ Given a set of latitude and longitude coordinates representing a closed curve, o
 
 ## Usage
 
+```python
 `mask_dh` = Curve2Mask (`n`, `profile`, `np`, [`nprofile`, `sampling`, `extend`])
+```
 
 ## Returns
 
@@ -49,7 +51,3 @@ Longitudes of the curve can span the range from -360 to 720 degrees. If the long
 ## Reference
 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
-
-## See also
-
-[shreturntapersmap](pyshreturntapersmap.html), [computedmap](pycomputedmap.html)

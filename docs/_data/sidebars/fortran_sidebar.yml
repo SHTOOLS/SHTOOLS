@@ -1,0 +1,138 @@
+# Sidebar TOC for the pyshtools project.
+
+entries:
+- title: sidebar
+  product: SHTOOLS
+  version: 4.7
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: /titlepage.html
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage.html
+      output: pdf
+      type: frontmatter
+
+  - title: Getting Started
+    output: web, pdf
+    folderitems:
+
+    - title: Introduction
+      url: /index-fortran.html
+      output: web, pdf
+      type: homepage
+
+    - title: Installing
+      url: /fortran-installing.html
+      output: web, pdf
+
+    - title: Using
+      url: /using-with-f95.html
+      output: web, pdf
+
+    - title: Tutorials & Guides
+      url: /fortran-examples.html
+      output: web, pdf
+
+  - title: Technical Overview
+    output: web, pdf
+    folderitems:
+
+    - title: Real spherical harmonics
+      url: /fortran-real-spherical-harmonics.html
+      output: web, pdf
+
+    - title: Complex spherical harmonics
+      url: /fortran-complex-spherical-harmonics.html
+      output: web, pdf
+
+    - title: Grid formats
+      url: /fortran-grid-formats.html
+      output: web, pdf
+
+    - title: Implementation details
+      url: /fortran-implementation-details.html
+      output: web, pdf
+
+  - title: Fortran 95 Reference
+    output: web, pdf
+    folderitems:
+
+    - title: Modules
+      url: /f95-modules.html
+      output: web, pdf
+
+    - title: Legendre functions
+      url: /legendre-functions.html
+      output: web, pdf
+
+    - title: Spherical harmonic transformations
+      url: /spherical-harmonic-transforms.html
+      output: web, pdf
+
+    - title: I/O, storage, conversions
+      url: /io.html
+      output: web, pdf
+
+    - title: Global spectral analysis
+      url: /global-spectral-analysis.html
+      output: web, pdf
+
+    - title: Localized spectral analysis
+      url: /localized-spectral-analysis.html
+      output: web, pdf
+
+    - title: Spherical harmonic rotations
+      url: /spherical-harmonic-rotations.html
+      output: web, pdf
+
+    - title: Gravity and magnetics
+      url: /gravity-magnetics.html
+      output: web, pdf
+
+    - title: Miscellaneous
+      url: /miscellaneous-routines.html
+      output: web, pdf
+
+  - title: Support
+    output: web, pdf
+
+    folderitems:
+    - title: FAQ
+      url: /fortran-faq.html
+      output: web, pdf
+
+    - title: Compilation problems
+      url: /fortran-95-problems.html
+      output: web, pdf
+
+    - title: How to contribute
+      url: /fortran-how-to-contribute.html
+      output: web, pdf
+
+  - title: Release Notes
+    output: web, pdf
+    folderitems:
+
+    - title: Version 4
+      url: /fortran-release-notes-v4.html
+      output: web, pdf
+
+    - title: Version 3
+      url: /fortran-release-notes-v3.html
+      output: web, pdf
+
+    - title: Contributors
+      url: /fortran-contributors.html
+      output: web, pdf
+
+    - title: License
+      url: /fortran-license.html
+      output: web, pdf
+

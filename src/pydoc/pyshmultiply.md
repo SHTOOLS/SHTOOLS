@@ -1,10 +1,12 @@
-# SHMultiply
+# SHMultiply()
 
 Multiply two functions and determine the spherical harmonic coefficients of the resulting function.
 
 # Usage
 
+```python
 `shout` = SHMultiply (`sh1`, `sh2`, [`lmax1`, `lmax2`, `norm`, `csphase`])
+```
 
 # Returns
 
@@ -36,7 +38,3 @@ Multiply two functions and determine the spherical harmonic coefficients of the 
 `SHMultiply` will take two sets of spherical harmonic coefficients, multiply the functions in the space domain, and expand the resulting field in spherical harmonics using `SHExpandGLQ`. The spherical harmonic bandwidth of the resulting field is `lmax1+lmax2`, where `lmax1` and `lmax2` are the bandwidths of the input fields.
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
-
-# See also
-
-[shexpandglq](pyshexpandglq.html), [makegridglq](pymakegridglq.html), [shglq](pyshglq.html)

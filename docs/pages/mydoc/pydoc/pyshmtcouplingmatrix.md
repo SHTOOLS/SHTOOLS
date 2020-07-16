@@ -1,5 +1,5 @@
 ---
-title: SHMTCouplingMatrix (Python)
+title: SHMTCouplingMatrix()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshmtcouplingmatrix.html
@@ -13,7 +13,9 @@ This routine returns the multitaper coupling matrix for a given set of power spe
 
 ## Usage
 
+```python
 `Mmt` = SHMTCouplingMatrix (`lmax`, `tapers_power`, [`lwin`, `k`, `taper_wt`])
+```
 
 ## Returns
 
@@ -54,7 +56,3 @@ Note that this routine returns the "full" coupling matrix of dimension (`lmax` +
 ## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.
-
-## See also
-
-[shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html), [shreturntapers](pyshreturntapers.html), [shmtvaropt](pyshmtvaropt.html), [shmtdebias](pyshmtdebias.html)

@@ -1,5 +1,5 @@
 ---
-title: NormalGravity (Python)
+title: NormalGravity()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pynormalgravity.html
@@ -13,7 +13,9 @@ Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates 
 
 ## Usage
 
+```python
 `value` = NormalGravity (`geocentriclat`, `gm`, `omega`, `a`, `b`)
+```
 
 ## Returns
 
@@ -44,7 +46,3 @@ Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates 
 ## References
 
 Hofmann-Wellenhof B, and H. Moritz, "Physical Geodesy," second edition, Springer, Wien, 403 pp., 2006.
-
-## See also
-
-[makegravgriddh](pymakegravgriddh.html), [makegeoidgriddh](pymakegeoidgriddh.html)

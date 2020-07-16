@@ -1,10 +1,12 @@
-# MakeGridDH
+# MakeGridDH()
 
 Create a 2D map from a set of spherical harmonic coefficients using the Driscoll and Healy (1994) sampling theorem.
 
 # Usage
 
+```python
 `griddh` = MakeGridDH (`cilm`, [`lmax`, `norm`, `sampling`, `csphase`, `lmax_calc`, `extend`])
+```
 
 # Returns
 
@@ -47,7 +49,3 @@ The normalized legendre functions are calculated using the scaling algorithm of 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, 2002.
-
-# See also
-
-[shexpanddh](pyshexpanddh.html), [makegriddhc](pymakegriddhc.html), [shexpanddhc](pyshexpanddhc.html), [makegridglq](pymakegridglq.html), [shexpandglq](pyshexpandglq.html), [makegridglqc](pymakegridglqc.html), [shexpandglqc](pyshexpandglqc.html), [makegrid2d](pymakegrid2d.html)

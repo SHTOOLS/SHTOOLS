@@ -1,10 +1,12 @@
-# SHConfidence
+# SHConfidence()
 
 Compute the probability that two functions are correlated at a given spherical harmonic degree for a given correlation coefficient.
 
 # Usage
 
+```python
 `prob` = SHConfidence (`l`, `corr`)
+```
 
 # Returns
 
@@ -26,7 +28,3 @@ Compute the probability that two functions are correlated at a given spherical h
 # References
 
 Pauer, M, K. Fleming, and O. Cadek, Modeling the dynamic component of the geoid and topography of Venus, J. Geophys. Res., 111, E11012, doi:10.1029/2005JE002511, 2006.
-
-# See also
-
-[shadmitcorr](pyshadmitcorr.html), [spectrum](spectrum.html), [cross_spectrum](cross_spectrum.html)

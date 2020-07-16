@@ -1,10 +1,12 @@
-# MakeGravGridDH
+# MakeGravGridDH()
 
 Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three components of the gravity field, the gravity disturbance, and the gravitational potential.
 
 # Usage
 
+```python
 `rad`, `theta`, `phi`, `total`, `pot` = MakeGravGridDH (`cilm`, `gm`, `r0`, [`a`, `f`, `lmax`, `sampling`, `lmax_calc`, `omega`, `normal_gravity`, `extend`])
+```
 
 # Returns
 
@@ -79,7 +81,3 @@ The default is to use an input grid that is equally sampled (`n` by `n`), but th
 # Reference
 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
-
-# See also
-
-[makegeoidgriddh](pymakegeoidgriddh.html), [makegravgradgriddh](pymakegravgradgriddh.html), [normalgravity](pynormalgravity.html), [makegriddh](pymakegriddh.html)

@@ -1,10 +1,12 @@
-# SHrtoc
+# SHrtoc()
 
 Convert real spherical harmonics to complex form.
 
 # Usage
 
+```python
 `ccilm` = SHrtoc (`rcilm`, [`lmax`, `convention`, `switchcs`])
+```
 
 # Returns
 
@@ -28,7 +30,3 @@ Convert real spherical harmonics to complex form.
 # Description
 
 `SHrtoc` will convert real spherical harmonics to complex form. The normalization of the input and output coefficients are by default the same, but if the optional argument `convention` is set to 2, this routine will convert from geodesy 4-pi normalized coefficients to orthonormalized coefficients. The Condon-Shortley phase convention between the input an output coefficients can be modified by the optional argument `switchcs`.
-
-# See also
-
-[shctor](pyshctor.html)

@@ -1,5 +1,5 @@
 ---
-title: SHReturnTapersMap (Python)
+title: SHReturnTapersMap()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshreturntapersmap.html
@@ -13,7 +13,9 @@ Calculate the eigenfunctions and eigenvalues of the space-concentration problem 
 
 ## Usage
 
+```python
 `tapers`, `eigenvalues` = SHReturnTapersMap (`dh_mask`, `lmax`, [`n`, `ntapers`, `sampling`, `degrees`])
+```
 
 ## Returns
 
@@ -54,7 +56,3 @@ The spherical harmonic coefficients of each window are given in the columns of `
 Driscoll, J. R. and D. M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
 Simons, F. J., F. A. Dahlen, and M. A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.
-
-## See also
-
-[computedmap](pycomputedmap.html), [yilmindexvector](pyyilmindexvector.html), [shvectortocilm](pyshvectortocilm.html)

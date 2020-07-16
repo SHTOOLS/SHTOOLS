@@ -1,5 +1,5 @@
 ---
-title: SphericalCapCoef (Python)
+title: SphericalCapCoef()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pysphericalcapcoef.html
@@ -13,7 +13,9 @@ Calculate the spherical harmonic coefficients of a spherical cap.
 
 ## Usage
 
+```python
 `coef` = SphericalCapCoef (`theta`, `lmax`)
+```
 
 ## Returns
 

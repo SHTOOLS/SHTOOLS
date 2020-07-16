@@ -1,5 +1,5 @@
 ---
-title: SHMTDebias (Python)
+title: SHMTDebias()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshmtdebias.html
@@ -13,7 +13,9 @@ Invert for the global power spectrum given a multitaper spectrum estimate formed
 
 ## Usage
 
+```python
 `mtdebias`, `lmid` = SHMTDebias (`mtspectra`, `tapers`, `nl`, [`lmax`, `lwin`, `k`, `taper_wt`])
+```
 
 ## Returns
 
@@ -59,7 +61,3 @@ If `taper_wt` is not specified, the weights will all be assumed to be equal to `
 Press, W.H., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery, Numerical Recipes in FORTRAN: The Art of Scientific Computing, 2nd ed., Cambridge Univ. Press, Cambridge, UK, 1992.
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, 665-692, doi:10.1007/s00041-006-6904-1, 2007.
-
-## See also
-
-[shmultitaperse](pyshmultitaperse.html), [shmultitapercse](pyshmultitapercse.html), [shreturntapers](pyshreturntapers.html), [shmtvaropt](pyshmtvaropt.html), [shmtcouplingmatrix](pyshmtcouplingmatrix.html)

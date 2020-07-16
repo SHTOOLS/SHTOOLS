@@ -3,8 +3,9 @@ title: "Complex spherical harmonics"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: complex-spherical-harmonics.html
-summary: SHTOOLS uses by default 4&pi;-normalized spherical harmonic functions that exclude the Condon-Shortley phase factor. Schmidt semi-normalized, orthonormalized, and unnormalized harmonics can be employed in most routines by specifying optional parameters.
+summary: pyshtools uses by default 4&pi;-normalized spherical harmonic functions that exclude the Condon-Shortley phase factor. Schmidt semi-normalized, orthonormalized, and unnormalized harmonics can be employed in most routines by specifying optional parameters.
 toc: true
+folder: mydoc
 ---
 
 <style>
@@ -108,33 +109,33 @@ S_{fg}(l) = \sum\limits_{m=-l}^l f_{l}^{m} \, g_{l}^{*m}.
 
 The power spectrum is unmodified by a rotation of the coordinate system. Furthermore, the numerical values of the power spectrum are independent of the normalization convention used for the spherical harmonic functions (though the mathematical formulae will be different, as given [below](#supported-normalizations)). If the functions $$f$$ and $$g$$ have a zero mean, $$S_{ff}$$ and $$S_{fg}$$ represent the contribution to the variance and covariance, respectively, as a function of degree $$l$$. It should be noted that while the power spectrum of a function is inherently real, the cross power of two functions may be a complex quantity.
 
-$$S$$ is the total power of the function at spherical harmonic degree $$l$$, which in SHTOOLS is called the *power per degree $$l$$*. Alternatively, one can calculate the average power per coefficient at spherical harmonic degree $$l$$, which in SHTOOLS is referred to as the *power per $$lm$$*. Since there are $$(2l+1)$$ spherical harmonic coefficients at degree $$l$$, this is
+$$S$$ is the total power of the function at spherical harmonic degree $$l$$, which in pyshtools is called the *power per degree $$l$$*. Alternatively, one can calculate the average power per coefficient at spherical harmonic degree $$l$$, which in pyshtools is referred to as the *power per $$lm$$*. Since there are $$(2l+1)$$ spherical harmonic coefficients at degree $$l$$, this is
 \begin{equation}
 \mbox{power per $lm$} = \frac{S(l)}{(2l+1)}.
 \end{equation}
-One can also calculate the power from all angular orders over an infinitesimal logarithmic spherical harmonic degree band $$d \log_a l$$, where $$a$$ is the logarithmic base. In SHTOOLS, this is referred to as the *power per $$d\log_a l$$*, which is given by
+One can also calculate the power from all angular orders over an infinitesimal logarithmic spherical harmonic degree band $$d \log_a l$$, where $$a$$ is the logarithmic base. In pyshtools, this is referred to as the *power per $$d\log_a l$$*, which is given by
 \begin{equation}
 \mbox{power per $d\log_a l$} = S(l)\, l \, \ln a.
 \end{equation}
-Finally, SHTOOLS defines the *energy* of a function as the integral of its square. The energy spectrum is thus equal to the power spectrum multiplied by $$4\pi$$.
+Finally, pyshtools defines the *energy* of a function as the integral of its square. The energy spectrum is thus equal to the power spectrum multiplied by $$4\pi$$.
 
 ## Condon-Shortley phase factor
 
-The above definitions of the Legendre functions and spherical harmonic functions do not include the Condon-Shortley phase factor of $$(-1)^m$$ that is often employed in the physics and seismology communities [Varshalovich et al. 1988, Dahlen and Tromp 1998]. Nevertheless, this phase can be included in most SHTOOLS routines by specifying the optional parameter
+The above definitions of the Legendre functions and spherical harmonic functions do not include the Condon-Shortley phase factor of $$(-1)^m$$ that is often employed in the physics and seismology communities [Varshalovich et al. 1988, Dahlen and Tromp 1998]. Nevertheless, this phase can be included in most pyshtools routines by specifying the optional parameter
 
-* `csphase = 0` : exclude the Condon-Shortley phase factor (default)
-* `csphase = 1` : append the Condon-Shortley phase factor to the Legendre functions.
+* `csphase=0` : exclude the Condon-Shortley phase factor (default)
+* `csphase=1` : append the Condon-Shortley phase factor to the Legendre functions.
 
 The choice of the Condon-Shortley phase factor does not affect the numerical value of the power spectrum.
 
 ## Supported normalizations
 
-SHTOOLS supports the use of $$4\pi$$-normalized, Schmidt semi-normalized, orthonormalized, and unnormalized spherical harmonic functions. To specify which normalization should be used, it is only necessary to specify the optional parameter `norm` in the Fortran 95 routines or `normalization` in the Python routines:
+pyshtools supports the use of $$4\pi$$-normalized, Schmidt semi-normalized, orthonormalized, and unnormalized spherical harmonic functions. To specify which normalization should be used, it is only necessary to specify the optional parameter `normalization` in the Python routines:
 
-* `norm = 1`, `normalization = '4pi'`: $$4\pi$$ normalized (default, unless stated otherwise)
-* `norm = 2`, `normalization = 'schmidt'`: Schmidt semi-normalized
-* `norm = 3`, `normalization = 'unnorm'`: Unnormalized
-* `norm = 4`, `normalization = 'ortho'`: Orthonormalized.
+* `normalization = '4pi'`: $$4\pi$$ normalized (default, unless stated otherwise)
+* `normalization = 'schmidt'`: Schmidt semi-normalized
+* `normalization = 'unnorm'`: Unnormalized
+* `normalization = 'ortho'`: Orthonormalized.
 
 Each of these normalizations has slightly different definitions for the normalized Legendre functions, the orthogonality conditions of the Legendre functions and spherical harmonic functions, and the power spectrum. These equations are provided below.
 

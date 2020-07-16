@@ -1,10 +1,12 @@
-# SHFindLWin
+# SHFindLWin()
 
 Determine the spherical-harmonic bandwidth that is necessary to achieve a certain concentration factor.
 
 # Usage
 
+```python
 `lwin` = SHFindLWin (`theta0`, `m`, `alpha`, [`taper_number`])
+```
 
 # Returns
 
@@ -33,7 +35,3 @@ Determine the spherical-harmonic bandwidth that is necessary to achieve a certai
 
 Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
 Geophys. J. Int., 162, 655-675, 2005.
-
-# See also
-
-[computedg82](pycomputedg82.html), [computedm](pycomputedm.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html)

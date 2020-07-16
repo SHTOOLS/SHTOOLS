@@ -21,7 +21,7 @@ for fn in pydocfiles:
             doc = mdfile.read()
             doc = doc.replace('# ', '## ')
 
-        string = ('---\n' + 'title: ' + title + ' (Python)\n' +
+        string = ('---\n' + 'title: ' + title + '\n' +
                   'keywords: spherical harmonics software package, ' +
                   'spherical harmonic transform, legendre functions, ' +
                   'multitaper spectral analysis, fortran, Python, ' +

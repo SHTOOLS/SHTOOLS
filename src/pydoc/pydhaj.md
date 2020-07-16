@@ -1,10 +1,12 @@
-# DHaj
+# DHaj()
 
 Compute the latitudinal weights used in the Driscoll and Healy (1994) spherical harmonic transform.
 
 # Usage
 
+```python
 `aj` = DHaj (`n`, [extend])
+```
 
 # Returns
 
@@ -26,7 +28,3 @@ Compute the latitudinal weights used in the Driscoll and Healy (1994) spherical 
 # Reference
 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
-
-# See also
-
-[shexpanddh](pyshexpanddh.html), [makegriddh](pymakegriddh.html), [shexpanddhc](pyshexpanddhc.html), [makegriddhc](pymakegriddhc.html)

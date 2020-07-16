@@ -1,10 +1,12 @@
-# SHSlepianVar
+# SHSlepianVar()
 
 Calculate the theoretical variance of the power of a function expanded in spherical-cap Slepian functions for a given spherical harmonic degree.
 
 # Usage
 
+```python
 `variance` = SHSlepianVar (`l`, `galpha`, `galpha_order`, `sff`, [`kmax`])
+```
 
 # Returns
 
@@ -31,7 +33,3 @@ Calculate the theoretical variance of the power of a function expanded in spheri
 # Description
 
 `SHSlepianVar` will compute the theoretical variance of the power of a function expanded in spherical-cap Slepian functions for a given spherical harmonic degree. This routine takes as input the spherical harmonic coefficients of the spherical-cap Slepian functions as obtained by a call to `SHReturnTapers`, and only the first `kmax` Slepian functions in the matrix `galpha` are used to compute the variance.
-
-# See also
-
-[shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [slepiancoeffs](pyslepiancoeffs.html), [slepiancoeffstosh](pyslepiancoeffstosh.html)

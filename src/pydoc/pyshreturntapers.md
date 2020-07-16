@@ -1,10 +1,12 @@
-# SHReturnTapers
+# SHReturnTapers()
 
 Calculate the eigenfunctions of the spherical-cap concentration problem.
 
 # Usage
 
+```python
 `tapers`, `eigenvalues`, `taper_order` = SHReturnTapers (`theta0`, `lmax`, [`degrees`])
+```
 
 # Returns
 
@@ -43,7 +45,3 @@ Simons, F. J., F. A. Dahlen, and M. A. Wieczorek, Spatiospectral concentration o
 
 Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
 Geophys. J. Int., 162, 655-675, 2005.
-
-# See also
-
-[shreturntapersm](pyshreturntapersm.html), [computedg82](pycomputedg82.html), [computedm](pycomputedm.html)

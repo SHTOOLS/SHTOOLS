@@ -3,8 +3,9 @@ title: "Implementation details"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: implementation-details.html
-summary: The spherical harmonic transforms in SHTOOLS make use of integrations over longitude that involve fast Fourier transforms and integrations over latitude that utilize either Gauss-Legendre quadrature or exact quadrature rules for regularly spaced grids. The transforms and reconstructions are accurate to about degree 2800.
+summary: The spherical harmonic transforms in pyshtools make use of integrations over longitude that involve fast Fourier transforms and integrations over latitude that utilize either Gauss-Legendre quadrature or exact quadrature rules for regularly spaced grids. The transforms and reconstructions are accurate to about degree 2800.
 toc: true
+folder: mydoc
 ---
 
 <style>

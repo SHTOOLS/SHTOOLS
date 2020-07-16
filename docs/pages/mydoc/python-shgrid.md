@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-shgrid.html
 summary: 
 toc: true
+folder: mydoc
 ---
 
 <style>
@@ -72,5 +73,5 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `copy()` | Return a copy of the class instance. |
 | `plot()` | Plot the data. |
 | `plotgmt()` | Plot projected data using the generic mapping tools (GMT). |
-| `plot3d()` | Plot the raw data on a 3d sphere. |
+| `plot3d()` | Plot a 3-dimensional representation of the data. |
 | `info()` | Print a summary of the data stored in the SHGrid instance. |

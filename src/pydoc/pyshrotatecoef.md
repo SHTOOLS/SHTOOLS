@@ -1,10 +1,12 @@
-# SHRotateCoef
+# SHRotateCoef()
 
 Determine the spherical harmonic coefficients of a real function expressed in complex harmonics rotated by three Euler angles.
 
 # Usage
 
+```python
 `rcoef` = SHRotateCoef (`x`, `coef`, `dj`, [`lmax`])
+```
 
 # Returns
 
@@ -54,7 +56,3 @@ For a rotation of the physical body without rotation of the coordinate system, u
 The inverse transform of `x(alpha, beta, gamma)` is `x(-gamma, -beta, -alpha)`.
 
 Note that this routine uses the "y convention", where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were originally defined in terms of the "x convention", where the second rotation was with respect to the new x axis, the Euler angles according to the y convention would be `alpha_y=alpha_x-pi/2`, `beta_x=beta_y`, and `gamma_y=gamma_x+pi/2`.
-
-# See also
-
-[djpi2](pydjpi2.html), [shrotaterealcoef](pyshrotaterealcoef.html), [shctor](pyshctor.html), [shrtoc](pyshrtoc.html), [shcilmtocindex](pyshcilmtocindex.html), [shcindextocilm](pyshcindextocilm.html)

@@ -9,7 +9,7 @@ import pyshtools
 from pyshtools import shio
 from pyshtools import expand
 from pyshtools import gravmag
-from pyshtools import constant
+from pyshtools import constants
 
 pyshtools.utils.figstyle()
 
@@ -38,7 +38,7 @@ def TestCrustalThickness():
     gravfile = '../../ExampleDataFiles/gmm3_120_sha.tab'
     pot, lmaxp, header = shio.shread(gravfile, lmax=degmax, header=True)
     gm = float(header[1]) * 1.e9
-    mass = gm / constant.G.value
+    mass = gm / constants.G.value
     r_grav = float(header[0]) * 1.e3
     print(r_grav, gm, mass, lmaxp)
 

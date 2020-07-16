@@ -1,10 +1,12 @@
-# SHBiasAdmitCorr
+# SHBiasAdmitCorr()
 
 Calculate the expected multitaper admittance and correlation spectra associated with the input global cross-power spectra of two functions.
 
 # Usage
 
+```python
 `admit`, `corr` = SHAdmitCorr (`sgt`, `sgg`, `stt`, `tapers`, [`lmax`, `lwin`, `k`, `mtdef`, `taper_wt`])
+```
 
 # Returns
 
@@ -59,7 +61,3 @@ Simons, F. J., F. A. Dahlen and M. A. Wieczorek, Spatiospectral concentration on
 
 Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
 Geophys. J. Int., 162, 655-675.
-
-# See also
-
-[shbias](pyshbias.html), [shbiask](pyshbiask.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmtvaropt](pyshmtvaropt.html)

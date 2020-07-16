@@ -1,10 +1,11 @@
 ---
-title: "Python classes"
+title: "Classes"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: python-classes.html
 summary: 
 toc: true
+folder: mydoc
 ---
 
 <style>

@@ -5,7 +5,7 @@ import numpy as _np
 import copy as _copy
 import xarray as _xr
 
-from .shcoeffsgrid import SHGrid as _SHGrid
+from .shgrid import SHGrid as _SHGrid
 
 
 class SHGeoid(object):

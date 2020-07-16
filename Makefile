@@ -18,6 +18,7 @@
 #       make python-tests     : Run the Python test/example suite.
 #       make python-tests-no-timing  : Run the Python test/example suite,
 #                                      (excluding timing tests).
+#       make run-notebooks    : Run notebooks to test for errors.
 #       make install-fortran  : Place the compiled libraries and docs in
 #                               $(DESTDIR)$(PREFIX) [default is /usr/local].
 #       make uninstall        : Remove files copied to $(DESTDIR)$(PREFIX).
@@ -87,7 +88,7 @@
 #       Detele all compiled Python files.
 #
 #   make notebooks
-#       Run notebooks and convert to html for web documentation.
+#       Convert notebooks html.
 #
 #   make remove-notebooks
 #       Remove html notebooks.
@@ -98,7 +99,8 @@
 #       the distribution. To remake these files for a new release, it will be
 #       necessary to install "pandoc", "ghc" and "cabal-install" (all using
 #       brew on macOS), and then execute "cabal update" and
-#       "cabal install --lib pandoc-types".
+#       "cabal install --lib pandoc-types". If errors are encountered try
+#       "brew uninstall pandoc" and "cabal install pandoc".
 #
 #   make remove-doc
 #       Remove the man and html-man pages.
@@ -114,6 +116,9 @@
 #   make remove-www
 #       Remove the directory containing the static html web site.
 #
+#   make check
+#       Check syntax of python files using flake8
+#
 ###############################################################################
 
 VERSION = 4.7
@@ -124,6 +129,7 @@ F95 = gfortran
 PYTHON = python3
 JUPYTER = jupyter nbconvert --ExecutePreprocessor.kernel_name=python3
 JEKYLL = bundle exec jekyll
+FLAKE8 = flake8
 
 PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
@@ -149,6 +155,8 @@ PYPATH = $(PWD)
 SYSMODPATH = $(PREFIX)/include
 PY3EXT = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
 SYSSHAREPATH = $(PREFIX)/share
+
+FLAKE8_FILES = setup.py pyshtools examples/python
 
 ifeq ($(F95), f95)
 # Default Absoft f95 flags
@@ -211,7 +219,7 @@ endif
 	run-fortran-tests-no-timing doc remove-doc python-tests \
 	python-tests-no-timing uninstall clean clean-fortran-tests \
 	clean-python-tests clean-python clean-libs remove-notebooks notebooks \
-	www remove-www help
+	run-notebooks www remove-www help check
 
 help:
 	@echo "Commands:"
@@ -224,6 +232,7 @@ help:
 	@echo "  fortran-tests-no-timing      Do not run the timing tests"
 	@echo "  fortran-tests-no-timing-mp   Do not run the timing tests"
 	@echo "  python-tests-no-timing       Do not run the timing tests"
+	@echo "  run-notebooks                Execute the python notebooks"
 	@echo ""
 
 all: fortran
@@ -284,17 +293,17 @@ uninstall:
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
 	-rm -r $(SYSSHAREPATH)/shtools/examples/
-	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
-	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
+	$(MAKE) -C $(FDOCDIR) -f Makefile uninstall
+	$(MAKE) -C $(PYDOCDIR) -f Makefile uninstall
 
 doc:
 	@$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
-	@$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION)
+	@$(MAKE) -C $(PYDOCDIR) -f Makefile
 	@echo "--> Documentation created successfully"
 
 remove-doc:
 	@-rm -f man/man1/*.1
-	@-rm -f doc/pages/mydoc/fdoc/*.md
+	@-rm -f doc/pages/fortran/fdoc/*.md
 	@-rm -f doc/pages/mydoc/pydoc/*.md
 	@echo "--> Removed man files and web site source md files"
 
@@ -311,6 +320,10 @@ notebooks:
 remove-notebooks:
 	@$(MAKE) -C $(NBDIR) -f Makefile clean
 	@echo "--> Removed notebook html files"
+
+run-notebooks:
+	@$(MAKE) -C $(NBDIR) -f Makefile run-notebooks
+	@echo "--> Notebooks executed successfully"
 
 clean: clean-fortran-tests clean-python-tests clean-python clean-libs remove-www
 
@@ -403,3 +416,6 @@ python-tests-no-timing:
 	@$(MAKE) -C $(PEXDIR) -f Makefile no-timing PYTHON=$(PYTHON)
 	@echo
 	@echo "--> Ran all Python tests"
+
+check:
+	@$(FLAKE8) --extend-ignore=E741,W605 --exclude=versioneer.py,pyshtools/_version.py $(FLAKE8_FILES)

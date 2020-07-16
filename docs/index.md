@@ -3,9 +3,11 @@ title: "Spherical Harmonic Tools"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Slepian functions, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: index.html
-summary: SHTOOLS/pyshtools is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms, multitaper spectral analyses, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
+summary: pyshtools is an archive of Python software that can be used to perform spherical harmonic transforms, multitaper spectral analyses, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
 toc: false
 ---
+
+{% include note.html content="You are reading the documentation for **pyshtools**. Click [here](index-fortran.html) to access the Fortran 95 **SHTOOLS** documentation." %}
 
 ## Features
 
@@ -23,9 +25,7 @@ toc: false
 
 * Import research-grade gravity, topography, and magnetic field datasets with a single command.
 
-* Creation of publication quality maps using either [Cartopy](https://scitools.org.uk/cartopy) or [pygmt](https://www.pygmt.org/).
-
-* OpenMP compatible and OpenMP thread-safe versions of the Fortran routines.
+* Creation of publication quality maps using [Cartopy](https://scitools.org.uk/cartopy) and [pygmt](https://www.pygmt.org/).
 
 ## Easy installation
 
@@ -37,23 +37,9 @@ pip install --upgrade pyshtools  # to upgrade a pre-existing installation
 conda install -c conda-forge pyshtools  # Linux and macOS only
 ```
 
-To install the Fortran 95 components for use in your Fortran programs, execute one or both of the following commands in the SHTOOLS directory
-
-```bash
-make fortran
-make fortran-mp  # for OpenMP support
-```
-
-or alternatively install using the macOS package manager brew
-
-```bash
-brew tap shtools/shtools
-brew install shtools
-```
-
 ## Permissive licensing
 
-SHTOOLS is open source software, and is distributed under the 3-clause BSD license.
+SHTOOLS is open source software and is distributed under the 3-clause BSD license.
 
 ## Reference
 

@@ -83,12 +83,11 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 \
 
 all: install-man
 	$(PYTHON) make_www_doc.py
-
-install-man: $(MANFILES)
 	@echo
 	@echo "--> Fortran 95 man pages created successfully"
 	@echo
 
+install-man: $(MANFILES)
 
 .PHONY: clean uninstall
 
