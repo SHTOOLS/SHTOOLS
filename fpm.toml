@@ -7,4 +7,4 @@ copyright = "2020 SHTOOLS"
 
 [library]
 source-dir="src"
-build-script = "make all F95=$FC LIBDIR=build/gfortran_debug/SHTOOLS INCDIR=build/gfortran_debug/SHTOOLS"
+build-script = "make all F95=$FC LIBPATH=$BUILD_DIR MODPATH=$BUILD_DIR"

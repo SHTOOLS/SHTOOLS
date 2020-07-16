@@ -135,14 +135,14 @@ FDOCDIR = src/fdoc
 PYDOCDIR = src/pydoc
 SRCDIR = src
 LIBDIR = lib
-INCDIR = modules
+MODDIR = modules
 FEXDIR = examples/fortran
 PEXDIR = examples/python
 NBDIR = examples/notebooks
 WWWSRC = docs
 WWWDEST = www
 LIBPATH = $(PWD)/$(LIBDIR)
-MODPATH = $(PWD)/$(INCDIR)
+MODPATH = $(PWD)/$(MODDIR)
 PYPATH = $(PWD)
 
 PREFIX = /usr/local
@@ -233,9 +233,9 @@ help:
 all: fortran
 
 fortran:
-	mkdir -pv $(LIBDIR)
-	mkdir -pv $(INCDIR)
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)" LIBDIR="$(LIBDIR)" INCDIR="$(INCDIR)"
+	mkdir -pv $(LIBPATH)
+	mkdir -pv $(MODPATH)
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)" LIBPATH="$(LIBPATH)" MODPATH="$(MODPATH)"
 	@echo "--> make fortran successful!"
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
@@ -245,10 +245,10 @@ fortran:
 
 fortran-mp:
 # Delete .o files before and after compiling with OpenMP to avoid issues with "fortran" build.
-	mkdir -pv $(LIBDIR)
-	mkdir -pv $(INCDIR)
+	mkdir -pv $(LIBPATH)
+	mkdir -pv $(MODPATH)
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" LIBDIR="$(LIBDIR)" INCDIR="$(INCDIR)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" LIBPATH="$(LIBPATH)" MODPATH="$(MODPATH)"
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
 	@echo "--> make fortran-mp successful!"
 	@echo
@@ -262,16 +262,16 @@ install-fortran: fortran
 	-rm -r $(DESTDIR)$(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(DESTDIR)$(SYSMODPATH)/shtools.mod
 	mkdir -pv $(DESTDIR)$(SYSLIBPATH)
-	cp $(LIBDIR)/lib$(LIBNAME).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAME).a
-	-cp $(LIBDIR)/lib$(LIBNAMEMP).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAMEMP).a
+	cp $(LIBPATH)/lib$(LIBNAME).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAME).a
+	-cp $(LIBPATH)/lib$(LIBNAMEMP).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAMEMP).a
 	mkdir -pv $(DESTDIR)$(SYSMODPATH)
-	cp $(INCDIR)/*.mod $(DESTDIR)$(SYSMODPATH)/
+	cp $(MODPATH)/*.mod $(DESTDIR)$(SYSMODPATH)/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/shtools
 	cp -R examples $(DESTDIR)$(SYSSHAREPATH)/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
 	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
-	awk '{gsub("../../$(LIBDIR)","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
-	awk '{gsub("../../$(INCDIR)","$(PREFIX)/include");print}' "temp.txt" > "temp2.txt"
+	awk '{gsub("../../lib","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
+	awk '{gsub("../../modules","$(PREFIX)/include");print}' "temp.txt" > "temp2.txt"
 	cp temp2.txt "$(DESTDIR)$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"
 	rm temp.txt
 	rm temp2.txt
@@ -344,8 +344,8 @@ clean-python:
 
 clean-libs:
 	@-$(MAKE) -C $(SRCDIR) -f Makefile clean
-	@-rm -rf $(LIBDIR)
-	@-rm -rf $(INCDIR)
+	@-rm -rf $(LIBPATH)
+	@-rm -rf $(MODPATH)
 	@-rm -rf NONE
 	@-rm -rf build
 	@-rm -rf pyshtools.egg-info

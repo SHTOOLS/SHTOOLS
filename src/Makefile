@@ -13,9 +13,9 @@ F95 = gfortran
 SHELL = /bin/sh
 
 LIBNAME = SHTOOLS
-LIBDIR = lib
-INCDIR = modules
-PROG = ../$(LIBDIR)/lib$(LIBNAME).a
+LIBPATH = ../lib
+MODPATH = ../modules
+PROG = $(LIBPATH)/lib$(LIBNAME).a
 
 LIBTOOL = libtool
 LIBTOOLFLAGS = -static
@@ -125,9 +125,9 @@ $(PROG): $(OBJS)
 	@echo
 	@echo "--> Creation of static library successful"
 #	@rm -f $(OBJS)
-#	@mv -f *.mod ../$(INCDIR)/
-	@cp -f *.mod ../$(INCDIR)/
-	@echo "--> Library and module files moved to ../$(LIBDIR) and ../$(INCDIR)"
+#	@mv -f *.mod $(MODPATH)/
+	@cp -f *.mod $(MODPATH)/
+	@echo "--> Library and module files moved to $(LIBPATH) and $(MODPATH)"
 	@echo "--> Archive created successfully"
 
 .PHONY: clean clean-obs-mod clean-prog-mod all
@@ -144,7 +144,7 @@ clean-obs-mod:
 
 clean-prog-mod:
 	@-rm -f $(PROG)
-	@-rm -f ../$(INCDIR)/*.mod
+	@-rm -f $(MODPATH)/*.mod
 
 %.mod: %.f95
 	$(F95) -c $(F95FLAGS) $<
