@@ -122,36 +122,37 @@
 ###############################################################################
 
 VERSION = 4.7
+
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
+
+LAPACK_UNDERSCORE = 0
 
 F95 = gfortran
 PYTHON = python3
 JUPYTER = jupyter nbconvert --ExecutePreprocessor.kernel_name=python3
 JEKYLL = bundle exec jekyll
 FLAKE8 = flake8
-
-PREFIX = /usr/local
-SYSLIBPATH = $(PREFIX)/lib
-
-FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
-LAPACK_UNDERSCORE = 0
-
 SHELL = /bin/sh
+
 FDOCDIR = src/fdoc
 PYDOCDIR = src/pydoc
 SRCDIR = src
 LIBDIR = lib
-INCDIR = modules
+MODDIR = modules
 FEXDIR = examples/fortran
 PEXDIR = examples/python
 NBDIR = examples/notebooks
 WWWSRC = docs
 WWWDEST = www
-
 LIBPATH = $(PWD)/$(LIBDIR)
-MODPATH = $(PWD)/$(INCDIR)
+MODPATH = $(PWD)/$(MODDIR)
 PYPATH = $(PWD)
+
+PREFIX = /usr/local
+
+SYSLIBPATH = $(PREFIX)/lib
+FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
 SYSMODPATH = $(PREFIX)/include
 PY3EXT = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
 SYSSHAREPATH = $(PREFIX)/share
@@ -238,9 +239,9 @@ help:
 all: fortran
 
 fortran:
-	mkdir -pv lib
-	mkdir -pv modules
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)"
+	mkdir -pv $(LIBPATH)
+	mkdir -pv $(MODPATH)
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)" LIBPATH="$(LIBPATH)" MODPATH="$(MODPATH)"
 	@echo "--> make fortran successful!"
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
@@ -250,10 +251,10 @@ fortran:
 
 fortran-mp:
 # Delete .o files before and after compiling with OpenMP to avoid issues with "fortran" build.
-	mkdir -pv lib
-	mkdir -pv modules
+	mkdir -pv $(LIBPATH)
+	mkdir -pv $(MODPATH)
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" LIBPATH="$(LIBPATH)" MODPATH="$(MODPATH)"
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
 	@echo "--> make fortran-mp successful!"
 	@echo
@@ -267,10 +268,10 @@ install-fortran: fortran
 	-rm -r $(DESTDIR)$(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(DESTDIR)$(SYSMODPATH)/shtools.mod
 	mkdir -pv $(DESTDIR)$(SYSLIBPATH)
-	cp $(LIBDIR)/lib$(LIBNAME).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAME).a
-	-cp $(LIBDIR)/lib$(LIBNAMEMP).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAMEMP).a
+	cp $(LIBPATH)/lib$(LIBNAME).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAME).a
+	-cp $(LIBPATH)/lib$(LIBNAMEMP).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAMEMP).a
 	mkdir -pv $(DESTDIR)$(SYSMODPATH)
-	cp $(INCDIR)/*.mod $(DESTDIR)$(SYSMODPATH)/
+	cp $(MODPATH)/*.mod $(DESTDIR)$(SYSMODPATH)/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/shtools
 	cp -R examples $(DESTDIR)$(SYSSHAREPATH)/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
@@ -349,8 +350,8 @@ clean-python:
 
 clean-libs:
 	@-$(MAKE) -C $(SRCDIR) -f Makefile clean
-	@-rm -rf lib
-	@-rm -rf modules
+	@-rm -rf $(LIBPATH)
+	@-rm -rf $(MODPATH)
 	@-rm -rf NONE
 	@-rm -rf build
 	@-rm -rf pyshtools.egg-info

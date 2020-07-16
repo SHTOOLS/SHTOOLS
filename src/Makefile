@@ -12,6 +12,11 @@ F95 = gfortran
 
 SHELL = /bin/sh
 
+LIBNAME = SHTOOLS
+LIBPATH = ../lib
+MODPATH = ../modules
+PROG = $(LIBPATH)/lib$(LIBNAME).a
+
 LIBTOOL = libtool
 LIBTOOLFLAGS = -static
 AR = ar
@@ -19,9 +24,6 @@ ARFLAGS = -r
 RLIB = ranlib
 RLIBFLAGS =
 LDFLAGS = -s
-
-LIBNAME = SHTOOLS
-PROG = ../lib/lib$(LIBNAME).a
 
 ifeq ($(F95),f95)
 # Default Absoft Pro Fortran flags
@@ -123,9 +125,9 @@ $(PROG): $(OBJS)
 	@echo
 	@echo "--> Creation of static library successful"
 #	@rm -f $(OBJS)
-#	@mv -f *.mod ../modules/
-	@cp -f *.mod ../modules/
-	@echo "--> Library and module files moved to ../lib and ../modules"
+#	@mv -f *.mod $(MODPATH)/
+	@cp -f *.mod $(MODPATH)/
+	@echo "--> Library and module files moved to $(LIBPATH) and $(MODPATH)"
 	@echo "--> Archive created successfully"
 
 .PHONY: clean clean-obs-mod clean-prog-mod all
@@ -142,7 +144,7 @@ clean-obs-mod:
 
 clean-prog-mod:
 	@-rm -f $(PROG)
-	@-rm -f ../modules/*.mod
+	@-rm -f $(MODPATH)/*.mod
 
 %.mod: %.f95
 	$(F95) -c $(F95FLAGS) $<
