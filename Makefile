@@ -269,7 +269,7 @@ install-fortran: fortran
 	mkdir -pv $(DESTDIR)$(SYSMODPATH)
 	cp $(MODPATH)/*.mod $(DESTDIR)$(SYSMODPATH)/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/examples/shtools
-	cp -R examples/fortran $(DESTDIR)$(SYSSHAREPATH)/examples/shtools/
+	cp -R examples/fortran/ $(DESTDIR)$(SYSSHAREPATH)/examples/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
 	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
 	awk '{gsub("../../lib","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
