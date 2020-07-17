@@ -23,6 +23,7 @@
 #                               $(DESTDIR)$(PREFIX) [default is /usr/local].
 #       make uninstall        : Remove files copied to $(DESTDIR)$(PREFIX).
 #       make clean            : Return the folder to its original state.
+#       make check            : Check syntax of python files using flake8.
 #
 #
 #   In some cases, where there are underscore problems when linking to the
@@ -116,17 +117,12 @@
 #   make remove-www
 #       Remove the directory containing the static html web site.
 #
-#   make check
-#       Check syntax of python files using flake8
-#
 ###############################################################################
 
 VERSION = 4.7
 
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
-
-LAPACK_UNDERSCORE = 0
 
 F95 = gfortran
 PYTHON = python3
@@ -150,12 +146,13 @@ MODPATH = $(PWD)/$(MODDIR)
 PYPATH = $(PWD)
 
 PREFIX = /usr/local
-
 SYSLIBPATH = $(PREFIX)/lib
-FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
 SYSMODPATH = $(PREFIX)/include
 PY3EXT = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
 SYSSHAREPATH = $(PREFIX)/share
+
+FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
+LAPACK_UNDERSCORE = 0
 
 FLAKE8_FILES = setup.py pyshtools examples/python
 
@@ -229,11 +226,13 @@ help:
 	@echo "  fortran-mp                   Compile the Fortran 95 OpenMP components"
 	@echo "  fortran-tests                Compile and run the Fortran 95 tests and examples"
 	@echo "  fortran-tests-mp             Compile and run the Fortran 95 OpenMP tests and examples"
-	@echo "  python-tests                 Run the python tests and examples"
 	@echo "  fortran-tests-no-timing      Do not run the timing tests"
 	@echo "  fortran-tests-no-timing-mp   Do not run the timing tests"
+	@echo "  python-tests                 Run the python tests and examples"
 	@echo "  python-tests-no-timing       Do not run the timing tests"
 	@echo "  run-notebooks                Execute the python notebooks"
+	@echo "  clean                        Return the folder to its original state"
+	@echo "  check                        Check syntax of python files using flake8"
 	@echo ""
 
 all: fortran
@@ -264,21 +263,18 @@ fortran-mp:
 	@echo
 
 install-fortran: fortran
-	-rm -r $(DESTDIR)$(SYSMODPATH)/fftw3.mod
-	-rm -r $(DESTDIR)$(SYSMODPATH)/planetsconstants.mod
-	-rm -r $(DESTDIR)$(SYSMODPATH)/shtools.mod
 	mkdir -pv $(DESTDIR)$(SYSLIBPATH)
 	cp $(LIBPATH)/lib$(LIBNAME).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAME).a
 	-cp $(LIBPATH)/lib$(LIBNAMEMP).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAMEMP).a
 	mkdir -pv $(DESTDIR)$(SYSMODPATH)
 	cp $(MODPATH)/*.mod $(DESTDIR)$(SYSMODPATH)/
-	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/shtools
-	cp -R examples $(DESTDIR)$(SYSSHAREPATH)/shtools/
+	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/examples/shtools
+	cp -R examples/fortran $(DESTDIR)$(SYSSHAREPATH)/examples/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
 	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
 	awk '{gsub("../../lib","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
 	awk '{gsub("../../modules","$(PREFIX)/include");print}' "temp.txt" > "temp2.txt"
-	cp temp2.txt "$(DESTDIR)$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"
+	cp temp2.txt "$(DESTDIR)$(SYSSHAREPATH)/examples/shtools/Makefile"
 	rm temp.txt
 	rm temp2.txt
 	@echo
@@ -293,9 +289,9 @@ uninstall:
 	-rm -r $(SYSMODPATH)/fftw3.mod
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
-	-rm -r $(SYSSHAREPATH)/shtools/examples/
-	$(MAKE) -C $(FDOCDIR) -f Makefile uninstall
-	$(MAKE) -C $(PYDOCDIR) -f Makefile uninstall
+	-rm -r $(SYSMODPATH)/ftypes.mod
+	-rm -r $(SYSSHAREPATH)/examples/shtools
+	$(MAKE) -C $(FDOCDIR) -f Makefile uninstall PREFIX=$(PREFIX)
 
 doc:
 	@$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)

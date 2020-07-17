@@ -86,4 +86,4 @@ Documentation for the Fortran 95 subroutines and functions in SHTOOLS can be acc
 ```bash
 man makegriddh
 ```
-Alternatively, the man pages can be accessed from the *Fortran 95 Routines* menu on this web site.
+Alternatively, the man pages can be accessed from the *Fortran 95 Reference* menu on this web site.

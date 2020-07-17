@@ -90,12 +90,12 @@ Further installation instructions and options can be found in the [web documenta
 
 SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers and dedicated classes allow simple access to the fortran-compiled routines. A variety of Python tutorials and guides are included that demonstrate the major features of the library.
 
-To get started, check out the following Python tutorial notebooks:
+To get started, check out the following Python tutorials:
 
-* [Spherical harmonic coefficients and grids](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/grids-and-coefficients.html)
-* [Localization windows and spectral analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/localized-spectral-analysis.html)
-* [Gravity and magnetic fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/gravity-and-magnetic-fields.html)
-* [Plotting maps](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/plotting-maps.html)
+* [Spherical harmonic coefficients and grids](https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/grids-and-coefficients.ipynb)
+* [Localization windows and spectral analysis](https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/localized-spectral-analysis.ipynb)
+* [Gravity and magnetic fields](https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/gravity-and-magnetic-fields.ipynb)
+* [Plotting maps](https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/plotting-maps.ipynb)
 
 ### DEVELOPERS ###
 

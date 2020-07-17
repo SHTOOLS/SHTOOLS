@@ -8,7 +8,7 @@ toc: true
 folder: fortran
 ---
 
-## Fortran 95 library using brew (macOS)
+## brew (macOS)
 
 If the [brew](https://brew.sh/) package manager is already installed, it is only necessary to enter the following commands in the terminal:
 ```bash
@@ -25,7 +25,7 @@ To install the example data files and test programs, add the option `--with-exam
 brew install shtools --with-examples
 ```
 
-## Fortran 95 library using the Makefile
+## Using the Makefile
 
 Before trying to install the Fortran 95 components of SHTOOLS, it will be necessary to have a Fortran 95 compiler and [LAPACK](https://www.netlib.org/lapack/), [BLAS](https://www.netlib.org/blas/) and [FFTW3](http://www.fftw.org)-compatible libraries. On most linux distributions, this can be accomplished using
 ```bash

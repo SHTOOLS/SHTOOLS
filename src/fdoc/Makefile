@@ -15,6 +15,7 @@
 ###############################################################################
 
 SHELL=/bin/sh
+PREFIX=/usr/local
 
 PANDOC = pandoc
 MANDIR = ../../man/man1
@@ -95,7 +96,7 @@ clean:
 	-rm -f $(MANFILES)
 
 uninstall:
-	-cd /usr/local/share/man/man1/ ; rm $(MANFILES)
+	-cd $(PREFIX)/share/man/man1/ ; rm $(MANFILES)
 
 
 .SUFFIXES: $(SUFFIXES) .md .1
