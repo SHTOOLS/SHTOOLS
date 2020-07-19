@@ -63,15 +63,18 @@
 #       Remove the compiled lib, module, object, and Python files. Also removes
 #       compiled fortran and Python tests.
 #
-#   make fortran-tests
-#       Compile and run example Fortran programs and test suite. Optional
-#       parameters should be identical to those used to make "all".
-#
 #   make run-fortran-tests
 #       Run all Fortran examples and test suite.
 #
 #   make run-fortran-tests-no-timing
 #       Run all Fortran examples and test suite (excluding the timing tests).
+#
+#   make run-fortran-tests-mp
+#       Run all Fortran OpenMP examples and test suite.
+#
+#   make run-fortran-tests-no-timing-mp
+#       Run all Fortran OpenMP examples and test suite (excluding the timing
+#       tests).
 #
 #   make clean-fortran-tests
 #       Delete compiled Fortran test suite programs.
@@ -395,12 +398,22 @@ fortran-tests-no-timing-mp: fortran-mp
 	@echo "--> Ran all Fortran examples and tests"
 
 run-fortran-tests: fortran
-	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests
+	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo "--> Ran all Fortran examples and tests"
 
 run-fortran-tests-no-timing: fortran
-	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests-no-timing
+	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests-no-timing F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@echo
+	@echo "--> Ran all Fortran examples and tests"
+
+run-fortran-tests-mp: fortran-mp
+	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests LIBNAME="$(LIBNAMEMP)" F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@echo
+	@echo "--> Ran all Fortran examples and tests"
+
+run-fortran-tests-no-timing-mp: fortran-mp
+	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests-no-timing LIBNAME="$(LIBNAMEMP)" F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo "--> Ran all Fortran examples and tests"
 
