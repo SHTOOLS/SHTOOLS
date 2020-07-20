@@ -4,9 +4,9 @@ matrix:
   include:
     # Test Python 3.7 on Linux and OSX
     - os: linux
-      env: PYTHON_VERSION=3.7
+      env: PYTHON_VERSION=3.8
     - os: osx
-      env: PYTHON_VERSION=3.7
+      env: PYTHON_VERSION=3.8
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then

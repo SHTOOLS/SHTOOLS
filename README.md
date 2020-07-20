@@ -32,9 +32,9 @@ spherical harmonic transforms, multitaper spectral analyses, expansions of funct
 * OpenMP compatible and OpenMP thread-safe versions of the Fortran routines.
 
 ### INSTALLATION ###
-#### pyshtools for Python ####
+#### pyshtools (for Python) ####
 
-Binary install using pip or conda (Linux, macOS and Windows):
+Binary install using pip or conda:
 ```bash
 pip install pyshtools
 pip install --upgrade pyshtools  # to upgrade a pre-existing installation
@@ -46,42 +46,44 @@ Build from source:
 pip install pyshtools --no-binary pyshtools
 ```
 
-To install the develop branch from source:
+Install the develop branch from source:
 ```bash
 pip install git+https://github.com/SHTOOLS/SHTOOLS@develop
 ```
 
-#### pyshtools for developers ####
-Linux requirements:
+For developers, install the requirements
 ```bash
+# Linux
 sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
-```
-macOS requirements:
-```bash
+# macOS: install fftw using brew or macports
 brew install fftw
-# for lapack and blas, link to the system '-framework Accelerate'
+sudo port install fftw-3
+# macOS: for LAPACK, link to the system '-framework Accelerate'
 ```
 
-Clone the shtools repo and then install:
+then clone the shtools repo and install manually:
 ```bash
 git clone https://github.com/SHTOOLS/SHTOOLS.git
 cd shtools
 git checkout develop
-pip install .  # install into the active python environment lib folder, or
-pip install -e .  # install into the SHTOOLS/pyshtools folder and link to the active python environment
+pip install -e .  # install into the shtools folder and link to the active python environment
 ```
 
-#### Fortran Library ####
-Clone the shtools repo, and then execute one of the following commands in the shtools directory:
+#### SHTOOLS (for Fortran 95) ####
+Clone the shtools repo, and then execute one (or both) of the following commands in the shtools directory:
 ```bash
 make fortran
 make fortran-mp  # for OpenMP Fortran routines
 ```
-Or use the [brew](http://brew.sh/) package manager (macOS):
+Alternatively, use the [brew](http://brew.sh/) package manager (macOS)
 ```bash
 brew tap shtools/shtools
 brew install shtools
 brew install shtools --with-openmp  # to install shtools with the OpenMP components.
+```
+or the [macports](https://www.macports.org/) package manager (macOS)
+```bash
+sudo port install shtools
 ```
 
 Further installation instructions and options can be found in the [web documentation](https://shtools.github.io/SHTOOLS/).
@@ -90,12 +92,12 @@ Further installation instructions and options can be found in the [web documenta
 
 SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers and dedicated classes allow simple access to the fortran-compiled routines. A variety of Python tutorials and guides are included that demonstrate the major features of the library.
 
-To get started, check out the following Python tutorial notebooks:
+To get started, check out the following Python tutorials:
 
-* [Spherical harmonic coefficients and grids](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/grids-and-coefficients.html)
-* [Localization windows and spectral analysis](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/localized-spectral-analysis.html)
-* [Gravity and magnetic fields](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/gravity-and-magnetic-fields.html)
-* [Plotting maps](https://shtools.github.io/SHTOOLS/pages/mydoc/notebooks/plotting-maps.html)
+* [Spherical harmonic coefficients and grids](https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/grids-and-coefficients.ipynb)
+* [Localization windows and spectral analysis](https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/localized-spectral-analysis.ipynb)
+* [Gravity and magnetic fields](https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/gravity-and-magnetic-fields.ipynb)
+* [Plotting maps](https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/plotting-maps.ipynb)
 
 ### DEVELOPERS ###
 

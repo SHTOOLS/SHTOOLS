@@ -3,12 +3,12 @@ title: "Installing SHTOOLS"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: fortran_sidebar
 permalink: fortran-installing.html
-summary: SHTOOLS can be installed manually using the Makefile or by using the macOS package manager brew.
+summary: SHTOOLS can be installed using the brew and macports package managers, or manually using the Makefile.
 toc: true
 folder: fortran
 ---
 
-## Fortran 95 library using brew (macOS)
+## brew (macOS)
 
 If the [brew](https://brew.sh/) package manager is already installed, it is only necessary to enter the following commands in the terminal:
 ```bash
@@ -20,20 +20,42 @@ To install the OpenMP components along with the standard Fortran 95 library, add
 brew install shtools --with-openmp
 ```
 
-To install the example data files and test programs, add the option `--with-examples`:
+To install the example data files and test programs in the directory `/usr/local/share/shtools/` use:
 ```bash
 brew install shtools --with-examples
 ```
 
-## Fortran 95 library using the Makefile
+To run the test suite, use
+```bash
+brew test shtools
+```
+The output of the tests can be inspected in the user's `Library/Logs/Homebrew/shtools` directory.
+
+## macports (macOS)
+
+If the [macports](https://www.macports.org/) package manager is already installed, it is only necessary to enter the following command in the terminal:
+```bash
+sudo port install shtools
+```
+To install the OpenMP components along with the standard Fortran 95 library, add the option `+openmp` to the last command:
+```bash
+sudo port install shtools +openmp
+```
+To run the test suite, which is located in `/opt/local/share/examples/shtools`, use the command
+```bash
+sudo port test shtools
+```
+
+## Using the Makefile
 
 Before trying to install the Fortran 95 components of SHTOOLS, it will be necessary to have a Fortran 95 compiler and [LAPACK](https://www.netlib.org/lapack/), [BLAS](https://www.netlib.org/blas/) and [FFTW3](http://www.fftw.org)-compatible libraries. On most linux distributions, this can be accomplished using
 ```bash
 sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
 ```
-or on macOS using [brew](https://brew.sh/)
+or on macOS using either [brew](https://brew.sh/) or [macports](https://www.macports.org/)
 ```bash
 brew install fftw
+sudo port install fftw-3
 # lapack and blas can be accessed by linking to the system '-framework Accelerate'
 ```
 
