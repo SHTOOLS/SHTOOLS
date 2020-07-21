@@ -481,18 +481,22 @@ class SHGrid(object):
         if units is not None:
             attrs['units'] = units
 
-        return _xr.DataArray(self.to_array(),
-                             coords=[('lat', self.lats(),
-                                      {'long_name': 'latitude',
-                                       'units': 'degrees_north',
-                                       'actual_range': [self.lats()[0],
-                                                        self.lats()[-1]]}),
-                                     ('lon', self.lons(),
-                                      {'long_name': 'longitude',
-                                       'units': 'degrees_east',
-                                       'actual_range': [self.lons()[0],
-                                                        self.lons()[-1]]})],
-                             attrs=attrs)
+        da = _xr.DataArray(self.to_array(),
+                           coords=[('lat', self.lats(),
+                                    {'long_name': 'latitude',
+                                     'units': 'degrees_north',
+                                     'actual_range': [self.lats()[0],
+                                                      self.lats()[-1]]}),
+                                   ('lon', self.lons(),
+                                    {'long_name': 'longitude',
+                                     'units': 'degrees_east',
+                                     'actual_range': [self.lons()[0],
+                                                      self.lons()[-1]]})],
+                           attrs=attrs)
+        if _pygmt_module:
+            da.gmt.registration = 0
+            da.gmt.gtype = 1
+        return da
 
     def to_netcdf(self, filename=None, title=None, description=None,
                   comment='pyshtools grid', name='data',

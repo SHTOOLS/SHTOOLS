@@ -341,6 +341,7 @@ clean-python:
 	@-rm -rf _SHTOOLS.so.dSYM/
 	@-rm -rf pyshtools/_SHTOOLS.so.dSYM/
 	@-rm -f *.so
+	@-rm -rf __pycache__/
 	@-rm -f pyshtools/*.so
 	@-rm -f pyshtools/*.pyc
 	@-rm -rf pyshtools/__pycache__/
