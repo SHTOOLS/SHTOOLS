@@ -59,6 +59,9 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `degrees()` | Return an array listing the spherical harmonic degrees from `0` to `lmax`. |
 | `spectrum()` | Return the spectrum of the function. |
 | `cross_spectrum()` | Return the cross-spectrum of two functions. |
+| `admittance()` | Return the admittance of two functions. |
+| `correlation()` | Return the spectral correlation of two functions. |
+| `admitcorr()` | Return the admittance and spectral correlation of two functions. |
 | `volume()` | Calculate the volume of the body. |
 | `centroid()` | Calculate the centroid of the body. |
 | `set_coeffs()` | Set coefficients in-place to specified values. |

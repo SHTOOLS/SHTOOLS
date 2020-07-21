@@ -87,6 +87,10 @@ class SHCoeffs(object):
                             of spherical harmonic degree.
     cross_spectrum()      : Return the cross-spectrum of two functions as a
                             function of spherical harmonic degree.
+    admittance()          : Return the admittance of two functions.
+    correlation()         : Return the spectral correlation of two functions.
+    admitcorr()           : Return the admittance and spectral correlation of
+                            two functions.
     volume()              : Calculate the volume of the body.
     centroid()            : Compute the centroid of the body.
     set_coeffs()          : Set coefficients in-place to specified values.
@@ -1504,6 +1508,138 @@ class SHCoeffs(object):
                                normalization=self.normalization,
                                convention=convention, unit=unit, base=base,
                                lmax=lmax)
+
+    def admittance(self, hlm, lmax=None):
+        """
+        Return the admittance of two functions, Sgh(l) / Shh(l).
+
+        Usage
+        -----
+        admittance = g.admittance(hlm, [lmax])
+
+        Returns
+        -------
+        admittance : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the admittance, where lmax is the maximum
+            spherical harmonic degree.
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The function h used in computing the admittance Sgh / Shh.
+        lmax : int, optional, default = g.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+
+        Notes
+        -----
+        The admittance is defined as
+
+            Z(l) = Sgh(l) / Shh(l)
+
+        where Sgh(l) is the cross-power spectrum of the functions g (self) and
+        h (input), and Shh(l) is the power spectrum of h.
+        """
+        if not isinstance(hlm, SHCoeffs):
+            raise ValueError('hlm must be an SHCoeffs class instance. Input '
+                             'type is {:s}.'.format(repr(type(hlm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, hlm.lmax)
+
+        sgh = self.cross_spectrum(hlm, lmax=lmax)
+        shh = hlm.spectrum(lmax=lmax)
+        return sgh / shh
+
+    def correlation(self, hlm, lmax=None):
+        """
+        Return the spectral correlation of two functions.
+
+        Usage
+        -----
+        correlation = g.correlation(hlm, [lmax])
+
+        Returns
+        -------
+        correlation : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the spectral correlation, where lmax is the
+            maximum spherical harmonic degree.
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The function h used in computing the spectral correlation.
+        lmax : int, optional, default = g.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+
+        Notes
+        -----
+        The spectral correlation is defined as
+
+            gamma(l) = Sgh(l) / sqrt( Sgg(l) Shh(l) )
+
+        where Sgh(l) is the cross-power spectrum of the functions g (self) and
+        h (input), and Sgg(l) and Shh(l) are respectively the power spectra of
+        g and h.
+        """
+        if not isinstance(hlm, SHCoeffs):
+            raise ValueError('hlm must be an SHCoeffs class instance. Input '
+                             'type is {:s}.'.format(repr(type(hlm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, hlm.lmax)
+
+        sgh = self.cross_spectrum(hlm, lmax=lmax)
+        sgg = self.spectrum(lmax=lmax)
+        shh = hlm.spectrum(lmax=lmax)
+        return sgh / _np.sqrt(sgg * shh)
+
+    def admitcorr(self, hlm, lmax=None):
+        """
+        Return the admittance and spectral correlation of two functions.
+
+        Usage
+        -----
+        admittance, correlation = g.admitcorr(hlm, [lmax])
+
+        Returns
+        -------
+        admittance : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the admittance, where lmax is the maximum
+            spherical harmonic degree.
+        correlation : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the spectral correlation, where lmax is the
+            maximum spherical harmonic degree.
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The function h used in computing the admittance and spectral
+            correlation.
+        lmax : int, optional, default = g.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+
+        Notes
+        -----
+        The admittance and spectral correlation are defined as
+
+            Z(l) = Sgh(l) / Shh(l)
+            gamma(l) = Sgh(l) / sqrt( Sgg(l) Shh(l) )
+
+        where Sgh(l) is the cross-power spectrum of the functions g (self) and
+        h (input), and Sgg(l) and Shh(l) are respectively the power spectra of
+        g and h.
+        """
+        if not isinstance(hlm, SHCoeffs):
+            raise ValueError('hlm must be an SHCoeffs class instance. Input '
+                             'type is {:s}.'.format(repr(type(hlm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, hlm.lmax)
+
+        sgh = self.cross_spectrum(hlm, lmax=lmax)
+        sgg = self.spectrum(lmax=lmax)
+        shh = hlm.spectrum(lmax=lmax)
+        return sgh / shh, sgh / _np.sqrt(sgg * shh)
 
     def volume(self, lmax=None):
         """
