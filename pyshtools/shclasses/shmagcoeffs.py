@@ -16,6 +16,7 @@ from .shmaggrid import SHMagGrid as _SHMagGrid
 from .shtensor import SHMagTensor as _SHMagTensor
 
 from ..spectralanalysis import spectrum as _spectrum
+from ..spectralanalysis import cross_spectrum as _cross_spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
 from ..shio import shwrite as _shwrite
@@ -28,10 +29,6 @@ from ..shtools import MakeMagGridDH as _MakeMagGridDH
 from ..shtools import MakeMagGradGridDH as _MakeMagGradGridDH
 from ..shtools import djpi2 as _djpi2
 from ..shtools import SHRotateRealCoef as _SHRotateRealCoef
-
-# =============================================================================
-# =========    SHMagCoeffs class    =========================================
-# =============================================================================
 
 
 class SHMagCoeffs(object):
@@ -95,6 +92,8 @@ class SHMagCoeffs(object):
                             degrees from 0 to lmax.
     spectrum()            : Return the spectrum of the function as a function
                             of spherical harmonic degree.
+    correlation()         : Return the spectral correlation with another
+                            function.
     set_coeffs()          : Set coefficients in-place to specified values.
     change_ref()          : Return a new class instance referenced to a
                             different reference radius.
@@ -1447,6 +1446,57 @@ class SHMagCoeffs(object):
             return s, es
         else:
             return s
+
+    def correlation(self, hlm, lmax=None):
+        """
+        Return the spectral correlation with another function.
+
+        Usage
+        -----
+        correlation = g.correlation(hlm, [lmax])
+
+        Returns
+        -------
+        correlation : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the spectral correlation, where lmax is the
+            maximum spherical harmonic degree.
+
+        Parameters
+        ----------
+        hlm : SHCoeffs, SHMagCoeffs or SHGravCoeffs class instance.
+            The function h used in computing the spectral correlation.
+        lmax : int, optional, default = g.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+
+        Notes
+        -----
+        The spectral correlation is defined as
+
+            gamma(l) = Sgh(l) / sqrt( Sgg(l) Shh(l) )
+
+        where Sgh, Shh and Sgg are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        from .shgravcoeffs import SHGravCoeffs as _SHGravCoeffs
+        if not isinstance(hlm, (_SHCoeffs, SHMagCoeffs, _SHGravCoeffs)):
+            raise ValueError('hlm must be an SHCoeffs, SHMagCoeffs or '
+                             'SHGravCoeffs class instance. Input type is {:s}.'
+                             .format(repr(type(hlm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, hlm.lmax)
+
+        sgg = _spectrum(self.coeffs, normalization=self.normalization,
+                        lmax=lmax)
+        shh = _spectrum(hlm.coeffs, normalization=hlm.normalization, lmax=lmax)
+        sgh = _cross_spectrum(self.coeffs,
+                              hlm.to_array(normalization=self.normalization,
+                                           csphase=self.csphase, lmax=lmax),
+                              normalization=self.normalization,
+                              lmax=lmax)
+
+        with _np.errstate(invalid='ignore'):
+            return sgh / _np.sqrt(sgg * shh)
 
     # ---- Operations that return a new SHMagCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',

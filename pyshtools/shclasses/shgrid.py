@@ -25,10 +25,6 @@ except ModuleNotFoundError:
     _pygmt_module = False
 
 
-# =============================================================================
-# =========    GRID CLASSES    ================================================
-# =============================================================================
-
 class SHGrid(object):
     """
     Class for spatial gridded data on the sphere.

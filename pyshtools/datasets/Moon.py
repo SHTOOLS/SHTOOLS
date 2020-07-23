@@ -16,6 +16,7 @@ GL1500E           :  Konopliv et al. (2014)
 Magnetic field
 --------------
 T2015_449         :  Wieczorek (2018), using data from Tsunakawa et al. (2015)
+Ravat2020         :  Ravat et al. (2020)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
@@ -82,6 +83,35 @@ def T2015_449(lmax=449):
     )
     return _SHMagCoeffs.from_file(fname, lmax=lmax, header=True,
                                   file_units='T', units='nT')
+
+
+def Ravat2020(lmax=450):
+    '''
+    Ravat2020 is a 450 degree and order spherical harmonic model of the
+    magnetic potential of the Moon. This model is based on using magnetic
+    monopoles with an L1-norm regularisation. The coefficients are output
+    in units of nT.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    References
+    ----------
+    Ravat, D., Purucker, M. E., Olsen, N. (2020). Lunar magnetic field models
+        from Lunar Prospector and SELENE/Kaguya along‐track magnetic field
+        gradients, Journal of Geophysical Research: Planets, 125,
+        e2019JE006187, doi:10.1029/2019JE006187.
+    '''
+    fname = _retrieve(
+        url="https://uknowledge.uky.edu/cgi/viewcontent.cgi?filename=4&article=1001&context=ees_data&type=additional",  # noqa: E501
+        known_hash="sha256:dd1128d7819a8de097f3abeba93fee4cb80fced5bd63d56cca5a9bc70ac2bea9",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHMagCoeffs.from_file(fname, lmax=lmax, header=True, skip=8,
+                                  header_units='km')
 
 
 def GRGM900C(lmax=900):
@@ -232,5 +262,5 @@ def GL1500E(lmax=1500):
                                    errors=True)
 
 
-__all__ = ['MoonTopo2600p', 'T2015_449', 'GRGM900C', 'GRGM1200B',
+__all__ = ['MoonTopo2600p', 'T2015_449', 'Ravat2020', 'GRGM900C', 'GRGM1200B',
            'GRGM1200B_RM1_1E0', 'GL0900D', 'GL1500E']

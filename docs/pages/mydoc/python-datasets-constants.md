@@ -102,6 +102,7 @@ The following is the list of implemented datasets:
 | GL0900D | JPL 900 degree and order spherical harmonic model of the gravitational potential of the Moon (Konopliv et al. 2014). This model applies a Kaula constraint for degrees greater than 700. |
 | GL1500E | JPL 1500 degree and order spherical harmonic model of the gravitational potential of the Moon (Konopliv et al. 2014). This model applies a Kaula constraint for degrees greater than 700. |
 | T2015_449 | 449 degree and order spherical harmonic model of the magnetic potential of the Moon. This model was used in Wieczorek (2018) and is a spherical harmonic expansion of the global magnetic field model of Tsunakawa et al. (2015). |
+| Ravat2020 | 450 degree and order spherical harmonic model of the magnetic potential of the Moon. This model is based on using magnetic monopoles with an L1-norm regularisation. |
 
 
 ### Mars

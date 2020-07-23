@@ -58,6 +58,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | ------ | ----------- |
 | `degrees()` | Return an array listing the spherical harmonic degrees from `0` to `lmax`. |
 | `spectrum()` | Return the spectrum of the function. |
+| `correlation()` | Return the spectral correlation with another function. |
 | `set_coeffs()` | Set coefficients in-place to specified values.|
 | `change_ref()` | Return a new class instance referenced to a different reference radius, r0. |
 | `rotate()` | Rotate the coordinate system used to express the spherical harmonics coefficients and return a new class instance.|

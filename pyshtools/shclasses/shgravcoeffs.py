@@ -20,6 +20,7 @@ from .shgeoid import SHGeoid as _SHGeoid
 
 from ..constants import G as _G
 from ..spectralanalysis import spectrum as _spectrum
+from ..spectralanalysis import cross_spectrum as _cross_spectrum
 from ..shio import convert as _convert
 from ..shio import shread as _shread
 from ..shio import shwrite as _shwrite
@@ -36,10 +37,6 @@ from ..shtools import MakeGravGradGridDH as _MakeGravGradGridDH
 from ..shtools import MakeGeoidGridDH as _MakeGeoidGridDH
 from ..shtools import djpi2 as _djpi2
 from ..shtools import SHRotateRealCoef as _SHRotateRealCoef
-
-# =============================================================================
-# =========    SHGravCoeffs class    ==========================================
-# =============================================================================
 
 
 class SHGravCoeffs(object):
@@ -105,6 +102,12 @@ class SHGravCoeffs(object):
                             degrees from 0 to lmax.
     spectrum()            : Return the spectrum of the function as a function
                             of spherical harmonic degree.
+    admittance()          : Return the admittance with an input topography
+                            function.
+    correlation()         : Return the spectral correlation with another
+                            function.
+    admitcorr()           : Return the admittance and spectral correlation with
+                            an input topography function.
     set_omega()           : Set the angular rotation rate of the body.
     set_coeffs()          : Set coefficients in-place to specified values.
     change_ref()          : Return a new class instance referenced to a
@@ -1785,6 +1788,214 @@ class SHGravCoeffs(object):
             return s, es
         else:
             return s
+
+    def admittance(self, hlm, errors=True, function='radial', lmax=None):
+        """
+        Return the admittance for an input topography function.
+
+        Usage
+        -----
+        admittance = g.admittance(hlm, [lmax])
+
+        Returns
+        -------
+        admittance : ndarray, shape (lmax+1) or (2, lmax+1)
+            1-D array of the admittance (errors=False) or 2-D array of the
+            admittance and its uncertainty (errors=True), where lmax is the
+            maximum spherical harmonic degree.
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The topography function h used in computing the admittance
+            Sgh / Shh. hlm is assumed to have units of meters.
+        errors : bool, optional, default = True
+            Return the uncertainty of the admittance.
+        function : str, optional, default = 'radial'
+            The type of admittance to return: 'geoid' for using the geoid, in
+            units of m/km, or 'radial' for using the radial gravity in units
+            of mGal/km.
+        lmax : int, optional, default = g.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+
+        Notes
+        -----
+        If gravity g and topography h are related by the equation
+
+            glm = Z(l) hlm + nlm
+
+        where nlm is a zero-mean random variable, the admittance Z(l) can be
+        estimated using
+
+            Z(l) = Sgh(l) / Shh(l),
+
+        where Sgh, Shh and Sgg are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        if not isinstance(hlm, _SHCoeffs):
+            raise ValueError('hlm must be an SHCoeffs class instance. Input '
+                             'type is {:s}.'.format(repr(type(hlm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, hlm.lmax)
+
+        sgh = _cross_spectrum(self.coeffs,
+                              hlm.to_array(normalization=self.normalization,
+                                           csphase=self.csphase, lmax=lmax),
+                              normalization=self.normalization,
+                              lmax=lmax)
+        shh = _spectrum(hlm.coeffs, normalization=hlm.normalization, lmax=lmax)
+
+        with _np.errstate(invalid='ignore'):
+            admit = sgh / shh
+            if errors:
+                sgg = _spectrum(self.coeffs, normalization=self.normalization,
+                                lmax=lmax)
+                sigma = (sgg / shh) * (1. - sgh**2 / sgg / shh) / \
+                    _np.arange(lmax+1) / 2.
+                admit = _np.column_stack((admit, _np.sqrt(sigma)))
+
+        if function == 'geoid':
+            admit *= 1000. * self.gm / self.r0
+        else:
+            degrees = _np.arange(lmax+1)
+            if errors:
+                admit *= 1.e8 * self.gm * (degrees[:, None] + 1) / self.r0**2
+            else:
+                admit *= 1.e8 * self.gm * (degrees + 1) / self.r0**2
+        return admit
+
+    def correlation(self, hlm, lmax=None):
+        """
+        Return the spectral correlation with another function.
+
+        Usage
+        -----
+        correlation = g.correlation(hlm, [lmax])
+
+        Returns
+        -------
+        correlation : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the spectral correlation, where lmax is the
+            maximum spherical harmonic degree.
+
+        Parameters
+        ----------
+        hlm : SHCoeffs, SHMagCoeffs or SHGravCoeffs class instance.
+            The function h used in computing the spectral correlation.
+        lmax : int, optional, default = g.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+
+        Notes
+        -----
+        The spectral correlation is defined as
+
+            gamma(l) = Sgh(l) / sqrt( Sgg(l) Shh(l) )
+
+        where Sgh, Shh and Sgg are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        from .shmagcoeffs import SHMagCoeffs as _SHMagCoeffs
+        if not isinstance(hlm, (_SHCoeffs, _SHMagCoeffs, SHGravCoeffs)):
+            raise ValueError('hlm must be an SHCoeffs, SHMagCoeffs or '
+                             'SHGravCoeffs class instance. Input type is {:s}.'
+                             .format(repr(type(hlm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, hlm.lmax)
+
+        sgg = _spectrum(self.coeffs, normalization=self.normalization,
+                        lmax=lmax)
+        shh = _spectrum(hlm.coeffs, normalization=hlm.normalization, lmax=lmax)
+        sgh = _cross_spectrum(self.coeffs,
+                              hlm.to_array(normalization=self.normalization,
+                                           csphase=self.csphase, lmax=lmax),
+                              normalization=self.normalization,
+                              lmax=lmax)
+
+        with _np.errstate(invalid='ignore'):
+            return sgh / _np.sqrt(sgg * shh)
+
+    def admitcorr(self, hlm, errors=True, function='radial', lmax=None):
+        """
+        Return the admittance and correlation for an input topography function.
+
+        Usage
+        -----
+        admittance, correlation = g.admitcorr(hlm, [lmax])
+
+        Returns
+        -------
+        admittance : ndarray, shape (lmax+1) or (2, lmax+1)
+            1-D array of the admittance (errors=False) or 2-D array of the
+            admittance and its uncertainty (errors=True), where lmax is the
+            maximum spherical harmonic degree.
+        correlation : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the spectral correlation, where lmax is the
+            maximum spherical harmonic degree.
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The topography function h used in computing the admittance
+            Sgh / Shh. hlm is assumed to have units of meters.
+        errors : bool, optional, default = True
+            Return the uncertainty of the admittance.
+        function : str, optional, default = 'radial'
+            The type of admittance to return: 'geoid' for using the geoid, in
+            units of m/km, or 'radial' for using the radial gravity in units
+            of mGal/km.
+        lmax : int, optional, default = g.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+
+        Notes
+        -----
+        If gravity g and topography h are related by the equation
+
+            glm = Z(l) hlm + nlm
+
+        where nlm is a zero-mean random variable, the admittance Z(l) and
+        spectral correlation can be estimated using
+
+            Z(l) = Sgh(l) / Shh(l)
+            gamma(l) = Sgh(l) / sqrt( Sgg(l) Shh(l) )
+
+        where Sgh, Shh and Sgg are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        if not isinstance(hlm, _SHCoeffs):
+            raise ValueError('hlm must be an SHCoeffs class instance. Input '
+                             'type is {:s}.'.format(repr(type(hlm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, hlm.lmax)
+
+        sgh = _cross_spectrum(self.coeffs,
+                              hlm.to_array(normalization=self.normalization,
+                                           csphase=self.csphase, lmax=lmax),
+                              normalization=self.normalization,
+                              lmax=lmax)
+        shh = _spectrum(hlm.coeffs, normalization=hlm.normalization, lmax=lmax)
+        sgg = _spectrum(self.coeffs, normalization=self.normalization,
+                        lmax=lmax)
+
+        with _np.errstate(invalid='ignore'):
+            admit = sgh / shh
+            corr = sgh / _np.sqrt(sgg * shh)
+            if errors:
+                sigma = (sgg / shh) * (1. - corr**2) / _np.arange(lmax+1) / 2.
+                admit = _np.column_stack((admit, _np.sqrt(sigma)))
+
+        if function == 'geoid':
+            admit *= 1000. * self.gm / self.r0
+        else:
+            degrees = _np.arange(lmax+1)
+            if errors:
+                admit *= 1.e8 * self.gm * (degrees[:, None] + 1) / self.r0**2
+            else:
+                admit *= 1.e8 * self.gm * (degrees + 1) / self.r0**2
+
+        return admit, corr
 
     # ---- Operations that return a new SHGravCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',

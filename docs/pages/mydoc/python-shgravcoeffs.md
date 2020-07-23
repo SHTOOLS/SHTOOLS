@@ -61,6 +61,9 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | ------ | ----------- |
 | `degrees()` | Return an array listing the spherical harmonic degrees from `0` to `lmax`. |
 | `spectrum()` | Return the spectrum of the function. |
+| `admittance()` | Return the admittance with an input topography function. |
+| `correlation()` | Return the spectral correlation with another function. |
+| `admitcorr()` | Return the admittance and spectral correlation with an input topography function. |
 | `set_omega()` | Set the angular rotation rate of the body. |
 | `set_coeffs()` | Set coefficients in-place to specified values.|
 | `change_ref()` | Return a new class instance referenced to a different gm, r0, or omega. |
