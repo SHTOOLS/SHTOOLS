@@ -104,6 +104,11 @@ class SHCoeffs(object):
     plot_spectrum()       : Plot the spectrum as a function of spherical
                             harmonic degree.
     plot_cross_spectrum() : Plot the cross-spectrum of two functions.
+    plot_admittance()     : Plot the admittance with another function.
+    plot_correlation()    : Plot the spectral correlation with another
+                            function.
+    plot_admitcorr()      : Plot the admittance and spectral correlation with
+                            another function.
     plot_spectrum2d()     : Plot the 2D spectrum of all spherical harmonic
                             degrees and orders.
     plot_cross_spectrum2d() : Plot the 2D cross-spectrum of all spherical
@@ -2454,7 +2459,7 @@ class SHCoeffs(object):
                        elinewidth=0.75, show=True, ax=None, ax2=None,
                        fname=None, **kwargs):
         """
-        Plot the admittance and/or correlation of two functions.
+        Plot the admittance and/or correlation with another function.
 
         Usage
         -----
@@ -2649,6 +2654,132 @@ class SHCoeffs(object):
                 return fig, (axes, axes2)
             else:
                 return fig, axes
+
+    def plot_admittance(self, hlm, errors=True, style='admit', lmax=None,
+                        grid=True, legend=None, legend_loc='best',
+                        axes_labelsize=None, tick_labelsize=None,
+                        elinewidth=0.75, show=True, ax=None, fname=None,
+                        **kwargs):
+        """
+        Plot the admittance with another function.
+
+        Usage
+        -----
+        x.plot_admittance(hlm, [errors, lmax, grid, legend, legend_loc,
+                                axes_labelsize, tick_labelsize, elinewidth,
+                                show, ax, fname, **kwargs])
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The second function used in computing the admittance.
+        errors : bool, optional, default = True
+            Plot the uncertainty of the admittance.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        grid : bool, optional, default = True
+            If True, plot grid lines. grid is set to False when style is
+            'combined'.
+        legend : str, optional, default = None
+            Text to use for the legend.
+        legend_loc : str, optional, default = 'best'
+            Location of the legend, such as 'upper right' or 'lower center'
+            (see pyplot.legend for all options).
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        elinewidth : float, optional, default = 0.75
+            Line width of the error bars when errors is True.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        fname : str, optional, default = None
+            If present, and if axes is not specified, save the image to the
+            specified file.
+        **kwargs : keyword arguments, optional
+            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+
+        Notes
+        -----
+        If two functions g and h are related by the equation
+
+            glm = Z(l) hlm + nlm
+
+        where nlm is a zero-mean random variable, the admittance can be
+        estimated using
+
+            Z(l) = Sgh(l) / Shh(l)
+
+        where Sgh and Shh are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        return self.plot_admitcorr(hlm, errors=errors, style='admit',
+                                   lmax=lmax, grid=grid, legend=legend,
+                                   legend_loc=legend_loc,
+                                   axes_labelsize=axes_labelsize,
+                                   tick_labelsize=tick_labelsize,
+                                   elinewidth=elinewidth, show=True,
+                                   fname=fname, ax=ax, **kwargs)
+
+    def plot_correlation(self, hlm, style='corr', lmax=None, grid=True,
+                         legend=None, legend_loc='best', axes_labelsize=None,
+                         tick_labelsize=None, elinewidth=0.75, show=True,
+                         ax=None, fname=None, **kwargs):
+        """
+        Plot the correlation with another function.
+
+        Usage
+        -----
+        x.plot_correlation(hlm, [lmax, grid, legend, legend_loc,
+                                 axes_labelsize, tick_labelsize, elinewidth,
+                                 show, ax, fname, **kwargs])
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The second function used in computing the correlation.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        grid : bool, optional, default = True
+            If True, plot grid lines. grid is set to False when style is
+            'combined'.
+        legend : str, optional, default = None
+            Text to use for the legend.
+        legend_loc : str, optional, default = 'best'
+            Location of the legend, such as 'upper right' or 'lower center'
+            (see pyplot.legend for all options).
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        elinewidth : float, optional, default = 0.75
+            Line width of the error bars when errors is True.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        fname : str, optional, default = None
+            If present, and if axes is not specified, save the image to the
+            specified file.
+        **kwargs : keyword arguments, optional
+            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+
+        Notes
+        -----
+        The spectral correlation is defined as
+
+            gamma(l) = Sgh(l) / sqrt( Sgg(l) Shh(l) )
+
+        where Sgh, Shh and Sgg are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        return self.plot_admitcorr(hlm, style='corr', lmax=lmax, grid=grid,
+                                   legend=legend, legend_loc=legend_loc,
+                                   axes_labelsize=axes_labelsize,
+                                   tick_labelsize=tick_labelsize,
+                                   show=True, fname=fname, ax=ax, **kwargs)
 
     def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
                         grid=True, axes_labelsize=None, tick_labelsize=None,
