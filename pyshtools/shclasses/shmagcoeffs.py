@@ -1495,7 +1495,7 @@ class SHMagCoeffs(object):
                               normalization=self.normalization,
                               lmax=lmax)
 
-        with _np.errstate(invalid='ignore'):
+        with _np.errstate(invalid='ignore', divide='ignore'):
             return sgh / _np.sqrt(sgg * shh)
 
     # ---- Operations that return a new SHMagCoeffs class instance ----

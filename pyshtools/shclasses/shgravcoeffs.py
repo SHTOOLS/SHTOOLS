@@ -1846,7 +1846,7 @@ class SHGravCoeffs(object):
                               lmax=lmax)
         shh = _spectrum(hlm.coeffs, normalization=hlm.normalization, lmax=lmax)
 
-        with _np.errstate(invalid='ignore'):
+        with _np.errstate(invalid='ignore', divide='ignore'):
             admit = sgh / shh
             if errors:
                 sgg = _spectrum(self.coeffs, normalization=self.normalization,
@@ -1913,7 +1913,7 @@ class SHGravCoeffs(object):
                               normalization=self.normalization,
                               lmax=lmax)
 
-        with _np.errstate(invalid='ignore'):
+        with _np.errstate(invalid='ignore', divide='ignore'):
             return sgh / _np.sqrt(sgg * shh)
 
     def admitcorr(self, hlm, errors=True, function='radial', lmax=None):
@@ -1979,7 +1979,7 @@ class SHGravCoeffs(object):
         sgg = _spectrum(self.coeffs, normalization=self.normalization,
                         lmax=lmax)
 
-        with _np.errstate(invalid='ignore'):
+        with _np.errstate(invalid='ignore', divide='ignore'):
             admit = sgh / shh
             corr = sgh / _np.sqrt(sgg * shh)
             if errors:
