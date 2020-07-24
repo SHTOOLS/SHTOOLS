@@ -2596,17 +2596,17 @@ class SHGravCoeffs(object):
     # ---- Plotting routines ----
     def plot_spectrum(self, function='geoid', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
-                      legend=None, legend_error='error', axes_labelsize=None,
-                      tick_labelsize=None, show=True, ax=None, fname=None,
-                      **kwargs):
+                      legend=None, legend_error='error', legend_loc='best',
+                      axes_labelsize=None, tick_labelsize=None, show=True,
+                      ax=None, fname=None, **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
         x.plot_spectrum([function, unit, base, lmax, xscale, yscale, grid,
-                         legend, axes_labelsize, tick_labelsize, show, ax,
-                         fname, **kwargs])
+                         legend, legend_loc, axes_labelsize, tick_labelsize,
+                         show, ax, fname, **kwargs])
 
         Parameters
         ----------
@@ -2635,6 +2635,9 @@ class SHGravCoeffs(object):
             Text to use for the legend.
         legend_error : str, optional, default = 'error'
             Text to use for the legend of the error spectrum.
+        legend_loc : str, optional, default = 'best'
+            Location of the legend, such as 'upper right' or 'lower center'
+            (see pyplot.legend for all options).
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -2742,7 +2745,7 @@ class SHGravCoeffs(object):
         axes.grid(grid, which='major')
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
-        axes.legend()
+        axes.legend(loc=legend_loc)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
