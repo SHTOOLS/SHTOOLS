@@ -1083,13 +1083,14 @@ class SHMagCoeffs(object):
 
         ds.to_netcdf(filename)
 
-    def to_array(self, normalization=None, csphase=None, lmax=None):
+    def to_array(self, normalization=None, csphase=None, lmax=None,
+                 errors=True):
         """
         Return spherical harmonic coefficients (and errors) as a numpy array.
 
         Usage
         -----
-        coeffs, [errors] = x.to_array([normalization, csphase, lmax])
+        coeffs, [errors] = x.to_array([normalization, csphase, lmax, errors])
 
         Returns
         -------
@@ -1097,7 +1098,7 @@ class SHMagCoeffs(object):
             numpy ndarray of the spherical harmonic coefficients.
         errors : ndarry, shape (2, lmax+1, lmax+1)
             numpy ndarray of the errors of the spherical harmonic coefficients
-            if they are not None.
+            if they are not None and errors is True.
 
         Parameters
         ----------
@@ -1112,6 +1113,9 @@ class SHMagCoeffs(object):
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output. If lmax is greater
             than x.lmax, the array will be zero padded.
+        errors : bool, optional, default = True
+            If True, return separate arrays of the coefficients and errors. If
+            False, return only the coefficients.
 
         Notes
         -----
@@ -1136,7 +1140,7 @@ class SHMagCoeffs(object):
                           csphase_in=self.csphase, csphase_out=csphase,
                           lmax=lmax)
 
-        if self.errors is not None:
+        if self.errors is not None and errors:
             errors = _convert(self.errors, normalization_in=self.normalization,
                               normalization_out=normalization,
                               csphase_in=self.csphase, csphase_out=csphase,
@@ -1491,7 +1495,8 @@ class SHMagCoeffs(object):
         shh = _spectrum(hlm.coeffs, normalization=hlm.normalization, lmax=lmax)
         sgh = _cross_spectrum(self.coeffs,
                               hlm.to_array(normalization=self.normalization,
-                                           csphase=self.csphase, lmax=lmax),
+                                           csphase=self.csphase, lmax=lmax,
+                                           errors=False),
                               normalization=self.normalization,
                               lmax=lmax)
 
@@ -2316,6 +2321,96 @@ class SHMagCoeffs(object):
         axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
         axes.set_ylabel('Spherical harmonic order', fontsize=axes_labelsize)
         axes.minorticks_on()
+        axes.grid(grid, which='major')
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            if show:
+                fig.show()
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
+
+    def plot_correlation(self, hlm, lmax=None, grid=True, legend=None,
+                         legend_loc='best', axes_labelsize=None,
+                         tick_labelsize=None, show=True, ax=None, fname=None,
+                         **kwargs):
+        """
+        Plot the correlation with another function.
+
+        Usage
+        -----
+        x.plot_correlation(hlm, [lmax, grid, legend, legend_loc,
+                                 axes_labelsize, tick_labelsize,
+                                 show, ax, fname, **kwargs])
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The second function used in computing the spectral correlation.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        legend : str, optional, default = None
+            Text to use for the legend.
+        legend_loc : str, optional, default = 'best'
+            Location of the legend, such as 'upper right' or 'lower center'
+            (see pyplot.legend for all options).
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        fname : str, optional, default = None
+            If present, and if axes is not specified, save the image to the
+            specified file.
+        **kwargs : keyword arguments, optional
+            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+
+        Notes
+        -----
+        The spectral correlation is defined as
+
+            gamma(l) = Sgh(l) / sqrt( Sgg(l) Shh(l) )
+
+        where Sgh, Shh and Sgg are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        if lmax is None:
+            lmax = min(self.lmax, hlm.lmax)
+
+        corr = self.correlation(hlm, lmax=lmax)
+
+        ls = _np.arange(lmax + 1)
+
+        if ax is None:
+            fig, axes = _plt.subplots(1, 1)
+        else:
+            axes = ax
+
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+
+        axes.plot(ls, corr, label=legend, **kwargs)
+        if ax is None:
+            axes.set(xlim=(0, lmax))
+            axes.set(ylim=(-1, 1))
+        else:
+            axes.set(xlim=(0, max(lmax, ax.get_xbound()[1])))
+
+        axes.set_xlabel('Spherical harmonic degree',
+                        fontsize=axes_labelsize)
+        axes.set_ylabel('Correlation', fontsize=axes_labelsize)
+        axes.minorticks_on()
+        axes.tick_params(labelsize=tick_labelsize)
+        if legend is not None:
+            axes.legend(loc=legend_loc)
         axes.grid(grid, which='major')
 
         if ax is None:

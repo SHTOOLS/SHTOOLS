@@ -68,6 +68,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `tensor()` | Calculate the 9 components of the magnetic field tensor and return an SHMagTensor class instance. |
 | `plot_spectrum()` | Plot the spectrum as a function of spherical harmonic degree. |
 | `plot_spectrum2d()` | Plot the spectrum of all spherical-harmonic coefficients. |
+| `plot_correlation()` | Plot the correlation with another function. |
 | `to_array()` | Return an array of spherical harmonics coefficients with a different normalization convention. |
 | `to_file()` | Save raw spherical harmonic coefficients to a text or binary file. |
 | `to_netcdf()` | Return the coefficient data as a netcdf formatted file or object. |

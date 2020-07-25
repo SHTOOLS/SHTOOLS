@@ -22,8 +22,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 | Subclass name | Description |
 | ------------- | ----------- |
-| SHRealCoeffs | Real spherical harmonic coefficient class. |
-| SHComplexCoeffs | Complex spherical harmonic coefficient class. |
+| SHRealCoeffs | Real spherical harmonic coefficients class. |
+| SHComplexCoeffs | Complex spherical harmonic coefficients class. |
 
 ## Initialization
 
@@ -71,11 +71,11 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `expand()` | Evaluate the coefficients either on a spherical grid and return an SHGrid class instance, or for a list of latitude and longitude coordinates. |
 | `plot_spectrum()` | Plot the spectrum as a function of spherical harmonic degree. |
 | `plot_cross_spectrum()` | Plot the cross-spectrum of two functions. |
+| `plot_spectrum2d()` | Plot the spectrum of all spherical-harmonic coefficients. |
+| `plot_cross_spectrum2d()` | Plot the cross-spectrum of all spherical-harmonic coefficients. |
 | `plot_admittance()` | Plot the admittance with another function. |
 | `plot_correlation()` | Plot the correlation with another function. |
 | `plot_admitcorr()` | Plot the admittance and/or correlation with another function. |
-| `plot_spectrum2d()` | Plot the spectrum of all spherical-harmonic coefficients. |
-| `plot_cross_spectrum2d()` | Plot the cross-spectrum of all spherical-harmonic coefficients. |
 | `to_array()` | Return an array of spherical harmonics coefficients with a different normalization convention. |
 | `to_file()` | Save raw spherical harmonic coefficients to a text or binary file. |
 | `to_netcdf()` | Return the coefficient data as a netcdf formatted file or object. |
