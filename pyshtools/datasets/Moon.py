@@ -24,6 +24,7 @@ from pooch import HTTPDownloader as _HTTPDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..shclasses import SHMagCoeffs as _SHMagCoeffs
+from ..constants.Moon import omega as _omega
 
 
 def MoonTopo2600p(lmax=2600):
@@ -140,7 +141,7 @@ def GRGM900C(lmax=900):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   errors=True)
+                                   errors=True, omega=_omega.value)
 
 
 def GRGM1200B(lmax=1200):
@@ -170,7 +171,8 @@ def GRGM1200B(lmax=1200):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
-                                   r0_index=1, gm_index=0, errors=True)
+                                   r0_index=1, gm_index=0, errors=True,
+                                   omega=_omega.value)
 
 
 def GRGM1200B_RM1_1E0(lmax=1200):
@@ -201,7 +203,8 @@ def GRGM1200B_RM1_1E0(lmax=1200):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
-                                   r0_index=1, gm_index=0, errors=True)
+                                   r0_index=1, gm_index=0, errors=True,
+                                   omega=_omega.value)
 
 
 def GL0900D(lmax=900):
@@ -230,7 +233,7 @@ def GL0900D(lmax=900):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   errors=True)
+                                   errors=True, omega=_omega.value)
 
 
 def GL1500E(lmax=1500):
@@ -259,7 +262,7 @@ def GL1500E(lmax=1500):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   errors=True)
+                                   errors=True, omega=_omega.value)
 
 
 __all__ = ['MoonTopo2600p', 'T2015_449', 'Ravat2020', 'GRGM900C', 'GRGM1200B',

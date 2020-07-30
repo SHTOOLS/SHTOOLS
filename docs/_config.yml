@@ -95,4 +95,4 @@ url : https://shtools.github.io/SHTOOLS
 baseurl: /SHTOOLS
 
 plugins:
-  - "jekyll-github-metadata"
+  - jekyll-github-metadata

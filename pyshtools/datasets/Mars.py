@@ -23,6 +23,7 @@ from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..shclasses import SHMagCoeffs as _SHMagCoeffs
 from pooch import Decompress as _Decompress
+from ..constants.Mars import omega as _omega
 
 
 def MarsTopo2600(lmax=2600):
@@ -75,7 +76,8 @@ def GMM3(lmax=120):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   r0_index=0, gm_index=1, errors=True)
+                                   r0_index=0, gm_index=1, errors=True,
+                                   omega=_omega.value)
 
 
 def GMM3_RM1_1E0(lmax=150):
@@ -104,7 +106,8 @@ def GMM3_RM1_1E0(lmax=150):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
-                                   r0_index=1, gm_index=0, errors=False)
+                                   r0_index=1, gm_index=0, errors=False,
+                                   omega=_omega.value)
 
 
 def MRO120D(lmax=120):
@@ -131,7 +134,8 @@ def MRO120D(lmax=120):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   r0_index=0, gm_index=1, errors=True)
+                                   r0_index=0, gm_index=1, errors=True,
+                                   omega=_omega.value)
 
 
 def Langlais2019(lmax=134):

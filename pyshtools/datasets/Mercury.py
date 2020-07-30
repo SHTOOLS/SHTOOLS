@@ -18,6 +18,7 @@ from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
+from ..constants.Mercury import omega as _omega
 
 
 def GTMES150(lmax=150):
@@ -73,7 +74,7 @@ def JGMESS160A(lmax=160):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   errors=True)
+                                   errors=True, omega=_omega.value)
 
 
 def JGMESS160A_ACCEL(lmax=160):
@@ -102,7 +103,7 @@ def JGMESS160A_ACCEL(lmax=160):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   errors=True)
+                                   errors=True, omega=_omega.value)
 
 
 def JGMESS160A_TOPOSIG(lmax=160):
@@ -131,7 +132,7 @@ def JGMESS160A_TOPOSIG(lmax=160):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   errors=True)
+                                   errors=True, omega=_omega.value)
 
 
 def GGMES100V08(lmax=100):
@@ -160,7 +161,7 @@ def GGMES100V08(lmax=100):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   errors=True)
+                                   errors=True, omega=_omega.value)
 
 
 __all__ = ['GTMES150', 'JGMESS160A', 'JGMESS160A_ACCEL', 'JGMESS160A_TOPOSIG',
