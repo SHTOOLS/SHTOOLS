@@ -3,7 +3,8 @@ pyshtools
 =========
 
 pyshtools a scientific package that can be used to perform spherical harmonic
-transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere.
+transforms and reconstructions, rotations of data expressed in spherical
+harmonics, and multitaper spectral analyses on the sphere.
 
 This module imports the following classes and subpackages into the
 main namespace:

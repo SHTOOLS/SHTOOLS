@@ -6,6 +6,7 @@ import copy as _copy
 import xarray as _xr
 
 from .shgrid import SHGrid as _SHGrid
+from .shgrid import _pygmt_module
 
 
 class SHGeoid(object):
@@ -339,10 +340,14 @@ class SHGeoid(object):
         if self.epoch is not None:
             attrs['epoch'] = self.epoch
 
-        return _xr.DataArray(self.geoid.to_array(),
-                             dims=('latitude', 'longitude'),
-                             coords=[('latitude', self.geoid.lats(),
-                                      {'units': 'degrees_north'}),
-                                     ('longitude', self.geoid.lons(),
-                                      {'units': 'degrees_east'})],
-                             attrs=attrs)
+        da = _xr.DataArray(self.geoid.to_array(),
+                           dims=('latitude', 'longitude'),
+                           coords=[('latitude', self.geoid.lats(),
+                                    {'units': 'degrees_north'}),
+                                   ('longitude', self.geoid.lons(),
+                                    {'units': 'degrees_east'})],
+                           attrs=attrs)
+        if _pygmt_module:
+            da.gmt.registration = 0
+            da.gmt.gtype = 1
+        return da
