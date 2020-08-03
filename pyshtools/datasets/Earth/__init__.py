@@ -188,10 +188,10 @@ def EIGEN_GRGS_RL04_MEAN_FIELD(epoch=None, lmax=300):
 
 def XGM2019E(lmax=2190):
     '''
-    XGM2019E is a degree 2190 experimental model of the Earth's gravity field
-    in a zero-tide system. This model is based on data from altimetry,
-    ground-based measurements, topography, and satellites. The error
-    coefficients are formal.
+    XGM2019E is a degree 2190 model of the Earth's gravity field in a zero-tide
+    system. This combined model is based on data from altimetry, ground-based
+    measurements, topography, and satellites. The error coefficients are
+    formal.
 
     Parameters
     ----------
@@ -200,9 +200,9 @@ def XGM2019E(lmax=2190):
 
     Reference
     ---------
-    Zingerle, P., Pail, R., Gruber, T., Oikonomidou, X. (2019). The
-        experimental gravity field model XGM2019e, GFZ Data Services,
-        http://doi.org/10.5880/ICGEM.2019.007.
+    Zingerle, P., Pail, R., Gruber, T., Oikonomidou, X. (2020). The combined
+        global gravity field model XGM2019e, Journal of Geodesy, 94, 66,
+        doi:10.1007/s00190-020-01398-0.
     '''
     fname = _retrieve(
         url="http://icgem.gfz-potsdam.de/getmodel/gfc/eeb03971cf6e533e6eeb6b010336463286dcda0846684248d5530acf8e800055/XGM2019e_2159.gfc",  # noqa: E501

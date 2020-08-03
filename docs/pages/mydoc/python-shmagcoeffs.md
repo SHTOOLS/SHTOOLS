@@ -58,6 +58,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | ------ | ----------- |
 | `degrees()` | Return an array listing the spherical harmonic degrees from `0` to `lmax`. |
 | `spectrum()` | Return the spectrum of the function. |
+| `correlation()` | Return the spectral correlation with another function. |
 | `set_coeffs()` | Set coefficients in-place to specified values.|
 | `change_ref()` | Return a new class instance referenced to a different reference radius, r0. |
 | `rotate()` | Rotate the coordinate system used to express the spherical harmonics coefficients and return a new class instance.|
@@ -67,6 +68,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `tensor()` | Calculate the 9 components of the magnetic field tensor and return an SHMagTensor class instance. |
 | `plot_spectrum()` | Plot the spectrum as a function of spherical harmonic degree. |
 | `plot_spectrum2d()` | Plot the spectrum of all spherical-harmonic coefficients. |
+| `plot_correlation()` | Plot the correlation with another function. |
 | `to_array()` | Return an array of spherical harmonics coefficients with a different normalization convention. |
 | `to_file()` | Save raw spherical harmonic coefficients to a text or binary file. |
 | `to_netcdf()` | Return the coefficient data as a netcdf formatted file or object. |

@@ -187,6 +187,7 @@ GEM
       jekyll (>= 3.3, < 5.0)
     jekyll-watch (2.2.1)
       listen (~> 3.0)
+    jekyll_version_plugin (2.0.0)
     jemoji (0.11.1)
       gemoji (~> 3.0)
       html-pipeline (~> 2.2)
@@ -236,13 +237,14 @@ GEM
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unicode-display_width (1.7.0)
-    zeitwerk (2.3.1)
+    zeitwerk (2.4.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   github-pages
+  jekyll_version_plugin
 
 BUNDLED WITH
    2.1.4

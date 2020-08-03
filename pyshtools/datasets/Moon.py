@@ -16,6 +16,7 @@ GL1500E           :  Konopliv et al. (2014)
 Magnetic field
 --------------
 T2015_449         :  Wieczorek (2018), using data from Tsunakawa et al. (2015)
+Ravat2020         :  Ravat et al. (2020)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
@@ -23,6 +24,7 @@ from pooch import HTTPDownloader as _HTTPDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..shclasses import SHMagCoeffs as _SHMagCoeffs
+from ..constants.Moon import omega as _omega
 
 
 def MoonTopo2600p(lmax=2600):
@@ -84,6 +86,35 @@ def T2015_449(lmax=449):
                                   file_units='T', units='nT')
 
 
+def Ravat2020(lmax=450):
+    '''
+    Ravat2020 is a 450 degree and order spherical harmonic model of the
+    magnetic potential of the Moon. This model is based on using magnetic
+    monopoles with an L1-norm regularisation. The coefficients are output
+    in units of nT.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    References
+    ----------
+    Ravat, D., Purucker, M. E., Olsen, N. (2020). Lunar magnetic field models
+        from Lunar Prospector and SELENE/Kaguya along‐track magnetic field
+        gradients, Journal of Geophysical Research: Planets, 125,
+        e2019JE006187, doi:10.1029/2019JE006187.
+    '''
+    fname = _retrieve(
+        url="https://uknowledge.uky.edu/cgi/viewcontent.cgi?filename=4&article=1001&context=ees_data&type=additional",  # noqa: E501
+        known_hash="sha256:dd1128d7819a8de097f3abeba93fee4cb80fced5bd63d56cca5a9bc70ac2bea9",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHMagCoeffs.from_file(fname, lmax=lmax, header=True, skip=8,
+                                  header_units='km')
+
+
 def GRGM900C(lmax=900):
     '''
     GRGM900C is a GSFC 900 degree and order spherical harmonic model of the
@@ -110,7 +141,7 @@ def GRGM900C(lmax=900):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   errors=True)
+                                   errors=True, omega=_omega.value)
 
 
 def GRGM1200B(lmax=1200):
@@ -140,7 +171,8 @@ def GRGM1200B(lmax=1200):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
-                                   r0_index=1, gm_index=0, errors=True)
+                                   r0_index=1, gm_index=0, errors=True,
+                                   omega=_omega.value)
 
 
 def GRGM1200B_RM1_1E0(lmax=1200):
@@ -171,7 +203,8 @@ def GRGM1200B_RM1_1E0(lmax=1200):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
-                                   r0_index=1, gm_index=0, errors=True)
+                                   r0_index=1, gm_index=0, errors=True,
+                                   omega=_omega.value)
 
 
 def GL0900D(lmax=900):
@@ -200,7 +233,7 @@ def GL0900D(lmax=900):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   errors=True)
+                                   errors=True, omega=_omega.value)
 
 
 def GL1500E(lmax=1500):
@@ -229,8 +262,8 @@ def GL1500E(lmax=1500):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   errors=True)
+                                   errors=True, omega=_omega.value)
 
 
-__all__ = ['MoonTopo2600p', 'T2015_449', 'GRGM900C', 'GRGM1200B',
+__all__ = ['MoonTopo2600p', 'T2015_449', 'Ravat2020', 'GRGM900C', 'GRGM1200B',
            'GRGM1200B_RM1_1E0', 'GL0900D', 'GL1500E']

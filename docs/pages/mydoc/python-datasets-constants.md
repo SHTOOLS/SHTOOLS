@@ -84,7 +84,7 @@ The following is the list of implemented datasets:
 | GGM05C | Degree 360 model of the Earth's gravity field in a zero-tide system (Ries et al. 2016). This model is based on data from altimetry, ground-based measurements, and the satellites GOCE and GRACE. |
 | GOCO06S | Degree 300 model of the Earth's gravity field in a zero-tide system (Kvas et al. 2019). This model is based solely on satellite data. |
 | EIGEN_GRGS_RL04_MEAN_FIELD | Degree 300 model of the Earth's gravity field in a tide-free system (Lemoine et al. 2019). This model is based solely on satellite data. |
-| XGM2019E | Degree 2190 experimental model of the Earth's gravity field in a zero-tide system (Zingerle et al. 2019). This model is based on data from altimetry, ground-based measurements, topography, and satellites. |
+| XGM2019E | Degree 2190 model of the Earth's gravity field in a zero-tide system (Zingerle et al. 2020). This combined model is based on data from altimetry, ground-based measurements, topography, and satellites. |
 | IGRF_13 | Degree 13 time-variable model of the Earth's main magnetic field that is valid between 1900 and 2020 (Thébault et al. 2015). |
 | SWARM_MLI_2D_0501 | Degree 133 magnetic field model of the Earth's lithsophere that is based largely on satellite data (Thébault et al. 2013). Though this model is based largely on data from the SWARM mission, data from the CHAMP mission  and some ground-based measurements are also used. |
 | NGDC_720_V3 | Degree 740 magnetic field model of the Earth's lithsophere that was compiled from satellite, marine, aeromagnetic and ground-based magnetic surveys (Maus 2010). |
@@ -102,6 +102,7 @@ The following is the list of implemented datasets:
 | GL0900D | JPL 900 degree and order spherical harmonic model of the gravitational potential of the Moon (Konopliv et al. 2014). This model applies a Kaula constraint for degrees greater than 700. |
 | GL1500E | JPL 1500 degree and order spherical harmonic model of the gravitational potential of the Moon (Konopliv et al. 2014). This model applies a Kaula constraint for degrees greater than 700. |
 | T2015_449 | 449 degree and order spherical harmonic model of the magnetic potential of the Moon. This model was used in Wieczorek (2018) and is a spherical harmonic expansion of the global magnetic field model of Tsunakawa et al. (2015). |
+| Ravat2020 | 450 degree and order spherical harmonic model of the magnetic potential of the Moon. This model is based on using magnetic monopoles with an L1-norm regularisation. |
 
 
 ### Mars

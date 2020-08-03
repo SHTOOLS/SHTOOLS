@@ -23,13 +23,9 @@ from ..shio import read_bshc as _read_bshc
 from ..shio import write_bshc as _write_bshc
 
 
-# =============================================================================
-# =========    COEFFICIENT CLASSES    =========================================
-# =============================================================================
-
 class SHCoeffs(object):
     """
-    Spherical Harmonics Coefficient class.
+    Spherical Harmonic Coefficients class.
 
     The coefficients of this class can be initialized using one of the four
     constructor methods:
@@ -87,6 +83,11 @@ class SHCoeffs(object):
                             of spherical harmonic degree.
     cross_spectrum()      : Return the cross-spectrum of two functions as a
                             function of spherical harmonic degree.
+    admittance()          : Return the admittance with another function.
+    correlation()         : Return the spectral correlation with another
+                            function.
+    admitcorr()           : Return the admittance and spectral correlation with
+                            another function.
     volume()              : Calculate the volume of the body.
     centroid()            : Compute the centroid of the body.
     set_coeffs()          : Set coefficients in-place to specified values.
@@ -103,6 +104,11 @@ class SHCoeffs(object):
     plot_spectrum()       : Plot the spectrum as a function of spherical
                             harmonic degree.
     plot_cross_spectrum() : Plot the cross-spectrum of two functions.
+    plot_admittance()     : Plot the admittance with another function.
+    plot_correlation()    : Plot the spectral correlation with another
+                            function.
+    plot_admitcorr()      : Plot the admittance and spectral correlation with
+                            another function.
     plot_spectrum2d()     : Plot the 2D spectrum of all spherical harmonic
                             degrees and orders.
     plot_cross_spectrum2d() : Plot the 2D cross-spectrum of all spherical
@@ -1054,13 +1060,14 @@ class SHCoeffs(object):
 
         ds.to_netcdf(filename)
 
-    def to_array(self, normalization=None, csphase=None, lmax=None):
+    def to_array(self, normalization=None, csphase=None, lmax=None,
+                 errors=True):
         """
         Return spherical harmonic coefficients (and errors) as a numpy array.
 
         Usage
         -----
-        coeffs, [errors] = x.to_array([normalization, csphase, lmax])
+        coeffs, [errors] = x.to_array([normalization, csphase, lmax, errors])
 
         Returns
         -------
@@ -1068,7 +1075,7 @@ class SHCoeffs(object):
             numpy ndarray of the spherical harmonic coefficients.
         errors : ndarry, shape (2, lmax+1, lmax+1)
             numpy ndarray of the errors of the spherical harmonic
-            coefficients if they are not None.
+            coefficients if they are not None and errors is True.
 
         Parameters
         ----------
@@ -1083,6 +1090,9 @@ class SHCoeffs(object):
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output. If lmax is greater
             than x.lmax, the array will be zero padded.
+        errors : bool, optional, default = True
+            If True, return separate arrays of the coefficients and errors. If
+            False, return only the coefficients.
 
         Notes
         -----
@@ -1107,7 +1117,7 @@ class SHCoeffs(object):
                           csphase_in=self.csphase, csphase_out=csphase,
                           lmax=lmax)
 
-        if self.errors is not None:
+        if self.errors is not None and errors:
             errors = _convert(self.errors, normalization_in=self.normalization,
                               normalization_out=normalization,
                               csphase_in=self.csphase, csphase_out=csphase,
@@ -1504,6 +1514,190 @@ class SHCoeffs(object):
                                normalization=self.normalization,
                                convention=convention, unit=unit, base=base,
                                lmax=lmax)
+
+    def admittance(self, hlm, errors=True, lmax=None):
+        """
+        Return the admittance of two functions, Sgh(l) / Shh(l).
+
+        Usage
+        -----
+        admittance = g.admittance(hlm, [errors, lmax])
+
+        Returns
+        -------
+        admittance : ndarray, shape (lmax+1) or (2, lmax+1)
+            1-D array of the admittance (errors=False) or 2-D array of the
+            admittance and its uncertainty (errors=True), where lmax is the
+            maximum spherical harmonic degree.
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The function h used in computing the admittance Sgh / Shh.
+        errors : bool, optional, default = True
+            Return the uncertainty of the admittance.
+        lmax : int, optional, default = g.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+
+        Notes
+        -----
+        If two functions g and h are related by the equation
+
+            glm = Z(l) hlm + nlm
+
+        where nlm is a zero-mean random variable, the admittance Z(l) can be
+        estimated using
+
+            Z(l) = Sgh(l) / Shh(l),
+
+        where Sgh, Shh and Sgg are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        if not isinstance(hlm, SHCoeffs):
+            raise ValueError('hlm must be an SHCoeffs class instance. Input '
+                             'type is {:s}.'.format(repr(type(hlm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, hlm.lmax)
+
+        sgh = _cross_spectrum(self.coeffs,
+                              hlm.to_array(normalization=self.normalization,
+                                           csphase=self.csphase, lmax=lmax,
+                                           errors=False),
+                              normalization=self.normalization,
+                              lmax=lmax)
+        shh = _spectrum(hlm.coeffs, normalization=hlm.normalization, lmax=lmax)
+
+        with _np.errstate(invalid='ignore', divide='ignore'):
+            admit = sgh / shh
+            if errors:
+                sgg = _spectrum(self.coeffs, normalization=self.normalization,
+                                lmax=lmax)
+                sigma = (sgg / shh) * (1. - sgh**2 / sgg / shh) / \
+                    _np.arange(lmax+1) / 2.
+                admit = _np.column_stack((admit, _np.sqrt(sigma)))
+        return admit
+
+    def correlation(self, hlm, lmax=None):
+        """
+        Return the spectral correlation with another function.
+
+        Usage
+        -----
+        correlation = g.correlation(hlm, [lmax])
+
+        Returns
+        -------
+        correlation : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the spectral correlation, where lmax is the
+            maximum spherical harmonic degree.
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The function h used in computing the spectral correlation.
+        lmax : int, optional, default = g.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+
+        Notes
+        -----
+        The spectral correlation is defined as
+
+            gamma(l) = Sgh(l) / sqrt( Sgg(l) Shh(l) )
+
+        where Sgh, Shh and Sgg are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        from .shgravcoeffs import SHGravCoeffs as _SHGravCoeffs
+        from .shmagcoeffs import SHMagCoeffs as _SHMagCoeffs
+        if not isinstance(hlm, (SHCoeffs, _SHMagCoeffs, _SHGravCoeffs)):
+            raise ValueError('hlm must be an SHCoeffs, SHMagCoeffs or '
+                             'SHGravCoeffs class instance. Input type is {:s}.'
+                             .format(repr(type(hlm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, hlm.lmax)
+
+        sgg = _spectrum(self.coeffs, normalization=self.normalization,
+                        lmax=lmax)
+        shh = _spectrum(hlm.coeffs, normalization=hlm.normalization, lmax=lmax)
+        sgh = _cross_spectrum(self.coeffs,
+                              hlm.to_array(normalization=self.normalization,
+                                           csphase=self.csphase, lmax=lmax,
+                                           errors=False),
+                              normalization=self.normalization,
+                              lmax=lmax)
+
+        with _np.errstate(invalid='ignore', divide='ignore'):
+            return sgh / _np.sqrt(sgg * shh)
+
+    def admitcorr(self, hlm, errors=True, lmax=None):
+        """
+        Return the admittance and spectral correlation of two functions.
+
+        Usage
+        -----
+        admittance, correlation = g.admitcorr(hlm, [errors, lmax])
+
+        Returns
+        -------
+        admittance : ndarray, shape (lmax+1) or (2, lmax+1)
+            1-D array of the admittance (errors=False) or 2-D array of the
+            admittance and its uncertainty (errors=True), where lmax is the
+            maximum spherical harmonic degree.
+        correlation : ndarray, shape (lmax+1)
+            1-D numpy ndarray of the spectral correlation, where lmax is the
+            maximum spherical harmonic degree.
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The function h used in computing the admittance and spectral
+            correlation.
+        errors : bool, optional, default = True
+            Return the uncertainty of the admittance.
+        lmax : int, optional, default = g.lmax
+            Maximum spherical harmonic degree of the spectrum to output.
+
+        Notes
+        -----
+        If two functions g and h are related by the equation
+
+            glm = Z(l) hlm + nlm
+
+        where nlm is a zero-mean random variable, the admittance and spectral
+        correlation gamma(l) can be estimated using
+
+            Z(l) = Sgh(l) / Shh(l)
+            gamma(l) = Sgh(l) / sqrt( Sgg(l) Shh(l) )
+
+        where Sgh, Shh and Sgg are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        if not isinstance(hlm, SHCoeffs):
+            raise ValueError('hlm must be an SHCoeffs class instance. Input '
+                             'type is {:s}.'.format(repr(type(hlm))))
+
+        if lmax is None:
+            lmax = min(self.lmax, hlm.lmax)
+
+        sgg = _spectrum(self.coeffs, normalization=self.normalization,
+                        lmax=lmax)
+        shh = _spectrum(hlm.coeffs, normalization=hlm.normalization, lmax=lmax)
+        sgh = _cross_spectrum(self.coeffs,
+                              hlm.to_array(normalization=self.normalization,
+                                           csphase=self.csphase, lmax=lmax,
+                                           errors=False),
+                              normalization=self.normalization,
+                              lmax=lmax)
+
+        with _np.errstate(invalid='ignore', divide='ignore'):
+            admit = sgh / shh
+            corr = sgh / _np.sqrt(sgg * shh)
+            if errors:
+                sigma = (sgg / shh) * (1. - corr**2) / _np.arange(lmax+1) / 2.
+                admit = _np.column_stack((admit, _np.sqrt(sigma)))
+            return admit, corr
 
     def volume(self, lmax=None):
         """
@@ -1940,9 +2134,9 @@ class SHCoeffs(object):
     # ---- Plotting routines ----
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
-                      legend=None, legend_error='error', axes_labelsize=None,
-                      tick_labelsize=None, show=True, ax=None, fname=None,
-                      **kwargs):
+                      legend=None, legend_error='error', legend_loc='best',
+                      axes_labelsize=None, tick_labelsize=None, show=True,
+                      ax=None, fname=None, **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
@@ -1950,7 +2144,7 @@ class SHCoeffs(object):
         -----
         x.plot_spectrum([convention, unit, base, lmax, xscale, yscale, grid,
                          axes_labelsize, tick_labelsize, legend, legend_error,
-                         show, ax, fname, **kwargs])
+                         legend_loc, show, ax, fname, **kwargs])
 
         Parameters
         ----------
@@ -1979,6 +2173,9 @@ class SHCoeffs(object):
             Text to use for the legend.
         legend_error : str, optional, default = 'error'
             Text to use for the legend of the error spectrum.
+        legend_loc : str, optional, default = 'best'
+            Location of the legend, such as 'upper right' or 'lower center'
+            (see pyplot.legend for all options).
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -2091,7 +2288,7 @@ class SHCoeffs(object):
         axes.grid(grid, which='major')
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
-        axes.legend()
+        axes.legend(loc=legend_loc)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2103,9 +2300,9 @@ class SHCoeffs(object):
 
     def plot_cross_spectrum(self, clm, convention='power', unit='per_l',
                             base=10., lmax=None, xscale='lin', yscale='log',
-                            grid=True, legend=None, axes_labelsize=None,
-                            tick_labelsize=None, show=True, ax=None,
-                            fname=None, **kwargs):
+                            grid=True, legend=None, legend_loc='best',
+                            axes_labelsize=None, tick_labelsize=None,
+                            show=True, ax=None, fname=None, **kwargs):
         """
         Plot the cross-spectrum of two functions.
 
@@ -2113,8 +2310,8 @@ class SHCoeffs(object):
         -----
         x.plot_cross_spectrum(clm, [convention, unit, base, lmax, xscale,
                                     yscale, grid, axes_labelsize,
-                                    tick_labelsize, legend, show, ax,
-                                    fname, **kwargs])
+                                    tick_labelsize, legend, legend_loc, show,
+                                    ax, fname, **kwargs])
 
         Parameters
         ----------
@@ -2143,6 +2340,9 @@ class SHCoeffs(object):
             If True, plot grid lines.
         legend : str, optional, default = None
             Text to use for the legend.
+        legend_loc : str, optional, default = 'best'
+            Location of the legend, such as 'upper right' or 'lower center'
+            (see pyplot.legend for all options).
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -2250,7 +2450,7 @@ class SHCoeffs(object):
         axes.grid(grid, which='major')
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
-        axes.legend()
+        axes.legend(loc=legend_loc)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2689,6 +2889,327 @@ class SHCoeffs(object):
             if fname is not None:
                 fig.savefig(fname)
             return fig, axes
+
+    def plot_admitcorr(self, hlm, errors=True, style='separate', lmax=None,
+                       grid=True, legend=None, legend_loc='best',
+                       axes_labelsize=None, tick_labelsize=None,
+                       elinewidth=0.75, show=True, ax=None, ax2=None,
+                       fname=None, **kwargs):
+        """
+        Plot the admittance and/or correlation with another function.
+
+        Usage
+        -----
+        x.plot_admitcorr(hlm, [errors, style, lmax, grid, legend, legend_loc,
+                               axes_labelsize, tick_labelsize, elinewidth,
+                               show, ax, ax2, fname, **kwargs])
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The second function used in computing the admittance and
+            correlation.
+        errors : bool, optional, default = True
+            Plot the uncertainty of the admittance.
+        style : str, optional, default = 'separate'
+            Style of the plot. 'separate' to plot the admittance and
+            correlation in separate plots, 'combined' to plot the admittance
+            and correlation in a single plot, 'admit' to plot only the
+            admittance, or 'corr' to plot only the correlation.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        grid : bool, optional, default = True
+            If True, plot grid lines. grid is set to False when style is
+            'combined'.
+        legend : str, optional, default = None
+            Text to use for the legend. If style is 'combined' or 'separate',
+            provide a list of two strings for the admittance and correlation,
+            respectively.
+        legend_loc : str, optional, default = 'best'
+            Location of the legend, such as 'upper right' or 'lower center'
+            (see pyplot.legend for all options). If style is 'separate',
+            provide a list of two strings for the admittance and correlation,
+            respectively.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        elinewidth : float, optional, default = 0.75
+            Line width of the error bars when errors is True.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        ax2 : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the second plot will appear
+            when style is 'separate'.
+        fname : str, optional, default = None
+            If present, and if axes is not specified, save the image to the
+            specified file.
+        **kwargs : keyword arguments, optional
+            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+
+        Notes
+        -----
+        If two functions g and h are related by the equation
+
+            glm = Z(l) hlm + nlm
+
+        where nlm is a zero-mean random variable, the admittance and spectral
+        correlation gamma(l) can be estimated using
+
+            Z(l) = Sgh(l) / Shh(l)
+            gamma(l) = Sgh(l) / sqrt( Sgg(l) Shh(l) )
+
+        where Sgh, Shh and Sgg are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        if lmax is None:
+            lmax = min(self.lmax, hlm.lmax)
+
+        if style in ('combined', 'separate'):
+            admit, corr = self.admitcorr(hlm, errors=errors, lmax=lmax)
+        elif style == 'corr':
+            corr = self.correlation(hlm, lmax=lmax)
+        elif style == 'admit':
+            admit = self.admittance(hlm, errors=errors, lmax=lmax)
+        else:
+            raise ValueError("style must be 'combined', 'separate', 'admit' "
+                             "or 'corr'. Input value is {:s}"
+                             .format(repr(style)))
+
+        ls = _np.arange(lmax + 1)
+
+        if style == 'separate':
+            if ax is None:
+                scale = 0.4
+                figsize = (_mpl.rcParams['figure.figsize'][0],
+                           _mpl.rcParams['figure.figsize'][0]*scale)
+                fig, (axes, axes2) = _plt.subplots(1, 2, figsize=figsize)
+            else:
+                axes = ax
+                axes2 = ax2
+        elif style == 'combined':
+            if ax is None:
+                fig, axes = _plt.subplots(1, 1)
+                axes2 = axes.twinx()
+            else:
+                axes = ax
+                axes2 = axes.twinx()
+        else:
+            if ax is None:
+                fig, axes = _plt.subplots(1, 1)
+            else:
+                axes = ax
+
+        if style in ('separate', 'combined'):
+            admitax = axes
+            corrax = axes2
+        elif style == 'admit':
+            admitax = axes
+        elif style == 'corr':
+            corrax = axes
+
+        if legend is None:
+            legend = [None, None]
+        elif style == 'admit':
+            legend = [legend, None]
+            legend_loc = [legend_loc, None]
+        elif style == 'corr':
+            legend = [None, legend]
+            legend_loc = [None, legend_loc]
+        elif style == 'combined':
+            legend_loc = [legend_loc, legend_loc]
+        else:
+            if type(legend_loc) is str:
+                legend_loc = [legend_loc, legend_loc]
+
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+
+        if style in ('admit', 'separate', 'combined'):
+            if errors:
+                admitax.errorbar(ls, admit[:, 0], yerr=admit[:, 1],
+                                 label=legend[0], elinewidth=elinewidth,
+                                 **kwargs)
+            else:
+                admitax.plot(ls, admit, label=legend[0], **kwargs)
+            if ax is None:
+                admitax.set(xlim=(0, lmax))
+            else:
+                admitax.set(xlim=(0, max(lmax, ax.get_xbound()[1])))
+            admitax.set_xlabel('Spherical harmonic degree',
+                               fontsize=axes_labelsize)
+            admitax.set_ylabel('Admittance', fontsize=axes_labelsize)
+            admitax.minorticks_on()
+            admitax.tick_params(labelsize=tick_labelsize)
+            if legend[0] is not None:
+                if style != 'combined':
+                    admitax.legend(loc=legend_loc[0])
+            if style != 'combined':
+                admitax.grid(grid, which='major')
+
+        if style in ('corr', 'separate', 'combined'):
+            if style == 'combined':
+                # plot with next color
+                next(corrax._get_lines.prop_cycler)['color']
+            corrax.plot(ls, corr, label=legend[1], **kwargs)
+            if ax is None:
+                corrax.set(xlim=(0, lmax))
+                corrax.set(ylim=(-1, 1))
+            else:
+                corrax.set(xlim=(0, max(lmax, ax.get_xbound()[1])))
+            corrax.set_xlabel('Spherical harmonic degree',
+                              fontsize=axes_labelsize)
+            corrax.set_ylabel('Correlation', fontsize=axes_labelsize)
+            corrax.minorticks_on()
+            corrax.tick_params(labelsize=tick_labelsize)
+            if legend[1] is not None:
+                if style == 'combined':
+                    lines, labels = admitax.get_legend_handles_labels()
+                    lines2, labels2 = corrax.get_legend_handles_labels()
+                    corrax.legend(lines + lines2, labels + labels2,
+                                  loc=legend_loc[1])
+                else:
+                    corrax.legend(loc=legend_loc[1])
+            if style != 'combined':
+                corrax.grid(grid, which='major')
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            if show:
+                fig.show()
+            if fname is not None:
+                fig.savefig(fname)
+            if style in ('separate', 'combined'):
+                return fig, (axes, axes2)
+            else:
+                return fig, axes
+
+    def plot_admittance(self, hlm, errors=True, lmax=None, grid=True,
+                        legend=None, legend_loc='best', axes_labelsize=None,
+                        tick_labelsize=None, elinewidth=0.75, show=True,
+                        ax=None, fname=None, **kwargs):
+        """
+        Plot the admittance with another function.
+
+        Usage
+        -----
+        x.plot_admittance(hlm, [errors, lmax, grid, legend, legend_loc,
+                                axes_labelsize, tick_labelsize, elinewidth,
+                                show, ax, fname, **kwargs])
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The second function used in computing the admittance.
+        errors : bool, optional, default = True
+            Plot the uncertainty of the admittance.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        legend : str, optional, default = None
+            Text to use for the legend.
+        legend_loc : str, optional, default = 'best'
+            Location of the legend, such as 'upper right' or 'lower center'
+            (see pyplot.legend for all options).
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        elinewidth : float, optional, default = 0.75
+            Line width of the error bars when errors is True.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        fname : str, optional, default = None
+            If present, and if axes is not specified, save the image to the
+            specified file.
+        **kwargs : keyword arguments, optional
+            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+
+        Notes
+        -----
+        If two functions g and h are related by the equation
+
+            glm = Z(l) hlm + nlm
+
+        where nlm is a zero-mean random variable, the admittance can be
+        estimated using
+
+            Z(l) = Sgh(l) / Shh(l)
+
+        where Sgh and Shh are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        return self.plot_admitcorr(hlm, errors=errors, style='admit',
+                                   lmax=lmax, grid=grid, legend=legend,
+                                   legend_loc=legend_loc,
+                                   axes_labelsize=axes_labelsize,
+                                   tick_labelsize=tick_labelsize,
+                                   elinewidth=elinewidth, show=True,
+                                   fname=fname, ax=ax, **kwargs)
+
+    def plot_correlation(self, hlm, lmax=None, grid=True, legend=None,
+                         legend_loc='best', axes_labelsize=None,
+                         tick_labelsize=None, elinewidth=0.75, show=True,
+                         ax=None, fname=None, **kwargs):
+        """
+        Plot the correlation with another function.
+
+        Usage
+        -----
+        x.plot_correlation(hlm, [lmax, grid, legend, legend_loc,
+                                 axes_labelsize, tick_labelsize, elinewidth,
+                                 show, ax, fname, **kwargs])
+
+        Parameters
+        ----------
+        hlm : SHCoeffs class instance.
+            The second function used in computing the correlation.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        legend : str, optional, default = None
+            Text to use for the legend.
+        legend_loc : str, optional, default = 'best'
+            Location of the legend, such as 'upper right' or 'lower center'
+            (see pyplot.legend for all options).
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        elinewidth : float, optional, default = 0.75
+            Line width of the error bars when errors is True.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        fname : str, optional, default = None
+            If present, and if axes is not specified, save the image to the
+            specified file.
+        **kwargs : keyword arguments, optional
+            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+
+        Notes
+        -----
+        The spectral correlation is defined as
+
+            gamma(l) = Sgh(l) / sqrt( Sgg(l) Shh(l) )
+
+        where Sgh, Shh and Sgg are the cross-power and power spectra of the
+        functions g (self) and h (input).
+        """
+        return self.plot_admitcorr(hlm, style='corr', lmax=lmax, grid=grid,
+                                   legend=legend, legend_loc=legend_loc,
+                                   axes_labelsize=axes_labelsize,
+                                   tick_labelsize=tick_labelsize,
+                                   show=True, fname=fname, ax=ax, **kwargs)
 
 
 # ================== REAL SPHERICAL HARMONICS ================

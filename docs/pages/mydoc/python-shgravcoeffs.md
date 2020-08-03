@@ -61,6 +61,9 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | ------ | ----------- |
 | `degrees()` | Return an array listing the spherical harmonic degrees from `0` to `lmax`. |
 | `spectrum()` | Return the spectrum of the function. |
+| `admittance()` | Return the admittance with an input topography function. |
+| `correlation()` | Return the spectral correlation with another function. |
+| `admitcorr()` | Return the admittance and spectral correlation with an input topography function. |
 | `set_omega()` | Set the angular rotation rate of the body. |
 | `set_coeffs()` | Set coefficients in-place to specified values.|
 | `change_ref()` | Return a new class instance referenced to a different gm, r0, or omega. |
@@ -72,6 +75,9 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `geoid()` | Calculate the height of the geoid and return an SHGeoid class instance. |
 | `plot_spectrum()` | Plot the spectrum as a function of spherical harmonic degree. |
 | `plot_spectrum2d()` | Plot the spectrum of all spherical-harmonic coefficients. |
+| `plot_correlation()` | Plot the correlation with another function. |
+| `plot_admittance()` | Plot the admittance with an input topography function. |
+| `plot_admitcorr()` | Plot the admittance and/or correlation with an input topography function. |
 | `to_array()` | Return an array of spherical harmonics coefficients with a different normalization convention. |
 | `to_file()` | Save raw spherical harmonic coefficients to a text or binary file. |
 | `to_netcdf()` | Return the coefficient data as a netcdf formatted file or object. |

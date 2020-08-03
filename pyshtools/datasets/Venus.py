@@ -14,6 +14,7 @@ from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
+from ..constants.Venus import omega as _omega
 
 
 def VenusTopo719(lmax=719):
@@ -64,7 +65,7 @@ def MGNP180U(lmax=180):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, skip=236, header=True,
                                    r0_index=1, gm_index=2, header_units='km',
-                                   errors=True)
+                                   errors=True, omega=_omega.value)
 
 
 __all__ = ['VenusTopo719', 'MGNP180U']

@@ -85,6 +85,8 @@ def figstyle(rel_width=0.75, screen_dpi=114, aspect_ratio=4/3,
         # legends
         'legend.framealpha': 1.,
         'legend.edgecolor': 'k',
+        # error bars
+        'errorbar.capsize': 1.5,
         # images
         'image.lut': 65536,  # 16 bit
         # savefig
