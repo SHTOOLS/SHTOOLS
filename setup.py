@@ -72,7 +72,7 @@ PYTHON_REQUIRES = '>={}'.format('.'.join(str(n) for n in min_version))
 INSTALL_REQUIRES = [
     'numpy>=' + str(numpy.__version__),
     'scipy>=0.14.0',
-    'matplotlib',
+    'matplotlib>=3.3',
     'astropy',
     'xarray',
     'requests',
