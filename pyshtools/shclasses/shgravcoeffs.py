@@ -2736,9 +2736,9 @@ class SHGravCoeffs(object):
                 legend = 'power per log bandwidth'
 
         if xscale == 'log':
-            axes.set_xscale('log', basex=base)
+            axes.set_xscale('log', base=base)
         if yscale == 'log':
-            axes.set_yscale('log', basey=base)
+            axes.set_yscale('log', base=base)
 
         if self.errors is not None:
             axes.plot(ls[2:lmax + 1], spectrum[2:lmax + 1], label=legend,

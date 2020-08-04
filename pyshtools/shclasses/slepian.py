@@ -907,10 +907,10 @@ class Slepian(object):
                 axtemp.set_ylabel('Energy', fontsize=axes_labelsize)
 
             if yscale == 'log':
-                axtemp.set_yscale('log', basey=base)
+                axtemp.set_yscale('log', base=base)
 
             if xscale == 'log':
-                axtemp.set_xscale('log', basex=base)
+                axtemp.set_xscale('log', base=base)
                 axtemp.plot(degrees[1:], spectrum[1:, alpha],
                             label='#{:d} [loss={:2.2g}]'
                             .format(alpha, 1-evalue))
