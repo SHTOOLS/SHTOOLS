@@ -1808,7 +1808,7 @@ class DHRealGrid(SHGrid):
                     cb_label=None, cb_ylabel=None, cb_tick_interval=None,
                     cb_minor_tick_interval=None, titlesize=None,
                     axes_labelsize=None, tick_labelsize=None, horizon=None,
-                    offset=None, cb_offset=None):
+                    offset=[None, None], cb_offset=None):
         """
         Plot projected data using pygmt.
         """
@@ -1917,11 +1917,11 @@ class DHRealGrid(SHGrid):
         if offset[0] is not None:
             xshift = str(offset[0]) + unit
         else:
-            xshift = False
+            xshift = None
         if offset[1] is not None:
             yshift = str(offset[1]) + unit
         else:
-            yshift = False
+            yshift = None
 
         if fig is None:
             figure = _pygmt.Figure()
@@ -1935,9 +1935,9 @@ class DHRealGrid(SHGrid):
                            FONT_ANNOT=tick_labelsize):
             _pygmt.makecpt(series=cmap_limits, cmap=cmap, reverse=cmap_reverse,
                            continuous=cmap_continuous)
+            figure.shift_origin(xshift=xshift, yshift=yshift)
             figure.grdimage(self.to_xarray(), region=region,
-                            projection=proj_str, frame=frame, X=xshift,
-                            Y=yshift)
+                            projection=proj_str, frame=frame)
             if colorbar is not None:
                 figure.colorbar(position=position, frame=cb_str)
 

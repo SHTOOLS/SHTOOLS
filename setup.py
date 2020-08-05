@@ -81,7 +81,7 @@ INSTALL_REQUIRES = [
 ]
 
 EXTRAS_REQUIRE = {
-    'maps': ['cartopy', 'pygmt', 'palettable']
+    'maps': ['cartopy', 'pygmt>=0.2', 'palettable']
 }
 
 print('INSTALLING SHTOOLS {}'.format(VERSION))

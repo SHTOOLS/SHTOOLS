@@ -75,11 +75,11 @@ When installing pyshtools using pip or conda, the following packages should be i
 
 For more specialized operations related to map projections, it will be necessary to install manually the following packages:
 
-* [Cartopy](https://scitools.org.uk/cartopy/docs/latest/): required for Cartopy map projections.
-* [pygmt](https://www.pygmt.org): required for pygmt map projections.
+* [Cartopy](https://scitools.org.uk/cartopy/docs/latest/): required for Cartopy map projections. Cartopy requires (see below) *proj*, *geos*, *cython*, *pyshp*, *six*, and *shapely*.
+* [pygmt](https://www.pygmt.org) (>=0.2): required for pygmt map projections. pygmt requires (see below) *gmt (>=6.1.1)*.
 * [palettable](https://jiffyclub.github.io/palettable/): scientific color maps required by one of the tutorials.
 
-## How to install Cartopy
+### How to install Cartopy
 
 The easiest way to install Cartopy is with conda:
 ```bash
@@ -96,8 +96,8 @@ pip install cartopy
 ```
 See [these instructions](https://scitools.org.uk/cartopy/docs/latest/installing.html#installing) for further details.
 
-## How to install pygmt
-In order to use the pygmt plotting routines, it will be necessary to install both *pygmt* and the *gmt* library. This is most easily achieved using conda with
+### How to install pygmt
+In order to use the *pygmt* plotting routines, it will be necessary to install both *pygmt (>=0.2)* and the *gmt (>=6.1.1)* library. This is most easily achieved using conda with
 ```bash
 conda install -c conda-forge pygmt gmt
 ```
