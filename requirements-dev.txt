@@ -1,0 +1,6 @@
+ipython
+palettable
+jupyter
+pypandoc
+cartopy
+pygmt>=0.2

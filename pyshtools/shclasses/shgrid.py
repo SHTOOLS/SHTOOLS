@@ -143,13 +143,14 @@ class SHGrid(object):
 
     @classmethod
     def from_zeros(self, lmax, grid='DH', kind='real', sampling=2,
-                   units=None, extend=True):
+                   units=None, extend=True, empty=False):
         """
         Initialize the class instance using an array of zeros.
 
         Usage
         -----
-        x = SHGrid.from_zeros(lmax, [grid, kind, sampling, units, extend])
+        x = SHGrid.from_zeros(lmax, [grid, kind, sampling, units, extend,
+                                     empty])
 
         Returns
         -------
@@ -174,6 +175,9 @@ class SHGrid(object):
         extend : bool, optional, default = True
             If True, include the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
+        empty : bool, optional, default = False
+            If True, create the data array using numpy.empty() and do not
+            initialize with zeros.
         """
         if type(grid) != str:
             raise ValueError('grid must be a string. Input type is {:s}.'
@@ -199,9 +203,15 @@ class SHGrid(object):
                 nlon += 1
 
         if kind == 'real':
-            array = _np.zeros((nlat, nlon), dtype=_np.float_)
+            if empty:
+                array = _np.empty((nlat, nlon), dtype=_np.float_)
+            else:
+                array = _np.zeros((nlat, nlon), dtype=_np.float_)
         else:
-            array = _np.zeros((nlat, nlon), dtype=_np.complex_)
+            if empty:
+                array = _np.empty((nlat, nlon), dtype=_np.complex_)
+            else:
+                array = _np.zeros((nlat, nlon), dtype=_np.complex_)
 
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
