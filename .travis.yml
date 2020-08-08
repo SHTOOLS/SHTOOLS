@@ -40,9 +40,8 @@ install:
         python=$PYTHON_VERSION
         numpy
         scipy
-        matplotlib
+        matplotlib>=3.3
         jupyter
-        mkl
         astropy
         xarray
         requests
