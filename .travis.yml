@@ -34,12 +34,12 @@ install:
   - conda install -c anaconda setuptools
   - conda update --force-reinstall -q conda
   - conda info -a
-  - conda config --append channels conda-forge
+  - conda config --add channels conda-forge
 
   - conda create -q -n test-environment
         python=$PYTHON_VERSION
         numpy
-        scipy
+        scipy>=0.14.0
         matplotlib>=3.3
         jupyter
         astropy
