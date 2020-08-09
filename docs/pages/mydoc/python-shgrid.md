@@ -37,6 +37,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `x = SHGrid.from_file()` | Initialize using an array from a file. |
 | `x = SHGrid.from_zeros()` | Initialize using an array of zeros. |
 | `x = SHGrid.from_cap()` | Initialize using a rotated spherical cap. |
+| `x = SHGrid.from_ellipsoid()` | Initialize using a triaxial ellipsoid. |
 
 
 ## Class attributes

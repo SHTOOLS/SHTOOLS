@@ -37,6 +37,7 @@ class SHGrid(object):
         x = SHGrid.from_file('fname.dat')
         x = SHGrid.from_zeros(lmax)
         x = SHGrid.from_cap(theta, clat, clon, lmax)
+        x = SHGrid.from_ellipsoid(lmax, a, b, c)
 
     The class instance defines the following class attributes:
 
@@ -91,7 +92,8 @@ class SHGrid(object):
               '>>> pyshtools.SHGrid.from_netcdf\n'
               '>>> pyshtools.SHGrid.from_file\n'
               '>>> pyshtools.SHGrid.from_zeros\n'
-              '>>> pyshtools.SHGrid.from_cap\n')
+              '>>> pyshtools.SHGrid.from_cap\n'
+              '>>> pyshtools.SHGrid.from_ellipsoid\n')
 
     # ---- Factory methods ----
     @classmethod
@@ -216,6 +218,70 @@ class SHGrid(object):
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
                 return cls(array, units=units, copy=False)
+
+    @classmethod
+    def from_ellipsoid(self, lmax, a, b=None, c=None, grid='DH', kind='real',
+                       sampling=2, units=None, extend=True):
+        """
+        Initialize the class instance with a triaxial ellipsoid whose principal
+        axes are aligned with the x, y, and z axes.
+
+        Usage
+        -----
+        x = SHGrid.from_ellipsoid(lmax, a, [b, c, grid, kind, sampling,
+                                            units, extend])
+
+        Returns
+        -------
+        x : SHGrid class instance
+
+        Parameters
+        ----------
+        a : float
+            Length of the principal axis aligned with the x axis.
+        b : float, optional, default = a
+            Length of the principal axis aligned with the y axis.
+        c : float, optional, default = b
+            Length of the principal axis aligned with the z axis.
+        lmax : int
+            The maximum spherical harmonic degree resolvable by the grid.
+        grid : str, optional, default = 'DH'
+            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
+            Quadrature grids, respectively.
+        kind : str, optional, default = 'real'
+            Either 'real' or 'complex' for the data type.
+        sampling : int, optional, default = 2
+            The longitudinal sampling for Driscoll and Healy grids. Either 1
+            for equally sampled grids (nlong=nlat) or 2 for equally spaced
+            grids in degrees (nlong=2*nlat with extend=False or nlong=2*nlat-1
+            with extend=True).
+        units : str, optional, default = None
+            The units of the gridded data.
+        extend : bool, optional, default = True
+            If True, include the longitudinal band for 360 E (DH and GLQ grids)
+            and the latitudinal band for 90 S (DH grids only).
+        """
+        temp = self.from_zeros(lmax, grid=grid, kind=kind, sampling=sampling,
+                               units=units, extend=extend, empty=True)
+        if c is None and b is None:
+            temp.data[:, :] = a
+        elif c is not None and b is None:
+            for ilat, lat in enumerate(temp.lats()):
+                temp.data[ilat, :] = _np.sqrt(
+                    a**2 * _np.cos(_np.deg2rad(lat))**2 +
+                    c**2 * _np.sin(_np.deg2rad(lat))**2)
+        else:
+            if c is None:
+                c = b
+            cos2 = _np.cos(_np.deg2rad(temp.lons()))**2
+            sin2 = _np.sin(_np.deg2rad(temp.lons()))**2
+            for ilat, lat in enumerate(temp.lats()):
+                temp.data[ilat, :] = _np.sqrt(
+                    a**2 * _np.cos(_np.deg2rad(lat))**2 * cos2 +
+                    b**2 * _np.cos(_np.deg2rad(lat))**2 * sin2 +
+                    c**2 * _np.sin(_np.deg2rad(lat))**2)
+
+        return temp
 
     @classmethod
     def from_cap(self, theta, clat, clon, lmax, grid='DH', kind='real',
