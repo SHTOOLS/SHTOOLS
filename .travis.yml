@@ -30,13 +30,10 @@ install:
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  #- conda install -c anaconda setuptools
-  #- conda update --force-reinstall -q conda
-  - conda update -q conda
-  - conda info -a
-  - conda config --append channels conda-forge
 
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda config --add channels conda-forge
   - conda create -q -n test-environment
         python=$PYTHON_VERSION
         numpy
@@ -53,6 +50,10 @@ install:
         tqdm
         palettable
   - source activate test-environment
+  # Conda debug
+  - conda list -n test-environment
+  - conda list -n test-environment --explicit
+  - conda info -a
   - pip install --no-deps .
 
 script:
