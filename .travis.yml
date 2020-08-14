@@ -33,7 +33,7 @@ install:
 
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
-  - conda config --add channels conda-forge
+  - conda config --append channels conda-forge
   - conda create -q -n test-environment
         python=$PYTHON_VERSION
         numpy
@@ -50,10 +50,13 @@ install:
         tqdm
         palettable
   - source activate test-environment
+
   # Conda debug
   - conda list -n test-environment
   - conda list -n test-environment --explicit
   - conda info -a
+
+  # Install pyshtools
   - pip install --no-deps .
 
 script:
