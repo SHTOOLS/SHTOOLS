@@ -13,16 +13,7 @@ addons:
     packages: libfftw3-dev libblas-dev liblapack-dev g++ gfortran tcsh
   homebrew:
     packages: fftw wget
-
-#before_install:
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-#       brew update;
-#       brew install fftw;
-#       brew upgrade wget;
-#    else
-#       sudo apt-get update;
-#       sudo apt-get install libfftw3-dev libblas-dev liblapack-dev g++ gfortran tcsh;
-#    fi
+    update: true
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
@@ -59,7 +50,6 @@ install:
 
   # Conda debug
   - conda list -n test-environment
-  - conda list -n test-environment --explicit
   - conda info -a
 
   # Install pyshtools
