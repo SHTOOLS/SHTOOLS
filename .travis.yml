@@ -13,6 +13,7 @@ matrix:
         directories:
           - $HOME/Library/Caches/Homebrew
           - /usr/local
+          - $HOME/miniconda
 
 addons:
   apt:
