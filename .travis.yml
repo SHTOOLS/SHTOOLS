@@ -10,9 +10,17 @@ matrix:
 
 addons:
   apt:
-    packages: libfftw3-dev libblas-dev liblapack-dev g++ gfortran tcsh
+    packages:
+    - libfftw3-dev
+    - libblas-dev
+    - liblapack-dev
+    - g++
+    - gfortran
+    - tcsh
   homebrew:
-    packages: fftw wget
+    packages:
+    - fftw
+    - wget
     update: true
 
 install:
@@ -59,8 +67,7 @@ script:
   - python examples/notebooks/test_notebooks.py
   - export MPLBACKEND=Agg
   - make -C examples/python -f Makefile no-timing
-  - mkdir empty
-  - cd empty
+  - mkdir empty && cd empty
   - python -c "import pyshtools"
 
 notifications:
