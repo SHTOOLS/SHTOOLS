@@ -2,7 +2,7 @@ language: c
 
 matrix:
   include:
-    # Test Python 3.8 on Linux and OSX
+    # Test using python 3.8 on Linux and OSX
     - os: linux
       env: PYTHON_VERSION=3.8
     - os: osx
@@ -12,6 +12,7 @@ matrix:
       cache:
         directories:
           - $HOME/Library/Caches/Homebrew
+          - /usr/local
 
 addons:
   apt:
@@ -39,12 +40,12 @@ install:
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -b -p $HOME/miniconda
   - source "$HOME/miniconda/etc/profile.d/conda.sh"
-  #- export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r
 
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda config --append channels conda-forge
+
   - conda create -q -n test-environment
         python=$PYTHON_VERSION
         numpy
@@ -60,7 +61,6 @@ install:
         pooch
         tqdm
         palettable
-  #- source activate test-environment
   - conda activate test-environment
 
   # Conda info
