@@ -7,6 +7,11 @@ matrix:
       env: PYTHON_VERSION=3.8
     - os: osx
       env: PYTHON_VERSION=3.8
+      before_cache:
+        - brew cleanup
+      cache:
+        directories:
+          - $HOME/Library/Caches/Homebrew
 
 addons:
   apt:
@@ -22,12 +27,6 @@ addons:
     - fftw
     - wget
     update: true
-
-cache:
-  directories:
-    - $HOME/Library/Caches/Homebrew
-before_cache:
-  - brew cleanup
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
