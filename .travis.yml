@@ -9,12 +9,9 @@ matrix:
       env: PYTHON_VERSION=3.8
       before_cache:
         - brew cleanup
-        - rm -R $HOME/miniconda/pkgs/*
       cache:
         directories:
           - $HOME/Library/Caches/Homebrew
-          - /usr/local
-          - $HOME/miniconda
 
 addons:
   apt:
