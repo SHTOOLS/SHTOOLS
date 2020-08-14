@@ -31,8 +31,9 @@ install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
-  - conda install -c anaconda setuptools
-  - conda update --force-reinstall -q conda
+  #- conda install -c anaconda setuptools
+  #- conda update --force-reinstall -q conda
+  - conda update -q conda
   - conda info -a
   - conda config --append channels conda-forge
 
@@ -51,7 +52,7 @@ install:
         pooch
         tqdm
         palettable
-  - source activate test-environment
+  - conda activate test-environment
   - pip install --no-deps .
 
 script:
