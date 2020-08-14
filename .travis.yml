@@ -52,7 +52,7 @@ install:
         pooch
         tqdm
         palettable
-  - conda activate test-environment
+  - source activate test-environment
   - pip install --no-deps .
 
 script:
