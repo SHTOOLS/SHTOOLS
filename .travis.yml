@@ -43,9 +43,9 @@ install:
 
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
-  - conda config --append channels conda-forge
+  #- conda config --append channels conda-forge
 
-  - conda create -q -n test-environment
+  - conda create -q -n test-environment -c conda-forge
         python=$PYTHON_VERSION
         numpy
         scipy

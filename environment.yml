@@ -17,3 +17,4 @@ dependencies:
     - palettable
     - jupyter
     - pypandoc
+    - nb_conda_kernels
