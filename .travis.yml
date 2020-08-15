@@ -34,6 +34,7 @@ install:
       export FFTW="/usr/local";
     else
       export OS="Linux";
+      export FFTW="/usr/local";
     fi
 
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh
