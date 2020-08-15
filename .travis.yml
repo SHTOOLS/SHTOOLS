@@ -31,10 +31,10 @@ addons:
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export OS="MacOSX";
-      export FFTW="/usr/local";
+      export FFTW="/usr/local/lib";
     else
       export OS="Linux";
-      export FFTW="/usr/local";
+      export FFTW="/usr/local/lib";
     fi
 
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh
