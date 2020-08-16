@@ -16,7 +16,7 @@ matrix:
 addons:
   apt:
     packages:
-    - libfftw3-dev
+    # - libfftw3-dev
     - libblas-dev
     - liblapack-dev
     - g++
@@ -24,20 +24,19 @@ addons:
     - tcsh
   homebrew:
     packages:
-    - fftw
-    - wget
+    # - fftw
     update: true
 
 install:
   # Download and install miniconda
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export OS="MacOSX";
-      export FFTW="/usr/local";
+      # export FFTW="/usr/local";
     else
       export OS="Linux";
     fi
 
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh
+    curl https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -o miniconda.sh
   - bash miniconda.sh -u -b -p $HOME/miniconda
   - source "$HOME/miniconda/etc/profile.d/conda.sh"
   - hash -r
@@ -52,6 +51,7 @@ install:
         numpy
         scipy
         matplotlib=3.3.*
+        fftw>=3.3.8
         jupyter
         astropy
         xarray
