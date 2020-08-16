@@ -29,7 +29,7 @@ addons:
     update: true
 
 install:
-    # Download and install miniconda
+  # Download and install miniconda
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export OS="MacOSX";
       export FFTW="/usr/local";
@@ -41,7 +41,7 @@ install:
   - source "$HOME/miniconda/etc/profile.d/conda.sh"
   - hash -r
 
-    # Configure conda testing environment
+  # Configure conda testing environment
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda config --append channels conda-forge
