@@ -2,7 +2,7 @@ name: pyshtools
 channels:
     - conda-forge
 dependencies:
-    - python>=3.5
+    - python>=3.6
     - numpy
     - scipy>=0.14.0
     - matplotlib>=3.3
@@ -15,3 +15,6 @@ dependencies:
     - pygmt>=0.2
     - gmt>=6.1.1
     - palettable
+    - jupyter
+    - pypandoc
+    - nb_conda_kernels
