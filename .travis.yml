@@ -16,7 +16,7 @@ addons:
     - liblapack-dev
     - g++
     - gfortran
-    - tcsh
+    # - tcsh
 
 install:
   # Download and install miniconda
