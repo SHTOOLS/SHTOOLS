@@ -29,24 +29,24 @@ addons:
     update: true
 
 install:
+    # Download and install miniconda
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export OS="MacOSX";
-      export FFTW="/usr/local/lib";
+      export FFTW="/usr/local";
     else
       export OS="Linux";
-      export FFTW="/usr/local/lib";
     fi
-
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -u -b -p $HOME/miniconda
   - source "$HOME/miniconda/etc/profile.d/conda.sh"
   - hash -r
 
+    # Configure conda testing environment
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
-  #- conda config --append channels conda-forge
+  - conda config --append channels conda-forge
 
-  - conda create -q -n test-environment -c conda-forge
+  - conda create -q -n test-environment
         python=$PYTHON_VERSION
         numpy
         scipy
@@ -63,7 +63,7 @@ install:
         palettable
   - conda activate test-environment
 
-  # Conda info
+  # Conda info for debugging
   - conda list -n test-environment
   - conda info -a
 
