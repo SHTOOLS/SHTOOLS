@@ -11,18 +11,15 @@ matrix:
 addons:
   apt:
     packages:
-    # - libfftw3-dev
     - libblas-dev
     - liblapack-dev
     - g++
     - gfortran
-    # - tcsh
 
 install:
   # Download and install miniconda
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export OS="MacOSX";
-      # export FFTW="/usr/local";
     else
       export OS="Linux";
     fi
