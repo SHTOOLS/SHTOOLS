@@ -11,7 +11,6 @@ matrix:
 addons:
   apt:
     packages:
-    - g++
     - gfortran
   homebrew:
     packages:
@@ -42,6 +41,7 @@ install:
         scipy
         matplotlib=3.3.*
         fftw>=3.3.8
+        liblapack
         jupyter
         astropy
         xarray
