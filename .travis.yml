@@ -65,7 +65,7 @@ install:
 
   - echo $HOME
   - ls $HOME/miniconda/envs/test-environment/
-  - ls $HOMEminiconda/envs/test-environment/lib
+  - ls $HOME/miniconda/envs/test-environment/lib
   - ls /usr/local/lib
 
   # Conda info for debugging
