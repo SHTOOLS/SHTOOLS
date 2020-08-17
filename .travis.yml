@@ -47,7 +47,7 @@ install:
         openblas
         gmt
         numpy
-        pyfft
+        pyfftw
         scipy
         matplotlib=3.3.*
         astropy
