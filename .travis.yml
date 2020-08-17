@@ -44,7 +44,7 @@ install:
   # - conda create -q -n test-environment -c anaconda
   #      numpy
   # - conda install -n test-environment -c conda-forge
-  - conda create -q -n test-environment -c conda-forge
+  - conda create -q -n test-environment
         python=$PYTHON_VERSION
         anaconda::numpy
         fftw>=3.3.8
