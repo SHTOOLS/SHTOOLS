@@ -42,6 +42,7 @@ install:
         matplotlib=3.3.*
         fftw>=3.3.8
         liblapack
+        libblas
         jupyter
         astropy
         xarray

@@ -6,6 +6,7 @@ dependencies:
     - numpy
     - scipy>=0.14.0
     - matplotlib>=3.3
+    - fftw>=3.3.8
     - liblapack
     - astropy
     - xarray
