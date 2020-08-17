@@ -41,13 +41,14 @@ install:
   - conda config --append channels conda-forge
   - conda update -q conda
 
-  - conda create -q -n test-environment -c conda-forge
+  - conda create -q -n test-environment
         python=$PYTHON_VERSION
+  - conda install -n test-environment -c conda-forge
         liblapack>=3.8
         openblas
         gmt
         numpy
-        pyfftw
+        fftw>=3.3.8
         scipy
         matplotlib=3.3.*
         astropy
