@@ -1255,7 +1255,7 @@ class SHGrid(object):
                        cmap_reverse=cmap_reverse)
 
         if ax is None:
-            fig.tight_layout(pad=0.5)
+            # fig.tight_layout(pad=0.5)
             if show:
                 fig.show()
 
