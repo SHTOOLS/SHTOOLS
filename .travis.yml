@@ -11,8 +11,6 @@ matrix:
 addons:
   apt:
     packages:
-    - libblas-dev
-    - liblapack-dev
     - g++
     - gfortran
   homebrew:
