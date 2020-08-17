@@ -26,7 +26,7 @@ install:
   # Download and install miniconda
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export OS="MacOSX";
-      FFTW="/usr/local"
+      export FFTW="/usr/local"
     else
       export OS="Linux";
     fi
