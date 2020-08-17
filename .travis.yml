@@ -17,6 +17,7 @@ matrix:
 addons:
   apt:
     packages:
+    - g++
     - gfortran
   homebrew:
     packages:
@@ -63,7 +64,8 @@ install:
         palettable
         pypandoc
   - conda activate test-environment
-
+  - nm -j $HOME/miniconda/envs/test-environment/lib/libfftw3.a | grep fftw_destroy_plan
+  - nm -j $HOME/miniconda/envs/test-environment/lib/libfftw3.a | grep fftw_plan_dft_1d
   # Conda info for debugging
   - conda list -n test-environment
   - conda info -a
