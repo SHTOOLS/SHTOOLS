@@ -43,12 +43,13 @@ install:
 
   - conda create -q -n test-environment
         python=$PYTHON_VERSION
-  - conda install -n test-environment -c conda-forge
         liblapack>=3.8
         openblas
         gmt
         numpy
         fftw>=3.3.8
+
+  - conda install -n test-environment -c conda-forge
         scipy
         matplotlib=3.3.*
         astropy
