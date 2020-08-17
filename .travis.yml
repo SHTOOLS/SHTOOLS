@@ -59,7 +59,8 @@ install:
         jupyter
         palettable
         pypandoc
-  - conda install -n test-environment -c anaconda fftw>=3.3.8
+  - conda install -n test-environment
+        fftw>=3.3.8
   - conda activate test-environment
   #- export FFTW="$HOME/miniconda/envs/test-environment/lib"
   #- hash -r
