@@ -28,7 +28,7 @@ The conda packages do not support Windows architectures at the present time.
 
 If you wish to compile the archive yourself, first make sure that you have the required dependencies installed for the Fortran-95 components (see [these instruction](fortran-installing.html)). On most Linux distributions, this can be accomplished using
 ```bash
-sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
+sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev
 ```
 or on macOS using [brew](https://brew.sh/)
 ```bash

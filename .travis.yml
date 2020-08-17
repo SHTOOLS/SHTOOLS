@@ -16,15 +16,9 @@ matrix:
 addons:
   apt:
     packages:
-    - libfftw3-dev
-    - libblas-dev
-    - liblapack-dev
-    - g++
     - gfortran
-    - tcsh
   homebrew:
     packages:
-    - fftw
     - wget
     update: true
 
@@ -32,7 +26,6 @@ install:
   # Download and install miniconda
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export OS="MacOSX";
-      export FFTW="/usr/local";
     else
       export OS="Linux";
     fi
@@ -44,29 +37,34 @@ install:
 
   # Configure conda testing environment
   - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
   - conda config --append channels conda-forge
+  - conda update -q conda
 
   - conda create -q -n test-environment
         python=$PYTHON_VERSION
+        fftw>=3.3.8
+        liblapack>=3.8
+        openblas
+        gmt
         numpy
         scipy
         matplotlib=3.3.*
-        jupyter
         astropy
         xarray
         requests
         cartopy
         pygmt
-        gmt
         pooch
         tqdm
+        jupyter
         palettable
+        pypandoc
   - conda activate test-environment
 
   # Conda info for debugging
   - conda list -n test-environment
   - conda info -a
+  - conda config --show-sources
 
   # Install pyshtools
   - pip install --no-deps .
