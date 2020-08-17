@@ -53,6 +53,7 @@ install:
         pooch
         tqdm
         palettable
+        pypandoc
   - conda activate test-environment
 
   # Conda info for debugging
