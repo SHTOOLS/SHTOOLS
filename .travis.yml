@@ -32,9 +32,9 @@ install:
       export OS="Linux";
     fi
 
-  - export FFTW="$HOME/miniconda/envs/test-environment"
+  - export FFTW="$HOME/miniconda/envs/test-environment/lib"
 
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -u -b -p $HOME/miniconda
   - source "$HOME/miniconda/etc/profile.d/conda.sh"
   - hash -r
