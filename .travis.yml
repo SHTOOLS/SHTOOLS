@@ -46,6 +46,8 @@ install:
         liblapack>=3.8
         openblas
         gmt
+        setuptools
+        pip
         numpy
         scipy
         matplotlib=3.3.*
