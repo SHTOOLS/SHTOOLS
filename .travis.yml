@@ -26,10 +26,11 @@ install:
   # Download and install miniconda
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export OS="MacOSX";
-      export FFTW="/usr/local";
     else
       export OS="Linux";
     fi
+
+    export FFTW=$HOME/miniconda/envs/test-environment
 
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -u -b -p $HOME/miniconda
@@ -63,8 +64,8 @@ install:
   - conda activate test-environment
 
   - echo $HOME
-  - ls /home/travis/miniconda/envs/test-environment/
-  - ls /home/travis/miniconda/envs/test-environment/lib
+  - ls $HOME/miniconda/envs/test-environment/
+  - ls $HOMEminiconda/envs/test-environment/lib
   - ls /usr/local/lib
 
   # Conda info for debugging
