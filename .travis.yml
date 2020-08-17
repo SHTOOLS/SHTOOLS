@@ -47,6 +47,7 @@ install:
         openblas
         gmt
         numpy
+        pyfft
         scipy
         matplotlib=3.3.*
         astropy
@@ -59,11 +60,10 @@ install:
         jupyter
         palettable
         pypandoc
-  - conda install -n test-environment
-        fftw>=3.3.8
+  # - conda install -n test-environment fftw>=3.3.8
   - conda activate test-environment
   #- export FFTW="$HOME/miniconda/envs/test-environment/lib"
-  #- hash -r
+  - hash -r
   - nm $HOME/miniconda/envs/test-environment/lib/libfftw3.a | grep fftw_destroy_plan
   - nm $HOME/miniconda/envs/test-environment/lib/libfftw3.a | grep fftw_plan_dft_1d
   # Conda info for debugging
