@@ -37,8 +37,8 @@ install:
 
   # Configure conda testing environment
   - conda config --set always_yes yes --set changeps1 no
-  - conda config --append channels conda-forge
   - conda update -q conda
+  - conda config --append channels conda-forge
 
   - conda create -q -n test-environment
         python=$PYTHON_VERSION
@@ -48,7 +48,7 @@ install:
         gmt
         numpy
         scipy
-        matplotlib>=3.3.0
+        matplotlib>=3.3
         astropy
         xarray
         requests
