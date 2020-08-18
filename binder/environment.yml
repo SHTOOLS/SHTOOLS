@@ -1,18 +1,24 @@
 name: pyshtools
 channels:
+    - defaults
     - conda-forge
 dependencies:
-    - python>=3.6
-    - numpy
+    - python=3.8
+    - fftw>=3.3.8
+    - liblapack>=3.8
+    - openblas
+    - gmt>=6.1.1
     - pyshtools>=4.7
+    - numpy
     - scipy>=0.14.0
-    - matplotlib>=3.3
+    - matplotlib=3.3.*
     - astropy
     - xarray
     - requests
-    - pooch
-    - tqdm
     - cartopy
     - pygmt>=0.2
-    - gmt>=6.1.1
+    - pooch
+    - tqdm
+    - jupyter
     - palettable
+    - pypandoc
