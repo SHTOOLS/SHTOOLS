@@ -17,6 +17,8 @@ matrix:
 addons:
   apt:
     packages:
+    - gcc
+    - gfortran
   homebrew:
     packages:
     - wget
