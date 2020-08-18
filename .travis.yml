@@ -46,7 +46,7 @@ install:
   # - conda install -n test-environment -c conda-forge
   - conda create -q -n test-environment
         python=$PYTHON_VERSION
-        anaconda::numpy
+        defaults::numpy
         fftw>=3.3.8
         liblapack>=3.8
         openblas
