@@ -43,14 +43,14 @@ install:
   - conda update -q conda
 
   - conda create -q -n test-environment
-        "python=$PYTHON_VERSION"
+        python=$PYTHON_VERSION
         numpy
         fftw>=3.3.8
-        "liblapack>=3.8"
+        liblapack>=3.8
         openblas
         gmt
         scipy
-        "matplotlib=3.3.*"
+        matplotlib>=3.3
         astropy
         xarray
         requests
