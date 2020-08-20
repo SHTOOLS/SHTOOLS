@@ -45,7 +45,7 @@ install:
   - conda create -q -n test-environment
         "python=$PYTHON_VERSION"
         numpy
-        "liblapack=*=*mkl"
+        fftw>=3.3.8
         "liblapack>=3.8"
         openblas
         gmt
