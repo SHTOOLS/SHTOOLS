@@ -7,22 +7,12 @@ matrix:
       env: PYTHON_VERSION=3.8
     - os: osx
       env: PYTHON_VERSION=3.8
-      before_cache:
-        - brew cleanup
-      cache:
-        directories:
-          - $HOME/Library/Caches/Homebrew
-          - /usr/local
 
 addons:
   apt:
     packages:
     - gcc
     - gfortran
-  homebrew:
-    packages:
-    - wget
-    update: true
 
 install:
   # Download and install miniconda
