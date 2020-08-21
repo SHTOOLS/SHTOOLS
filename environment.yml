@@ -9,13 +9,13 @@ dependencies:
     - gmt>=6.1.1
     - numpy
     - scipy>=0.14.0
-    - matplotlib=3.3.*
+    - matplotlib>=3.3
     - astropy
     - xarray
     - requests
     - pooch
     - tqdm
-    - cartopy
+    - cartopy>=0.18.0
     - pygmt>=0.2
     - palettable
     - jupyter

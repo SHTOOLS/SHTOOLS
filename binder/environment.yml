@@ -1,6 +1,5 @@
 name: pyshtools
 channels:
-    - defaults
     - conda-forge
 dependencies:
     - python=3.8
@@ -11,14 +10,15 @@ dependencies:
     - pyshtools>=4.7
     - numpy
     - scipy>=0.14.0
-    - matplotlib=3.3.*
+    - matplotlib>=3.3
     - astropy
     - xarray
     - requests
-    - cartopy
+    - cartopy>=0.18.0
     - pygmt>=0.2
     - pooch
     - tqdm
     - jupyter
     - palettable
     - pypandoc
+
