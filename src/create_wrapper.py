@@ -8,7 +8,7 @@ shapes using a similar procedure.
 """
 from numpy.f2py import crackfortran
 from copy import deepcopy
-
+import re
 
 # ==== MAIN FUNCTION ====
 def main():
@@ -50,9 +50,9 @@ def main():
 
     # insert call statements before 'end subroutine' line starting from the
     # end such that we don't change the preceding indices
-    for sroutine_new, sroutine_old, iline in zip(interface_new['body'],
+    for sroutine_new, sroutine_old, iline in list(zip(interface_new['body'],
                                                  interface_old['body'],
-                                                 iendsubroutine)[::-1]:
+                                                 iendsubroutine))[::-1]:
         if sroutine_new['block'] == 'function':
             newline = 2 * crackfortran.tabchar +\
                 '%s=%s(' % (sroutine_new['name'], sroutine_old['name']) +\
@@ -63,6 +63,22 @@ def main():
                 ','.join(sroutine_old['args']) + ')'
         wrapperlines.insert(iline + 1, '')
         wrapperlines.insert(iline, newline)
+        
+    print('add bind statment...')
+    p = re.compile('\s*(subroutine|function)')
+    # search for the indices of 'subroutine'
+    isubroutine = [iline for iline, line in enumerate(wrapperlines)
+                      if p.match(line) is not None]
+    assert len(isubroutine) == len(interface_new['body']), \
+        'number of subroutines don\'t match'
+    
+    for sroutine_new, sroutine_old, iline in list(zip(interface_new['body'],
+                                                interface_old['body'],
+                                                isubroutine))[::-1]:
+       wrapperlines[iline] = wrapperlines[iline] + ' bind(c, name=\"' \
+         + camel_to_snake(sroutine_new['name']) + '\")'
+       newline = 2 * crackfortran.tabchar + 'use, intrinsic :: iso_c_binding'
+       wrapperlines.insert(iline+1, newline)
 
     print('writing wrapper to file %s' % fname_wrapper)
     for iline, line in enumerate(wrapperlines):
@@ -99,6 +115,11 @@ def main():
 
 
 # ==== FUNCTIONS ====
+def camel_to_snake(name):
+  name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+  return re.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
+
+
 def modify_subroutine(subroutine):
     """loops through variables of a subroutine and modifies them"""
     # print('\n----',subroutine['name'],'----')
@@ -109,7 +130,7 @@ def modify_subroutine(subroutine):
                           'only': 1}}
 
     # -- loop through variables:
-    for varname, varattribs in subroutine['vars'].items():
+    for varname, varattribs in list(subroutine['vars'].items()):
         # prefix function return variables with 'py'
         if varname == subroutine['name']:
             subroutine['vars']['py' + varname] = \
@@ -119,6 +140,7 @@ def modify_subroutine(subroutine):
         # -- change assumed to explicit:
         if has_assumed_shape(varattribs):
             make_explicit(subroutine, varname, varattribs)
+
 
     # add py prefix to subroutine:
     subroutine['name'] = 'py' + subroutine['name']
