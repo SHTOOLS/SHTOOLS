@@ -75,14 +75,15 @@ def main():
     for sroutine_new, sroutine_old, iline in list(zip(interface_new['body'],
                                                  interface_old['body'],
                                                  iendsubroutine))[::-1]:
+        args = create_arg_list(sroutine_old)
         if sroutine_new['block'] == 'function':
             newline = 2 * crackfortran.tabchar +\
                 '%s=%s(' % (sroutine_new['name'], sroutine_old['name']) +\
-                ','.join(sroutine_old['args']) + ')'
+                args+ ')'
         elif sroutine_new['block'] == 'subroutine':
             newline = 2 * crackfortran.tabchar +\
                 'call %s(' % sroutine_old['name'] +\
-                ','.join(sroutine_old['args']) + ')'
+                args+ ')'
         wrapperlines.insert(iline + 1, '')
         wrapperlines.insert(iline, newline)
         
@@ -143,6 +144,18 @@ def camel_to_snake(name):
   name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
   return re.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
 
+def create_arg_list(subroutine):
+   
+    sig = []
+    for arg in subroutine['args']:
+         if 'attrspec' in subroutine['vars'][arg] and 'optional' in subroutine['vars'][arg]['attrspec']:
+                 sig.append(arg + '=' + arg)
+         else: 
+             sig.append(arg)
+             
+    return ','.join(sig) 
+                 
+
 
 def modify_subroutine(subroutine):
     """loops through variables of a subroutine and modifies them"""
@@ -198,34 +211,52 @@ def modify_subroutine(subroutine):
 
     # add py prefix to subroutine:
     subroutine['name'] = prepend + subroutine['name']
+    
+    # # make exitstatus last element
+    # if 'exitstatus' in subroutine['args']:
+    #     idx = subroutine['args'].index('exitstatus')
+    #     subroutine['args'].append(subroutine['args'].pop(idx)) 
+        
+        
 
-def insert_dim(subroutine, dimname, position):
+def insert_dim(subroutine, dimname, arg_pos, declartaion_pos):
     dimattribs = {'attrspec': [], 'typespec': 'integer', 'intent': ['in']}
     # declare dimension in subroutine variables
     subroutine['vars'][dimname] = dimattribs
     # add dimension to subroutine arguments
-    subroutine['args'].append(dimname)
+    subroutine['args'].insert(arg_pos, dimname)
     # place indices at the beginning
-    subroutine['sortvars'].insert(position,dimname)
+    subroutine['sortvars'].insert(declartaion_pos, dimname)
 
 def make_explicit(subroutine, varname, varattribs):
-    if varname=='cilm':
+    
+    argpos = subroutine['args'].index(varname) + 1 
+    decpos = subroutine['sortvars'].index(varname) 
+    
+    if varattribs['typespec'] == 'character':
+        dimname = '%s_d%d' % (varname, 1)
+        varattribs['dimension'] = [dimname]
+        insert_dim(subroutine,dimname,argpos,decpos)
+    elif varname=='cilm':
         dimname = 'cilm_d'
         varattribs['dimension'] = ['2', dimname, dimname]
-        insert_dim(subroutine,dimname,0)
+        insert_dim(subroutine,dimname,argpos,decpos)
     else:
-        pos = 0
         for idim, size in enumerate(varattribs['dimension']):
             if size == ':':
                 # change assumed array to explicit
                 dimname = '%s_d%d' % (varname, idim)
                 varattribs['dimension'][idim] = dimname
-                insert_dim(subroutine,dimname,pos)
-                pos = pos+1
+                insert_dim(subroutine,dimname,argpos,decpos)
+                decpos = decpos+1
+                argpos = argpos + 1
 
 
 def has_assumed_shape(varattribs):
     """checks if variable has assumed shape"""
+    if varattribs['typespec'] == 'character' and 'charselector' in varattribs:
+        if '*' in varattribs['charselector']['*']:
+            return True 
     try:
         if ':' in varattribs['dimension']:
             return True
