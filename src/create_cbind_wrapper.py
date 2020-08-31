@@ -13,7 +13,7 @@ import re
 # ==== MAIN FUNCTION ====
 def main():
     fname_fortran = 'SHTOOLS.f95'
-    fname_wrapper = 'CbindWrapper.f95'
+    fname_wrapper = 'cWrapper.f95'
 
     print('now cracking Fortran file SHTOOLS.f95 using f2py function...')
     crackfortran.verbose = False
@@ -99,7 +99,7 @@ def main():
                                                 interface_old['body'],
                                                 isubroutine))[::-1]:
        wrapperlines[iline] = wrapperlines[iline] + ' bind(c, name=\"' \
-         + camel_to_snake(sroutine_new['name']) + '\")'
+         + sroutine_new['name'] + '\")'
        newline = 2 * crackfortran.tabchar + 'use, intrinsic :: iso_c_binding'
        wrapperlines.insert(iline+1, newline)
               
@@ -140,9 +140,7 @@ def main():
 
 
 # ==== FUNCTIONS ====
-def camel_to_snake(name):
-  name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
-  return re.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
+
 
 def create_arg_list(subroutine):
    
@@ -163,7 +161,7 @@ def modify_subroutine(subroutine):
 
     # use original function from shtools:
         
-    prepend = 'cbind'
+    prepend = 'c'
         
     subroutine['use'] = {'shtools':
                          {'map': {subroutine['name']: subroutine['name']},
