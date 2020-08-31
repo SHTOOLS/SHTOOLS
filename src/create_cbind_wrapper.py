@@ -172,12 +172,12 @@ def modify_subroutine(subroutine):
     # -- loop through variables:
     for varname, varattribs in list(subroutine['vars'].items()):
         
-        # remmove optional
-        if 'attrspec' in varattribs:
-            if 'optional' in varattribs['attrspec']:
-                varattribs['attrspec'].remove('optional')
-            if not varattribs['attrspec']:
-                del varattribs['attrspec']
+        # # remmove optional
+        # if 'attrspec' in varattribs:
+        #     if 'optional' in varattribs['attrspec']:
+        #         varattribs['attrspec'].remove('optional')
+        #     if not varattribs['attrspec']:
+        #         del varattribs['attrspec']
                  
         
         # prefix function return variables with prepend
@@ -210,13 +210,7 @@ def modify_subroutine(subroutine):
 
 
     # add py prefix to subroutine:
-    subroutine['name'] = prepend + subroutine['name']
-    
-    # # make exitstatus last element
-    # if 'exitstatus' in subroutine['args']:
-    #     idx = subroutine['args'].index('exitstatus')
-    #     subroutine['args'].append(subroutine['args'].pop(idx)) 
-        
+    subroutine['name'] = prepend + subroutine['name']      
         
 
 def insert_dim(subroutine, dimname, arg_pos, declartaion_pos):

@@ -6,9 +6,9 @@
         integer(kind=c_int), intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: cnorm
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: cnorm
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlmBar(p,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
     end subroutine cbindPlmBar
 
@@ -23,9 +23,9 @@
         integer(kind=c_int), intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: cnorm
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: cnorm
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlmBar_d1(p,dp1,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
     end subroutine cbindPlmBar_d1
 
@@ -37,7 +37,7 @@
         integer(kind=c_int), intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlBar(p,lmax,z,exitstatus=exitstatus)
     end subroutine cbindPlBar
 
@@ -51,7 +51,7 @@
         integer(kind=c_int), intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlBar_d1(p,dp1,lmax,z,exitstatus=exitstatus)
     end subroutine cbindPlBar_d1
 
@@ -63,9 +63,9 @@
         integer(kind=c_int), intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: cnorm
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: cnorm
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlmON(p,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
     end subroutine cbindPlmON
 
@@ -80,9 +80,9 @@
         integer(kind=c_int), intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: cnorm
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: cnorm
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlmON_d1(p,dp1,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
     end subroutine cbindPlmON_d1
 
@@ -94,7 +94,7 @@
         integer(kind=c_int), intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlON(p,lmax,z,exitstatus=exitstatus)
     end subroutine cbindPlON
 
@@ -108,7 +108,7 @@
         integer(kind=c_int), intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlON_d1(p,dp1,lmax,z,exitstatus=exitstatus)
     end subroutine cbindPlON_d1
 
@@ -120,9 +120,9 @@
         integer(kind=c_int), intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: cnorm
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: cnorm
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlmSchmidt(p,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
     end subroutine cbindPlmSchmidt
 
@@ -137,9 +137,9 @@
         integer(kind=c_int), intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: cnorm
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: cnorm
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlmSchmidt_d1(p,dp1,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
     end subroutine cbindPlmSchmidt_d1
 
@@ -151,7 +151,7 @@
         integer(kind=c_int), intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlSchmidt(p,lmax,z,exitstatus=exitstatus)
     end subroutine cbindPlSchmidt
 
@@ -165,7 +165,7 @@
         integer(kind=c_int), intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlSchmidt_d1(p,dp1,lmax,z,exitstatus=exitstatus)
     end subroutine cbindPlSchmidt_d1
 
@@ -177,8 +177,8 @@
         integer(kind=c_int), intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PLegendreA(p,lmax,z,csphase=csphase,exitstatus=exitstatus)
     end subroutine cbindPLegendreA
 
@@ -193,8 +193,8 @@
         integer(kind=c_int), intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PLegendreA_d1(p,dp1,lmax,z,csphase=csphase,exitstatus=exitstatus)
     end subroutine cbindPLegendreA_d1
 
@@ -206,7 +206,7 @@
         integer(kind=c_int), intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PLegendre(p,lmax,z,exitstatus=exitstatus)
     end subroutine cbindPLegendre
 
@@ -220,7 +220,7 @@
         integer(kind=c_int), intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
         real(kind=c_double), intent(in) :: z
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PLegendre_d1(p,dp1,lmax,z,exitstatus=exitstatus)
     end subroutine cbindPLegendre_d1
 
@@ -246,11 +246,11 @@
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         integer(kind=c_int), intent(in) :: n
         integer(kind=c_int), intent(out) :: lmax
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: sampling
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: sampling
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHExpandDH(grid,n,cilm,lmax,norm=norm,sampling=sampling,csphase=csphase&
                             ,lmax_calc=lmax_calc,exitstatus=exitstatus)
     end subroutine cbindSHExpandDH
@@ -268,12 +268,12 @@
         real(kind=c_double), dimension(griddh_d0,griddh_d1),intent(out) :: griddh
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(out) :: n
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: sampling
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(in) :: extend
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: sampling
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(in) :: extend
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeGridDH(griddh,n,cilm,lmax,norm=norm,sampling=sampling,csphase=csphase&
                               ,lmax_calc=lmax_calc,extend=extend,exitstatus=exitstatus)
     end subroutine cbindMakeGridDH
@@ -290,11 +290,11 @@
         complex(kind=c_double_complex), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         integer(kind=c_int), intent(in) :: n
         integer(kind=c_int), intent(out) :: lmax
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: sampling
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: sampling
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHExpandDHC(grid,n,cilm,lmax,norm=norm,sampling=sampling,csphase=csphase&
                              ,lmax_calc=lmax_calc,exitstatus=exitstatus)
     end subroutine cbindSHExpandDHC
@@ -312,12 +312,12 @@
         complex(kind=c_double_complex), dimension(griddh_d0,griddh_d1),intent(out) :: griddh
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(out) :: n
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: sampling
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(in) :: extend
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: sampling
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(in) :: extend
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeGridDHC(griddh,n,cilm,lmax,norm=norm,sampling=sampling,csphase=csphase&
                                ,lmax_calc=lmax_calc,extend=extend,exitstatus=exitstatus)
     end subroutine cbindMakeGridDHC
@@ -334,11 +334,11 @@
         real(kind=c_double), dimension(w_d0),intent(out) :: w
         integer(kind=c_int), intent(in) :: plx_d0
         integer(kind=c_int), intent(in) :: plx_d1
-        real(kind=c_double), dimension(plx_d0,plx_d1),intent(out) :: plx
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: cnorm
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(out) :: plx
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: cnorm
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHGLQ(lmax,zero,w,plx=plx,norm=norm,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
     end subroutine cbindSHGLQ
 
@@ -355,16 +355,16 @@
         real(kind=c_double), dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
         integer(kind=c_int), intent(in) :: plx_d0
         integer(kind=c_int), intent(in) :: plx_d1
-        real(kind=c_double), dimension(plx_d0,plx_d1),intent(in) :: plx
+        real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         integer(kind=c_int), intent(in) :: zero_d0
-        real(kind=c_double), dimension(zero_d0),intent(in) :: zero
+        real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
         integer(kind=c_int), intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHExpandGLQ(cilm,lmax,gridglq,w,plx=plx,zero=zero,norm=norm,csphase=csphase&
                              ,lmax_calc=lmax_calc,exitstatus=exitstatus)
     end subroutine cbindSHExpandGLQ
@@ -379,18 +379,18 @@
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
         integer(kind=c_int), intent(in) :: plx_d0
         integer(kind=c_int), intent(in) :: plx_d1
-        real(kind=c_double), dimension(plx_d0,plx_d1),intent(in) :: plx
+        real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         integer(kind=c_int), intent(in) :: zero_d0
-        real(kind=c_double), dimension(zero_d0),intent(in) :: zero
+        real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
         integer(kind=c_int), intent(in) :: gridglq_d0
         integer(kind=c_int), intent(in) :: gridglq_d1
         real(kind=c_double), dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
         integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(in) :: extend
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(in) :: extend
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeGridGLQ(gridglq,cilm,lmax,plx=plx,zero=zero,norm=norm,csphase=csphase&
                                 ,lmax_calc=lmax_calc,extend=extend,exitstatus=exitstatus)
     end subroutine cbindMakeGridGLQ
@@ -408,16 +408,16 @@
         complex(kind=c_double_complex), dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
         integer(kind=c_int), intent(in) :: plx_d0
         integer(kind=c_int), intent(in) :: plx_d1
-        real(kind=c_double), dimension(plx_d0,plx_d1),intent(in) :: plx
+        real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         integer(kind=c_int), intent(in) :: zero_d0
-        real(kind=c_double), dimension(zero_d0),intent(in) :: zero
+        real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
         integer(kind=c_int), intent(in) :: cilm_d
         complex(kind=c_double_complex), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHExpandGLQC(cilm,lmax,gridglq,w,plx=plx,zero=zero,norm=norm,csphase=csphase&
                               ,lmax_calc=lmax_calc,exitstatus=exitstatus)
     end subroutine cbindSHExpandGLQC
@@ -432,18 +432,18 @@
         complex(kind=c_double_complex), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
         integer(kind=c_int), intent(in) :: plx_d0
         integer(kind=c_int), intent(in) :: plx_d1
-        real(kind=c_double), dimension(plx_d0,plx_d1),intent(in) :: plx
+        real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         integer(kind=c_int), intent(in) :: zero_d0
-        real(kind=c_double), dimension(zero_d0),intent(in) :: zero
+        real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
         integer(kind=c_int), intent(in) :: gridglq_d0
         integer(kind=c_int), intent(in) :: gridglq_d1
         complex(kind=c_double_complex), dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
         integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(in) :: extend
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(in) :: extend
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeGridGLQC(gridglq,cilm,lmax,plx=plx,zero=zero,norm=norm,csphase=csphase&
                                  ,lmax_calc=lmax_calc,extend=extend,exitstatus=exitstatus)
     end subroutine cbindMakeGridGLQC
@@ -460,8 +460,8 @@
         real(kind=c_double), dimension(latglq_d0),intent(out) :: latglq
         integer(kind=c_int), intent(in) :: longlq_d0
         real(kind=c_double), dimension(longlq_d0),intent(out) :: longlq
-        integer(kind=c_int), intent(in) :: extend
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: extend
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call GLQGridCoord(latglq,longlq,lmax,nlat,nlong,extend=extend,exitstatus=exitstatus)
     end subroutine cbindGLQGridCoord
 
@@ -481,12 +481,12 @@
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         integer(kind=c_int), intent(in) :: nmax
         integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: csphase
-        real(kind=c_double), intent(out) :: chi2
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: csphase
+        real(kind=c_double), optional,intent(out) :: chi2
         integer(kind=c_int), intent(in) :: weights_d0
-        real(kind=c_double), dimension(weights_d0),intent(in) :: weights
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(weights_d0),intent(in) :: weights
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm=norm,chi2=chi2,csphase=csphase&
                              ,weights=weights,exitstatus=exitstatus)
     end subroutine cbindSHExpandLSQ
@@ -506,16 +506,16 @@
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(out) :: nlat
         integer(kind=c_int), intent(out) :: nlong
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: dealloc
-        real(kind=c_double), intent(in) :: f
-        real(kind=c_double), intent(in) :: a
-        real(kind=c_double), intent(in) :: north
-        real(kind=c_double), intent(in) :: south
-        real(kind=c_double), intent(in) :: east
-        real(kind=c_double), intent(in) :: west
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: dealloc
+        real(kind=c_double), optional,intent(in) :: f
+        real(kind=c_double), optional,intent(in) :: a
+        real(kind=c_double), optional,intent(in) :: north
+        real(kind=c_double), optional,intent(in) :: south
+        real(kind=c_double), optional,intent(in) :: east
+        real(kind=c_double), optional,intent(in) :: west
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm=norm,csphase=csphase&
                             ,f=f,a=a,north=north,south=south,east=east,west=west,dealloc=dealloc&
                             ,exitstatus=exitstatus)
@@ -532,9 +532,9 @@
         real(kind=c_double), intent(in) :: lat
         real(kind=c_double), intent(in) :: lon
         integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: dealloc
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: dealloc
         cbindMakeGridPoint=MakeGridPoint(cilm,lmax,lat,lon,norm=norm,csphase=csphase&
                                              ,dealloc=dealloc)
     end function cbindMakeGridPoint
@@ -550,9 +550,9 @@
         real(kind=c_double), intent(in) :: lat
         real(kind=c_double), intent(in) :: lon
         integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: dealloc
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: dealloc
         cbindMakeGridPointC=MakeGridPointC(cilm,lmax,lat,lon,norm=norm,csphase=csphase&
                                                ,dealloc=dealloc)
     end function cbindMakeGridPointC
@@ -577,10 +577,10 @@
         real(kind=c_double), dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
         integer(kind=c_int), intent(in) :: lmax1
         integer(kind=c_int), intent(in) :: lmax2
-        integer(kind=c_int), intent(in) :: precomp
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: precomp
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp=precomp,norm=norm,csphase=csphase&
                              ,exitstatus=exitstatus)
     end subroutine cbindSHMultiply
@@ -597,18 +597,18 @@
         integer(kind=c_int), intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         integer(kind=c_int), intent(in) :: header_d0
-        real(kind=c_double), dimension(header_d0),intent(out) :: header
+        real(kind=c_double), optional,dimension(header_d0),intent(out) :: header
         integer(kind=c_int), intent(in) :: error_d0
         integer(kind=c_int), intent(in) :: error_d1
         integer(kind=c_int), intent(in) :: error_d2
-        real(kind=c_double), dimension(error_d0,error_d1,error_d2),intent(out) :: error
-        integer(kind=c_int), intent(in) :: skip
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
+        integer(kind=c_int), optional,intent(in) :: skip
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         
         character(filename_d1) :: filename2
         filename2 = TRANSFER(filename,filename2)
         
-        call SHRead(filename2,cilm,lmax,exitstatus=exitstatus)
+        call SHRead(filename2,cilm,lmax,skip=skip,header=header,error=error,exitstatus=exitstatus)
     end subroutine cbindSHRead
 
     subroutine cbindSHRead2(filename,filename_d1,cilm,cilm_d,lmax,gm,r0_pot,error&
@@ -628,16 +628,15 @@
         integer(kind=c_int), intent(in) :: error_d0
         integer(kind=c_int), intent(in) :: error_d1
         integer(kind=c_int), intent(in) :: error_d2
-        real(kind=c_double), dimension(error_d0,error_d1,error_d2),intent(out) :: error
+        real(kind=c_double), optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
         integer(kind=c_int), intent(in) :: dot_d0
         integer(kind=c_int), intent(in) :: dot_d1
         integer(kind=c_int), intent(in) :: dot_d2
-        real(kind=c_double), dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
-        real(kind=c_double), intent(out) :: doystart
-        real(kind=c_double), intent(out) :: doyend
-        real(kind=c_double), intent(out) :: epoch
-        integer(kind=c_int), intent(out) :: exitstatus
-        
+        real(kind=c_double), optional,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
+        real(kind=c_double), optional,intent(out) :: doystart
+        real(kind=c_double), optional,intent(out) :: doyend
+        real(kind=c_double), optional,intent(out) :: epoch
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         character(filename_d1) :: filename2
         filename2 = TRANSFER(filename,filename2)
         
@@ -659,10 +658,10 @@
         integer(kind=c_int), intent(in) :: error_d0
         integer(kind=c_int), intent(in) :: error_d1
         integer(kind=c_int), intent(in) :: error_d2
-        real(kind=c_double), dimension(error_d0,error_d1,error_d2),intent(out) :: error
-        real(kind=c_double), dimension(2),intent(out) :: gm
-        character(kind=c_char), dimension(6), intent(in) :: formatstring
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
+        real(kind=c_double), optional,dimension(2),intent(out) :: gm
+        character(kind=c_char), optional,intent(in) :: formatstring
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         
         character(filename_d1) :: filename2
         character(6) :: formatstring2
@@ -684,7 +683,7 @@
         integer(kind=c_int), intent(in) :: vector_d0
         real(kind=c_double), dimension(vector_d0),intent(out) :: vector
         integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHCilmToVector(cilm,vector,lmax,exitstatus=exitstatus)
     end subroutine cbindSHCilmToVector
 
@@ -698,7 +697,7 @@
         integer(kind=c_int), intent(in) :: vector_d0
         real(kind=c_double), dimension(vector_d0),intent(in) :: vector
         integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHVectorToCilm(vector,cilm,lmax,exitstatus=exitstatus)
     end subroutine cbindSHVectorToCilm
 
@@ -712,8 +711,8 @@
         integer(kind=c_int), intent(in) :: cindex_d0
         integer(kind=c_int), intent(in) :: cindex_d1
         real(kind=c_double), dimension(cindex_d0,cindex_d1),intent(out) :: cindex
-        integer(kind=c_int), intent(in) :: degmax
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: degmax
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHCilmToCindex(cilm,cindex,degmax=degmax,exitstatus=exitstatus)
     end subroutine cbindSHCilmToCindex
 
@@ -727,8 +726,8 @@
         integer(kind=c_int), intent(in) :: cindex_d0
         integer(kind=c_int), intent(in) :: cindex_d1
         real(kind=c_double), dimension(cindex_d0,cindex_d1),intent(in) :: cindex
-        integer(kind=c_int), intent(in) :: degmax
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: degmax
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHCindexToCilm(cindex,cilm,degmax=degmax,exitstatus=exitstatus)
     end subroutine cbindSHCindexToCilm
 
@@ -746,10 +745,10 @@
         integer(kind=c_int), intent(in) :: ccilm_d1
         integer(kind=c_int), intent(in) :: ccilm_d2
         real(kind=c_double), dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(out) :: ccilm
-        integer(kind=c_int), intent(in) :: degmax
-        integer(kind=c_int), intent(in) :: convention
-        integer(kind=c_int), intent(in) :: switchcs
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: degmax
+        integer(kind=c_int), optional,intent(in) :: convention
+        integer(kind=c_int), optional,intent(in) :: switchcs
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHrtoc(rcilm,ccilm,degmax=degmax,convention=convention,switchcs=switchcs&
                          ,exitstatus=exitstatus)
     end subroutine cbindSHrtoc
@@ -768,10 +767,10 @@
         integer(kind=c_int), intent(in) :: rcilm_d1
         integer(kind=c_int), intent(in) :: rcilm_d2
         real(kind=c_double), dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(out) :: rcilm
-        integer(kind=c_int), intent(in) :: degmax
-        integer(kind=c_int), intent(in) :: convention
-        integer(kind=c_int), intent(in) :: switchcs
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: degmax
+        integer(kind=c_int), optional,intent(in) :: convention
+        integer(kind=c_int), optional,intent(in) :: switchcs
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHctor(ccilm,rcilm,degmax=degmax,convention=convention,switchcs=switchcs&
                          ,exitstatus=exitstatus)
     end subroutine cbindSHctor
@@ -785,7 +784,7 @@
         integer(kind=c_int), intent(in) :: dj_d1
         integer(kind=c_int), intent(in) :: dj_d2
         real(kind=c_double), dimension(dj_d0,dj_d1,dj_d2),intent(out) :: dj
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call djpi2(dj,lmax,exitstatus=exitstatus)
     end subroutine cbinddjpi2
 
@@ -806,7 +805,7 @@
         integer(kind=c_int), intent(in) :: rcof_d1
         real(kind=c_double), dimension(rcof_d0,rcof_d1),intent(out) :: rcof
         integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHRotateCoef(x,cof,rcof,dj,lmax,exitstatus=exitstatus)
     end subroutine cbindSHRotateCoef
 
@@ -829,7 +828,7 @@
         integer(kind=c_int), intent(in) :: cilmrot_d2
         real(kind=c_double), dimension(cilmrot_d0,cilmrot_d1,cilmrot_d2),intent(out) :: cilmrot
         integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHRotateRealCoef(cilmrot,cilm,lmax,x,dj,exitstatus=exitstatus)
     end subroutine cbindSHRotateRealCoef
 
@@ -907,7 +906,7 @@
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: spectra_d0
         real(kind=c_double), dimension(spectra_d0),intent(out) :: spectra
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHPowerSpectrum(c,lmax,spectra,exitstatus=exitstatus)
     end subroutine cbindSHPowerSpectrum
 
@@ -923,7 +922,7 @@
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: spectra_d0
         real(kind=c_double), dimension(spectra_d0),intent(out) :: spectra
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHPowerSpectrumDensity(c,lmax,spectra,exitstatus=exitstatus)
     end subroutine cbindSHPowerSpectrumDensity
 
@@ -944,7 +943,7 @@
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: cspectra_d0
         real(kind=c_double), dimension(cspectra_d0),intent(out) :: cspectra
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHCrossPowerSpectrum(c1,c2,lmax,cspectra,exitstatus=exitstatus)
     end subroutine cbindSHCrossPowerSpectrum
 
@@ -965,7 +964,7 @@
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: cspectra_d0
         real(kind=c_double), dimension(cspectra_d0),intent(out) :: cspectra
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHCrossPowerSpectrumDensity(c1,c2,lmax,cspectra,exitstatus=exitstatus)
     end subroutine cbindSHCrossPowerSpectrumDensity
 
@@ -989,8 +988,8 @@
         integer(kind=c_int), intent(in) :: corr_d0
         real(kind=c_double), dimension(corr_d0),intent(out) :: corr
         integer(kind=c_int), intent(in) :: admit_error_d0
-        real(kind=c_double), dimension(admit_error_d0),intent(out) :: admit_error
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(admit_error_d0),intent(out) :: admit_error
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHAdmitCorr(G,T,lmax,admit,corr,admit_error=admit_error,exitstatus=exitstatus)
     end subroutine cbindSHAdmitCorr
 
@@ -1078,7 +1077,7 @@
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: spectra_d0
         real(kind=c_double), dimension(spectra_d0),intent(out) :: spectra
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHPowerSpectrumC(c,lmax,spectra,exitstatus=exitstatus)
     end subroutine cbindSHPowerSpectrumC
 
@@ -1094,7 +1093,7 @@
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: spectra_d0
         real(kind=c_double), dimension(spectra_d0),intent(out) :: spectra
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHPowerSpectrumDensityC(c,lmax,spectra,exitstatus=exitstatus)
     end subroutine cbindSHPowerSpectrumDensityC
 
@@ -1115,7 +1114,7 @@
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: cspectra_d0
         complex(kind=c_double_complex), dimension(cspectra_d0),intent(out) :: cspectra
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHCrossPowerSpectrumC(c1,c2,lmax,cspectra,exitstatus=exitstatus)
     end subroutine cbindSHCrossPowerSpectrumC
 
@@ -1136,7 +1135,7 @@
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: cspectra_d0
         complex(kind=c_double_complex), dimension(cspectra_d0),intent(out) :: cspectra
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHCrossPowerSpectrumDensityC(c1,c2,lmax,cspectra,exitstatus=exitstatus)
     end subroutine cbindSHCrossPowerSpectrumDensityC
 
@@ -1164,14 +1163,14 @@
         integer(kind=c_int), intent(in) :: taper_order_d0
         integer(kind=c_int), dimension(taper_order_d0),intent(in) :: taper_order
         integer(kind=c_int), intent(in) :: alpha_d0
-        real(kind=c_double), dimension(alpha_d0),intent(in) :: alpha
-        real(kind=c_double), intent(in) :: lat
-        real(kind=c_double), intent(in) :: lon
+        real(kind=c_double), optional,dimension(alpha_d0),intent(in) :: alpha
+        real(kind=c_double), optional,intent(in) :: lat
+        real(kind=c_double), optional,intent(in) :: lon
         integer(kind=c_int), intent(in) :: taper_wt_d0
-        real(kind=c_double), dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,lmaxt,k,alpha=alpha&
                                 ,lat=lat,lon=lon,taper_wt=taper_wt,norm=norm,csphase=csphase&
                                 ,exitstatus=exitstatus)
@@ -1207,14 +1206,14 @@
         integer(kind=c_int), intent(in) :: taper_order_d0
         integer(kind=c_int), dimension(taper_order_d0),intent(in) :: taper_order
         integer(kind=c_int), intent(in) :: alpha_d0
-        real(kind=c_double), dimension(alpha_d0),intent(in) :: alpha
-        real(kind=c_double), intent(in) :: lat
-        real(kind=c_double), intent(in) :: lon
+        real(kind=c_double), optional,dimension(alpha_d0),intent(in) :: alpha
+        real(kind=c_double), optional,intent(in) :: lat
+        real(kind=c_double), optional,intent(in) :: lon
         integer(kind=c_int), intent(in) :: taper_wt_d0
-        real(kind=c_double), dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt&
                                  ,k,alpha=alpha,lat=lat,lon=lon,taper_wt=taper_wt&
                                  ,norm=norm,csphase=csphase,exitstatus=exitstatus)
@@ -1253,14 +1252,14 @@
         integer(kind=c_int), intent(in) :: corr_d0
         real(kind=c_double), dimension(corr_d0),intent(out) :: corr
         integer(kind=c_int), intent(in) :: admit_error_d0
-        real(kind=c_double), dimension(admit_error_d0),intent(out) :: admit_error
+        real(kind=c_double), optional,dimension(admit_error_d0),intent(out) :: admit_error
         integer(kind=c_int), intent(in) :: corr_error_d0
-        real(kind=c_double), dimension(corr_error_d0),intent(out) :: corr_error
-        integer(kind=c_int), intent(in) :: mtdef
-        integer(kind=c_int), intent(in) :: k1linsig
+        real(kind=c_double), optional,dimension(corr_error_d0),intent(out) :: corr_error
+        integer(kind=c_int), optional,intent(in) :: mtdef
+        integer(kind=c_int), optional,intent(in) :: k1linsig
         integer(kind=c_int), intent(in) :: taper_wt_d0
-        real(kind=c_double), dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr&
                                         ,k,admit_error=admit_error,corr_error=corr_error&
                                         ,taper_wt=taper_wt,mtdef=mtdef,k1linsig=k1linsig&
@@ -1283,8 +1282,8 @@
         integer(kind=c_int), intent(in) :: taper_order_d0
         integer(kind=c_int), dimension(taper_order_d0),intent(out) :: taper_order
         integer(kind=c_int), intent(in) :: degrees_d0
-        integer(kind=c_int), dimension(degrees_d0),intent(in) :: degrees
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,dimension(degrees_d0),intent(in) :: degrees
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order,degrees=degrees&
                                   ,exitstatus=exitstatus)
     end subroutine cbindSHReturnTapers
@@ -1303,11 +1302,11 @@
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(out) :: tapers
         integer(kind=c_int), intent(in) :: eigenvalues_d0
         real(kind=c_double), dimension(eigenvalues_d0),intent(out) :: eigenvalues
-        real(kind=c_double), intent(out) :: shannon
+        real(kind=c_double), optional,intent(out) :: shannon
         integer(kind=c_int), intent(in) :: degrees_d0
-        integer(kind=c_int), dimension(degrees_d0),intent(in) :: degrees
-        integer(kind=c_int), intent(out) :: ntapers
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,dimension(degrees_d0),intent(in) :: degrees
+        integer(kind=c_int), optional,intent(out) :: ntapers
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,shannon=shannon,degrees=degrees&
                                    ,ntapers=ntapers,exitstatus=exitstatus)
     end subroutine cbindSHReturnTapersM
@@ -1324,8 +1323,8 @@
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: m
         integer(kind=c_int), intent(in) :: degrees_d0
-        integer(kind=c_int), dimension(degrees_d0),intent(in) :: degrees
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,dimension(degrees_d0),intent(in) :: degrees
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call ComputeDm(dllm,lmax,m,theta0,degrees=degrees,exitstatus=exitstatus)
     end subroutine cbindComputeDm
 
@@ -1340,7 +1339,7 @@
         real(kind=c_double), intent(in) :: theta0
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: m
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call ComputeDG82(dG82,lmax,m,theta0,exitstatus=exitstatus)
     end subroutine cbindComputeDG82
 
@@ -1352,7 +1351,7 @@
         real(kind=c_double), intent(in) :: theta0
         real(kind=c_double), intent(in) :: alpha
         integer(kind=c_int), intent(in) :: m
-        integer(kind=c_int), intent(in) :: taper_number
+        integer(kind=c_int), optional,intent(in) :: taper_number
         cbindSHFindLWin=SHFindLWin(theta0,m,alpha,taper_number=taper_number)
     end function cbindSHFindLWin
 
@@ -1373,9 +1372,9 @@
         integer(kind=c_int), intent(in) :: ldata
         integer(kind=c_int), intent(in) :: k
         integer(kind=c_int), intent(in) :: taper_wt_d0
-        real(kind=c_double), dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer(kind=c_int), intent(in) :: save_cg
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer(kind=c_int), optional,intent(in) :: save_cg
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra,taper_wt=taper_wt&
                            ,save_cg=save_cg,exitstatus=exitstatus)
     end subroutine cbindSHBiasK
@@ -1393,11 +1392,11 @@
         integer(kind=c_int), intent(in) :: tapers_power_d1
         real(kind=c_double), dimension(tapers_power_d0,tapers_power_d1),intent(in) :: tapers_power
         integer(kind=c_int), intent(in) :: taper_wt_d0
-        real(kind=c_double), dimension(taper_wt_d0),intent(in) :: taper_wt
+        real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: k
         integer(kind=c_int), intent(in) :: lwin
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMTCouplingMatrix(Mmt,lmax,tapers_power,lwin,k,taper_wt=taper_wt,exitstatus=exitstatus)
     end subroutine cbindSHMTCouplingMatrix
 
@@ -1424,10 +1423,10 @@
         real(kind=c_double), dimension(admit_d0),intent(out) :: admit
         integer(kind=c_int), intent(in) :: corr_d0
         real(kind=c_double), dimension(corr_d0),intent(out) :: corr
-        integer(kind=c_int), intent(in) :: mtdef
+        integer(kind=c_int), optional,intent(in) :: mtdef
         integer(kind=c_int), intent(in) :: taper_wt_d0
-        real(kind=c_double), dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr,mtdef=mtdef&
                                 ,taper_wt=taper_wt,exitstatus=exitstatus)
     end subroutine cbindSHBiasAdmitCorr
@@ -1451,13 +1450,13 @@
         integer(kind=c_int), intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
         integer(kind=c_int), intent(in) :: taper_wt_d0
-        real(kind=c_double), dimension(taper_wt_d0),intent(in) :: taper_wt
+        real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: k
         integer(kind=c_int), intent(in) :: lwin
         integer(kind=c_int), intent(in) :: nl
         integer(kind=c_int), intent(out) :: n
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n,taper_wt=taper_wt&
                                 ,exitstatus=exitstatus)
     end subroutine cbindSHMTDebias
@@ -1486,12 +1485,13 @@
         integer(kind=c_int), dimension(taper_order_d0),intent(in) :: taper_order
         integer(kind=c_int), intent(in) :: weight_opt_d0
         integer(kind=c_int), intent(in) :: weight_opt_d1
-        real(kind=c_double), dimension(weight_opt_d0,weight_opt_d1),intent(out) :: weight_opt
+        real(kind=c_double), optional,dimension(weight_opt_d0,weight_opt_d1),intent(out) :: weight_opt
         integer(kind=c_int), intent(in) :: unweighted_covar_d0
         integer(kind=c_int), intent(in) :: unweighted_covar_d1
-        real(kind=c_double), dimension(unweighted_covar_d0,unweighted_covar_d1),intent(out) :: unweighted_covar
-        integer(kind=c_int), intent(in) :: nocross
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(unweighted_covar_d0,unweighted_covar_d1)&
+                           ,intent(out) :: unweighted_covar
+        integer(kind=c_int), optional,intent(in) :: nocross
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt,var_unit,weight_opt=weight_opt&
                          ,unweighted_covar=unweighted_covar,nocross=nocross,exitstatus=exitstatus)
     end subroutine cbindSHMTVarOpt
@@ -1515,12 +1515,13 @@
         integer(kind=c_int), intent(in) :: taper_order_d0
         integer(kind=c_int), dimension(taper_order_d0),intent(in) :: taper_order
         integer(kind=c_int), intent(in) :: taper_wt_d0
-        real(kind=c_double), dimension(taper_wt_d0),intent(in) :: taper_wt
+        real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer(kind=c_int), intent(in) :: unweighted_covar_d0
         integer(kind=c_int), intent(in) :: unweighted_covar_d1
-        real(kind=c_double), dimension(unweighted_covar_d0,unweighted_covar_d1),intent(out) :: unweighted_covar
-        integer(kind=c_int), intent(in) :: nocross
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(unweighted_covar_d0,unweighted_covar_d1)&
+                           ,intent(out) :: unweighted_covar
+        integer(kind=c_int), optional,intent(in) :: nocross
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMTVar(l,tapers,taper_order,lwin,kmax,Sff,variance,taper_wt=taper_wt&
                       ,unweighted_covar=unweighted_covar,nocross=nocross,exitstatus=exitstatus)
     end subroutine cbindSHMTVar
@@ -1565,10 +1566,10 @@
         integer(kind=c_int), intent(in) :: n_dh
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: sampling
-        integer(kind=c_int), intent(in) :: ntapers
+        integer(kind=c_int), optional,intent(in) :: ntapers
         integer(kind=c_int), intent(in) :: degrees_d0
-        integer(kind=c_int), dimension(degrees_d0),intent(in) :: degrees
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,dimension(degrees_d0),intent(in) :: degrees
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,sampling,ntapers=ntapers&
                                      ,degrees=degrees,exitstatus=exitstatus)
     end subroutine cbindSHReturnTapersMap
@@ -1590,9 +1591,9 @@
         integer(kind=c_int), intent(in) :: ldata
         integer(kind=c_int), intent(in) :: k
         integer(kind=c_int), intent(in) :: taper_wt_d0
-        real(kind=c_double), dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer(kind=c_int), intent(in) :: save_cg
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer(kind=c_int), optional,intent(in) :: save_cg
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHBiasKMask(tapers,lwin,k,incspectra,ldata,outcspectra,taper_wt=taper_wt&
                                ,save_cg=save_cg,exitstatus=exitstatus)
     end subroutine cbindSHBiasKMask
@@ -1619,10 +1620,10 @@
         integer(kind=c_int), intent(in) :: lmaxt
         integer(kind=c_int), intent(in) :: k
         integer(kind=c_int), intent(in) :: taper_wt_d0
-        real(kind=c_double), dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMultiTaperMaskSE(mtse,sd,sh,lmax,tapers,lmaxt,k,taper_wt=taper_wt,norm=norm&
                                     ,csphase=csphase,exitstatus=exitstatus)
     end subroutine cbindSHMultiTaperMaskSE
@@ -1655,10 +1656,10 @@
         integer(kind=c_int), intent(in) :: lmaxt
         integer(kind=c_int), intent(in) :: k
         integer(kind=c_int), intent(in) :: taper_wt_d0
-        real(kind=c_double), dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer(kind=c_int), intent(in) :: csphase
-        integer(kind=c_int), intent(in) :: norm
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
+        integer(kind=c_int), optional,intent(in) :: csphase
+        integer(kind=c_int), optional,intent(in) :: norm
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMultiTaperMaskCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,lmaxt,k,taper_wt=taper_wt&
                                      ,norm=norm,csphase=csphase,exitstatus=exitstatus)
     end subroutine cbindSHMultiTaperMaskCSE
@@ -1677,10 +1678,10 @@
         integer(kind=c_int), dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
         integer(kind=c_int), intent(in) :: n_dh
         integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: sampling
+        integer(kind=c_int), optional,intent(in) :: sampling
         integer(kind=c_int), intent(in) :: degrees_d0
-        integer(kind=c_int), dimension(degrees_d0),intent(in) :: degrees
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,dimension(degrees_d0),intent(in) :: degrees
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call ComputeDMap(Dij,dh_mask,n_dh,lmax,sampling=sampling,degrees=degrees,exitstatus=exitstatus)
     end subroutine cbindComputeDMap
 
@@ -1699,8 +1700,8 @@
         integer(kind=c_int), intent(in) :: n
         integer(kind=c_int), intent(in) :: sampling
         integer(kind=c_int), intent(in) :: nprofile
-        integer(kind=c_int), intent(in) :: extend
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: extend
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         integer(kind=c_int) :: NP
         call Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP,extend=extend,exitstatus=exitstatus)
     end subroutine cbindCurve2Mask
@@ -1718,8 +1719,8 @@
         real(kind=c_double), dimension(outcspectra_d0),intent(out) :: outcspectra
         integer(kind=c_int), intent(in) :: lwin
         integer(kind=c_int), intent(in) :: ldata
-        integer(kind=c_int), intent(in) :: save_cg
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: save_cg
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg=save_cg,exitstatus=exitstatus)
     end subroutine cbindSHBias
 
@@ -1730,8 +1731,8 @@
         integer(kind=c_int), intent(in) :: coef_d0
         real(kind=c_double), dimension(coef_d0),intent(out) :: coef
         real(kind=c_double), intent(in) :: theta
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: lmax
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SphericalCapCoef(coef,theta,lmax=lmax,exitstatus=exitstatus)
     end subroutine cbindSphericalCapCoef
 
@@ -1761,17 +1762,17 @@
         integer(kind=c_int), intent(in) :: total_d0
         integer(kind=c_int), intent(in) :: total_d1
         real(kind=c_double), dimension(total_d0,total_d1),intent(out) :: total
-        real(kind=c_double), intent(in) :: omega
+        real(kind=c_double), optional,intent(in) :: omega
         integer(kind=c_int), intent(in) :: pot_d0
         integer(kind=c_int), intent(in) :: pot_d1
-        real(kind=c_double), dimension(pot_d0,pot_d1),intent(out) :: pot
+        real(kind=c_double), optional,dimension(pot_d0,pot_d1),intent(out) :: pot
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(out) :: n
-        integer(kind=c_int), intent(in) :: sampling
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(in) :: normal_gravity
-        integer(kind=c_int), intent(in) :: extend
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: sampling
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(in) :: normal_gravity
+        integer(kind=c_int), optional,intent(in) :: extend
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,sampling=sampling&
                                 ,lmax_calc=lmax_calc,omega=omega,normal_gravity=normal_gravity&
                                 ,pot=pot,extend=extend,exitstatus=exitstatus)
@@ -1811,10 +1812,10 @@
         real(kind=c_double), dimension(vyz_d0,vyz_d1),intent(out) :: vyz
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(out) :: n
-        integer(kind=c_int), intent(in) :: sampling
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(in) :: extend
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: sampling
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(in) :: extend
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling=sampling&
                                     ,lmax_calc=lmax_calc,extend=extend,exitstatus=exitstatus)
     end subroutine cbindMakeGravGradGridDH
@@ -1852,10 +1853,10 @@
         real(kind=c_double), dimension(vyz_d0,vyz_d1),intent(out) :: vyz
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(out) :: n
-        integer(kind=c_int), intent(in) :: sampling
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(in) :: extend
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: sampling
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(in) :: extend
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeMagGradGridDH(cilm,lmax,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling=sampling&
                                    ,lmax_calc=lmax_calc,extend=extend,exitstatus=exitstatus)
     end subroutine cbindMakeMagGradGridDH
@@ -1879,14 +1880,14 @@
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: order
         integer(kind=c_int), intent(in) :: gridtype
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(in) :: extend
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(in) :: extend
         integer(kind=c_int), intent(out) :: nlat
         integer(kind=c_int), intent(out) :: nlong
-        real(kind=c_double), intent(in) :: interval
-        real(kind=c_double), intent(in) :: a
-        real(kind=c_double), intent(in) :: f
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,intent(in) :: interval
+        real(kind=c_double), optional,intent(in) :: a
+        real(kind=c_double), optional,intent(in) :: f
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,gridtype,order&
                                 ,nlat,nlong,interval=interval,lmax_calc=lmax_calc&
                                 ,a=a,f=f,extend=extend,exitstatus=exitstatus)
@@ -1904,21 +1905,21 @@
         real(kind=c_double), intent(in) :: mass
         real(kind=c_double), intent(in) :: rho
         integer(kind=c_int), intent(in) :: w_d0
-        real(kind=c_double), dimension(w_d0),intent(in) :: w
+        real(kind=c_double), optional,dimension(w_d0),intent(in) :: w
         integer(kind=c_int), intent(in) :: zero_d0
-        real(kind=c_double), dimension(zero_d0),intent(in) :: zero
+        real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
         integer(kind=c_int), intent(in) :: plx_d0
         integer(kind=c_int), intent(in) :: plx_d1
-        real(kind=c_double), dimension(plx_d0,plx_d1),intent(in) :: plx
-        real(kind=c_double), intent(in) :: dref
+        real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
+        real(kind=c_double), optional,intent(in) :: dref
         integer(kind=c_int), intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         real(kind=c_double), intent(out) :: d
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: nmax
         integer(kind=c_int), intent(in) :: gridtype
-        integer(kind=c_int), intent(in) :: n
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: n
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w=w,zero=zero,plx=plx&
                           ,n=n,dref=dref,exitstatus=exitstatus)
     end subroutine cbindCilmPlus
@@ -1935,21 +1936,21 @@
         real(kind=c_double), intent(in) :: mass
         real(kind=c_double), intent(in) :: rho
         integer(kind=c_int), intent(in) :: w_d0
-        real(kind=c_double), dimension(w_d0),intent(in) :: w
+        real(kind=c_double), optional,dimension(w_d0),intent(in) :: w
         integer(kind=c_int), intent(in) :: zero_d0
-        real(kind=c_double), dimension(zero_d0),intent(in) :: zero
+        real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
         integer(kind=c_int), intent(in) :: plx_d0
         integer(kind=c_int), intent(in) :: plx_d1
-        real(kind=c_double), dimension(plx_d0,plx_d1),intent(in) :: plx
-        real(kind=c_double), intent(in) :: dref
+        real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
+        real(kind=c_double), optional,intent(in) :: dref
         integer(kind=c_int), intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         real(kind=c_double), intent(out) :: d
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: nmax
         integer(kind=c_int), intent(in) :: gridtype
-        integer(kind=c_int), intent(in) :: n
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: n
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w=w,zero=zero,plx=plx&
                            ,n=n,dref=dref,exitstatus=exitstatus)
     end subroutine cbindCilmMinus
@@ -1969,21 +1970,21 @@
         integer(kind=c_int), intent(in) :: rho_d1
         real(kind=c_double), dimension(rho_d0,rho_d1),intent(in) :: rho
         integer(kind=c_int), intent(in) :: w_d0
-        real(kind=c_double), dimension(w_d0),intent(in) :: w
+        real(kind=c_double), optional,dimension(w_d0),intent(in) :: w
         integer(kind=c_int), intent(in) :: zero_d0
-        real(kind=c_double), dimension(zero_d0),intent(in) :: zero
+        real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
         integer(kind=c_int), intent(in) :: plx_d0
         integer(kind=c_int), intent(in) :: plx_d1
-        real(kind=c_double), dimension(plx_d0,plx_d1),intent(in) :: plx
-        real(kind=c_double), intent(in) :: dref
+        real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
+        real(kind=c_double), optional,intent(in) :: dref
         integer(kind=c_int), intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         real(kind=c_double), intent(out) :: d
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: nmax
         integer(kind=c_int), intent(in) :: gridtype
-        integer(kind=c_int), intent(in) :: n
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: n
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w=w,zero=zero&
                               ,plx=plx,n=n,dref=dref,exitstatus=exitstatus)
     end subroutine cbindCilmPlusRhoH
@@ -2003,21 +2004,21 @@
         integer(kind=c_int), intent(in) :: rho_d1
         real(kind=c_double), dimension(rho_d0,rho_d1),intent(in) :: rho
         integer(kind=c_int), intent(in) :: w_d0
-        real(kind=c_double), dimension(w_d0),intent(in) :: w
+        real(kind=c_double), optional,dimension(w_d0),intent(in) :: w
         integer(kind=c_int), intent(in) :: zero_d0
-        real(kind=c_double), dimension(zero_d0),intent(in) :: zero
+        real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
         integer(kind=c_int), intent(in) :: plx_d0
         integer(kind=c_int), intent(in) :: plx_d1
-        real(kind=c_double), dimension(plx_d0,plx_d1),intent(in) :: plx
-        real(kind=c_double), intent(in) :: dref
+        real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
+        real(kind=c_double), optional,intent(in) :: dref
         integer(kind=c_int), intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         real(kind=c_double), intent(out) :: d
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: nmax
         integer(kind=c_int), intent(in) :: gridtype
-        integer(kind=c_int), intent(in) :: n
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: n
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call CilmMinusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w=w,zero=zero&
                                ,plx=plx,n=n,dref=dref,exitstatus=exitstatus)
     end subroutine cbindCilmMinusRhoH
@@ -2043,18 +2044,18 @@
         real(kind=c_double), intent(in) :: rho
         integer(kind=c_int), intent(in) :: plx_d0
         integer(kind=c_int), intent(in) :: plx_d1
-        real(kind=c_double), dimension(plx_d0,plx_d1),intent(in) :: plx
+        real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         integer(kind=c_int), intent(in) :: zero_d0
-        real(kind=c_double), dimension(zero_d0),intent(in) :: zero
+        real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
         integer(kind=c_int), intent(in) :: w_d0
-        real(kind=c_double), dimension(w_d0),intent(in) :: w
+        real(kind=c_double), optional,dimension(w_d0),intent(in) :: w
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: nmax
         integer(kind=c_int), intent(in) :: gridtype
-        integer(kind=c_int), intent(in) :: filter_type
-        integer(kind=c_int), intent(in) :: filter_deg
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: filter_type
+        integer(kind=c_int), optional,intent(in) :: filter_deg
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call BAtoHilm(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w=w,plx=plx,zero=zero&
                           ,filter_type=filter_type,filter_deg=filter_deg,lmax_calc=lmax_calc&
                           ,exitstatus=exitstatus)
@@ -2084,18 +2085,18 @@
         real(kind=c_double), dimension(rho_d0,rho_d1),intent(in) :: rho
         integer(kind=c_int), intent(in) :: plx_d0
         integer(kind=c_int), intent(in) :: plx_d1
-        real(kind=c_double), dimension(plx_d0,plx_d1),intent(in) :: plx
+        real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         integer(kind=c_int), intent(in) :: zero_d0
-        real(kind=c_double), dimension(zero_d0),intent(in) :: zero
+        real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
         integer(kind=c_int), intent(in) :: w_d0
-        real(kind=c_double), dimension(w_d0),intent(in) :: w
+        real(kind=c_double), optional,dimension(w_d0),intent(in) :: w
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: nmax
         integer(kind=c_int), intent(in) :: gridtype
-        integer(kind=c_int), intent(in) :: filter_type
-        integer(kind=c_int), intent(in) :: filter_deg
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: filter_type
+        integer(kind=c_int), optional,intent(in) :: filter_deg
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call BAtoHilmRhoH(cilm,ba,gridglq,lmax,nmax,mass,r0,rho,gridtype,w=w,plx=plx&
                               ,zero=zero,filter_type=filter_type,filter_deg=filter_deg&
                               ,lmax_calc=lmax_calc,exitstatus=exitstatus)
@@ -2166,13 +2167,13 @@
         real(kind=c_double), dimension(total_grid_d0,total_grid_d1),intent(out) :: total_grid
         integer(kind=c_int), intent(in) :: pot_grid_d0
         integer(kind=c_int), intent(in) :: pot_grid_d1
-        real(kind=c_double), dimension(pot_grid_d0,pot_grid_d1),intent(out) :: pot_grid
+        real(kind=c_double), optional,dimension(pot_grid_d0,pot_grid_d1),intent(out) :: pot_grid
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(out) :: n
-        integer(kind=c_int), intent(in) :: sampling
-        integer(kind=c_int), intent(in) :: lmax_calc
-        integer(kind=c_int), intent(in) :: extend
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: sampling
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(in) :: extend
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid,total_grid&
                                ,n,sampling=sampling,lmax_calc=lmax_calc,pot_grid=pot_grid&
                                ,extend=extend,exitstatus=exitstatus)
@@ -2192,7 +2193,7 @@
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: spectra_d0
         real(kind=c_double), dimension(spectra_d0),intent(out) :: spectra
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMagPowerSpectrum(c,a,r,lmax,spectra,exitstatus=exitstatus)
     end subroutine cbindSHMagPowerSpectrum
 
@@ -2222,9 +2223,9 @@
         integer(kind=c_int), intent(in) :: coord_d0
         integer(kind=c_int), intent(in) :: coord_d1
         real(kind=c_double), dimension(coord_d0,coord_d1),intent(out) :: coord
-        real(kind=c_double), intent(in) :: cinterval
-        integer(kind=c_int), intent(out) :: cnum
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,intent(in) :: cinterval
+        integer(kind=c_int), optional,intent(out) :: cnum
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeCircleCoord(coord,lat,lon,theta0,cinterval=cinterval,cnum=cnum,exitstatus=exitstatus)
     end subroutine cbindMakeCircleCoord
 
@@ -2241,9 +2242,9 @@
         integer(kind=c_int), intent(in) :: coord_d0
         integer(kind=c_int), intent(in) :: coord_d1
         real(kind=c_double), dimension(coord_d0,coord_d1),intent(out) :: coord
-        real(kind=c_double), intent(in) :: cinterval
-        integer(kind=c_int), intent(out) :: cnum
-        integer(kind=c_int), intent(out) :: exitstatus
+        real(kind=c_double), optional,intent(in) :: cinterval
+        integer(kind=c_int), optional,intent(out) :: cnum
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta,cinterval=cinterval&
                                    ,cnum=cnum,exitstatus=exitstatus)
     end subroutine cbindMakeEllipseCoord
@@ -2262,7 +2263,7 @@
         integer(kind=c_int), intent(out) :: jmax
         integer(kind=c_int), intent(in) :: w3j_d0
         real(kind=c_double), dimension(w3j_d0),intent(out) :: w3j
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call Wigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3,exitstatus=exitstatus)
     end subroutine cbindWigner3j
 
@@ -2295,7 +2296,7 @@
         integer(kind=c_int), intent(in) :: w_d0
         real(kind=c_double), dimension(w_d0),intent(out) :: w
         integer(kind=c_int), intent(in) :: n
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call PreGLQ(x1,x2,n,zero,w,exitstatus=exitstatus)
     end subroutine cbindPreGLQ
 
@@ -2334,8 +2335,8 @@
         integer(kind=c_int), intent(in) :: n
         integer(kind=c_int), intent(in) :: aj_d0
         real(kind=c_double), dimension(aj_d0),intent(out) :: aj
-        integer(kind=c_int), intent(in) :: extend
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(in) :: extend
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call DHaj(n,aj,extend=extend,exitstatus=exitstatus)
     end subroutine cbindDHaj
 
@@ -2364,9 +2365,9 @@
         integer(kind=c_int), intent(in) :: evec_d0
         integer(kind=c_int), intent(in) :: evec_d1
         real(kind=c_double), dimension(evec_d0,evec_d1),intent(out) :: evec
-        character(kind=c_char), intent(in) :: ul
-        integer(kind=c_int), intent(in) :: K
-        integer(kind=c_int), intent(out) :: exitstatus
+        character(kind=c_char), optional,intent(in) :: ul
+        integer(kind=c_int), optional,intent(in) :: K
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call EigValVecSym(ain,n,eig,evec,ul=ul,K=K,exitstatus=exitstatus)
     end subroutine cbindEigValVecSym
 
@@ -2384,8 +2385,8 @@
         integer(kind=c_int), intent(in) :: evec_d0
         integer(kind=c_int), intent(in) :: evec_d1
         real(kind=c_double), dimension(evec_d0,evec_d1),intent(out) :: evec
-        character(kind=c_char), intent(in) :: ul
-        integer(kind=c_int), intent(out) :: exitstatus
+        character(kind=c_char), optional,intent(in) :: ul
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call EigValVecSymTri(ain,n,eig,evec,ul=ul,exitstatus=exitstatus)
     end subroutine cbindEigValVecSymTri
 
@@ -2399,7 +2400,7 @@
         integer(kind=c_int), intent(in) :: n
         integer(kind=c_int), intent(in) :: eval_d0
         real(kind=c_double), dimension(eval_d0),intent(out) :: eval
-        character(kind=c_char), intent(in) :: ul
+        character(kind=c_char), optional,intent(in) :: ul
         call EigValSym(ain,n,eval,ul=ul)
     end subroutine cbindEigValSym
 
@@ -2426,7 +2427,7 @@
         integer(kind=c_int), dimension(taper_order_d0),intent(in) :: taper_order
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: nrot
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHRotateTapers(tapersrot,tapers,taper_order,lmax,nrot,x,dj,exitstatus=exitstatus)
     end subroutine cbindSHRotateTapers
 
@@ -2447,7 +2448,7 @@
         real(kind=c_double), dimension(flm_d0,flm_d1,flm_d2),intent(in) :: flm
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: nmax
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SlepianCoeffs(falpha,galpha,flm,lmax,nmax,exitstatus=exitstatus)
     end subroutine cbindSlepianCoeffs
 
@@ -2468,7 +2469,7 @@
         real(kind=c_double), dimension(galpha_d0,galpha_d1),intent(in) :: galpha
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: nmax
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SlepianCoeffsToSH(flm,falpha,galpha,lmax,nmax,exitstatus=exitstatus)
     end subroutine cbindSlepianCoeffsToSH
 
@@ -2485,7 +2486,7 @@
         real(kind=c_double), dimension(galpha_d0,galpha_d1),intent(in) :: galpha
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: nmax
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHSCouplingMatrix(kij,galpha,lmax,nmax,exitstatus=exitstatus)
     end subroutine cbindSHSCouplingMatrix
 
@@ -2506,7 +2507,7 @@
         integer(kind=c_int), intent(in) :: kmax
         integer(kind=c_int), intent(in) :: galpha_order_d0
         integer(kind=c_int), dimension(galpha_order_d0),intent(in) :: galpha_order
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHSlepianVar(l,galpha,galpha_order,lmax,kmax,Sff,variance,exitstatus=exitstatus)
     end subroutine cbindSHSlepianVar
 
@@ -2526,7 +2527,7 @@
         integer(kind=c_int), dimension(galpha_order_d0),intent(in) :: galpha_order
         integer(kind=c_int), intent(in) :: lmax
         integer(kind=c_int), intent(in) :: nmax
-        integer(kind=c_int), intent(out) :: exitstatus
+        integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHSCouplingMatrixCap(kij,galpha,galpha_order,lmax,nmax,exitstatus=exitstatus)
     end subroutine cbindSHSCouplingMatrixCap
 
