@@ -18,7 +18,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 }
 </style>
 
-{% include note.html content="In order to access the fortran example programs and example datasets, it will be necessary to either dowload (or clone) the entire shtools repo from [GitHub](https://github.com/SHTOOLS/SHTOOLS/), or to install with *brew* using the option `--with-examples`. If the entire repo was downloaded, the example programs will be found in the folder `examples/fortran`. If shtools was instead installed with *brew*, they will be found in `/usr/local/share/shtools/examples/fortran/`." %}
+{% include note.html content="In order to access the fortran example programs and example datasets, it will be necessary to dowload the entire shtools repo from [GitHub](https://github.com/SHTOOLS/SHTOOLS/), install with *brew* using the option `--with-examples`, or install with *macports*. If the entire repo was downloaded, the example programs will be found in the folder `examples/fortran`. If shtools was instead installed with *brew* or *macports*, they will be found in `/usr/local/share/shtools/examples/fortran/` or `/opt/local/share/shtools/examples/fortran/`, respectively." %}
 
 
 | Folder | Description |

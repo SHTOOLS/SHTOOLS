@@ -22,7 +22,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 The *constants* subpackage defines physical constants related to the terrestrial planets and moons. Each constant is an instance of an [astropy](http://docs.astropy.org/en/stable/constants/index.html) `Constant` class, which has the attributes `name`, `value`, `uncertainty`, `unit`, and `reference`.
 
-The pyshtools constants are organized by planet: Mercury, Venus, Earth, Moon, and Mars. Each planet has several attributes, such as the the mean planetary radius `r`, `mass`, and flattening `f`. To see all information about an individual constant, it is only necessary to use the print function:
+The pyshtools constants are organized primarily by planet: Mercury, Venus, Earth, Moon, and Mars. Each planet has several attributes, such as the the mean planetary radius `r`, `mass`, and flattening `f`. To see all information about an individual constant, it is only necessary to use the print function:
 ```python
 In [1]: print(pysh.constants.Mars.r)
   Name   = Mean radius of Mars
@@ -34,9 +34,10 @@ In [1]: print(pysh.constants.Mars.r)
 To use the value of a constant in a calculation, it is only necessary to access its `value` attribute:
 
 ```python
-In [2]: print(pysh.constants.Mars.r.value)
-3389500.0
+In [2]: 2 * pysh.constants.Mars.r.value
+6779000.0
 ```
+Physical constants from the *Committee on Data for Science and Technology* are provided in the submodule `codata`. A few of these (such as `G` and `mu0`) are referenced in the main constants namespace.
 
 ## Datasets
 

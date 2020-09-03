@@ -16,9 +16,9 @@ dependencies:
     - requests
     - cartopy>=0.18.0
     - pygmt>=0.2
-    - pooch
+    - pooch>=1.1
     - tqdm
     - jupyter
-    - palettable
+    - palettable>=3.3
     - pypandoc
 

@@ -33,14 +33,14 @@ from subprocess import check_call  # noqa: E402
 # Convert markdown README.md to restructured text (.rst) for PyPi, and
 # remove the first 5 lines that contain a reference to the shtools logo.
 # pandoc can be installed either by conda or pip:
-# conda install -c conda-forge pandoc pypandoc
-# pip install pypandoc
+#     conda install -c conda-forge pandoc pypandoc
+#     pip install pypandoc
 try:
     import pypandoc
     rst = pypandoc.convert_file('README.md', 'rst')
     long_description = rst.split('\n', 5)[5]
 except(IOError, ImportError):
-    print('*** pypandoc is not installed. PYPI description will not be '
+    print('*** pypandoc is not installed. PYPI long_description will not be '
           'formatted correctly. ***')
     long_description = open('README.md').read()
 
@@ -76,12 +76,12 @@ INSTALL_REQUIRES = [
     'astropy',
     'xarray',
     'requests',
-    'pooch',
+    'pooch>=1.1',
     'tqdm'
 ]
 
 EXTRAS_REQUIRE = {
-    'maps': ['cartopy>=0.18.0', 'pygmt>=0.2', 'palettable']
+    'extras': ['cartopy>=0.18.0', 'pygmt>=0.2', 'palettable>=3.3']
 }
 
 print('INSTALLING SHTOOLS {}'.format(VERSION))

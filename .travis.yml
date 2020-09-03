@@ -38,7 +38,7 @@ install:
         fftw>=3.3.8
         liblapack>=3.8
         openblas
-        gmt
+        gmt>=6.1.1
         scipy>=0.14.0
         matplotlib>=3.3
         astropy
@@ -46,10 +46,10 @@ install:
         requests
         cartopy>=0.18.0
         pygmt
-        pooch
+        pooch>=1.1
         tqdm
         jupyter
-        palettable
+        palettable>=3.3
         pypandoc
   - conda activate test-environment
 
