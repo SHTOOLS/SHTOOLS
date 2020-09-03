@@ -2,10 +2,10 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PlmBar
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: cnorm
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -17,12 +17,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PlmBar_d1
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        integer(kind=c_int), intent(in) :: dp1_d0
+        integer(kind=c_int), value,intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: cnorm
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -33,10 +33,10 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PlBar
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlBar(p,lmax,z,exitstatus=exitstatus)
     end subroutine cPlBar
@@ -45,12 +45,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PlBar_d1
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        integer(kind=c_int), intent(in) :: dp1_d0
+        integer(kind=c_int), value,intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlBar_d1(p,dp1,lmax,z,exitstatus=exitstatus)
     end subroutine cPlBar_d1
@@ -59,10 +59,10 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PlmON
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: cnorm
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -74,12 +74,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PlmON_d1
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        integer(kind=c_int), intent(in) :: dp1_d0
+        integer(kind=c_int), value,intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: cnorm
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -90,10 +90,10 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PlON
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlON(p,lmax,z,exitstatus=exitstatus)
     end subroutine cPlON
@@ -102,12 +102,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PlON_d1
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        integer(kind=c_int), intent(in) :: dp1_d0
+        integer(kind=c_int), value,intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlON_d1(p,dp1,lmax,z,exitstatus=exitstatus)
     end subroutine cPlON_d1
@@ -116,10 +116,10 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PlmSchmidt
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: cnorm
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -131,12 +131,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PlmSchmidt_d1
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        integer(kind=c_int), intent(in) :: dp1_d0
+        integer(kind=c_int), value,intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: cnorm
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -147,10 +147,10 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PlSchmidt
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlSchmidt(p,lmax,z,exitstatus=exitstatus)
     end subroutine cPlSchmidt
@@ -159,12 +159,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PlSchmidt_d1
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        integer(kind=c_int), intent(in) :: dp1_d0
+        integer(kind=c_int), value,intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call PlSchmidt_d1(p,dp1,lmax,z,exitstatus=exitstatus)
     end subroutine cPlSchmidt_d1
@@ -173,10 +173,10 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PLegendreA
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call PLegendreA(p,lmax,z,csphase=csphase,exitstatus=exitstatus)
@@ -187,12 +187,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PLegendreA_d1
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        integer(kind=c_int), intent(in) :: dp1_d0
+        integer(kind=c_int), value,intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call PLegendreA_d1(p,dp1,lmax,z,csphase=csphase,exitstatus=exitstatus)
@@ -202,10 +202,10 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PLegendre
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call PLegendre(p,lmax,z,exitstatus=exitstatus)
     end subroutine cPLegendre
@@ -214,12 +214,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PLegendre_d1
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: p_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: p_d0
         real(kind=c_double), dimension(p_d0),intent(out) :: p
-        integer(kind=c_int), intent(in) :: dp1_d0
+        integer(kind=c_int), value,intent(in) :: dp1_d0
         real(kind=c_double), dimension(dp1_d0),intent(out) :: dp1
-        real(kind=c_double), intent(in) :: z
+        real(kind=c_double), value,intent(in) :: z
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call PLegendre_d1(p,dp1,lmax,z,exitstatus=exitstatus)
     end subroutine cPLegendre_d1
@@ -229,8 +229,8 @@
         use shtools, only: PlmIndex
         implicit none
         integer(kind=c_int) :: cPlmIndex
-        integer(kind=c_int), intent(in) :: l
-        integer(kind=c_int), intent(in) :: m
+        integer(kind=c_int), value,intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: m
         cPlmIndex=PlmIndex(l,m)
     end function cPlmIndex
 
@@ -239,12 +239,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHExpandDH
         implicit none
-        integer(kind=c_int), intent(in) :: grid_d0
-        integer(kind=c_int), intent(in) :: grid_d1
+        integer(kind=c_int), value,intent(in) :: grid_d0
+        integer(kind=c_int), value,intent(in) :: grid_d1
         real(kind=c_double), dimension(grid_d0,grid_d1),intent(in) :: grid
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
-        integer(kind=c_int), intent(in) :: n
+        integer(kind=c_int), value,intent(in) :: n
         integer(kind=c_int), intent(out) :: lmax
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: sampling
@@ -260,12 +260,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeGridDH
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        integer(kind=c_int), intent(in) :: griddh_d0
-        integer(kind=c_int), intent(in) :: griddh_d1
+        integer(kind=c_int), value,intent(in) :: griddh_d0
+        integer(kind=c_int), value,intent(in) :: griddh_d1
         real(kind=c_double), dimension(griddh_d0,griddh_d1),intent(out) :: griddh
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), intent(out) :: n
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: sampling
@@ -282,12 +282,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHExpandDHC
         implicit none
-        integer(kind=c_int), intent(in) :: grid_d0
-        integer(kind=c_int), intent(in) :: grid_d1
+        integer(kind=c_int), value,intent(in) :: grid_d0
+        integer(kind=c_int), value,intent(in) :: grid_d1
         complex(kind=c_double_complex), dimension(grid_d0,grid_d1),intent(in) :: grid
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         complex(kind=c_double_complex), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
-        integer(kind=c_int), intent(in) :: n
+        integer(kind=c_int), value,intent(in) :: n
         integer(kind=c_int), intent(out) :: lmax
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: sampling
@@ -303,12 +303,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeGridDHC
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         complex(kind=c_double_complex), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        integer(kind=c_int), intent(in) :: griddh_d0
-        integer(kind=c_int), intent(in) :: griddh_d1
+        integer(kind=c_int), value,intent(in) :: griddh_d0
+        integer(kind=c_int), value,intent(in) :: griddh_d1
         complex(kind=c_double_complex), dimension(griddh_d0,griddh_d1),intent(out) :: griddh
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), intent(out) :: n
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: sampling
@@ -325,13 +325,13 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHGLQ
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: zero_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: zero_d0
         real(kind=c_double), dimension(zero_d0),intent(out) :: zero
-        integer(kind=c_int), intent(in) :: w_d0
+        integer(kind=c_int), value,intent(in) :: w_d0
         real(kind=c_double), dimension(w_d0),intent(out) :: w
-        integer(kind=c_int), intent(in) :: plx_d0
-        integer(kind=c_int), intent(in) :: plx_d1
+        integer(kind=c_int), value,intent(in) :: plx_d0
+        integer(kind=c_int), value,intent(in) :: plx_d1
         real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(out) :: plx
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: csphase
@@ -346,19 +346,19 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHExpandGLQ
         implicit none
-        integer(kind=c_int), intent(in) :: w_d0
+        integer(kind=c_int), value,intent(in) :: w_d0
         real(kind=c_double), dimension(w_d0),intent(in) :: w
-        integer(kind=c_int), intent(in) :: gridglq_d0
-        integer(kind=c_int), intent(in) :: gridglq_d1
+        integer(kind=c_int), value,intent(in) :: gridglq_d0
+        integer(kind=c_int), value,intent(in) :: gridglq_d1
         real(kind=c_double), dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-        integer(kind=c_int), intent(in) :: plx_d0
-        integer(kind=c_int), intent(in) :: plx_d1
+        integer(kind=c_int), value,intent(in) :: plx_d0
+        integer(kind=c_int), value,intent(in) :: plx_d1
         real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
-        integer(kind=c_int), intent(in) :: zero_d0
+        integer(kind=c_int), value,intent(in) :: zero_d0
         real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: lmax_calc
@@ -373,17 +373,17 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeGridGLQ
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        integer(kind=c_int), intent(in) :: plx_d0
-        integer(kind=c_int), intent(in) :: plx_d1
+        integer(kind=c_int), value,intent(in) :: plx_d0
+        integer(kind=c_int), value,intent(in) :: plx_d1
         real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
-        integer(kind=c_int), intent(in) :: zero_d0
+        integer(kind=c_int), value,intent(in) :: zero_d0
         real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
-        integer(kind=c_int), intent(in) :: gridglq_d0
-        integer(kind=c_int), intent(in) :: gridglq_d1
+        integer(kind=c_int), value,intent(in) :: gridglq_d0
+        integer(kind=c_int), value,intent(in) :: gridglq_d1
         real(kind=c_double), dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: lmax_calc
@@ -399,19 +399,19 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHExpandGLQC
         implicit none
-        integer(kind=c_int), intent(in) :: w_d0
+        integer(kind=c_int), value,intent(in) :: w_d0
         real(kind=c_double), dimension(w_d0),intent(in) :: w
-        integer(kind=c_int), intent(in) :: gridglq_d0
-        integer(kind=c_int), intent(in) :: gridglq_d1
+        integer(kind=c_int), value,intent(in) :: gridglq_d0
+        integer(kind=c_int), value,intent(in) :: gridglq_d1
         complex(kind=c_double_complex), dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-        integer(kind=c_int), intent(in) :: plx_d0
-        integer(kind=c_int), intent(in) :: plx_d1
+        integer(kind=c_int), value,intent(in) :: plx_d0
+        integer(kind=c_int), value,intent(in) :: plx_d1
         real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
-        integer(kind=c_int), intent(in) :: zero_d0
+        integer(kind=c_int), value,intent(in) :: zero_d0
         real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         complex(kind=c_double_complex), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: lmax_calc
@@ -426,17 +426,17 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeGridGLQC
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         complex(kind=c_double_complex), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        integer(kind=c_int), intent(in) :: plx_d0
-        integer(kind=c_int), intent(in) :: plx_d1
+        integer(kind=c_int), value,intent(in) :: plx_d0
+        integer(kind=c_int), value,intent(in) :: plx_d1
         real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
-        integer(kind=c_int), intent(in) :: zero_d0
+        integer(kind=c_int), value,intent(in) :: zero_d0
         real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
-        integer(kind=c_int), intent(in) :: gridglq_d0
-        integer(kind=c_int), intent(in) :: gridglq_d1
+        integer(kind=c_int), value,intent(in) :: gridglq_d0
+        integer(kind=c_int), value,intent(in) :: gridglq_d1
         complex(kind=c_double_complex), dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: lmax_calc
@@ -451,12 +451,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: GLQGridCoord
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), intent(out) :: nlat
         integer(kind=c_int), intent(out) :: nlong
-        integer(kind=c_int), intent(in) :: latglq_d0
+        integer(kind=c_int), value,intent(in) :: latglq_d0
         real(kind=c_double), dimension(latglq_d0),intent(out) :: latglq
-        integer(kind=c_int), intent(in) :: longlq_d0
+        integer(kind=c_int), value,intent(in) :: longlq_d0
         real(kind=c_double), dimension(longlq_d0),intent(out) :: longlq
         integer(kind=c_int), optional,intent(in) :: extend
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -469,20 +469,20 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHExpandLSQ
         implicit none
-        integer(kind=c_int), intent(in) :: d_d0
+        integer(kind=c_int), value,intent(in) :: d_d0
         real(kind=c_double), dimension(d_d0),intent(in) :: d
-        integer(kind=c_int), intent(in) :: lat_d0
+        integer(kind=c_int), value,intent(in) :: lat_d0
         real(kind=c_double), dimension(lat_d0),intent(in) :: lat
-        integer(kind=c_int), intent(in) :: lon_d0
+        integer(kind=c_int), value,intent(in) :: lon_d0
         real(kind=c_double), dimension(lon_d0),intent(in) :: lon
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
-        integer(kind=c_int), intent(in) :: nmax
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: nmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: csphase
         real(kind=c_double), optional,intent(out) :: chi2
-        integer(kind=c_int), intent(in) :: weights_d0
+        integer(kind=c_int), value,intent(in) :: weights_d0
         real(kind=c_double), optional,dimension(weights_d0),intent(in) :: weights
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm=norm,chi2=chi2,csphase=csphase&
@@ -495,13 +495,13 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeGrid2d
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        real(kind=c_double), intent(in) :: interval
-        integer(kind=c_int), intent(in) :: grid_d0
-        integer(kind=c_int), intent(in) :: grid_d1
+        real(kind=c_double), value,intent(in) :: interval
+        integer(kind=c_int), value,intent(in) :: grid_d0
+        integer(kind=c_int), value,intent(in) :: grid_d1
         real(kind=c_double), dimension(grid_d0,grid_d1),intent(out) :: grid
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), intent(out) :: nlat
         integer(kind=c_int), intent(out) :: nlong
         integer(kind=c_int), optional,intent(in) :: norm
@@ -525,11 +525,11 @@
         use shtools, only: MakeGridPoint
         implicit none
         real(kind=c_double) :: cMakeGridPoint
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        real(kind=c_double), intent(in) :: lat
-        real(kind=c_double), intent(in) :: lon
-        integer(kind=c_int), intent(in) :: lmax
+        real(kind=c_double), value,intent(in) :: lat
+        real(kind=c_double), value,intent(in) :: lon
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: dealloc
@@ -542,11 +542,11 @@
         use shtools, only: MakeGridPointC
         implicit none
         complex(kind=c_double_complex) :: cMakeGridPointC
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         complex(kind=c_double_complex), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        real(kind=c_double), intent(in) :: lat
-        real(kind=c_double), intent(in) :: lon
-        integer(kind=c_int), intent(in) :: lmax
+        real(kind=c_double), value,intent(in) :: lat
+        real(kind=c_double), value,intent(in) :: lon
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: dealloc
@@ -560,20 +560,20 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHMultiply
         implicit none
-        integer(kind=c_int), intent(in) :: shout_d0
-        integer(kind=c_int), intent(in) :: shout_d1
-        integer(kind=c_int), intent(in) :: shout_d2
+        integer(kind=c_int), value,intent(in) :: shout_d0
+        integer(kind=c_int), value,intent(in) :: shout_d1
+        integer(kind=c_int), value,intent(in) :: shout_d2
         real(kind=c_double), dimension(shout_d0,shout_d1,shout_d2),intent(out) :: shout
-        integer(kind=c_int), intent(in) :: sh1_d0
-        integer(kind=c_int), intent(in) :: sh1_d1
-        integer(kind=c_int), intent(in) :: sh1_d2
+        integer(kind=c_int), value,intent(in) :: sh1_d0
+        integer(kind=c_int), value,intent(in) :: sh1_d1
+        integer(kind=c_int), value,intent(in) :: sh1_d2
         real(kind=c_double), dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
-        integer(kind=c_int), intent(in) :: sh2_d0
-        integer(kind=c_int), intent(in) :: sh2_d1
-        integer(kind=c_int), intent(in) :: sh2_d2
+        integer(kind=c_int), value,intent(in) :: sh2_d0
+        integer(kind=c_int), value,intent(in) :: sh2_d1
+        integer(kind=c_int), value,intent(in) :: sh2_d2
         real(kind=c_double), dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
-        integer(kind=c_int), intent(in) :: lmax1
-        integer(kind=c_int), intent(in) :: lmax2
+        integer(kind=c_int), value,intent(in) :: lmax1
+        integer(kind=c_int), value,intent(in) :: lmax2
         integer(kind=c_int), optional,intent(in) :: precomp
         integer(kind=c_int), optional,intent(in) :: norm
         integer(kind=c_int), optional,intent(in) :: csphase
@@ -588,16 +588,16 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHRead
         implicit none
-        integer(kind=c_int), intent(in) :: filename_d1
+        integer(kind=c_int), value,intent(in) :: filename_d1
         character(kind=c_char), dimension(filename_d1),intent(in) :: filename
         integer(kind=c_int), intent(out) :: lmax
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
-        integer(kind=c_int), intent(in) :: header_d0
+        integer(kind=c_int), value,intent(in) :: header_d0
         real(kind=c_double), optional,dimension(header_d0),intent(out) :: header
-        integer(kind=c_int), intent(in) :: error_d0
-        integer(kind=c_int), intent(in) :: error_d1
-        integer(kind=c_int), intent(in) :: error_d2
+        integer(kind=c_int), value,intent(in) :: error_d0
+        integer(kind=c_int), value,intent(in) :: error_d1
+        integer(kind=c_int), value,intent(in) :: error_d2
         real(kind=c_double), optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
         integer(kind=c_int), optional,intent(in) :: skip
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -614,20 +614,20 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHRead2
         implicit none
-        integer(kind=c_int), intent(in) :: filename_d1
+        integer(kind=c_int), value,intent(in) :: filename_d1
         character(kind=c_char), dimension(filename_d1),intent(in) :: filename
         integer(kind=c_int), intent(out) :: lmax
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         real(kind=c_double), intent(out) :: gm
         real(kind=c_double), intent(out) :: r0_pot
-        integer(kind=c_int), intent(in) :: error_d0
-        integer(kind=c_int), intent(in) :: error_d1
-        integer(kind=c_int), intent(in) :: error_d2
+        integer(kind=c_int), value,intent(in) :: error_d0
+        integer(kind=c_int), value,intent(in) :: error_d1
+        integer(kind=c_int), value,intent(in) :: error_d2
         real(kind=c_double), optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
-        integer(kind=c_int), intent(in) :: dot_d0
-        integer(kind=c_int), intent(in) :: dot_d1
-        integer(kind=c_int), intent(in) :: dot_d2
+        integer(kind=c_int), value,intent(in) :: dot_d0
+        integer(kind=c_int), value,intent(in) :: dot_d1
+        integer(kind=c_int), value,intent(in) :: dot_d2
         real(kind=c_double), optional,dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
         real(kind=c_double), optional,intent(out) :: doystart
         real(kind=c_double), optional,intent(out) :: doyend
@@ -646,14 +646,14 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHReadJPL
         implicit none
-        integer(kind=c_int), intent(in) :: filename_d1
+        integer(kind=c_int), value,intent(in) :: filename_d1
         character(kind=c_char), dimension(filename_d1),intent(in) :: filename
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
-        integer(kind=c_int), intent(in) :: error_d0
-        integer(kind=c_int), intent(in) :: error_d1
-        integer(kind=c_int), intent(in) :: error_d2
+        integer(kind=c_int), value,intent(in) :: error_d0
+        integer(kind=c_int), value,intent(in) :: error_d1
+        integer(kind=c_int), value,intent(in) :: error_d2
         real(kind=c_double), optional,dimension(error_d0,error_d1,error_d2),intent(out) :: error
         real(kind=c_double), optional,dimension(2),intent(out) :: gm
         character(kind=c_char), optional,intent(in) :: formatstring
@@ -674,11 +674,11 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHCilmToVector
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        integer(kind=c_int), intent(in) :: vector_d0
+        integer(kind=c_int), value,intent(in) :: vector_d0
         real(kind=c_double), dimension(vector_d0),intent(out) :: vector
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHCilmToVector(cilm,vector,lmax,exitstatus=exitstatus)
     end subroutine cSHCilmToVector
@@ -688,11 +688,11 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHVectorToCilm
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
-        integer(kind=c_int), intent(in) :: vector_d0
+        integer(kind=c_int), value,intent(in) :: vector_d0
         real(kind=c_double), dimension(vector_d0),intent(in) :: vector
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHVectorToCilm(vector,cilm,lmax,exitstatus=exitstatus)
     end subroutine cSHVectorToCilm
@@ -702,10 +702,10 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHCilmToCindex
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        integer(kind=c_int), intent(in) :: cindex_d0
-        integer(kind=c_int), intent(in) :: cindex_d1
+        integer(kind=c_int), value,intent(in) :: cindex_d0
+        integer(kind=c_int), value,intent(in) :: cindex_d1
         real(kind=c_double), dimension(cindex_d0,cindex_d1),intent(out) :: cindex
         integer(kind=c_int), optional,intent(in) :: degmax
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -717,10 +717,10 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHCindexToCilm
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
-        integer(kind=c_int), intent(in) :: cindex_d0
-        integer(kind=c_int), intent(in) :: cindex_d1
+        integer(kind=c_int), value,intent(in) :: cindex_d0
+        integer(kind=c_int), value,intent(in) :: cindex_d1
         real(kind=c_double), dimension(cindex_d0,cindex_d1),intent(in) :: cindex
         integer(kind=c_int), optional,intent(in) :: degmax
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -732,13 +732,13 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHrtoc
         implicit none
-        integer(kind=c_int), intent(in) :: rcilm_d0
-        integer(kind=c_int), intent(in) :: rcilm_d1
-        integer(kind=c_int), intent(in) :: rcilm_d2
+        integer(kind=c_int), value,intent(in) :: rcilm_d0
+        integer(kind=c_int), value,intent(in) :: rcilm_d1
+        integer(kind=c_int), value,intent(in) :: rcilm_d2
         real(kind=c_double), dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(in) :: rcilm
-        integer(kind=c_int), intent(in) :: ccilm_d0
-        integer(kind=c_int), intent(in) :: ccilm_d1
-        integer(kind=c_int), intent(in) :: ccilm_d2
+        integer(kind=c_int), value,intent(in) :: ccilm_d0
+        integer(kind=c_int), value,intent(in) :: ccilm_d1
+        integer(kind=c_int), value,intent(in) :: ccilm_d2
         real(kind=c_double), dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(out) :: ccilm
         integer(kind=c_int), optional,intent(in) :: degmax
         integer(kind=c_int), optional,intent(in) :: convention
@@ -753,13 +753,13 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHctor
         implicit none
-        integer(kind=c_int), intent(in) :: ccilm_d0
-        integer(kind=c_int), intent(in) :: ccilm_d1
-        integer(kind=c_int), intent(in) :: ccilm_d2
+        integer(kind=c_int), value,intent(in) :: ccilm_d0
+        integer(kind=c_int), value,intent(in) :: ccilm_d1
+        integer(kind=c_int), value,intent(in) :: ccilm_d2
         real(kind=c_double), dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(in) :: ccilm
-        integer(kind=c_int), intent(in) :: rcilm_d0
-        integer(kind=c_int), intent(in) :: rcilm_d1
-        integer(kind=c_int), intent(in) :: rcilm_d2
+        integer(kind=c_int), value,intent(in) :: rcilm_d0
+        integer(kind=c_int), value,intent(in) :: rcilm_d1
+        integer(kind=c_int), value,intent(in) :: rcilm_d2
         real(kind=c_double), dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(out) :: rcilm
         integer(kind=c_int), optional,intent(in) :: degmax
         integer(kind=c_int), optional,intent(in) :: convention
@@ -773,10 +773,10 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: djpi2
         implicit none
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: dj_d0
-        integer(kind=c_int), intent(in) :: dj_d1
-        integer(kind=c_int), intent(in) :: dj_d2
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: dj_d0
+        integer(kind=c_int), value,intent(in) :: dj_d1
+        integer(kind=c_int), value,intent(in) :: dj_d2
         real(kind=c_double), dimension(dj_d0,dj_d1,dj_d2),intent(out) :: dj
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call djpi2(dj,lmax,exitstatus=exitstatus)
@@ -787,18 +787,18 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHRotateCoef
         implicit none
-        integer(kind=c_int), intent(in) :: cof_d0
-        integer(kind=c_int), intent(in) :: cof_d1
+        integer(kind=c_int), value,intent(in) :: cof_d0
+        integer(kind=c_int), value,intent(in) :: cof_d1
         real(kind=c_double), dimension(cof_d0,cof_d1),intent(in) :: cof
-        integer(kind=c_int), intent(in) :: dj_d0
-        integer(kind=c_int), intent(in) :: dj_d1
-        integer(kind=c_int), intent(in) :: dj_d2
+        integer(kind=c_int), value,intent(in) :: dj_d0
+        integer(kind=c_int), value,intent(in) :: dj_d1
+        integer(kind=c_int), value,intent(in) :: dj_d2
         real(kind=c_double), dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
         real(kind=c_double), dimension(3),intent(in) :: x
-        integer(kind=c_int), intent(in) :: rcof_d0
-        integer(kind=c_int), intent(in) :: rcof_d1
+        integer(kind=c_int), value,intent(in) :: rcof_d0
+        integer(kind=c_int), value,intent(in) :: rcof_d1
         real(kind=c_double), dimension(rcof_d0,rcof_d1),intent(out) :: rcof
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHRotateCoef(x,cof,rcof,dj,lmax,exitstatus=exitstatus)
     end subroutine cSHRotateCoef
@@ -809,19 +809,19 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHRotateRealCoef
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        integer(kind=c_int), intent(in) :: x_d0
+        integer(kind=c_int), value,intent(in) :: x_d0
         real(kind=c_double), dimension(x_d0),intent(in) :: x
-        integer(kind=c_int), intent(in) :: dj_d0
-        integer(kind=c_int), intent(in) :: dj_d1
-        integer(kind=c_int), intent(in) :: dj_d2
+        integer(kind=c_int), value,intent(in) :: dj_d0
+        integer(kind=c_int), value,intent(in) :: dj_d1
+        integer(kind=c_int), value,intent(in) :: dj_d2
         real(kind=c_double), dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
-        integer(kind=c_int), intent(in) :: cilmrot_d0
-        integer(kind=c_int), intent(in) :: cilmrot_d1
-        integer(kind=c_int), intent(in) :: cilmrot_d2
+        integer(kind=c_int), value,intent(in) :: cilmrot_d0
+        integer(kind=c_int), value,intent(in) :: cilmrot_d1
+        integer(kind=c_int), value,intent(in) :: cilmrot_d2
         real(kind=c_double), dimension(cilmrot_d0,cilmrot_d1,cilmrot_d2),intent(out) :: cilmrot
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHRotateRealCoef(cilmrot,cilm,lmax,x,dj,exitstatus=exitstatus)
     end subroutine cSHRotateRealCoef
@@ -831,11 +831,11 @@
         use shtools, only: SHPowerL
         implicit none
         real(kind=c_double) :: cSHPowerL
-        integer(kind=c_int), intent(in) :: c_d0
-        integer(kind=c_int), intent(in) :: c_d1
-        integer(kind=c_int), intent(in) :: c_d2
+        integer(kind=c_int), value,intent(in) :: c_d0
+        integer(kind=c_int), value,intent(in) :: c_d1
+        integer(kind=c_int), value,intent(in) :: c_d2
         real(kind=c_double), dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer(kind=c_int), intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: l
         cSHPowerL=SHPowerL(c,l)
     end function cSHPowerL
 
@@ -844,11 +844,11 @@
         use shtools, only: SHPowerDensityL
         implicit none
         real(kind=c_double) :: cSHPowerDensityL
-        integer(kind=c_int), intent(in) :: c_d0
-        integer(kind=c_int), intent(in) :: c_d1
-        integer(kind=c_int), intent(in) :: c_d2
+        integer(kind=c_int), value,intent(in) :: c_d0
+        integer(kind=c_int), value,intent(in) :: c_d1
+        integer(kind=c_int), value,intent(in) :: c_d2
         real(kind=c_double), dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer(kind=c_int), intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: l
         cSHPowerDensityL=SHPowerDensityL(c,l)
     end function cSHPowerDensityL
 
@@ -857,15 +857,15 @@
         use shtools, only: SHCrossPowerL
         implicit none
         real(kind=c_double) :: cSHCrossPowerL
-        integer(kind=c_int), intent(in) :: c1_d0
-        integer(kind=c_int), intent(in) :: c1_d1
-        integer(kind=c_int), intent(in) :: c1_d2
+        integer(kind=c_int), value,intent(in) :: c1_d0
+        integer(kind=c_int), value,intent(in) :: c1_d1
+        integer(kind=c_int), value,intent(in) :: c1_d2
         real(kind=c_double), dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        integer(kind=c_int), intent(in) :: c2_d0
-        integer(kind=c_int), intent(in) :: c2_d1
-        integer(kind=c_int), intent(in) :: c2_d2
+        integer(kind=c_int), value,intent(in) :: c2_d0
+        integer(kind=c_int), value,intent(in) :: c2_d1
+        integer(kind=c_int), value,intent(in) :: c2_d2
         real(kind=c_double), dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer(kind=c_int), intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: l
         cSHCrossPowerL=SHCrossPowerL(c1,c2,l)
     end function cSHCrossPowerL
 
@@ -875,15 +875,15 @@
         use shtools, only: SHCrossPowerDensityL
         implicit none
         real(kind=c_double) :: cSHCrossPowerDensityL
-        integer(kind=c_int), intent(in) :: c1_d0
-        integer(kind=c_int), intent(in) :: c1_d1
-        integer(kind=c_int), intent(in) :: c1_d2
+        integer(kind=c_int), value,intent(in) :: c1_d0
+        integer(kind=c_int), value,intent(in) :: c1_d1
+        integer(kind=c_int), value,intent(in) :: c1_d2
         real(kind=c_double), dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        integer(kind=c_int), intent(in) :: c2_d0
-        integer(kind=c_int), intent(in) :: c2_d1
-        integer(kind=c_int), intent(in) :: c2_d2
+        integer(kind=c_int), value,intent(in) :: c2_d0
+        integer(kind=c_int), value,intent(in) :: c2_d1
+        integer(kind=c_int), value,intent(in) :: c2_d2
         real(kind=c_double), dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer(kind=c_int), intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: l
         cSHCrossPowerDensityL=SHCrossPowerDensityL(c1,c2,l)
     end function cSHCrossPowerDensityL
 
@@ -892,12 +892,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHPowerSpectrum
         implicit none
-        integer(kind=c_int), intent(in) :: c_d0
-        integer(kind=c_int), intent(in) :: c_d1
-        integer(kind=c_int), intent(in) :: c_d2
+        integer(kind=c_int), value,intent(in) :: c_d0
+        integer(kind=c_int), value,intent(in) :: c_d1
+        integer(kind=c_int), value,intent(in) :: c_d2
         real(kind=c_double), dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: spectra_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: spectra_d0
         real(kind=c_double), dimension(spectra_d0),intent(out) :: spectra
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHPowerSpectrum(c,lmax,spectra,exitstatus=exitstatus)
@@ -908,12 +908,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHPowerSpectrumDensity
         implicit none
-        integer(kind=c_int), intent(in) :: c_d0
-        integer(kind=c_int), intent(in) :: c_d1
-        integer(kind=c_int), intent(in) :: c_d2
+        integer(kind=c_int), value,intent(in) :: c_d0
+        integer(kind=c_int), value,intent(in) :: c_d1
+        integer(kind=c_int), value,intent(in) :: c_d2
         real(kind=c_double), dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: spectra_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: spectra_d0
         real(kind=c_double), dimension(spectra_d0),intent(out) :: spectra
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHPowerSpectrumDensity(c,lmax,spectra,exitstatus=exitstatus)
@@ -924,16 +924,16 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHCrossPowerSpectrum
         implicit none
-        integer(kind=c_int), intent(in) :: c1_d0
-        integer(kind=c_int), intent(in) :: c1_d1
-        integer(kind=c_int), intent(in) :: c1_d2
+        integer(kind=c_int), value,intent(in) :: c1_d0
+        integer(kind=c_int), value,intent(in) :: c1_d1
+        integer(kind=c_int), value,intent(in) :: c1_d2
         real(kind=c_double), dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        integer(kind=c_int), intent(in) :: c2_d0
-        integer(kind=c_int), intent(in) :: c2_d1
-        integer(kind=c_int), intent(in) :: c2_d2
+        integer(kind=c_int), value,intent(in) :: c2_d0
+        integer(kind=c_int), value,intent(in) :: c2_d1
+        integer(kind=c_int), value,intent(in) :: c2_d2
         real(kind=c_double), dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: cspectra_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: cspectra_d0
         real(kind=c_double), dimension(cspectra_d0),intent(out) :: cspectra
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHCrossPowerSpectrum(c1,c2,lmax,cspectra,exitstatus=exitstatus)
@@ -945,16 +945,16 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHCrossPowerSpectrumDensity
         implicit none
-        integer(kind=c_int), intent(in) :: c1_d0
-        integer(kind=c_int), intent(in) :: c1_d1
-        integer(kind=c_int), intent(in) :: c1_d2
+        integer(kind=c_int), value,intent(in) :: c1_d0
+        integer(kind=c_int), value,intent(in) :: c1_d1
+        integer(kind=c_int), value,intent(in) :: c1_d2
         real(kind=c_double), dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        integer(kind=c_int), intent(in) :: c2_d0
-        integer(kind=c_int), intent(in) :: c2_d1
-        integer(kind=c_int), intent(in) :: c2_d2
+        integer(kind=c_int), value,intent(in) :: c2_d0
+        integer(kind=c_int), value,intent(in) :: c2_d1
+        integer(kind=c_int), value,intent(in) :: c2_d2
         real(kind=c_double), dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: cspectra_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: cspectra_d0
         real(kind=c_double), dimension(cspectra_d0),intent(out) :: cspectra
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHCrossPowerSpectrumDensity(c1,c2,lmax,cspectra,exitstatus=exitstatus)
@@ -966,20 +966,20 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHAdmitCorr
         implicit none
-        integer(kind=c_int), intent(in) :: G_d0
-        integer(kind=c_int), intent(in) :: G_d1
-        integer(kind=c_int), intent(in) :: G_d2
+        integer(kind=c_int), value,intent(in) :: G_d0
+        integer(kind=c_int), value,intent(in) :: G_d1
+        integer(kind=c_int), value,intent(in) :: G_d2
         real(kind=c_double), dimension(G_d0,G_d1,G_d2),intent(in) :: G
-        integer(kind=c_int), intent(in) :: T_d0
-        integer(kind=c_int), intent(in) :: T_d1
-        integer(kind=c_int), intent(in) :: T_d2
+        integer(kind=c_int), value,intent(in) :: T_d0
+        integer(kind=c_int), value,intent(in) :: T_d1
+        integer(kind=c_int), value,intent(in) :: T_d2
         real(kind=c_double), dimension(T_d0,T_d1,T_d2),intent(in) :: T
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: admit_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: admit_d0
         real(kind=c_double), dimension(admit_d0),intent(out) :: admit
-        integer(kind=c_int), intent(in) :: corr_d0
+        integer(kind=c_int), value,intent(in) :: corr_d0
         real(kind=c_double), dimension(corr_d0),intent(out) :: corr
-        integer(kind=c_int), intent(in) :: admit_error_d0
+        integer(kind=c_int), value,intent(in) :: admit_error_d0
         real(kind=c_double), optional,dimension(admit_error_d0),intent(out) :: admit_error
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHAdmitCorr(G,T,lmax,admit,corr,admit_error=admit_error,exitstatus=exitstatus)
@@ -990,8 +990,8 @@
         use shtools, only: SHConfidence
         implicit none
         real(kind=c_double) :: cSHConfidence
-        real(kind=c_double), intent(in) :: r
-        integer(kind=c_int), intent(in) :: l_conf
+        real(kind=c_double), value,intent(in) :: r
+        integer(kind=c_int), value,intent(in) :: l_conf
         cSHConfidence=SHConfidence(l_conf,r)
     end function cSHConfidence
 
@@ -1000,11 +1000,11 @@
         use shtools, only: SHPowerLC
         implicit none
         real(kind=c_double) :: cSHPowerLC
-        integer(kind=c_int), intent(in) :: c_d0
-        integer(kind=c_int), intent(in) :: c_d1
-        integer(kind=c_int), intent(in) :: c_d2
+        integer(kind=c_int), value,intent(in) :: c_d0
+        integer(kind=c_int), value,intent(in) :: c_d1
+        integer(kind=c_int), value,intent(in) :: c_d2
         complex(kind=c_double_complex), dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer(kind=c_int), intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: l
         cSHPowerLC=SHPowerLC(c,l)
     end function cSHPowerLC
 
@@ -1013,11 +1013,11 @@
         use shtools, only: SHPowerDensityLC
         implicit none
         real(kind=c_double) :: cSHPowerDensityLC
-        integer(kind=c_int), intent(in) :: c_d0
-        integer(kind=c_int), intent(in) :: c_d1
-        integer(kind=c_int), intent(in) :: c_d2
+        integer(kind=c_int), value,intent(in) :: c_d0
+        integer(kind=c_int), value,intent(in) :: c_d1
+        integer(kind=c_int), value,intent(in) :: c_d2
         complex(kind=c_double_complex), dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer(kind=c_int), intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: l
         cSHPowerDensityLC=SHPowerDensityLC(c,l)
     end function cSHPowerDensityLC
 
@@ -1027,15 +1027,15 @@
         use shtools, only: SHCrossPowerLC
         implicit none
         complex(kind=c_double_complex) :: cSHCrossPowerLC
-        integer(kind=c_int), intent(in) :: c1_d0
-        integer(kind=c_int), intent(in) :: c1_d1
-        integer(kind=c_int), intent(in) :: c1_d2
+        integer(kind=c_int), value,intent(in) :: c1_d0
+        integer(kind=c_int), value,intent(in) :: c1_d1
+        integer(kind=c_int), value,intent(in) :: c1_d2
         complex(kind=c_double_complex), dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        integer(kind=c_int), intent(in) :: c2_d0
-        integer(kind=c_int), intent(in) :: c2_d1
-        integer(kind=c_int), intent(in) :: c2_d2
+        integer(kind=c_int), value,intent(in) :: c2_d0
+        integer(kind=c_int), value,intent(in) :: c2_d1
+        integer(kind=c_int), value,intent(in) :: c2_d2
         complex(kind=c_double_complex), dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer(kind=c_int), intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: l
         cSHCrossPowerLC=SHCrossPowerLC(c1,c2,l)
     end function cSHCrossPowerLC
 
@@ -1045,15 +1045,15 @@
         use shtools, only: SHCrossPowerDensityLC
         implicit none
         complex(kind=c_double_complex) :: cSHCrossPowerDensityLC
-        integer(kind=c_int), intent(in) :: c1_d0
-        integer(kind=c_int), intent(in) :: c1_d1
-        integer(kind=c_int), intent(in) :: c1_d2
+        integer(kind=c_int), value,intent(in) :: c1_d0
+        integer(kind=c_int), value,intent(in) :: c1_d1
+        integer(kind=c_int), value,intent(in) :: c1_d2
         complex(kind=c_double_complex), dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        integer(kind=c_int), intent(in) :: c2_d0
-        integer(kind=c_int), intent(in) :: c2_d1
-        integer(kind=c_int), intent(in) :: c2_d2
+        integer(kind=c_int), value,intent(in) :: c2_d0
+        integer(kind=c_int), value,intent(in) :: c2_d1
+        integer(kind=c_int), value,intent(in) :: c2_d2
         complex(kind=c_double_complex), dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer(kind=c_int), intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: l
         cSHCrossPowerDensityLC=SHCrossPowerDensityLC(c1,c2,l)
     end function cSHCrossPowerDensityLC
 
@@ -1062,12 +1062,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHPowerSpectrumC
         implicit none
-        integer(kind=c_int), intent(in) :: c_d0
-        integer(kind=c_int), intent(in) :: c_d1
-        integer(kind=c_int), intent(in) :: c_d2
+        integer(kind=c_int), value,intent(in) :: c_d0
+        integer(kind=c_int), value,intent(in) :: c_d1
+        integer(kind=c_int), value,intent(in) :: c_d2
         complex(kind=c_double_complex), dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: spectra_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: spectra_d0
         real(kind=c_double), dimension(spectra_d0),intent(out) :: spectra
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHPowerSpectrumC(c,lmax,spectra,exitstatus=exitstatus)
@@ -1078,12 +1078,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHPowerSpectrumDensityC
         implicit none
-        integer(kind=c_int), intent(in) :: c_d0
-        integer(kind=c_int), intent(in) :: c_d1
-        integer(kind=c_int), intent(in) :: c_d2
+        integer(kind=c_int), value,intent(in) :: c_d0
+        integer(kind=c_int), value,intent(in) :: c_d1
+        integer(kind=c_int), value,intent(in) :: c_d2
         complex(kind=c_double_complex), dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: spectra_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: spectra_d0
         real(kind=c_double), dimension(spectra_d0),intent(out) :: spectra
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHPowerSpectrumDensityC(c,lmax,spectra,exitstatus=exitstatus)
@@ -1095,16 +1095,16 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHCrossPowerSpectrumC
         implicit none
-        integer(kind=c_int), intent(in) :: c1_d0
-        integer(kind=c_int), intent(in) :: c1_d1
-        integer(kind=c_int), intent(in) :: c1_d2
+        integer(kind=c_int), value,intent(in) :: c1_d0
+        integer(kind=c_int), value,intent(in) :: c1_d1
+        integer(kind=c_int), value,intent(in) :: c1_d2
         complex(kind=c_double_complex), dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        integer(kind=c_int), intent(in) :: c2_d0
-        integer(kind=c_int), intent(in) :: c2_d1
-        integer(kind=c_int), intent(in) :: c2_d2
+        integer(kind=c_int), value,intent(in) :: c2_d0
+        integer(kind=c_int), value,intent(in) :: c2_d1
+        integer(kind=c_int), value,intent(in) :: c2_d2
         complex(kind=c_double_complex), dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: cspectra_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: cspectra_d0
         complex(kind=c_double_complex), dimension(cspectra_d0),intent(out) :: cspectra
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHCrossPowerSpectrumC(c1,c2,lmax,cspectra,exitstatus=exitstatus)
@@ -1116,16 +1116,16 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHCrossPowerSpectrumDensityC
         implicit none
-        integer(kind=c_int), intent(in) :: c1_d0
-        integer(kind=c_int), intent(in) :: c1_d1
-        integer(kind=c_int), intent(in) :: c1_d2
+        integer(kind=c_int), value,intent(in) :: c1_d0
+        integer(kind=c_int), value,intent(in) :: c1_d1
+        integer(kind=c_int), value,intent(in) :: c1_d2
         complex(kind=c_double_complex), dimension(c1_d0,c1_d1,c1_d2),intent(in) :: c1
-        integer(kind=c_int), intent(in) :: c2_d0
-        integer(kind=c_int), intent(in) :: c2_d1
-        integer(kind=c_int), intent(in) :: c2_d2
+        integer(kind=c_int), value,intent(in) :: c2_d0
+        integer(kind=c_int), value,intent(in) :: c2_d1
+        integer(kind=c_int), value,intent(in) :: c2_d2
         complex(kind=c_double_complex), dimension(c2_d0,c2_d1,c2_d2),intent(in) :: c2
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: cspectra_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: cspectra_d0
         complex(kind=c_double_complex), dimension(cspectra_d0),intent(out) :: cspectra
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHCrossPowerSpectrumDensityC(c1,c2,lmax,cspectra,exitstatus=exitstatus)
@@ -1138,27 +1138,27 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHMultiTaperSE
         implicit none
-        integer(kind=c_int), intent(in) :: mtse_d0
+        integer(kind=c_int), value,intent(in) :: mtse_d0
         real(kind=c_double), dimension(mtse_d0),intent(out) :: mtse
-        integer(kind=c_int), intent(in) :: sd_d0
+        integer(kind=c_int), value,intent(in) :: sd_d0
         real(kind=c_double), dimension(sd_d0),intent(out) :: sd
-        integer(kind=c_int), intent(in) :: sh_d0
-        integer(kind=c_int), intent(in) :: sh_d1
-        integer(kind=c_int), intent(in) :: sh_d2
+        integer(kind=c_int), value,intent(in) :: sh_d0
+        integer(kind=c_int), value,intent(in) :: sh_d1
+        integer(kind=c_int), value,intent(in) :: sh_d2
         real(kind=c_double), dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: lmaxt
-        integer(kind=c_int), intent(in) :: k
-        integer(kind=c_int), intent(in) :: taper_order_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmaxt
+        integer(kind=c_int), value,intent(in) :: k
+        integer(kind=c_int), value,intent(in) :: taper_order_d0
         integer(kind=c_int), dimension(taper_order_d0),intent(in) :: taper_order
-        integer(kind=c_int), intent(in) :: alpha_d0
+        integer(kind=c_int), value,intent(in) :: alpha_d0
         real(kind=c_double), optional,dimension(alpha_d0),intent(in) :: alpha
         real(kind=c_double), optional,intent(in) :: lat
         real(kind=c_double), optional,intent(in) :: lon
-        integer(kind=c_int), intent(in) :: taper_wt_d0
+        integer(kind=c_int), value,intent(in) :: taper_wt_d0
         real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: norm
@@ -1176,32 +1176,32 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHMultiTaperCSE
         implicit none
-        integer(kind=c_int), intent(in) :: mtse_d0
+        integer(kind=c_int), value,intent(in) :: mtse_d0
         real(kind=c_double), dimension(mtse_d0),intent(out) :: mtse
-        integer(kind=c_int), intent(in) :: sd_d0
+        integer(kind=c_int), value,intent(in) :: sd_d0
         real(kind=c_double), dimension(sd_d0),intent(out) :: sd
-        integer(kind=c_int), intent(in) :: sh1_d0
-        integer(kind=c_int), intent(in) :: sh1_d1
-        integer(kind=c_int), intent(in) :: sh1_d2
+        integer(kind=c_int), value,intent(in) :: sh1_d0
+        integer(kind=c_int), value,intent(in) :: sh1_d1
+        integer(kind=c_int), value,intent(in) :: sh1_d2
         real(kind=c_double), dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
-        integer(kind=c_int), intent(in) :: sh2_d0
-        integer(kind=c_int), intent(in) :: sh2_d1
-        integer(kind=c_int), intent(in) :: sh2_d2
+        integer(kind=c_int), value,intent(in) :: sh2_d0
+        integer(kind=c_int), value,intent(in) :: sh2_d1
+        integer(kind=c_int), value,intent(in) :: sh2_d2
         real(kind=c_double), dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer(kind=c_int), intent(in) :: lmax1
-        integer(kind=c_int), intent(in) :: lmax2
-        integer(kind=c_int), intent(in) :: lmaxt
-        integer(kind=c_int), intent(in) :: k
-        integer(kind=c_int), intent(in) :: taper_order_d0
+        integer(kind=c_int), value,intent(in) :: lmax1
+        integer(kind=c_int), value,intent(in) :: lmax2
+        integer(kind=c_int), value,intent(in) :: lmaxt
+        integer(kind=c_int), value,intent(in) :: k
+        integer(kind=c_int), value,intent(in) :: taper_order_d0
         integer(kind=c_int), dimension(taper_order_d0),intent(in) :: taper_order
-        integer(kind=c_int), intent(in) :: alpha_d0
+        integer(kind=c_int), value,intent(in) :: alpha_d0
         real(kind=c_double), optional,dimension(alpha_d0),intent(in) :: alpha
         real(kind=c_double), optional,intent(in) :: lat
         real(kind=c_double), optional,intent(in) :: lon
-        integer(kind=c_int), intent(in) :: taper_wt_d0
+        integer(kind=c_int), value,intent(in) :: taper_wt_d0
         real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: norm
@@ -1220,35 +1220,35 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHLocalizedAdmitCorr
         implicit none
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        real(kind=c_double), intent(in) :: lat
-        real(kind=c_double), intent(in) :: lon
-        integer(kind=c_int), intent(in) :: g_d0
-        integer(kind=c_int), intent(in) :: g_d1
-        integer(kind=c_int), intent(in) :: g_d2
+        real(kind=c_double), value,intent(in) :: lat
+        real(kind=c_double), value,intent(in) :: lon
+        integer(kind=c_int), value,intent(in) :: g_d0
+        integer(kind=c_int), value,intent(in) :: g_d1
+        integer(kind=c_int), value,intent(in) :: g_d2
         real(kind=c_double), dimension(g_d0,g_d1,g_d2),intent(in) :: g
-        integer(kind=c_int), intent(in) :: t_d0
-        integer(kind=c_int), intent(in) :: t_d1
-        integer(kind=c_int), intent(in) :: t_d2
+        integer(kind=c_int), value,intent(in) :: t_d0
+        integer(kind=c_int), value,intent(in) :: t_d1
+        integer(kind=c_int), value,intent(in) :: t_d2
         real(kind=c_double), dimension(t_d0,t_d1,t_d2),intent(in) :: t
-        integer(kind=c_int), intent(in) :: lwin
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: k
-        integer(kind=c_int), intent(in) :: taper_order_d0
+        integer(kind=c_int), value,intent(in) :: lwin
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: k
+        integer(kind=c_int), value,intent(in) :: taper_order_d0
         integer(kind=c_int), dimension(taper_order_d0),intent(in) :: taper_order
-        integer(kind=c_int), intent(in) :: admit_d0
+        integer(kind=c_int), value,intent(in) :: admit_d0
         real(kind=c_double), dimension(admit_d0),intent(out) :: admit
-        integer(kind=c_int), intent(in) :: corr_d0
+        integer(kind=c_int), value,intent(in) :: corr_d0
         real(kind=c_double), dimension(corr_d0),intent(out) :: corr
-        integer(kind=c_int), intent(in) :: admit_error_d0
+        integer(kind=c_int), value,intent(in) :: admit_error_d0
         real(kind=c_double), optional,dimension(admit_error_d0),intent(out) :: admit_error
-        integer(kind=c_int), intent(in) :: corr_error_d0
+        integer(kind=c_int), value,intent(in) :: corr_error_d0
         real(kind=c_double), optional,dimension(corr_error_d0),intent(out) :: corr_error
         integer(kind=c_int), optional,intent(in) :: mtdef
         integer(kind=c_int), optional,intent(in) :: k1linsig
-        integer(kind=c_int), intent(in) :: taper_wt_d0
+        integer(kind=c_int), value,intent(in) :: taper_wt_d0
         real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,lmax,admit,corr&
@@ -1263,16 +1263,16 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHReturnTapers
         implicit none
-        real(kind=c_double), intent(in) :: theta0
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        real(kind=c_double), value,intent(in) :: theta0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(out) :: tapers
-        integer(kind=c_int), intent(in) :: eigenvalues_d0
+        integer(kind=c_int), value,intent(in) :: eigenvalues_d0
         real(kind=c_double), dimension(eigenvalues_d0),intent(out) :: eigenvalues
-        integer(kind=c_int), intent(in) :: taper_order_d0
+        integer(kind=c_int), value,intent(in) :: taper_order_d0
         integer(kind=c_int), dimension(taper_order_d0),intent(out) :: taper_order
-        integer(kind=c_int), intent(in) :: degrees_d0
+        integer(kind=c_int), value,intent(in) :: degrees_d0
         integer(kind=c_int), optional,dimension(degrees_d0),intent(in) :: degrees
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order,degrees=degrees&
@@ -1285,16 +1285,16 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHReturnTapersM
         implicit none
-        real(kind=c_double), intent(in) :: theta0
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: m
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        real(kind=c_double), value,intent(in) :: theta0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: m
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(out) :: tapers
-        integer(kind=c_int), intent(in) :: eigenvalues_d0
+        integer(kind=c_int), value,intent(in) :: eigenvalues_d0
         real(kind=c_double), dimension(eigenvalues_d0),intent(out) :: eigenvalues
         real(kind=c_double), optional,intent(out) :: shannon
-        integer(kind=c_int), intent(in) :: degrees_d0
+        integer(kind=c_int), value,intent(in) :: degrees_d0
         integer(kind=c_int), optional,dimension(degrees_d0),intent(in) :: degrees
         integer(kind=c_int), optional,intent(out) :: ntapers
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -1307,13 +1307,13 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: ComputeDm
         implicit none
-        integer(kind=c_int), intent(in) :: dllm_d0
-        integer(kind=c_int), intent(in) :: dllm_d1
+        integer(kind=c_int), value,intent(in) :: dllm_d0
+        integer(kind=c_int), value,intent(in) :: dllm_d1
         real(kind=c_double), dimension(dllm_d0,dllm_d1),intent(out) :: dllm
-        real(kind=c_double), intent(in) :: theta0
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: m
-        integer(kind=c_int), intent(in) :: degrees_d0
+        real(kind=c_double), value,intent(in) :: theta0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: m
+        integer(kind=c_int), value,intent(in) :: degrees_d0
         integer(kind=c_int), optional,dimension(degrees_d0),intent(in) :: degrees
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call ComputeDm(dllm,lmax,m,theta0,degrees=degrees,exitstatus=exitstatus)
@@ -1324,12 +1324,12 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: ComputeDG82
         implicit none
-        integer(kind=c_int), intent(in) :: dG82_d0
-        integer(kind=c_int), intent(in) :: dG82_d1
+        integer(kind=c_int), value,intent(in) :: dG82_d0
+        integer(kind=c_int), value,intent(in) :: dG82_d1
         real(kind=c_double), dimension(dG82_d0,dG82_d1),intent(out) :: dG82
-        real(kind=c_double), intent(in) :: theta0
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: m
+        real(kind=c_double), value,intent(in) :: theta0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: m
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call ComputeDG82(dG82,lmax,m,theta0,exitstatus=exitstatus)
     end subroutine cComputeDG82
@@ -1339,9 +1339,9 @@
         use shtools, only: SHFindLWin
         implicit none
         integer(kind=c_int) :: cSHFindLWin
-        real(kind=c_double), intent(in) :: theta0
-        real(kind=c_double), intent(in) :: alpha
-        integer(kind=c_int), intent(in) :: m
+        real(kind=c_double), value,intent(in) :: theta0
+        real(kind=c_double), value,intent(in) :: alpha
+        integer(kind=c_int), value,intent(in) :: m
         integer(kind=c_int), optional,intent(in) :: taper_number
         cSHFindLWin=SHFindLWin(theta0,m,alpha,taper_number=taper_number)
     end function cSHFindLWin
@@ -1352,17 +1352,17 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHBiasK
         implicit none
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer(kind=c_int), intent(in) :: incspectra_d0
+        integer(kind=c_int), value,intent(in) :: incspectra_d0
         real(kind=c_double), dimension(incspectra_d0),intent(in) :: incspectra
-        integer(kind=c_int), intent(in) :: outcspectra_d0
+        integer(kind=c_int), value,intent(in) :: outcspectra_d0
         real(kind=c_double), dimension(outcspectra_d0),intent(out) :: outcspectra
-        integer(kind=c_int), intent(in) :: lwin
-        integer(kind=c_int), intent(in) :: ldata
-        integer(kind=c_int), intent(in) :: k
-        integer(kind=c_int), intent(in) :: taper_wt_d0
+        integer(kind=c_int), value,intent(in) :: lwin
+        integer(kind=c_int), value,intent(in) :: ldata
+        integer(kind=c_int), value,intent(in) :: k
+        integer(kind=c_int), value,intent(in) :: taper_wt_d0
         real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer(kind=c_int), optional,intent(in) :: save_cg
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -1376,17 +1376,17 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHMTCouplingMatrix
         implicit none
-        integer(kind=c_int), intent(in) :: Mmt_d0
-        integer(kind=c_int), intent(in) :: Mmt_d1
+        integer(kind=c_int), value,intent(in) :: Mmt_d0
+        integer(kind=c_int), value,intent(in) :: Mmt_d1
         real(kind=c_double), dimension(Mmt_d0,Mmt_d1),intent(out) :: Mmt
-        integer(kind=c_int), intent(in) :: tapers_power_d0
-        integer(kind=c_int), intent(in) :: tapers_power_d1
+        integer(kind=c_int), value,intent(in) :: tapers_power_d0
+        integer(kind=c_int), value,intent(in) :: tapers_power_d1
         real(kind=c_double), dimension(tapers_power_d0,tapers_power_d1),intent(in) :: tapers_power
-        integer(kind=c_int), intent(in) :: taper_wt_d0
+        integer(kind=c_int), value,intent(in) :: taper_wt_d0
         real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: k
-        integer(kind=c_int), intent(in) :: lwin
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: k
+        integer(kind=c_int), value,intent(in) :: lwin
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMTCouplingMatrix(Mmt,lmax,tapers_power,lwin,k,taper_wt=taper_wt,exitstatus=exitstatus)
     end subroutine cSHMTCouplingMatrix
@@ -1397,24 +1397,24 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHBiasAdmitCorr
         implicit none
-        integer(kind=c_int), intent(in) :: sgt_d0
+        integer(kind=c_int), value,intent(in) :: sgt_d0
         real(kind=c_double), dimension(sgt_d0),intent(in) :: sgt
-        integer(kind=c_int), intent(in) :: sgg_d0
+        integer(kind=c_int), value,intent(in) :: sgg_d0
         real(kind=c_double), dimension(sgg_d0),intent(in) :: sgg
-        integer(kind=c_int), intent(in) :: stt_d0
+        integer(kind=c_int), value,intent(in) :: stt_d0
         real(kind=c_double), dimension(stt_d0),intent(in) :: stt
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: lwin
-        integer(kind=c_int), intent(in) :: k
-        integer(kind=c_int), intent(in) :: admit_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lwin
+        integer(kind=c_int), value,intent(in) :: k
+        integer(kind=c_int), value,intent(in) :: admit_d0
         real(kind=c_double), dimension(admit_d0),intent(out) :: admit
-        integer(kind=c_int), intent(in) :: corr_d0
+        integer(kind=c_int), value,intent(in) :: corr_d0
         real(kind=c_double), dimension(corr_d0),intent(out) :: corr
         integer(kind=c_int), optional,intent(in) :: mtdef
-        integer(kind=c_int), intent(in) :: taper_wt_d0
+        integer(kind=c_int), value,intent(in) :: taper_wt_d0
         real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr,mtdef=mtdef&
@@ -1428,23 +1428,23 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHMTDebias
         implicit none
-        integer(kind=c_int), intent(in) :: mtdebias_d0
-        integer(kind=c_int), intent(in) :: mtdebias_d1
+        integer(kind=c_int), value,intent(in) :: mtdebias_d0
+        integer(kind=c_int), value,intent(in) :: mtdebias_d1
         real(kind=c_double), dimension(mtdebias_d0,mtdebias_d1),intent(out) :: mtdebias
-        integer(kind=c_int), intent(in) :: lmid_d0
+        integer(kind=c_int), value,intent(in) :: lmid_d0
         real(kind=c_double), dimension(lmid_d0),intent(out) :: lmid
-        integer(kind=c_int), intent(in) :: mtspectra_d0
-        integer(kind=c_int), intent(in) :: mtspectra_d1
+        integer(kind=c_int), value,intent(in) :: mtspectra_d0
+        integer(kind=c_int), value,intent(in) :: mtspectra_d1
         real(kind=c_double), dimension(mtspectra_d0,mtspectra_d1),intent(in) :: mtspectra
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer(kind=c_int), intent(in) :: taper_wt_d0
+        integer(kind=c_int), value,intent(in) :: taper_wt_d0
         real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: k
-        integer(kind=c_int), intent(in) :: lwin
-        integer(kind=c_int), intent(in) :: nl
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: k
+        integer(kind=c_int), value,intent(in) :: lwin
+        integer(kind=c_int), value,intent(in) :: nl
         integer(kind=c_int), intent(out) :: n
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n,taper_wt=taper_wt&
@@ -1459,25 +1459,25 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHMTVarOpt
         implicit none
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer(kind=c_int), intent(in) :: Sff_d0
+        integer(kind=c_int), value,intent(in) :: Sff_d0
         real(kind=c_double), dimension(Sff_d0),intent(in) :: Sff
-        integer(kind=c_int), intent(in) :: var_opt_d0
+        integer(kind=c_int), value,intent(in) :: var_opt_d0
         real(kind=c_double), dimension(var_opt_d0),intent(out) :: var_opt
-        integer(kind=c_int), intent(in) :: var_unit_d0
+        integer(kind=c_int), value,intent(in) :: var_unit_d0
         real(kind=c_double), dimension(var_unit_d0),intent(out) :: var_unit
-        integer(kind=c_int), intent(in) :: l
-        integer(kind=c_int), intent(in) :: lwin
-        integer(kind=c_int), intent(in) :: kmax
-        integer(kind=c_int), intent(in) :: taper_order_d0
+        integer(kind=c_int), value,intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: lwin
+        integer(kind=c_int), value,intent(in) :: kmax
+        integer(kind=c_int), value,intent(in) :: taper_order_d0
         integer(kind=c_int), dimension(taper_order_d0),intent(in) :: taper_order
-        integer(kind=c_int), intent(in) :: weight_opt_d0
-        integer(kind=c_int), intent(in) :: weight_opt_d1
+        integer(kind=c_int), value,intent(in) :: weight_opt_d0
+        integer(kind=c_int), value,intent(in) :: weight_opt_d1
         real(kind=c_double), optional,dimension(weight_opt_d0,weight_opt_d1),intent(out) :: weight_opt
-        integer(kind=c_int), intent(in) :: unweighted_covar_d0
-        integer(kind=c_int), intent(in) :: unweighted_covar_d1
+        integer(kind=c_int), value,intent(in) :: unweighted_covar_d0
+        integer(kind=c_int), value,intent(in) :: unweighted_covar_d1
         real(kind=c_double), optional,dimension(unweighted_covar_d0,unweighted_covar_d1)&
                            ,intent(out) :: unweighted_covar
         integer(kind=c_int), optional,intent(in) :: nocross
@@ -1493,21 +1493,21 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHMTVar
         implicit none
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer(kind=c_int), intent(in) :: Sff_d0
+        integer(kind=c_int), value,intent(in) :: Sff_d0
         real(kind=c_double), dimension(Sff_d0),intent(in) :: Sff
         real(kind=c_double), intent(out) :: variance
-        integer(kind=c_int), intent(in) :: l
-        integer(kind=c_int), intent(in) :: lwin
-        integer(kind=c_int), intent(in) :: kmax
-        integer(kind=c_int), intent(in) :: taper_order_d0
+        integer(kind=c_int), value,intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: lwin
+        integer(kind=c_int), value,intent(in) :: kmax
+        integer(kind=c_int), value,intent(in) :: taper_order_d0
         integer(kind=c_int), dimension(taper_order_d0),intent(in) :: taper_order
-        integer(kind=c_int), intent(in) :: taper_wt_d0
+        integer(kind=c_int), value,intent(in) :: taper_wt_d0
         real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer(kind=c_int), intent(in) :: unweighted_covar_d0
-        integer(kind=c_int), intent(in) :: unweighted_covar_d1
+        integer(kind=c_int), value,intent(in) :: unweighted_covar_d0
+        integer(kind=c_int), value,intent(in) :: unweighted_covar_d1
         real(kind=c_double), optional,dimension(unweighted_covar_d0,unweighted_covar_d1)&
                            ,intent(out) :: unweighted_covar
         integer(kind=c_int), optional,intent(in) :: nocross
@@ -1522,19 +1522,19 @@
         use shtools, only: SHSjkPG
         implicit none
         complex(kind=c_double_complex) :: cSHSjkPG
-        integer(kind=c_int), intent(in) :: incspectra_d0
+        integer(kind=c_int), value,intent(in) :: incspectra_d0
         real(kind=c_double), dimension(incspectra_d0),intent(in) :: incspectra
-        integer(kind=c_int), intent(in) :: hj_real_d0
+        integer(kind=c_int), value,intent(in) :: hj_real_d0
         real(kind=c_double), dimension(hj_real_d0),intent(in) :: hj_real
-        integer(kind=c_int), intent(in) :: hk_real_d0
+        integer(kind=c_int), value,intent(in) :: hk_real_d0
         real(kind=c_double), dimension(hk_real_d0),intent(in) :: hk_real
-        integer(kind=c_int), intent(in) :: lwin
-        integer(kind=c_int), intent(in) :: l
-        integer(kind=c_int), intent(in) :: m
-        integer(kind=c_int), intent(in) :: mprime
-        integer(kind=c_int), intent(in) :: mj
-        integer(kind=c_int), intent(in) :: mk
-        integer(kind=c_int), intent(in) :: hkcc
+        integer(kind=c_int), value,intent(in) :: lwin
+        integer(kind=c_int), value,intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: m
+        integer(kind=c_int), value,intent(in) :: mprime
+        integer(kind=c_int), value,intent(in) :: mj
+        integer(kind=c_int), value,intent(in) :: mk
+        integer(kind=c_int), value,intent(in) :: hkcc
         cSHSjkPG=SHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc)
     end function cSHSjkPG
 
@@ -1545,19 +1545,19 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHReturnTapersMap
         implicit none
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(out) :: tapers
-        integer(kind=c_int), intent(in) :: eigenvalues_d0
+        integer(kind=c_int), value,intent(in) :: eigenvalues_d0
         real(kind=c_double), dimension(eigenvalues_d0),intent(out) :: eigenvalues
-        integer(kind=c_int), intent(in) :: dh_mask_d0
-        integer(kind=c_int), intent(in) :: dh_mask_d1
+        integer(kind=c_int), value,intent(in) :: dh_mask_d0
+        integer(kind=c_int), value,intent(in) :: dh_mask_d1
         integer(kind=c_int), dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
-        integer(kind=c_int), intent(in) :: n_dh
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: sampling
+        integer(kind=c_int), value,intent(in) :: n_dh
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: sampling
         integer(kind=c_int), optional,intent(in) :: ntapers
-        integer(kind=c_int), intent(in) :: degrees_d0
+        integer(kind=c_int), value,intent(in) :: degrees_d0
         integer(kind=c_int), optional,dimension(degrees_d0),intent(in) :: degrees
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,sampling,ntapers=ntapers&
@@ -1570,17 +1570,17 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHBiasKMask
         implicit none
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer(kind=c_int), intent(in) :: incspectra_d0
+        integer(kind=c_int), value,intent(in) :: incspectra_d0
         real(kind=c_double), dimension(incspectra_d0),intent(in) :: incspectra
-        integer(kind=c_int), intent(in) :: outcspectra_d0
+        integer(kind=c_int), value,intent(in) :: outcspectra_d0
         real(kind=c_double), dimension(outcspectra_d0),intent(out) :: outcspectra
-        integer(kind=c_int), intent(in) :: lwin
-        integer(kind=c_int), intent(in) :: ldata
-        integer(kind=c_int), intent(in) :: k
-        integer(kind=c_int), intent(in) :: taper_wt_d0
+        integer(kind=c_int), value,intent(in) :: lwin
+        integer(kind=c_int), value,intent(in) :: ldata
+        integer(kind=c_int), value,intent(in) :: k
+        integer(kind=c_int), value,intent(in) :: taper_wt_d0
         real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer(kind=c_int), optional,intent(in) :: save_cg
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -1595,21 +1595,21 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHMultiTaperMaskSE
         implicit none
-        integer(kind=c_int), intent(in) :: mtse_d0
+        integer(kind=c_int), value,intent(in) :: mtse_d0
         real(kind=c_double), dimension(mtse_d0),intent(out) :: mtse
-        integer(kind=c_int), intent(in) :: sd_d0
+        integer(kind=c_int), value,intent(in) :: sd_d0
         real(kind=c_double), dimension(sd_d0),intent(out) :: sd
-        integer(kind=c_int), intent(in) :: sh_d0
-        integer(kind=c_int), intent(in) :: sh_d1
-        integer(kind=c_int), intent(in) :: sh_d2
+        integer(kind=c_int), value,intent(in) :: sh_d0
+        integer(kind=c_int), value,intent(in) :: sh_d1
+        integer(kind=c_int), value,intent(in) :: sh_d2
         real(kind=c_double), dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: lmaxt
-        integer(kind=c_int), intent(in) :: k
-        integer(kind=c_int), intent(in) :: taper_wt_d0
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmaxt
+        integer(kind=c_int), value,intent(in) :: k
+        integer(kind=c_int), value,intent(in) :: taper_wt_d0
         real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: norm
@@ -1625,26 +1625,26 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHMultiTaperMaskCSE
         implicit none
-        integer(kind=c_int), intent(in) :: mtse_d0
+        integer(kind=c_int), value,intent(in) :: mtse_d0
         real(kind=c_double), dimension(mtse_d0),intent(out) :: mtse
-        integer(kind=c_int), intent(in) :: sd_d0
+        integer(kind=c_int), value,intent(in) :: sd_d0
         real(kind=c_double), dimension(sd_d0),intent(out) :: sd
-        integer(kind=c_int), intent(in) :: sh1_d0
-        integer(kind=c_int), intent(in) :: sh1_d1
-        integer(kind=c_int), intent(in) :: sh1_d2
+        integer(kind=c_int), value,intent(in) :: sh1_d0
+        integer(kind=c_int), value,intent(in) :: sh1_d1
+        integer(kind=c_int), value,intent(in) :: sh1_d2
         real(kind=c_double), dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
-        integer(kind=c_int), intent(in) :: sh2_d0
-        integer(kind=c_int), intent(in) :: sh2_d1
-        integer(kind=c_int), intent(in) :: sh2_d2
+        integer(kind=c_int), value,intent(in) :: sh2_d0
+        integer(kind=c_int), value,intent(in) :: sh2_d1
+        integer(kind=c_int), value,intent(in) :: sh2_d2
         real(kind=c_double), dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer(kind=c_int), intent(in) :: lmax1
-        integer(kind=c_int), intent(in) :: lmax2
-        integer(kind=c_int), intent(in) :: lmaxt
-        integer(kind=c_int), intent(in) :: k
-        integer(kind=c_int), intent(in) :: taper_wt_d0
+        integer(kind=c_int), value,intent(in) :: lmax1
+        integer(kind=c_int), value,intent(in) :: lmax2
+        integer(kind=c_int), value,intent(in) :: lmaxt
+        integer(kind=c_int), value,intent(in) :: k
+        integer(kind=c_int), value,intent(in) :: taper_wt_d0
         real(kind=c_double), optional,dimension(taper_wt_d0),intent(in) :: taper_wt
         integer(kind=c_int), optional,intent(in) :: csphase
         integer(kind=c_int), optional,intent(in) :: norm
@@ -1658,16 +1658,16 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: ComputeDMap
         implicit none
-        integer(kind=c_int), intent(in) :: Dij_d0
-        integer(kind=c_int), intent(in) :: Dij_d1
+        integer(kind=c_int), value,intent(in) :: Dij_d0
+        integer(kind=c_int), value,intent(in) :: Dij_d1
         real(kind=c_double), dimension(Dij_d0,Dij_d1),intent(out) :: Dij
-        integer(kind=c_int), intent(in) :: dh_mask_d0
-        integer(kind=c_int), intent(in) :: dh_mask_d1
+        integer(kind=c_int), value,intent(in) :: dh_mask_d0
+        integer(kind=c_int), value,intent(in) :: dh_mask_d1
         integer(kind=c_int), dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
-        integer(kind=c_int), intent(in) :: n_dh
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: n_dh
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), optional,intent(in) :: sampling
-        integer(kind=c_int), intent(in) :: degrees_d0
+        integer(kind=c_int), value,intent(in) :: degrees_d0
         integer(kind=c_int), optional,dimension(degrees_d0),intent(in) :: degrees
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call ComputeDMap(Dij,dh_mask,n_dh,lmax,sampling=sampling,degrees=degrees,exitstatus=exitstatus)
@@ -1679,15 +1679,15 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: Curve2Mask
         implicit none
-        integer(kind=c_int), intent(in) :: dhgrid_d0
-        integer(kind=c_int), intent(in) :: dhgrid_d1
+        integer(kind=c_int), value,intent(in) :: dhgrid_d0
+        integer(kind=c_int), value,intent(in) :: dhgrid_d1
         integer(kind=c_int), dimension(dhgrid_d0,dhgrid_d1),intent(out) :: dhgrid
-        integer(kind=c_int), intent(in) :: profile_d0
-        integer(kind=c_int), intent(in) :: profile_d1
+        integer(kind=c_int), value,intent(in) :: profile_d0
+        integer(kind=c_int), value,intent(in) :: profile_d1
         real(kind=c_double), dimension(profile_d0,profile_d1),intent(in) :: profile
-        integer(kind=c_int), intent(in) :: n
-        integer(kind=c_int), intent(in) :: sampling
-        integer(kind=c_int), intent(in) :: nprofile
+        integer(kind=c_int), value,intent(in) :: n
+        integer(kind=c_int), value,intent(in) :: sampling
+        integer(kind=c_int), value,intent(in) :: nprofile
         integer(kind=c_int), optional,intent(in) :: extend
         integer(kind=c_int), optional,intent(out) :: exitstatus
         integer(kind=c_int) :: NP
@@ -1699,14 +1699,14 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHBias
         implicit none
-        integer(kind=c_int), intent(in) :: Shh_d0
+        integer(kind=c_int), value,intent(in) :: Shh_d0
         real(kind=c_double), dimension(Shh_d0),intent(in) :: Shh
-        integer(kind=c_int), intent(in) :: incspectra_d0
+        integer(kind=c_int), value,intent(in) :: incspectra_d0
         real(kind=c_double), dimension(incspectra_d0),intent(in) :: incspectra
-        integer(kind=c_int), intent(in) :: outcspectra_d0
+        integer(kind=c_int), value,intent(in) :: outcspectra_d0
         real(kind=c_double), dimension(outcspectra_d0),intent(out) :: outcspectra
-        integer(kind=c_int), intent(in) :: lwin
-        integer(kind=c_int), intent(in) :: ldata
+        integer(kind=c_int), value,intent(in) :: lwin
+        integer(kind=c_int), value,intent(in) :: ldata
         integer(kind=c_int), optional,intent(in) :: save_cg
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg=save_cg,exitstatus=exitstatus)
@@ -1716,9 +1716,9 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SphericalCapCoef
         implicit none
-        integer(kind=c_int), intent(in) :: coef_d0
+        integer(kind=c_int), value,intent(in) :: coef_d0
         real(kind=c_double), dimension(coef_d0),intent(out) :: coef
-        real(kind=c_double), intent(in) :: theta
+        real(kind=c_double), value,intent(in) :: theta
         integer(kind=c_int), optional,intent(in) :: lmax
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SphericalCapCoef(coef,theta,lmax=lmax,exitstatus=exitstatus)
@@ -1731,29 +1731,29 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeGravGridDH
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        real(kind=c_double), intent(in) :: gm
-        real(kind=c_double), intent(in) :: r0
-        real(kind=c_double), intent(in) :: a
-        real(kind=c_double), intent(in) :: f
-        integer(kind=c_int), intent(in) :: rad_d0
-        integer(kind=c_int), intent(in) :: rad_d1
+        real(kind=c_double), value,intent(in) :: gm
+        real(kind=c_double), value,intent(in) :: r0
+        real(kind=c_double), value,intent(in) :: a
+        real(kind=c_double), value,intent(in) :: f
+        integer(kind=c_int), value,intent(in) :: rad_d0
+        integer(kind=c_int), value,intent(in) :: rad_d1
         real(kind=c_double), dimension(rad_d0,rad_d1),intent(out) :: rad
-        integer(kind=c_int), intent(in) :: theta_d0
-        integer(kind=c_int), intent(in) :: theta_d1
+        integer(kind=c_int), value,intent(in) :: theta_d0
+        integer(kind=c_int), value,intent(in) :: theta_d1
         real(kind=c_double), dimension(theta_d0,theta_d1),intent(out) :: theta
-        integer(kind=c_int), intent(in) :: phi_d0
-        integer(kind=c_int), intent(in) :: phi_d1
+        integer(kind=c_int), value,intent(in) :: phi_d0
+        integer(kind=c_int), value,intent(in) :: phi_d1
         real(kind=c_double), dimension(phi_d0,phi_d1),intent(out) :: phi
-        integer(kind=c_int), intent(in) :: total_d0
-        integer(kind=c_int), intent(in) :: total_d1
+        integer(kind=c_int), value,intent(in) :: total_d0
+        integer(kind=c_int), value,intent(in) :: total_d1
         real(kind=c_double), dimension(total_d0,total_d1),intent(out) :: total
         real(kind=c_double), optional,intent(in) :: omega
-        integer(kind=c_int), intent(in) :: pot_d0
-        integer(kind=c_int), intent(in) :: pot_d1
+        integer(kind=c_int), value,intent(in) :: pot_d0
+        integer(kind=c_int), value,intent(in) :: pot_d1
         real(kind=c_double), optional,dimension(pot_d0,pot_d1),intent(out) :: pot
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), intent(out) :: n
         integer(kind=c_int), optional,intent(in) :: sampling
         integer(kind=c_int), optional,intent(in) :: lmax_calc
@@ -1773,31 +1773,31 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeGravGradGridDH
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        real(kind=c_double), intent(in) :: gm
-        real(kind=c_double), intent(in) :: r0
-        real(kind=c_double), intent(in) :: a
-        real(kind=c_double), intent(in) :: f
-        integer(kind=c_int), intent(in) :: vxx_d0
-        integer(kind=c_int), intent(in) :: vxx_d1
+        real(kind=c_double), value,intent(in) :: gm
+        real(kind=c_double), value,intent(in) :: r0
+        real(kind=c_double), value,intent(in) :: a
+        real(kind=c_double), value,intent(in) :: f
+        integer(kind=c_int), value,intent(in) :: vxx_d0
+        integer(kind=c_int), value,intent(in) :: vxx_d1
         real(kind=c_double), dimension(vxx_d0,vxx_d1),intent(out) :: vxx
-        integer(kind=c_int), intent(in) :: vyy_d0
-        integer(kind=c_int), intent(in) :: vyy_d1
+        integer(kind=c_int), value,intent(in) :: vyy_d0
+        integer(kind=c_int), value,intent(in) :: vyy_d1
         real(kind=c_double), dimension(vyy_d0,vyy_d1),intent(out) :: vyy
-        integer(kind=c_int), intent(in) :: vzz_d0
-        integer(kind=c_int), intent(in) :: vzz_d1
+        integer(kind=c_int), value,intent(in) :: vzz_d0
+        integer(kind=c_int), value,intent(in) :: vzz_d1
         real(kind=c_double), dimension(vzz_d0,vzz_d1),intent(out) :: vzz
-        integer(kind=c_int), intent(in) :: vxy_d0
-        integer(kind=c_int), intent(in) :: vxy_d1
+        integer(kind=c_int), value,intent(in) :: vxy_d0
+        integer(kind=c_int), value,intent(in) :: vxy_d1
         real(kind=c_double), dimension(vxy_d0,vxy_d1),intent(out) :: vxy
-        integer(kind=c_int), intent(in) :: vxz_d0
-        integer(kind=c_int), intent(in) :: vxz_d1
+        integer(kind=c_int), value,intent(in) :: vxz_d0
+        integer(kind=c_int), value,intent(in) :: vxz_d1
         real(kind=c_double), dimension(vxz_d0,vxz_d1),intent(out) :: vxz
-        integer(kind=c_int), intent(in) :: vyz_d0
-        integer(kind=c_int), intent(in) :: vyz_d1
+        integer(kind=c_int), value,intent(in) :: vyz_d0
+        integer(kind=c_int), value,intent(in) :: vyz_d1
         real(kind=c_double), dimension(vyz_d0,vyz_d1),intent(out) :: vyz
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), intent(out) :: n
         integer(kind=c_int), optional,intent(in) :: sampling
         integer(kind=c_int), optional,intent(in) :: lmax_calc
@@ -1814,30 +1814,30 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeMagGradGridDH
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        real(kind=c_double), intent(in) :: r0
-        real(kind=c_double), intent(in) :: a
-        real(kind=c_double), intent(in) :: f
-        integer(kind=c_int), intent(in) :: vxx_d0
-        integer(kind=c_int), intent(in) :: vxx_d1
+        real(kind=c_double), value,intent(in) :: r0
+        real(kind=c_double), value,intent(in) :: a
+        real(kind=c_double), value,intent(in) :: f
+        integer(kind=c_int), value,intent(in) :: vxx_d0
+        integer(kind=c_int), value,intent(in) :: vxx_d1
         real(kind=c_double), dimension(vxx_d0,vxx_d1),intent(out) :: vxx
-        integer(kind=c_int), intent(in) :: vyy_d0
-        integer(kind=c_int), intent(in) :: vyy_d1
+        integer(kind=c_int), value,intent(in) :: vyy_d0
+        integer(kind=c_int), value,intent(in) :: vyy_d1
         real(kind=c_double), dimension(vyy_d0,vyy_d1),intent(out) :: vyy
-        integer(kind=c_int), intent(in) :: vzz_d0
-        integer(kind=c_int), intent(in) :: vzz_d1
+        integer(kind=c_int), value,intent(in) :: vzz_d0
+        integer(kind=c_int), value,intent(in) :: vzz_d1
         real(kind=c_double), dimension(vzz_d0,vzz_d1),intent(out) :: vzz
-        integer(kind=c_int), intent(in) :: vxy_d0
-        integer(kind=c_int), intent(in) :: vxy_d1
+        integer(kind=c_int), value,intent(in) :: vxy_d0
+        integer(kind=c_int), value,intent(in) :: vxy_d1
         real(kind=c_double), dimension(vxy_d0,vxy_d1),intent(out) :: vxy
-        integer(kind=c_int), intent(in) :: vxz_d0
-        integer(kind=c_int), intent(in) :: vxz_d1
+        integer(kind=c_int), value,intent(in) :: vxz_d0
+        integer(kind=c_int), value,intent(in) :: vxz_d1
         real(kind=c_double), dimension(vxz_d0,vxz_d1),intent(out) :: vxz
-        integer(kind=c_int), intent(in) :: vyz_d0
-        integer(kind=c_int), intent(in) :: vyz_d1
+        integer(kind=c_int), value,intent(in) :: vyz_d0
+        integer(kind=c_int), value,intent(in) :: vyz_d1
         real(kind=c_double), dimension(vyz_d0,vyz_d1),intent(out) :: vyz
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), intent(out) :: n
         integer(kind=c_int), optional,intent(in) :: sampling
         integer(kind=c_int), optional,intent(in) :: lmax_calc
@@ -1853,19 +1853,19 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeGeoidGrid
         implicit none
-        integer(kind=c_int), intent(in) :: geoid_d0
-        integer(kind=c_int), intent(in) :: geoid_d1
+        integer(kind=c_int), value,intent(in) :: geoid_d0
+        integer(kind=c_int), value,intent(in) :: geoid_d1
         real(kind=c_double), dimension(geoid_d0,geoid_d1),intent(out) :: geoid
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        real(kind=c_double), intent(in) :: r0pot
-        real(kind=c_double), intent(in) :: GM
-        real(kind=c_double), intent(in) :: r
-        real(kind=c_double), intent(in) :: PotRef
-        real(kind=c_double), intent(in) :: omega
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: order
-        integer(kind=c_int), intent(in) :: gridtype
+        real(kind=c_double), value,intent(in) :: r0pot
+        real(kind=c_double), value,intent(in) :: GM
+        real(kind=c_double), value,intent(in) :: r
+        real(kind=c_double), value,intent(in) :: PotRef
+        real(kind=c_double), value,intent(in) :: omega
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: order
+        integer(kind=c_int), value,intent(in) :: gridtype
         integer(kind=c_int), optional,intent(in) :: lmax_calc
         integer(kind=c_int), optional,intent(in) :: extend
         integer(kind=c_int), intent(out) :: nlat
@@ -1885,25 +1885,25 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: CilmPlus
         implicit none
-        integer(kind=c_int), intent(in) :: gridin_d0
-        integer(kind=c_int), intent(in) :: gridin_d1
+        integer(kind=c_int), value,intent(in) :: gridin_d0
+        integer(kind=c_int), value,intent(in) :: gridin_d1
         real(kind=c_double), dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        real(kind=c_double), intent(in) :: mass
-        real(kind=c_double), intent(in) :: rho
-        integer(kind=c_int), intent(in) :: w_d0
+        real(kind=c_double), value,intent(in) :: mass
+        real(kind=c_double), value,intent(in) :: rho
+        integer(kind=c_int), value,intent(in) :: w_d0
         real(kind=c_double), optional,dimension(w_d0),intent(in) :: w
-        integer(kind=c_int), intent(in) :: zero_d0
+        integer(kind=c_int), value,intent(in) :: zero_d0
         real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
-        integer(kind=c_int), intent(in) :: plx_d0
-        integer(kind=c_int), intent(in) :: plx_d1
+        integer(kind=c_int), value,intent(in) :: plx_d0
+        integer(kind=c_int), value,intent(in) :: plx_d1
         real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         real(kind=c_double), optional,intent(in) :: dref
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         real(kind=c_double), intent(out) :: d
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: nmax
-        integer(kind=c_int), intent(in) :: gridtype
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: nmax
+        integer(kind=c_int), value,intent(in) :: gridtype
         integer(kind=c_int), optional,intent(in) :: n
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w=w,zero=zero,plx=plx&
@@ -1916,25 +1916,25 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: CilmMinus
         implicit none
-        integer(kind=c_int), intent(in) :: gridin_d0
-        integer(kind=c_int), intent(in) :: gridin_d1
+        integer(kind=c_int), value,intent(in) :: gridin_d0
+        integer(kind=c_int), value,intent(in) :: gridin_d1
         real(kind=c_double), dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        real(kind=c_double), intent(in) :: mass
-        real(kind=c_double), intent(in) :: rho
-        integer(kind=c_int), intent(in) :: w_d0
+        real(kind=c_double), value,intent(in) :: mass
+        real(kind=c_double), value,intent(in) :: rho
+        integer(kind=c_int), value,intent(in) :: w_d0
         real(kind=c_double), optional,dimension(w_d0),intent(in) :: w
-        integer(kind=c_int), intent(in) :: zero_d0
+        integer(kind=c_int), value,intent(in) :: zero_d0
         real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
-        integer(kind=c_int), intent(in) :: plx_d0
-        integer(kind=c_int), intent(in) :: plx_d1
+        integer(kind=c_int), value,intent(in) :: plx_d0
+        integer(kind=c_int), value,intent(in) :: plx_d1
         real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         real(kind=c_double), optional,intent(in) :: dref
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         real(kind=c_double), intent(out) :: d
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: nmax
-        integer(kind=c_int), intent(in) :: gridtype
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: nmax
+        integer(kind=c_int), value,intent(in) :: gridtype
         integer(kind=c_int), optional,intent(in) :: n
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w=w,zero=zero,plx=plx&
@@ -1947,27 +1947,27 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: CilmPlusRhoH
         implicit none
-        integer(kind=c_int), intent(in) :: gridin_d0
-        integer(kind=c_int), intent(in) :: gridin_d1
+        integer(kind=c_int), value,intent(in) :: gridin_d0
+        integer(kind=c_int), value,intent(in) :: gridin_d1
         real(kind=c_double), dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        real(kind=c_double), intent(in) :: mass
-        integer(kind=c_int), intent(in) :: rho_d0
-        integer(kind=c_int), intent(in) :: rho_d1
+        real(kind=c_double), value,intent(in) :: mass
+        integer(kind=c_int), value,intent(in) :: rho_d0
+        integer(kind=c_int), value,intent(in) :: rho_d1
         real(kind=c_double), dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer(kind=c_int), intent(in) :: w_d0
+        integer(kind=c_int), value,intent(in) :: w_d0
         real(kind=c_double), optional,dimension(w_d0),intent(in) :: w
-        integer(kind=c_int), intent(in) :: zero_d0
+        integer(kind=c_int), value,intent(in) :: zero_d0
         real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
-        integer(kind=c_int), intent(in) :: plx_d0
-        integer(kind=c_int), intent(in) :: plx_d1
+        integer(kind=c_int), value,intent(in) :: plx_d0
+        integer(kind=c_int), value,intent(in) :: plx_d1
         real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         real(kind=c_double), optional,intent(in) :: dref
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         real(kind=c_double), intent(out) :: d
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: nmax
-        integer(kind=c_int), intent(in) :: gridtype
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: nmax
+        integer(kind=c_int), value,intent(in) :: gridtype
         integer(kind=c_int), optional,intent(in) :: n
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w=w,zero=zero&
@@ -1980,27 +1980,27 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: CilmMinusRhoH
         implicit none
-        integer(kind=c_int), intent(in) :: gridin_d0
-        integer(kind=c_int), intent(in) :: gridin_d1
+        integer(kind=c_int), value,intent(in) :: gridin_d0
+        integer(kind=c_int), value,intent(in) :: gridin_d1
         real(kind=c_double), dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        real(kind=c_double), intent(in) :: mass
-        integer(kind=c_int), intent(in) :: rho_d0
-        integer(kind=c_int), intent(in) :: rho_d1
+        real(kind=c_double), value,intent(in) :: mass
+        integer(kind=c_int), value,intent(in) :: rho_d0
+        integer(kind=c_int), value,intent(in) :: rho_d1
         real(kind=c_double), dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer(kind=c_int), intent(in) :: w_d0
+        integer(kind=c_int), value,intent(in) :: w_d0
         real(kind=c_double), optional,dimension(w_d0),intent(in) :: w
-        integer(kind=c_int), intent(in) :: zero_d0
+        integer(kind=c_int), value,intent(in) :: zero_d0
         real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
-        integer(kind=c_int), intent(in) :: plx_d0
-        integer(kind=c_int), intent(in) :: plx_d1
+        integer(kind=c_int), value,intent(in) :: plx_d0
+        integer(kind=c_int), value,intent(in) :: plx_d1
         real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
         real(kind=c_double), optional,intent(in) :: dref
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
         real(kind=c_double), intent(out) :: d
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: nmax
-        integer(kind=c_int), intent(in) :: gridtype
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: nmax
+        integer(kind=c_int), value,intent(in) :: gridtype
         integer(kind=c_int), optional,intent(in) :: n
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call CilmMinusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,gridtype,w=w,zero=zero&
@@ -2014,28 +2014,28 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: BAtoHilm
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
-        integer(kind=c_int), intent(in) :: ba_d0
-        integer(kind=c_int), intent(in) :: ba_d1
-        integer(kind=c_int), intent(in) :: ba_d2
+        integer(kind=c_int), value,intent(in) :: ba_d0
+        integer(kind=c_int), value,intent(in) :: ba_d1
+        integer(kind=c_int), value,intent(in) :: ba_d2
         real(kind=c_double), dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
-        integer(kind=c_int), intent(in) :: gridglq_d0
-        integer(kind=c_int), intent(in) :: gridglq_d1
+        integer(kind=c_int), value,intent(in) :: gridglq_d0
+        integer(kind=c_int), value,intent(in) :: gridglq_d1
         real(kind=c_double), dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-        real(kind=c_double), intent(in) :: mass
-        real(kind=c_double), intent(in) :: r0
-        real(kind=c_double), intent(in) :: rho
-        integer(kind=c_int), intent(in) :: plx_d0
-        integer(kind=c_int), intent(in) :: plx_d1
+        real(kind=c_double), value,intent(in) :: mass
+        real(kind=c_double), value,intent(in) :: r0
+        real(kind=c_double), value,intent(in) :: rho
+        integer(kind=c_int), value,intent(in) :: plx_d0
+        integer(kind=c_int), value,intent(in) :: plx_d1
         real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
-        integer(kind=c_int), intent(in) :: zero_d0
+        integer(kind=c_int), value,intent(in) :: zero_d0
         real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
-        integer(kind=c_int), intent(in) :: w_d0
+        integer(kind=c_int), value,intent(in) :: w_d0
         real(kind=c_double), optional,dimension(w_d0),intent(in) :: w
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: nmax
-        integer(kind=c_int), intent(in) :: gridtype
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: nmax
+        integer(kind=c_int), value,intent(in) :: gridtype
         integer(kind=c_int), optional,intent(in) :: filter_type
         integer(kind=c_int), optional,intent(in) :: filter_deg
         integer(kind=c_int), optional,intent(in) :: lmax_calc
@@ -2052,30 +2052,30 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: BAtoHilmRhoH
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(out) :: cilm
-        integer(kind=c_int), intent(in) :: ba_d0
-        integer(kind=c_int), intent(in) :: ba_d1
-        integer(kind=c_int), intent(in) :: ba_d2
+        integer(kind=c_int), value,intent(in) :: ba_d0
+        integer(kind=c_int), value,intent(in) :: ba_d1
+        integer(kind=c_int), value,intent(in) :: ba_d2
         real(kind=c_double), dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
-        integer(kind=c_int), intent(in) :: gridglq_d0
-        integer(kind=c_int), intent(in) :: gridglq_d1
+        integer(kind=c_int), value,intent(in) :: gridglq_d0
+        integer(kind=c_int), value,intent(in) :: gridglq_d1
         real(kind=c_double), dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
-        real(kind=c_double), intent(in) :: mass
-        real(kind=c_double), intent(in) :: r0
-        integer(kind=c_int), intent(in) :: rho_d0
-        integer(kind=c_int), intent(in) :: rho_d1
+        real(kind=c_double), value,intent(in) :: mass
+        real(kind=c_double), value,intent(in) :: r0
+        integer(kind=c_int), value,intent(in) :: rho_d0
+        integer(kind=c_int), value,intent(in) :: rho_d1
         real(kind=c_double), dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer(kind=c_int), intent(in) :: plx_d0
-        integer(kind=c_int), intent(in) :: plx_d1
+        integer(kind=c_int), value,intent(in) :: plx_d0
+        integer(kind=c_int), value,intent(in) :: plx_d1
         real(kind=c_double), optional,dimension(plx_d0,plx_d1),intent(in) :: plx
-        integer(kind=c_int), intent(in) :: zero_d0
+        integer(kind=c_int), value,intent(in) :: zero_d0
         real(kind=c_double), optional,dimension(zero_d0),intent(in) :: zero
-        integer(kind=c_int), intent(in) :: w_d0
+        integer(kind=c_int), value,intent(in) :: w_d0
         real(kind=c_double), optional,dimension(w_d0),intent(in) :: w
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: nmax
-        integer(kind=c_int), intent(in) :: gridtype
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: nmax
+        integer(kind=c_int), value,intent(in) :: gridtype
         integer(kind=c_int), optional,intent(in) :: filter_type
         integer(kind=c_int), optional,intent(in) :: filter_deg
         integer(kind=c_int), optional,intent(in) :: lmax_calc
@@ -2090,10 +2090,10 @@
         use shtools, only: DownContFilterMA
         implicit none
         real(kind=c_double) :: cDownContFilterMA
-        integer(kind=c_int), intent(in) :: l
-        integer(kind=c_int), intent(in) :: half
-        real(kind=c_double), intent(in) :: r
-        real(kind=c_double), intent(in) :: d
+        integer(kind=c_int), value,intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: half
+        real(kind=c_double), value,intent(in) :: r
+        real(kind=c_double), value,intent(in) :: d
         cDownContFilterMA=DownContFilterMA(l,half,r,d)
     end function cDownContFilterMA
 
@@ -2102,10 +2102,10 @@
         use shtools, only: DownContFilterMC
         implicit none
         real(kind=c_double) :: cDownContFilterMC
-        integer(kind=c_int), intent(in) :: l
-        integer(kind=c_int), intent(in) :: half
-        real(kind=c_double), intent(in) :: r
-        real(kind=c_double), intent(in) :: d
+        integer(kind=c_int), value,intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: half
+        real(kind=c_double), value,intent(in) :: r
+        real(kind=c_double), value,intent(in) :: d
         cDownContFilterMC=DownContFilterMC(l,half,r,d)
     end function cDownContFilterMC
 
@@ -2114,11 +2114,11 @@
         use shtools, only: NormalGravity
         implicit none
         real(kind=c_double) :: cNormalGravity
-        real(kind=c_double), intent(in) :: geocentric_lat
-        real(kind=c_double), intent(in) :: gm
-        real(kind=c_double), intent(in) :: omega
-        real(kind=c_double), intent(in) :: a
-        real(kind=c_double), intent(in) :: b
+        real(kind=c_double), value,intent(in) :: geocentric_lat
+        real(kind=c_double), value,intent(in) :: gm
+        real(kind=c_double), value,intent(in) :: omega
+        real(kind=c_double), value,intent(in) :: a
+        real(kind=c_double), value,intent(in) :: b
         cNormalGravity=NormalGravity(geocentric_lat,gm,omega,a,b)
     end function cNormalGravity
 
@@ -2130,27 +2130,27 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeMagGridDH
         implicit none
-        integer(kind=c_int), intent(in) :: cilm_d
+        integer(kind=c_int), value,intent(in) :: cilm_d
         real(kind=c_double), dimension(2,cilm_d,cilm_d),intent(in) :: cilm
-        real(kind=c_double), intent(in) :: r0
-        real(kind=c_double), intent(in) :: a
-        real(kind=c_double), intent(in) :: f
-        integer(kind=c_int), intent(in) :: rad_grid_d0
-        integer(kind=c_int), intent(in) :: rad_grid_d1
+        real(kind=c_double), value,intent(in) :: r0
+        real(kind=c_double), value,intent(in) :: a
+        real(kind=c_double), value,intent(in) :: f
+        integer(kind=c_int), value,intent(in) :: rad_grid_d0
+        integer(kind=c_int), value,intent(in) :: rad_grid_d1
         real(kind=c_double), dimension(rad_grid_d0,rad_grid_d1),intent(out) :: rad_grid
-        integer(kind=c_int), intent(in) :: theta_grid_d0
-        integer(kind=c_int), intent(in) :: theta_grid_d1
+        integer(kind=c_int), value,intent(in) :: theta_grid_d0
+        integer(kind=c_int), value,intent(in) :: theta_grid_d1
         real(kind=c_double), dimension(theta_grid_d0,theta_grid_d1),intent(out) :: theta_grid
-        integer(kind=c_int), intent(in) :: phi_grid_d0
-        integer(kind=c_int), intent(in) :: phi_grid_d1
+        integer(kind=c_int), value,intent(in) :: phi_grid_d0
+        integer(kind=c_int), value,intent(in) :: phi_grid_d1
         real(kind=c_double), dimension(phi_grid_d0,phi_grid_d1),intent(out) :: phi_grid
-        integer(kind=c_int), intent(in) :: total_grid_d0
-        integer(kind=c_int), intent(in) :: total_grid_d1
+        integer(kind=c_int), value,intent(in) :: total_grid_d0
+        integer(kind=c_int), value,intent(in) :: total_grid_d1
         real(kind=c_double), dimension(total_grid_d0,total_grid_d1),intent(out) :: total_grid
-        integer(kind=c_int), intent(in) :: pot_grid_d0
-        integer(kind=c_int), intent(in) :: pot_grid_d1
+        integer(kind=c_int), value,intent(in) :: pot_grid_d0
+        integer(kind=c_int), value,intent(in) :: pot_grid_d1
         real(kind=c_double), optional,dimension(pot_grid_d0,pot_grid_d1),intent(out) :: pot_grid
-        integer(kind=c_int), intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: lmax
         integer(kind=c_int), intent(out) :: n
         integer(kind=c_int), optional,intent(in) :: sampling
         integer(kind=c_int), optional,intent(in) :: lmax_calc
@@ -2166,14 +2166,14 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHMagPowerSpectrum
         implicit none
-        integer(kind=c_int), intent(in) :: c_d0
-        integer(kind=c_int), intent(in) :: c_d1
-        integer(kind=c_int), intent(in) :: c_d2
+        integer(kind=c_int), value,intent(in) :: c_d0
+        integer(kind=c_int), value,intent(in) :: c_d1
+        integer(kind=c_int), value,intent(in) :: c_d2
         real(kind=c_double), dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        real(kind=c_double), intent(in) :: a
-        real(kind=c_double), intent(in) :: r
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: spectra_d0
+        real(kind=c_double), value,intent(in) :: a
+        real(kind=c_double), value,intent(in) :: r
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: spectra_d0
         real(kind=c_double), dimension(spectra_d0),intent(out) :: spectra
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHMagPowerSpectrum(c,a,r,lmax,spectra,exitstatus=exitstatus)
@@ -2184,13 +2184,13 @@
         use shtools, only: SHMagPowerL
         implicit none
         real(kind=c_double) :: cSHMagPowerL
-        integer(kind=c_int), intent(in) :: c_d0
-        integer(kind=c_int), intent(in) :: c_d1
-        integer(kind=c_int), intent(in) :: c_d2
+        integer(kind=c_int), value,intent(in) :: c_d0
+        integer(kind=c_int), value,intent(in) :: c_d1
+        integer(kind=c_int), value,intent(in) :: c_d2
         real(kind=c_double), dimension(c_d0,c_d1,c_d2),intent(in) :: c
-        real(kind=c_double), intent(in) :: a
-        real(kind=c_double), intent(in) :: r
-        integer(kind=c_int), intent(in) :: l
+        real(kind=c_double), value,intent(in) :: a
+        real(kind=c_double), value,intent(in) :: r
+        integer(kind=c_int), value,intent(in) :: l
         cSHMagPowerL=SHMagPowerL(c,a,r,l)
     end function cSHMagPowerL
 
@@ -2199,11 +2199,11 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeCircleCoord
         implicit none
-        real(kind=c_double), intent(in) :: lat
-        real(kind=c_double), intent(in) :: lon
-        real(kind=c_double), intent(in) :: theta0
-        integer(kind=c_int), intent(in) :: coord_d0
-        integer(kind=c_int), intent(in) :: coord_d1
+        real(kind=c_double), value,intent(in) :: lat
+        real(kind=c_double), value,intent(in) :: lon
+        real(kind=c_double), value,intent(in) :: theta0
+        integer(kind=c_int), value,intent(in) :: coord_d0
+        integer(kind=c_int), value,intent(in) :: coord_d1
         real(kind=c_double), dimension(coord_d0,coord_d1),intent(out) :: coord
         real(kind=c_double), optional,intent(in) :: cinterval
         integer(kind=c_int), optional,intent(out) :: cnum
@@ -2216,13 +2216,13 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeEllipseCoord
         implicit none
-        real(kind=c_double), intent(in) :: lat
-        real(kind=c_double), intent(in) :: lon
-        real(kind=c_double), intent(in) :: A_theta
-        real(kind=c_double), intent(in) :: B_theta
-        real(kind=c_double), intent(in) :: dec
-        integer(kind=c_int), intent(in) :: coord_d0
-        integer(kind=c_int), intent(in) :: coord_d1
+        real(kind=c_double), value,intent(in) :: lat
+        real(kind=c_double), value,intent(in) :: lon
+        real(kind=c_double), value,intent(in) :: A_theta
+        real(kind=c_double), value,intent(in) :: B_theta
+        real(kind=c_double), value,intent(in) :: dec
+        integer(kind=c_int), value,intent(in) :: coord_d0
+        integer(kind=c_int), value,intent(in) :: coord_d1
         real(kind=c_double), dimension(coord_d0,coord_d1),intent(out) :: coord
         real(kind=c_double), optional,intent(in) :: cinterval
         integer(kind=c_int), optional,intent(out) :: cnum
@@ -2235,14 +2235,14 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: Wigner3j
         implicit none
-        integer(kind=c_int), intent(in) :: j2
-        integer(kind=c_int), intent(in) :: j3
-        integer(kind=c_int), intent(in) :: m1
-        integer(kind=c_int), intent(in) :: m2
-        integer(kind=c_int), intent(in) :: m3
+        integer(kind=c_int), value,intent(in) :: j2
+        integer(kind=c_int), value,intent(in) :: j3
+        integer(kind=c_int), value,intent(in) :: m1
+        integer(kind=c_int), value,intent(in) :: m2
+        integer(kind=c_int), value,intent(in) :: m3
         integer(kind=c_int), intent(out) :: jmin
         integer(kind=c_int), intent(out) :: jmax
-        integer(kind=c_int), intent(in) :: w3j_d0
+        integer(kind=c_int), value,intent(in) :: w3j_d0
         real(kind=c_double), dimension(w3j_d0),intent(out) :: w3j
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call Wigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3,exitstatus=exitstatus)
@@ -2270,13 +2270,13 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: PreGLQ
         implicit none
-        real(kind=c_double), intent(in) :: x1
-        real(kind=c_double), intent(in) :: x2
-        integer(kind=c_int), intent(in) :: zero_d0
+        real(kind=c_double), value,intent(in) :: x1
+        real(kind=c_double), value,intent(in) :: x2
+        integer(kind=c_int), value,intent(in) :: zero_d0
         real(kind=c_double), dimension(zero_d0),intent(out) :: zero
-        integer(kind=c_int), intent(in) :: w_d0
+        integer(kind=c_int), value,intent(in) :: w_d0
         real(kind=c_double), dimension(w_d0),intent(out) :: w
-        integer(kind=c_int), intent(in) :: n
+        integer(kind=c_int), value,intent(in) :: n
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call PreGLQ(x1,x2,n,zero,w,exitstatus=exitstatus)
     end subroutine cPreGLQ
@@ -2286,7 +2286,7 @@
         use shtools, only: NGLQ
         implicit none
         integer(kind=c_int) :: cNGLQ
-        integer(kind=c_int), intent(in) :: degree
+        integer(kind=c_int), value,intent(in) :: degree
         cNGLQ=NGLQ(degree)
     end function cNGLQ
 
@@ -2295,7 +2295,7 @@
         use shtools, only: NGLQSH
         implicit none
         integer(kind=c_int) :: cNGLQSH
-        integer(kind=c_int), intent(in) :: degree
+        integer(kind=c_int), value,intent(in) :: degree
         cNGLQSH=NGLQSH(degree)
     end function cNGLQSH
 
@@ -2304,8 +2304,8 @@
         use shtools, only: NGLQSHN
         implicit none
         integer(kind=c_int) :: cNGLQSHN
-        integer(kind=c_int), intent(in) :: degree
-        integer(kind=c_int), intent(in) :: n
+        integer(kind=c_int), value,intent(in) :: degree
+        integer(kind=c_int), value,intent(in) :: n
         cNGLQSHN=NGLQSHN(degree,n)
     end function cNGLQSHN
 
@@ -2313,8 +2313,8 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: DHaj
         implicit none
-        integer(kind=c_int), intent(in) :: n
-        integer(kind=c_int), intent(in) :: aj_d0
+        integer(kind=c_int), value,intent(in) :: n
+        integer(kind=c_int), value,intent(in) :: aj_d0
         real(kind=c_double), dimension(aj_d0),intent(out) :: aj
         integer(kind=c_int), optional,intent(in) :: extend
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -2326,9 +2326,9 @@
         use shtools, only: YilmIndexVector
         implicit none
         integer(kind=c_int) :: cYilmIndexVector
-        integer(kind=c_int), intent(in) :: i
-        integer(kind=c_int), intent(in) :: l
-        integer(kind=c_int), intent(in) :: m
+        integer(kind=c_int), value,intent(in) :: i
+        integer(kind=c_int), value,intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: m
         cYilmIndexVector=YilmIndexVector(i,l,m)
     end function cYilmIndexVector
 
@@ -2337,14 +2337,14 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: EigValVecSym
         implicit none
-        integer(kind=c_int), intent(in) :: ain_d0
-        integer(kind=c_int), intent(in) :: ain_d1
+        integer(kind=c_int), value,intent(in) :: ain_d0
+        integer(kind=c_int), value,intent(in) :: ain_d1
         real(kind=c_double), dimension(ain_d0,ain_d1),intent(in) :: ain
-        integer(kind=c_int), intent(in) :: n
-        integer(kind=c_int), intent(in) :: eig_d0
+        integer(kind=c_int), value,intent(in) :: n
+        integer(kind=c_int), value,intent(in) :: eig_d0
         real(kind=c_double), dimension(eig_d0),intent(out) :: eig
-        integer(kind=c_int), intent(in) :: evec_d0
-        integer(kind=c_int), intent(in) :: evec_d1
+        integer(kind=c_int), value,intent(in) :: evec_d0
+        integer(kind=c_int), value,intent(in) :: evec_d1
         real(kind=c_double), dimension(evec_d0,evec_d1),intent(out) :: evec
         character(kind=c_char), optional,intent(in) :: ul
         integer(kind=c_int), optional,intent(in) :: K
@@ -2357,14 +2357,14 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: EigValVecSymTri
         implicit none
-        integer(kind=c_int), intent(in) :: ain_d0
-        integer(kind=c_int), intent(in) :: ain_d1
+        integer(kind=c_int), value,intent(in) :: ain_d0
+        integer(kind=c_int), value,intent(in) :: ain_d1
         real(kind=c_double), dimension(ain_d0,ain_d1),intent(in) :: ain
-        integer(kind=c_int), intent(in) :: n
-        integer(kind=c_int), intent(in) :: eig_d0
+        integer(kind=c_int), value,intent(in) :: n
+        integer(kind=c_int), value,intent(in) :: eig_d0
         real(kind=c_double), dimension(eig_d0),intent(out) :: eig
-        integer(kind=c_int), intent(in) :: evec_d0
-        integer(kind=c_int), intent(in) :: evec_d1
+        integer(kind=c_int), value,intent(in) :: evec_d0
+        integer(kind=c_int), value,intent(in) :: evec_d1
         real(kind=c_double), dimension(evec_d0,evec_d1),intent(out) :: evec
         character(kind=c_char), optional,intent(in) :: ul
         integer(kind=c_int), optional,intent(out) :: exitstatus
@@ -2375,11 +2375,11 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: EigValSym
         implicit none
-        integer(kind=c_int), intent(in) :: ain_d0
-        integer(kind=c_int), intent(in) :: ain_d1
+        integer(kind=c_int), value,intent(in) :: ain_d0
+        integer(kind=c_int), value,intent(in) :: ain_d1
         real(kind=c_double), dimension(ain_d0,ain_d1),intent(in) :: ain
-        integer(kind=c_int), intent(in) :: n
-        integer(kind=c_int), intent(in) :: eval_d0
+        integer(kind=c_int), value,intent(in) :: n
+        integer(kind=c_int), value,intent(in) :: eval_d0
         real(kind=c_double), dimension(eval_d0),intent(out) :: eval
         character(kind=c_char), optional,intent(in) :: ul
         call EigValSym(ain,n,eval,ul=ul)
@@ -2392,22 +2392,22 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHRotateTapers
         implicit none
-        integer(kind=c_int), intent(in) :: tapers_d0
-        integer(kind=c_int), intent(in) :: tapers_d1
+        integer(kind=c_int), value,intent(in) :: tapers_d0
+        integer(kind=c_int), value,intent(in) :: tapers_d1
         real(kind=c_double), dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer(kind=c_int), intent(in) :: x_d0
+        integer(kind=c_int), value,intent(in) :: x_d0
         real(kind=c_double), dimension(x_d0),intent(in) :: x
-        integer(kind=c_int), intent(in) :: dj_d0
-        integer(kind=c_int), intent(in) :: dj_d1
-        integer(kind=c_int), intent(in) :: dj_d2
+        integer(kind=c_int), value,intent(in) :: dj_d0
+        integer(kind=c_int), value,intent(in) :: dj_d1
+        integer(kind=c_int), value,intent(in) :: dj_d2
         real(kind=c_double), dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
-        integer(kind=c_int), intent(in) :: tapersrot_d0
-        integer(kind=c_int), intent(in) :: tapersrot_d1
+        integer(kind=c_int), value,intent(in) :: tapersrot_d0
+        integer(kind=c_int), value,intent(in) :: tapersrot_d1
         real(kind=c_double), dimension(tapersrot_d0,tapersrot_d1),intent(out) :: tapersrot
-        integer(kind=c_int), intent(in) :: taper_order_d0
+        integer(kind=c_int), value,intent(in) :: taper_order_d0
         integer(kind=c_int), dimension(taper_order_d0),intent(in) :: taper_order
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: nrot
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: nrot
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHRotateTapers(tapersrot,tapers,taper_order,lmax,nrot,x,dj,exitstatus=exitstatus)
     end subroutine cSHRotateTapers
@@ -2417,17 +2417,17 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SlepianCoeffs
         implicit none
-        integer(kind=c_int), intent(in) :: falpha_d0
+        integer(kind=c_int), value,intent(in) :: falpha_d0
         real(kind=c_double), dimension(falpha_d0),intent(out) :: falpha
-        integer(kind=c_int), intent(in) :: galpha_d0
-        integer(kind=c_int), intent(in) :: galpha_d1
+        integer(kind=c_int), value,intent(in) :: galpha_d0
+        integer(kind=c_int), value,intent(in) :: galpha_d1
         real(kind=c_double), dimension(galpha_d0,galpha_d1),intent(in) :: galpha
-        integer(kind=c_int), intent(in) :: flm_d0
-        integer(kind=c_int), intent(in) :: flm_d1
-        integer(kind=c_int), intent(in) :: flm_d2
+        integer(kind=c_int), value,intent(in) :: flm_d0
+        integer(kind=c_int), value,intent(in) :: flm_d1
+        integer(kind=c_int), value,intent(in) :: flm_d2
         real(kind=c_double), dimension(flm_d0,flm_d1,flm_d2),intent(in) :: flm
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: nmax
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: nmax
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SlepianCoeffs(falpha,galpha,flm,lmax,nmax,exitstatus=exitstatus)
     end subroutine cSlepianCoeffs
@@ -2438,17 +2438,17 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SlepianCoeffsToSH
         implicit none
-        integer(kind=c_int), intent(in) :: flm_d0
-        integer(kind=c_int), intent(in) :: flm_d1
-        integer(kind=c_int), intent(in) :: flm_d2
+        integer(kind=c_int), value,intent(in) :: flm_d0
+        integer(kind=c_int), value,intent(in) :: flm_d1
+        integer(kind=c_int), value,intent(in) :: flm_d2
         real(kind=c_double), dimension(flm_d0,flm_d1,flm_d2),intent(out) :: flm
-        integer(kind=c_int), intent(in) :: falpha_d0
+        integer(kind=c_int), value,intent(in) :: falpha_d0
         real(kind=c_double), dimension(falpha_d0),intent(in) :: falpha
-        integer(kind=c_int), intent(in) :: galpha_d0
-        integer(kind=c_int), intent(in) :: galpha_d1
+        integer(kind=c_int), value,intent(in) :: galpha_d0
+        integer(kind=c_int), value,intent(in) :: galpha_d1
         real(kind=c_double), dimension(galpha_d0,galpha_d1),intent(in) :: galpha
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: nmax
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: nmax
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SlepianCoeffsToSH(flm,falpha,galpha,lmax,nmax,exitstatus=exitstatus)
     end subroutine cSlepianCoeffsToSH
@@ -2458,14 +2458,14 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHSCouplingMatrix
         implicit none
-        integer(kind=c_int), intent(in) :: kij_d0
-        integer(kind=c_int), intent(in) :: kij_d1
+        integer(kind=c_int), value,intent(in) :: kij_d0
+        integer(kind=c_int), value,intent(in) :: kij_d1
         real(kind=c_double), dimension(kij_d0,kij_d1),intent(out) :: kij
-        integer(kind=c_int), intent(in) :: galpha_d0
-        integer(kind=c_int), intent(in) :: galpha_d1
+        integer(kind=c_int), value,intent(in) :: galpha_d0
+        integer(kind=c_int), value,intent(in) :: galpha_d1
         real(kind=c_double), dimension(galpha_d0,galpha_d1),intent(in) :: galpha
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: nmax
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: nmax
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHSCouplingMatrix(kij,galpha,lmax,nmax,exitstatus=exitstatus)
     end subroutine cSHSCouplingMatrix
@@ -2475,16 +2475,16 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHSlepianVar
         implicit none
-        integer(kind=c_int), intent(in) :: galpha_d0
-        integer(kind=c_int), intent(in) :: galpha_d1
+        integer(kind=c_int), value,intent(in) :: galpha_d0
+        integer(kind=c_int), value,intent(in) :: galpha_d1
         real(kind=c_double), dimension(galpha_d0,galpha_d1),intent(in) :: galpha
-        integer(kind=c_int), intent(in) :: Sff_d0
+        integer(kind=c_int), value,intent(in) :: Sff_d0
         real(kind=c_double), dimension(Sff_d0),intent(in) :: Sff
         real(kind=c_double), intent(out) :: variance
-        integer(kind=c_int), intent(in) :: l
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: kmax
-        integer(kind=c_int), intent(in) :: galpha_order_d0
+        integer(kind=c_int), value,intent(in) :: l
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: kmax
+        integer(kind=c_int), value,intent(in) :: galpha_order_d0
         integer(kind=c_int), dimension(galpha_order_d0),intent(in) :: galpha_order
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHSlepianVar(l,galpha,galpha_order,lmax,kmax,Sff,variance,exitstatus=exitstatus)
@@ -2496,16 +2496,16 @@
         use, intrinsic :: iso_c_binding
         use shtools, only: SHSCouplingMatrixCap
         implicit none
-        integer(kind=c_int), intent(in) :: kij_d0
-        integer(kind=c_int), intent(in) :: kij_d1
+        integer(kind=c_int), value,intent(in) :: kij_d0
+        integer(kind=c_int), value,intent(in) :: kij_d1
         real(kind=c_double), dimension(kij_d0,kij_d1),intent(out) :: kij
-        integer(kind=c_int), intent(in) :: galpha_d0
-        integer(kind=c_int), intent(in) :: galpha_d1
+        integer(kind=c_int), value,intent(in) :: galpha_d0
+        integer(kind=c_int), value,intent(in) :: galpha_d1
         real(kind=c_double), dimension(galpha_d0,galpha_d1),intent(in) :: galpha
-        integer(kind=c_int), intent(in) :: galpha_order_d0
+        integer(kind=c_int), value,intent(in) :: galpha_order_d0
         integer(kind=c_int), dimension(galpha_order_d0),intent(in) :: galpha_order
-        integer(kind=c_int), intent(in) :: lmax
-        integer(kind=c_int), intent(in) :: nmax
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), value,intent(in) :: nmax
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call SHSCouplingMatrixCap(kij,galpha,galpha_order,lmax,nmax,exitstatus=exitstatus)
     end subroutine cSHSCouplingMatrixCap

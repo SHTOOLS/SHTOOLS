@@ -170,7 +170,7 @@ BLAS ?= -lblas
 LAPACK ?= -llapack
 else ifeq ($(F95), gfortran)
 # Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3 -std=f2003 -ffast-math
+F95FLAGS ?= -m64 -fPIC -O3 -std=gnu -ffast-math
 # -march=native
 MODFLAG = -I$(MODPATH)
 SYSMODFLAG = -I$(SYSMODPATH)

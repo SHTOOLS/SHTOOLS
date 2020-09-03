@@ -170,14 +170,6 @@ def modify_subroutine(subroutine):
     # -- loop through variables:
     for varname, varattribs in list(subroutine['vars'].items()):
         
-        # # remmove optional
-        # if 'attrspec' in varattribs:
-        #     if 'optional' in varattribs['attrspec']:
-        #         varattribs['attrspec'].remove('optional')
-        #     if not varattribs['attrspec']:
-        #         del varattribs['attrspec']
-                 
-        
         # prefix function return variables with prepend
         if varname == subroutine['name']:                
             subroutine['vars'][prepend + varname] = \
@@ -189,6 +181,13 @@ def modify_subroutine(subroutine):
         # -- change assumed to explicit:
         if has_assumed_shape(varattribs):
             make_explicit(subroutine, varname, varattribs)
+
+        if 'dimension' not in varattribs:
+            is_intent_in = 'intent' in varattribs and 'in' in varattribs['intent']
+            is_optional = 'attrspec' in varattribs and 'optional' in varattribs['attrspec']
+            if is_intent_in and not is_optional:
+                varattribs['attrspec'].append('value')
+
          
     # change type
     for varname, varattribs in list(subroutine['vars'].items()):
@@ -212,7 +211,7 @@ def modify_subroutine(subroutine):
         
 
 def insert_dim(subroutine, dimname, arg_pos, declartaion_pos):
-    dimattribs = {'attrspec': [], 'typespec': 'integer', 'intent': ['in']}
+    dimattribs = {'attrspec': ['value'], 'typespec': 'integer', 'intent': ['in']}
     # declare dimension in subroutine variables
     subroutine['vars'][dimname] = dimattribs
     # add dimension to subroutine arguments

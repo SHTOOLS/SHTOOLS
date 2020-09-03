@@ -68,7 +68,8 @@ SRCS0 = CilmPlus.f95 CilmMinus.f95 \
 	CilmPlusRhoH.f95 CilmMinusRhoH.f95 BAtoHilmRhoH.f95 NormalGravity.f95 \
 	SHMultiTaperMaskSE.f95 SHMultiTaperMaskCSE.f95 SHBiasKMask.f95 \
 	SHRotateTapers.f95 SlepianCoeffs.f95 SlepianCoeffsToSH.f95 \
-	SHSCouplingMatrix.f95 SHMTVar.f95 SHSlepianVar.f95 SHSCouplingMatrixCap.f95
+	SHSCouplingMatrix.f95 SHMTVar.f95 SHSlepianVar.f95 SHSCouplingMatrixCap.f95 \
+	cWrapper.f95
 
 OBJS0 = CilmPlus.o CilmMinus.o ComputeDG82.o \
 	ComputeDm.o DHaj.o djpi2.o BAtoHilm.o MakeGrid2D.o GLQGridCoord.o \
@@ -89,7 +90,8 @@ OBJS0 = CilmPlus.o CilmMinus.o ComputeDG82.o \
 	MakeEllipseCoord.o CilmPlusRhoH.o CilmMinusRhoH.o BAtoHilmRhoH.o \
 	NormalGravity.o SHMultiTaperMaskSE.o SHMultiTaperMaskCSE.o SHBiasKMask.o \
 	SHRotateTapers.o SlepianCoeffs.o SlepianCoeffsToSH.o SHSCouplingMatrix.o \
-	SHMTVar.o SHSlepianVar.o SHSCouplingMatrixCap.o
+	SHMTVar.o SHSlepianVar.o SHSCouplingMatrixCap.o \
+	cWrapper.o
 
 SRCSLAPACK = EigValSym.F95 EigValVecSym.F95 EigValVecSymTri.F95 \
 	SHExpandLSQ.F95 SHMTDebias.F95 SHMTVarOpt.F95
@@ -159,6 +161,7 @@ SHTOOLS.mod : ftypes.mod
 FFTW3.mod : ftypes.mod
 PlanetsConstants.mod : ftypes.mod
 
+cWrapper.o : SHTOOLS.mod
 BAtoHilm.o : ftypes.mod SHTOOLS.mod
 BAtoHilmRhoH.o : ftypes.mod SHTOOLS.mod
 CilmMinus.o : ftypes.mod SHTOOLS.mod
