@@ -19,7 +19,7 @@ BYVALUE = {True:' ',
 # ==== MAIN FUNCTION ====
 def main():
     fname_wrapper = 'cWrapper.f95'
-    fname_signature = 'cWrapper.h'
+    fname_signature = 'shtools.h'
 
     print('now cracking Fortran file ' + fname_wrapper + ' using f2py function...')
     crackfortran.verbose = False

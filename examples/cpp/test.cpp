@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "cWrapper.h"
+#include "shtools.h"
 
 /*
  * This is a very simple example, explaining how to use the c/cpp interface
@@ -20,7 +20,7 @@
  * need to be specified. However, you can use nullptr, which is equivalent to
  * not specifying the argument in fortran.
  *
- * Currently, the function calls are quiet ugly by reason of the large amount of
+ * Currently, the function calls are quite ugly by reason of the large amount of
  * arguments. I am also working on a interface, internally using the same calls
  * but with improved signature. However, the development may take some time.
  * 
@@ -37,7 +37,7 @@ main(int argc, char** argv)
   int cilm_dim = lmax + 1;
 
   // In Fortran Cilm has the dimension 2 x cilm_dim x cilm_dim
-  // In the C interface we always use 1 D arrays with the same number of elements
+  // In the C interface we always use 1-D arrays
   std::vector<double> cilm(2 * cilm_dim * cilm_dim);
 
   shtools::cSHRead(infile.c_str(),
@@ -57,6 +57,8 @@ main(int argc, char** argv)
   double lat = 10.0;
   double lon = 30.0;
 
+  // Here the optional arguments norm, csphase, dealloc are null pointers.
+  // Thus, they are not used. 
   double val = shtools::cMakeGridPoint(
     &cilm[0], cilm_dim, lmax, lat, lon, nullptr, nullptr, nullptr);
 
