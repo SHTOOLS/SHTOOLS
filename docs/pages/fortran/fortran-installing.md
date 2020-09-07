@@ -19,12 +19,12 @@ To install the OpenMP components along with the standard Fortran 95 library, add
 ```bash
 brew install shtools --with-openmp
 ```
+The shtools library `libSHTOOLS.a` will be installed in the directory `/usr/local/lib`, and the compiled module files will be installed in `/usr/local/include`.
 
 To install the example data files and test programs in the directory `/usr/local/share/shtools/` use:
 ```bash
 brew install shtools --with-examples
 ```
-
 To run the test suite, use
 ```bash
 brew test shtools
@@ -41,7 +41,7 @@ To install the OpenMP components along with the standard Fortran 95 library, add
 ```bash
 sudo port install shtools +openmp
 ```
-To run the test suite, which is located in `/opt/local/share/examples/shtools`, use the command
+The shtools library `libSHTOOLS.a` will be installed in the directory `/opt/local/lib`, and the compiled module files will be installed in `/opt/local/include`. To run the test suite, which is located in `/opt/local/share/examples/shtools`, use the command
 ```bash
 sudo port test shtools
 ```
@@ -50,12 +50,13 @@ sudo port test shtools
 
 Before trying to install the Fortran 95 components of SHTOOLS, it will be necessary to have a Fortran 95 compiler and [LAPACK](https://www.netlib.org/lapack/), [BLAS](https://www.netlib.org/blas/) and [FFTW3](http://www.fftw.org)-compatible libraries. On most linux distributions, this can be accomplished using
 ```bash
-sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
+sudo apt-get install gcc gfortran libfftw3-dev libblas-dev liblapack-dev
 ```
-or on macOS using either [brew](https://brew.sh/) or [macports](https://www.macports.org/)
+or on macOS using
 ```bash
-brew install fftw
-sudo port install fftw-3
+brew install fftw  # using brew
+sudo port install fftw-3  # using macports
+conda install fftw  # using conda
 # lapack and blas can be accessed by linking to the system '-framework Accelerate'
 ```
 

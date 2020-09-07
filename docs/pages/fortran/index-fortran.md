@@ -38,12 +38,13 @@ Alternatively, install using the [brew](http://brew.sh/) package manager (macOS)
 ```bash
 brew tap shtools/shtools
 brew install shtools
-brew install shtools --with-openmp  # to install shtools with the OpenMP components.
+brew install shtools --with-openmp  # to install shtools with the OpenMP components
 ```
 
 or the [macports](https://www.macports.org/) package manager (macOS)
 ```bash
 sudo port install shtools
+sudo port install shtools +openmp  # to install shtools with the OpenMP components
 ```
 
 ## Permissive licensing

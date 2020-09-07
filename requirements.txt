@@ -4,5 +4,5 @@ matplotlib>=3.3
 astropy
 xarray
 requests
-pooch
+pooch>=1.1
 tqdm
