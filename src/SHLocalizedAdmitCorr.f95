@@ -1,17 +1,18 @@
-subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
-                                lmax, admit, corr, K, admit_error, corr_error, &
-                                taper_wt, mtdef, k1linsig, exitstatus)
+subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, gilm, &
+                                tilm, lmax, admit, corr, K, admit_error, &
+                                corr_error, taper_wt, mtdef, k1linsig, &
+                                exitstatus)
 !------------------------------------------------------------------------------
 !
-!   Given two spherical harmonic fields (G and T), this routine will calculate
-!   the localized admittance and correlation using the first space-concentrated
-!   window of Wieczorek and Simons (2005). All functions must be 4-pi
-!   normalized, and exclude the Condon-Shortley phase factor. Two manners of
-!   calculating the localized admittance and correlation are possible according
-!   to the optional parameter MTDEF. In one case, the multitaper cross-power
-!   spectra are calculated, and from these, the admittance and correlation. In
-!   the second, the admittance and correlation are calculated for each taper,
-!   and these are then averaged.
+!   Given two spherical harmonic fields (gilm and tilm), this routine will
+!   calculate the localized admittance and correlation using the first
+!   space-concentrated window of Wieczorek and Simons (2005). All functions
+!   must be 4-pi normalized, and exclude the Condon-Shortley phase factor. Two
+!   manners of calculating the localized admittance and correlation are
+!   possible according to the optional parameter MTDEF. In one case, the
+!   multitaper cross-power spectra are calculated, and from these, the
+!   admittance and correlation. In the second, the admittance and correlation
+!   are calculated for each taper, and these are then averaged.
 !
 !   Calling Parameters
 !
@@ -23,15 +24,15 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
 !           lwin            Spectral bandwidth of the localizing window.
 !           lat, lon        Latitude and longitude that the window will be
 !                           rotated to, in DEGREES.
-!           G, T            Input spherical harmonic fields.
+!           gilm, tilm      Input spherical harmonic fields.
 !           K               Number of tapers to use in Multitaper spectral
 !                           estimations.
 !           lmax            Maximum spherical harmonic degree of the intput
 !                           fields.
 !
 !       OUT
-!           admit           Admittance between the localized G and T assuming
-!                           that G = Z T.
+!           admit           Admittance between the localized gilm and tilm
+!                           assuming that gilm = Z tilm.
 !           corr            Correlation of the two fields.
 !
 !       OPTIONAL (OUT)
@@ -91,7 +92,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
 
     implicit none
 
-    real(dp), intent(in) :: tapers(:,:), lat, lon, g(:,:,:), t(:,:,:)
+    real(dp), intent(in) :: tapers(:,:), lat, lon, gilm(:,:,:), tilm(:,:,:)
     integer, intent(in) :: lwin, lmax, K, taper_order(:)
     real(dp), intent(out) :: admit(:), corr(:)
     real(dp), intent(out), optional :: admit_error(:), corr_error(:)
@@ -122,7 +123,8 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
     if (present(k1linsig) .and. K /= 1) then
         if (k1linsig == 1) then
             print*, "Error --- SHlocalizedAdmitCorr"
-            print*, "If K1LINSIG is present and equal to 1, K must be equal to 1."
+            print*, "If K1LINSIG is present and equal to 1, K must be " // &
+                    "equal to 1."
             print*, "Input value of K1LINSIG is ", k1linsig
             if (present(exitstatus)) then
                 exitstatus = 2
@@ -183,13 +185,13 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
             stop
         end if
 
-    else if (size(g(:,1,1)) < 2 .or. size(g(1,:,1)) < lmax+1 .or. &
-             size(g(1,1,:)) < lmax+1) then
+    else if (size(gilm(:,1,1)) < 2 .or. size(gilm(1,:,1)) < lmax+1 .or. &
+             size(gilm(1,1,:)) < lmax+1) then
         print*, "Error --- SHLocalizedAdmitCorr"
-        print*, "G must be dimensioned as (2, LMAX+1, LMAX+1) " // &
+        print*, "GILM must be dimensioned as (2, LMAX+1, LMAX+1) " // &
                 "where LMAX is ", lmax
-        print*, "Input array is dimensioned ", size(g(:,1,1)), size(g(1,:,1)), &
-                size(g(1,1,:))
+        print*, "Input array is dimensioned ", size(gilm(:,1,1)), &
+                size(gilm(1,:,1)), size(gilm(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -197,13 +199,13 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
             stop
         end if
 
-    else if (size(t(:,1,1)) < 2 .or. size(t(1,:,1)) < lmax+1 .or. &
-             size(t(1,1,:)) < lmax+1) then
+    else if (size(tilm(:,1,1)) < 2 .or. size(tilm(1,:,1)) < lmax+1 .or. &
+             size(tilm(1,1,:)) < lmax+1) then
         print*, "Error --- SHLocalizedAdmitCorr"
-        print*, "T must be dimensioned as (2, LMAX+1, LMAX+1) " // & 
+        print*, "TILM must be dimensioned as (2, LMAX+1, LMAX+1) " // & 
                 "where LMAX is ", lmax
-        print*, "Input array is dimensioned ", size(t(:,1,1)), size(t(1,:,1)), &
-                size(t(1,1,:))
+        print*, "Input array is dimensioned ", size(tilm(:,1,1)), &
+                size(tilm(1,:,1)), size(tilm(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -314,7 +316,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
 
     !--------------------------------------------------------------------------
     !
-    !   Determine multitaper cross spectra estimates of G and T, and then
+    !   Determine multitaper cross spectra estimates of gilm and tilm, and then
     !   calculate the admittance and correlation. Errors for the latter are
     !   calculated by adding the error sources in quadrature. Taper weights can
     !   be specified in order to minimize the variance of the multitaper
@@ -452,18 +454,18 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
     end if
 
     if (present(exitstatus)) then
-        call MakeGridGLQ(gridtglq, t(1:2,1:lmax+1, 1:lmax+1), &
+        call MakeGridGLQ(gridtglq, tilm(1:2,1:lmax+1, 1:lmax+1), &
                          lmaxwin, zero = zero, csphase = phase, norm = 1, &
                          exitstatus = exitstatus)
         if (exitstatus /= 0) return
-        call MakeGridGLQ(gridgglq, g(1:2,1:lmax+1, 1:lmax+1), &
+        call MakeGridGLQ(gridgglq, gilm(1:2,1:lmax+1, 1:lmax+1), &
                          lmaxwin, zero = zero, csphase = phase, norm = 1, &
                          exitstatus = exitstatus)
         if (exitstatus /= 0) return
     else
-        call MakeGridGLQ(gridtglq, t(1:2,1:lmax+1, 1:lmax+1), &
+        call MakeGridGLQ(gridtglq, tilm(1:2,1:lmax+1, 1:lmax+1), &
                          lmaxwin, zero = zero, csphase = phase, norm = 1)
-        call MakeGridGLQ(gridgglq, g(1:2,1:lmax+1, 1:lmax+1), &
+        call MakeGridGLQ(gridgglq, gilm(1:2,1:lmax+1, 1:lmax+1), &
                          lmaxwin, zero = zero, csphase = phase, norm = 1)
     end if
 
@@ -537,19 +539,19 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
                                      / sum(taper_wt(1:K))
                     t_power(1,l+1) = dot_product(stt(l+1,1:K), taper_wt(1:K)) &
                                      / sum(taper_wt(1:K))
-                    gt_power(1,l+1) = dot_product(sgt(l+1,1:K), taper_wt(1:K)) &
-                                     / sum(taper_wt(1:K))
+                    gt_power(1,l+1) = dot_product(sgt(l+1,1:K), &
+                                      taper_wt(1:K)) / sum(taper_wt(1:K))
 
                     if (K > 1) then
                         g_power(2,l+1) = dot_product( (sgg(l+1,1:K) &
-                                         - g_power(1,l+1) )**2, taper_wt(1:K) )&
-                                         * factor
+                                         - g_power(1,l+1) )**2, &
+                                         taper_wt(1:K) ) * factor
                         t_power(2,l+1) = dot_product( (stt(l+1,1:K) &
-                                         - t_power(1,l+1) )**2, taper_wt(1:K) )&
-                                         * factor
+                                         - t_power(1,l+1) )**2, &
+                                         taper_wt(1:K) ) * factor
                         gt_power(2,l+1) = dot_product( (sgt(l+1,1:K) &
-                                          - gt_power(1,l+1) )**2, taper_wt(1:K)) &
-                                          * factor
+                                          - gt_power(1,l+1) )**2, &
+                                          taper_wt(1:K)) * factor
 
                     end if
 
@@ -605,16 +607,16 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
 
         if (K > 1 .and. present(corr_error)) then
             corr_error(1:lmax-lwin+1) = gt_power(2,1:lmax-lwin+1)**2 &
-                                        / t_power(1,1:lmax-lwin+1) &
-                                        / g_power(1,1:lmax-lwin+1) + &
-                                        ( gt_power(1,1:lwin-lmax+1) &
-                                        * t_power(2,1:lwin-lmax+1) / &
-                                        sqrt(g_power(1,1:lmax-lwin+1)) / 2.0_dp &
-                                        / t_power(1,1:lmax-lwin+1)**(3.0_dp/2.0_dp))**2 + &
-                                        ( gt_power(1,1:lwin-lmax+1) &
-                                        * g_power(2,1:lwin-lmax+1) &
-                                        / sqrt(t_power(1,1:lmax-lwin+1)) / 2.0_dp &
-                                        / g_power(1,1:lmax-lwin+1)**(3.0_dp/2.0_dp))**2
+                            / t_power(1,1:lmax-lwin+1) &
+                            / g_power(1,1:lmax-lwin+1) + &
+                            ( gt_power(1,1:lwin-lmax+1) &
+                            * t_power(2,1:lwin-lmax+1) / &
+                            sqrt(g_power(1,1:lmax-lwin+1)) / 2.0_dp &
+                            / t_power(1,1:lmax-lwin+1)**(3.0_dp/2.0_dp))**2 + &
+                            ( gt_power(1,1:lwin-lmax+1) &
+                            * g_power(2,1:lwin-lmax+1) &
+                            / sqrt(t_power(1,1:lmax-lwin+1)) / 2.0_dp &
+                            / g_power(1,1:lmax-lwin+1)**(3.0_dp/2.0_dp))**2
             corr_error(1:lmax-lwin+1) = sqrt(corr_error(1:lmax-lwin+1))
 
         end if
@@ -745,9 +747,10 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, &
 
                 if (present(corr_error)) then
                     if (K > 1) then
+                        ! standard error!
                         corr_error(l+1) = sum((corr_k(l+1,1:K) &
                                                - corr(l+1))**2 ) &
-                                          / dble(K-1) / dble(K) ! standard error!
+                                          / dble(K-1) / dble(K)
                         corr_error(l+1) = sqrt(corr_error(l+1))
 
                     end if

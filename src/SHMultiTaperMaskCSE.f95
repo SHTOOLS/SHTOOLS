@@ -1,4 +1,4 @@
-subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
+subroutine SHMultiTaperMaskCSE(mtse, sd, cilm1, lmax1, cilm2, lmax2, tapers, &
                                lmaxt, K, taper_wt, norm, csphase, exitstatus)
 !------------------------------------------------------------------------------
 !
@@ -12,10 +12,10 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
 !   Calling Parameters
 !
 !       IN
-!           sh1         Input spherical harmonic file.
-!           lmax1       Maximum degree of sh1.
-!           sh2         Input spherical harmonic file.
-!           lmax2       Maximum degree of sh2.
+!           cilm1       Input spherical harmonic file.
+!           lmax1       Maximum degree of cilm1.
+!           cilm2       Input spherical harmonic file.
+!           lmax2       Maximum degree of cilm2.
 !           tapers      The eigenvector matrix returned from a program
 !                       such as SHReturnTapersMap, where each column
 !                       corresponds to the spherical-harmonic coefficients of
@@ -62,7 +62,7 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
     implicit none
 
     real(dp), intent(out) :: mtse(:), sd(:)
-    real(dp), intent(in) :: sh1(:,:,:), sh2(:,:,:), tapers(:,:)
+    real(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:), tapers(:,:)
     integer, intent(in) :: lmax1, lmax2, lmaxt, K
     real(dp), intent(in), optional :: taper_wt(:)
     integer, intent(in), optional :: csphase, norm
@@ -83,13 +83,13 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
 
     lmax = min(lmax1, lmax2)
 
-    if (size(sh1(:,1,1)) < 2 .or. size(sh1(1,:,1)) < lmax+1 .or. &
-        size(sh1(1,1,:)) < lmax+1) then
+    if (size(cilm1(:,1,1)) < 2 .or. size(cilm1(1,:,1)) < lmax+1 .or. &
+        size(cilm1(1,1,:)) < lmax+1) then
         print*, "Error --- SHMultiTaperCSE"
-        print*, "SH1 must be dimensioned (2,LMAX+1, LMAX+1) " // &
+        print*, "CILM1 must be dimensioned (2,LMAX+1, LMAX+1) " // &
                 "where LMAX is ", lmax
-        print*, "Input array is dimensioned ", size(sh1(:,1,1)), &
-                size(sh1(1,:,1)), size(sh1(1,1,:))
+        print*, "Input array is dimensioned ", size(cilm1(:,1,1)), &
+                size(cilm1(1,:,1)), size(cilm1(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -97,13 +97,13 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
             stop
         end if
 
-    else if (size(sh2(:,1,1)) < 2 .or. size(sh2(1,:,1)) < lmax+1 .or. &
-             size(sh2(1,1,:)) < lmax+1) then
+    else if (size(cilm2(:,1,1)) < 2 .or. size(cilm2(1,:,1)) < lmax+1 .or. &
+             size(cilm2(1,1,:)) < lmax+1) then
         print*, "Error --- SHMultiTaperCSE"
-        print*, "SH2 must be dimensioned (2,LMAX+1, LMAX+1) " // &
+        print*, "CILM2 must be dimensioned (2,LMAX+1, LMAX+1) " // &
                 "where lmax is ", lmax
-        print*, "Input array is dimensioned ", size(sh2(:,1,1)), &
-                size(sh2(1,:,1)), size(sh2(1,1,:))
+        print*, "Input array is dimensioned ", size(cilm2(:,1,1)), &
+                size(cilm2(1,:,1)), size(cilm2(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -315,19 +315,19 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, sh1, lmax1, sh2, lmax2, tapers, &
     !--------------------------------------------------------------------------
 
     if (present(exitstatus)) then
-        call MakeGridGLQ(grid1glq, sh1(1:2,1:lmax+1, 1:lmax+1), &
+        call MakeGridGLQ(grid1glq, cilm1(1:2,1:lmax+1, 1:lmax+1), &
                          lmaxmul, zero = zero, csphase = phase, norm = mnorm, &
                          exitstatus = exitstatus)
         if (exitstatus /= 0) return
-        call MakeGridGLQ(grid2glq, sh2(1:2,1:lmax+1, 1:lmax+1), &
+        call MakeGridGLQ(grid2glq, cilm2(1:2,1:lmax+1, 1:lmax+1), &
                          lmaxmul, zero = zero, csphase = phase, norm = mnorm, &
                          exitstatus = exitstatus)
         if (exitstatus /= 0) return
 
     else
-        call MakeGridGLQ(grid1glq, sh1(1:2,1:lmax+1, 1:lmax+1), &
+        call MakeGridGLQ(grid1glq, cilm1(1:2,1:lmax+1, 1:lmax+1), &
                          lmaxmul, zero = zero, csphase = phase, norm = mnorm)
-        call MakeGridGLQ(grid2glq, sh2(1:2,1:lmax+1, 1:lmax+1), &
+        call MakeGridGLQ(grid2glq, cilm2(1:2,1:lmax+1, 1:lmax+1), &
                          lmaxmul, zero = zero, csphase = phase, norm = mnorm)
 
     end if
