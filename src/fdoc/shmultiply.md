@@ -4,24 +4,24 @@ Multiply two functions and determine the spherical harmonic coefficients of the 
 
 # Usage
 
-call SHMultiply (`shout`, `sh1`, `lmax1`, `sh2`, `lmax2`, `precomp`, `norm`, `csphase`, `exitstatus`)
+call SHMultiply (`cilmout`, `cilm1`, `lmax1`, `cilm2`, `lmax2`, `precomp`, `norm`, `csphase`, `exitstatus`)
 
 # Parameters
 
-`shout` : output, real(dp), dimension (2, `lmax1`+`lmax2`+1, `lmax1`+`lmax2`+1)
-:   The real spherical harmonic coefficients corresponding to the multiplication of `sh1` and `sh2` in the space domain.
+`cilmout` : output, real(dp), dimension (2, `lmax1`+`lmax2`+1, `lmax1`+`lmax2`+1)
+:   The real spherical harmonic coefficients corresponding to the multiplication of `cilm1` and `cilm2` in the space domain.
 
-`sh1` : input, real(dp), dimension (2, `lmax1`+1, `lmax1`+1)
+`cilm1` : input, real(dp), dimension (2, `lmax1`+1, `lmax1`+1)
 :   The spherical harmonic coefficients of the first function.
 
 `lmax1` : input, integer
-:   The maximum spherical harmonic degree used in evaluting `sh1`.
+:   The maximum spherical harmonic degree used in evaluting `cilm1`.
 
-`sh2` : input, real(dp), dimension (2, `lmax2`+1, `lmax2`+1)
+`cilm2` : input, real(dp), dimension (2, `lmax2`+1, `lmax2`+1)
 :   The spherical harmonic coefficients of the second function.
 
 `lmax2` : input, integer
-:   The maximum spherical harmonic degree used in evaluting `sh2`.
+:   The maximum spherical harmonic degree used in evaluting `cilm2`.
 
 `precomp` : input, optional, integer, default = 0
 :   If 1, the array of Legendre functions `plx` will be precomputed on the Gauss-Legendre quadrature nodes.

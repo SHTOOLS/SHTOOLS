@@ -110,7 +110,9 @@ Alternatively, *pygmt* can be installed using `pip`
 ```bash
 pip install pygmt
 ```
-The *gmt* library will then need to be installed using other means, such as with brew on macOS
+The *gmt* library will then need to be installed using other means, such as with brew, macports or apt-get:
 ```bash
-brew install gmt
+brew install gmt  # using brew on macOS
+sudo port install gmt6  # using macports on macOS
+sudo apt-get install gmt  # using apt-get on linux
 ```
