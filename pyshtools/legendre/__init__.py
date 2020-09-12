@@ -72,6 +72,8 @@ from .legendre_functions import legendre
 from .legendre_functions import legendre_lm
 from .plm_index import PlmIndex
 
+del legendre_functions  # noqa: F821
+
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',

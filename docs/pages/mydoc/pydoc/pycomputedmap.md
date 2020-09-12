@@ -1,5 +1,5 @@
 ---
-title: ComputeDMap (Python)
+title: ComputeDMap()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pycomputedmap.html
@@ -13,7 +13,9 @@ Compute the space-concentration kernel of an arbitrary mask on the sphere.
 
 ## Usage
 
+```python
 `dij` = ComputeDMap (`dh_mask`, `lmax`, [`n`, `sampling`, `degrees`])
+```
 
 ## Returns
 
@@ -60,7 +62,3 @@ The function `F` is in general not a polynomial, and thus the coefficients `Dl'm
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
 Simons, F.J., F.A. Dahlen, and M.A. Wieczorek, Spatiospectral concentration on a sphere, SIAM Review, 48, 504-536, 2006.
-
-## See also
-
-[shreturntapersmap](pyshreturntapersmap.html), [yilmindexvector](pyyilmindexvector.html)

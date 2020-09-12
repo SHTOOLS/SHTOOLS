@@ -1,10 +1,12 @@
-# NormalGravity
+# NormalGravity()
 
 Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates using the formula of Somigliana.
 
 # Usage
 
+```python
 `value` = NormalGravity (`geocentriclat`, `gm`, `omega`, `a`, `b`)
+```
 
 # Returns
 
@@ -35,7 +37,3 @@ Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates 
 # References
 
 Hofmann-Wellenhof B, and H. Moritz, "Physical Geodesy," second edition, Springer, Wien, 403 pp., 2006.
-
-# See also
-
-[makegravgriddh](pymakegravgriddh.html), [makegeoidgriddh](pymakegeoidgriddh.html)

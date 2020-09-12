@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-shgrid.html
 summary: 
 toc: true
+folder: mydoc
 ---
 
 <style>
@@ -36,6 +37,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `x = SHGrid.from_file()` | Initialize using an array from a file. |
 | `x = SHGrid.from_zeros()` | Initialize using an array of zeros. |
 | `x = SHGrid.from_cap()` | Initialize using a rotated spherical cap. |
+| `x = SHGrid.from_ellipsoid()` | Initialize using a triaxial ellipsoid. |
 
 
 ## Class attributes
@@ -49,6 +51,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `sampling` | The longitudinal sampling for Driscoll and Healy grids. Either 1 for equally sampled grids (`nlon` = `nlat`) or 2 for equally spaced grids in degrees. |
 | `kind` | Either `'complex'` or `'real'` for the data type. |
 | `grid` | Either `'DH'` or `'GLQ'` for Driscoll and Healy grids or Gauss-Legendre quadrature grids. |
+| `units` | The units of the gridded data. |
 | `zeros` | The $$\cos(\theta)$$ nodes used with Gauss-Legendre quadrature grids. Default is `None`. |
 | `weights` | The latitudinal weights used with Gauss-Legendre quadrature grids. Default is `None`. |
 | `extend` | True if the grid contains the redundant column for 360 E and (for `'DH'` grids) the unnecessary row for 90 S. |
@@ -71,5 +74,5 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `copy()` | Return a copy of the class instance. |
 | `plot()` | Plot the data. |
 | `plotgmt()` | Plot projected data using the generic mapping tools (GMT). |
-| `plot3d()` | Plot the raw data on a 3d sphere. |
+| `plot3d()` | Plot a 3-dimensional representation of the data. |
 | `info()` | Print a summary of the data stored in the SHGrid instance. |

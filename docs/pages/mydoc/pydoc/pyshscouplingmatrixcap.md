@@ -1,5 +1,5 @@
 ---
-title: SHSCouplingMatrixCap (Python)
+title: SHSCouplingMatrixCap()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshscouplingmatrixcap.html
@@ -13,7 +13,9 @@ This routine returns the spherical harmonic coupling matrix for a given set of s
 
 ## Usage
 
+```python
 `kij` = SHSCouplingMatrixCap (`galpha`, `galpha_order`, `nmax`)
+```
 
 ## Returns
 
@@ -44,7 +46,3 @@ where `S_{\tilde{f}}` is the expectation of the power spectrum at degree l of th
 `K_{ll'} = \frac{1}{2l'+1} Sum_{m=-mmax}^mmax ( Sum_{alpha=1}^nmax g_{l'm}(alpha) g_{lm}(alpha) )**2`
 
 where `mmax` is min(l, l').
-
-## See also
-
-[shreturntapers](pyshreturntapers.html), [shslepianvar](pyshslepianvar.html), [shscouplingmatrix](pyshmtcouplingmatrix.html), [shmtcouplingmatrix](pyshmtcouplingmatrix.html)

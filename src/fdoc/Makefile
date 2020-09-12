@@ -15,6 +15,7 @@
 ###############################################################################
 
 SHELL=/bin/sh
+PREFIX=/usr/local
 
 PANDOC = pandoc
 MANDIR = ../../man/man1
@@ -83,12 +84,11 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 \
 
 all: install-man
 	$(PYTHON) make_www_doc.py
-
-install-man: $(MANFILES)
 	@echo
 	@echo "--> Fortran 95 man pages created successfully"
 	@echo
 
+install-man: $(MANFILES)
 
 .PHONY: clean uninstall
 
@@ -96,7 +96,7 @@ clean:
 	-rm -f $(MANFILES)
 
 uninstall:
-	-cd /usr/local/share/man/man1/ ; rm $(MANFILES)
+	-cd $(PREFIX)/share/man/man1/ ; rm $(MANFILES)
 
 
 .SUFFIXES: $(SUFFIXES) .md .1

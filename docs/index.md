@@ -3,60 +3,43 @@ title: "Spherical Harmonic Tools"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Slepian functions, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: index.html
-summary: SHTOOLS/pyshtools is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
+summary: pyshtools is an archive of Python software that can be used to perform spherical harmonic transforms, multitaper spectral analyses, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
 toc: false
 ---
 
-<a href="https://twitter.com/pyshtools?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @pyshtools</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+{% include note.html content="You are reading the documentation for **pyshtools**. Click [here](index-fortran.html) to access the Fortran 95 **SHTOOLS** documentation." %}
 
 ## Features
 
-SHTOOLS/pyshtools is extremely versatile:
+* Supports all standard normalizations and phase conventions of the spherical harmonic functions.
 
-* All standard normalizations of the spherical harmonic functions are supported: 4&pi; normalized, Schmidt semi-normalized, orthonormalized, and unnormalized.
+* Effortless conversion between real and complex harmonics, between phase conventions, and between 4&pi; normalized, Schmidt semi-normalized, orthonormalized, and unnormalized harmonics.
 
-* Both real and complex spherical harmonics are supported, and one can choose to either use or exclude the Condon-Shortley phase factor of (-1)<sup>m</sup>.
+* Use of both regularly sampled geographic grids and grids appropriate for Gauss-Legendre quadrature.
 
-* Spherical harmonic transforms are calculated by exact quadrature rules using either the sampling theorem of *Driscoll and Healy* (1994) or Gauss-Legendre quadrature.
+* Spherical harmonic transforms proven to be accurate up to about degree 2800.
 
-* The spherical harmonic transforms are fast and accurate to approximately degree 2800.
+* Perform localized multitaper spectral analyses, or expand functions in terms of localized Slepian bases.
 
-* Localized multitaper spectral analyses and expansions of functions in localized Slepian bases are easily performed.
+* Support for standard data and file formats, including *xarray* and *netcdf*.
 
-* Standard operations on global gravitational and magnetic field data are supported.
+* Import research-grade gravity, topography, and magnetic field datasets with a single command.
 
-* The Fortran routines are OpenMP compatible and OpenMP thread-safe.
+* Creation of publication quality maps using [Cartopy](https://scitools.org.uk/cartopy) and [pygmt](https://www.pygmt.org/).
 
-* Standard data formats such as *xarray* and *netcdf* are supported.
+## Easy installation
 
-* Publication quality maps using [Cartopy](https://scitools.org.uk/cartopy) or [pygmt](https://www.pygmt.org/dev/).
-
-## Installation
-
-The Python components of SHTOOLS can be installed using the Python package manager `pip`. Binaries are pre-built for linux and macOS architectures, and you need only to execute one of the following commands in a unix terminal:
+The Python components of SHTOOLS can be installed using the Python package manager `pip` or `conda`. Binaries are pre-built for Linux, macOS and Windows architectures, and you need only to execute one of the following commands in a unix terminal:
 
 ```bash
 pip install pyshtools
 pip install --upgrade pyshtools  # to upgrade a pre-existing installation
+conda install -c conda-forge pyshtools  # Linux and macOS only
 ```
 
-To install the Fortran 95 components for use in your Fortran programs, execute one or both of the following commands in the SHTOOLS directory
+## Permissive licensing
 
-```bash
-make fortran
-make fortran-mp  # for OpenMP support
-```
-
-or alternatively install using the macOS package manager brew
-
-```bash
-brew tap shtools/shtools
-brew install shtools
-```
-
-## Using
-
-SHTOOLS/pyshtools can be called from any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers allow simple access to the fortran-compiled routines. A variety of Python notebooks and example files are included that demonstrate the major features of the library. When building from source, it will be necessary to link to LAPACK, BLAS, and FFTW compatible libraries. SHTOOLS is open source software (3-clause BSD license).
+SHTOOLS is open source software and is distributed under the 3-clause BSD license.
 
 ## Reference
 

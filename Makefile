@@ -18,10 +18,12 @@
 #       make python-tests     : Run the Python test/example suite.
 #       make python-tests-no-timing  : Run the Python test/example suite,
 #                                      (excluding timing tests).
-#       make install-fortran  : Place the compiled libraries and docs in
-#                               $(DESTDIR)$(PREFIX) [default is /usr/local].
+#       make run-notebooks    : Run notebooks to test for errors.
+#       make install          : Place the compiled libraries and docs in
+#                               $(DESTDIR)$(PREFIX) [default is {}{usr/local}].
 #       make uninstall        : Remove files copied to $(DESTDIR)$(PREFIX).
 #       make clean            : Return the folder to its original state.
+#       make check            : Check syntax of python files using flake8.
 #
 #
 #   In some cases, where there are underscore problems when linking to the
@@ -61,15 +63,18 @@
 #       Remove the compiled lib, module, object, and Python files. Also removes
 #       compiled fortran and Python tests.
 #
-#   make fortran-tests
-#       Compile and run example Fortran programs and test suite. Optional
-#       parameters should be identical to those used to make "all".
-#
 #   make run-fortran-tests
 #       Run all Fortran examples and test suite.
 #
 #   make run-fortran-tests-no-timing
 #       Run all Fortran examples and test suite (excluding the timing tests).
+#
+#   make run-fortran-tests-mp
+#       Run all Fortran OpenMP examples and test suite.
+#
+#   make run-fortran-tests-no-timing-mp
+#       Run all Fortran OpenMP examples and test suite (excluding the timing
+#       tests).
 #
 #   make clean-fortran-tests
 #       Delete compiled Fortran test suite programs.
@@ -87,7 +92,7 @@
 #       Detele all compiled Python files.
 #
 #   make notebooks
-#       Run notebooks and convert to html for web documentation.
+#       Convert notebooks html.
 #
 #   make remove-notebooks
 #       Remove html notebooks.
@@ -98,7 +103,8 @@
 #       the distribution. To remake these files for a new release, it will be
 #       necessary to install "pandoc", "ghc" and "cabal-install" (all using
 #       brew on macOS), and then execute "cabal update" and
-#       "cabal install --lib pandoc-types".
+#       "cabal install --lib pandoc-types". If errors are encountered try
+#       "brew uninstall pandoc" and "cabal install pandoc".
 #
 #   make remove-doc
 #       Remove the man and html-man pages.
@@ -116,7 +122,8 @@
 #
 ###############################################################################
 
-VERSION = 4.6
+VERSION = 4.7
+
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
 
@@ -124,31 +131,34 @@ F95 = gfortran
 PYTHON = python3
 JUPYTER = jupyter nbconvert --ExecutePreprocessor.kernel_name=python3
 JEKYLL = bundle exec jekyll
-
-PREFIX = /usr/local
-SYSLIBPATH = $(PREFIX)/lib
-
-FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
-LAPACK_UNDERSCORE = 0
-
+FLAKE8 = flake8
 SHELL = /bin/sh
+PY3EXT = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
+
+
 FDOCDIR = src/fdoc
 PYDOCDIR = src/pydoc
 SRCDIR = src
 LIBDIR = lib
-INCDIR = modules
+MODDIR = modules
 FEXDIR = examples/fortran
 PEXDIR = examples/python
 NBDIR = examples/notebooks
 WWWSRC = docs
 WWWDEST = www
-
 LIBPATH = $(PWD)/$(LIBDIR)
-MODPATH = $(PWD)/$(INCDIR)
+MODPATH = $(PWD)/$(MODDIR)
 PYPATH = $(PWD)
+
+PREFIX = /usr/local
+SYSLIBPATH = $(PREFIX)/lib
 SYSMODPATH = $(PREFIX)/include
-PY3EXT = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
 SYSSHAREPATH = $(PREFIX)/share
+
+FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
+LAPACK_UNDERSCORE = 0
+
+FLAKE8_FILES = setup.py pyshtools examples/python
 
 ifeq ($(F95), f95)
 # Default Absoft f95 flags
@@ -206,12 +216,12 @@ LAPACK_FLAGS = -DLAPACK_UNDERSCORE
 endif
 
 
-.PHONY: all fortran fortran-mp install-fortran fortran-tests fortran-tests-mp \
+.PHONY: all fortran fortran-mp install fortran-tests fortran-tests-mp \
 	fortran-tests-no-timing fortran-tests-no-timing-mp run-fortran-tests \
 	run-fortran-tests-no-timing doc remove-doc python-tests \
 	python-tests-no-timing uninstall clean clean-fortran-tests \
 	clean-python-tests clean-python clean-libs remove-notebooks notebooks \
-	www remove-www help
+	run-notebooks www remove-www help check
 
 help:
 	@echo "Commands:"
@@ -220,18 +230,21 @@ help:
 	@echo "  fortran-mp                   Compile the Fortran 95 OpenMP components"
 	@echo "  fortran-tests                Compile and run the Fortran 95 tests and examples"
 	@echo "  fortran-tests-mp             Compile and run the Fortran 95 OpenMP tests and examples"
-	@echo "  python-tests                 Run the python tests and examples"
 	@echo "  fortran-tests-no-timing      Do not run the timing tests"
 	@echo "  fortran-tests-no-timing-mp   Do not run the timing tests"
+	@echo "  python-tests                 Run the python tests and examples"
 	@echo "  python-tests-no-timing       Do not run the timing tests"
+	@echo "  run-notebooks                Execute the python notebooks"
+	@echo "  clean                        Return the folder to its original state"
+	@echo "  check                        Check syntax of python files using flake8"
 	@echo ""
 
 all: fortran
 
 fortran:
-	mkdir -pv lib
-	mkdir -pv modules
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)"
+	mkdir -pv $(LIBPATH)
+	mkdir -pv $(MODPATH)
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" LAPACK_FLAGS="$(LAPACK_FLAGS)" LIBPATH="$(LIBPATH)" MODPATH="$(MODPATH)"
 	@echo "--> make fortran successful!"
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
@@ -241,10 +254,10 @@ fortran:
 
 fortran-mp:
 # Delete .o files before and after compiling with OpenMP to avoid issues with "fortran" build.
-	mkdir -pv lib
-	mkdir -pv modules
+	mkdir -pv $(LIBPATH)
+	mkdir -pv $(MODPATH)
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
-	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)"
+	$(MAKE) -C $(SRCDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" LAPACK_FLAGS="$(LAPACK_FLAGS)" LIBPATH="$(LIBPATH)" MODPATH="$(MODPATH)"
 	-$(MAKE) -C $(SRCDIR) -f Makefile clean-obs-mod
 	@echo "--> make fortran-mp successful!"
 	@echo
@@ -253,22 +266,19 @@ fortran-mp:
 	@echo $(F95) $(MODFLAG) $(OPENMPFLAGS) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) $(LAPACK) $(BLAS)
 	@echo
 
-install-fortran: fortran
-	-rm -r $(DESTDIR)$(SYSMODPATH)/fftw3.mod
-	-rm -r $(DESTDIR)$(SYSMODPATH)/planetsconstants.mod
-	-rm -r $(DESTDIR)$(SYSMODPATH)/shtools.mod
+install: fortran
 	mkdir -pv $(DESTDIR)$(SYSLIBPATH)
-	cp $(LIBDIR)/lib$(LIBNAME).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAME).a
-	-cp $(LIBDIR)/lib$(LIBNAMEMP).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAMEMP).a
+	cp $(LIBPATH)/lib$(LIBNAME).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAME).a
+	-cp $(LIBPATH)/lib$(LIBNAMEMP).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAMEMP).a
 	mkdir -pv $(DESTDIR)$(SYSMODPATH)
-	cp $(INCDIR)/*.mod $(DESTDIR)$(SYSMODPATH)/
-	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/shtools
-	cp -R examples $(DESTDIR)$(SYSSHAREPATH)/shtools/
+	cp $(MODPATH)/*.mod $(DESTDIR)$(SYSMODPATH)/
+	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/examples/shtools
+	cp -R examples/fortran/ $(DESTDIR)$(SYSSHAREPATH)/examples/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
 	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
 	awk '{gsub("../../lib","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
 	awk '{gsub("../../modules","$(PREFIX)/include");print}' "temp.txt" > "temp2.txt"
-	cp temp2.txt "$(DESTDIR)$(SYSSHAREPATH)/shtools/examples/fortran/Makefile"
+	cp temp2.txt "$(DESTDIR)$(SYSSHAREPATH)/examples/shtools/Makefile"
 	rm temp.txt
 	rm temp2.txt
 	@echo
@@ -283,18 +293,18 @@ uninstall:
 	-rm -r $(SYSMODPATH)/fftw3.mod
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
-	-rm -r $(SYSSHAREPATH)/shtools/examples/
-	$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
-	$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION) uninstall
+	-rm -r $(SYSMODPATH)/ftypes.mod
+	-rm -r $(SYSSHAREPATH)/examples/shtools
+	$(MAKE) -C $(FDOCDIR) -f Makefile uninstall PREFIX=$(PREFIX)
 
 doc:
 	@$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
-	@$(MAKE) -C $(PYDOCDIR) -f Makefile VERSION=$(VERSION)
+	@$(MAKE) -C $(PYDOCDIR) -f Makefile
 	@echo "--> Documentation created successfully"
 
 remove-doc:
 	@-rm -f man/man1/*.1
-	@-rm -f doc/pages/mydoc/fdoc/*.md
+	@-rm -f doc/pages/fortran/fdoc/*.md
 	@-rm -f doc/pages/mydoc/pydoc/*.md
 	@echo "--> Removed man files and web site source md files"
 
@@ -312,6 +322,10 @@ remove-notebooks:
 	@$(MAKE) -C $(NBDIR) -f Makefile clean
 	@echo "--> Removed notebook html files"
 
+run-notebooks:
+	@$(MAKE) -C $(NBDIR) -f Makefile run-notebooks
+	@echo "--> Notebooks executed successfully"
+
 clean: clean-fortran-tests clean-python-tests clean-python clean-libs remove-www
 
 clean-fortran-tests:
@@ -328,6 +342,7 @@ clean-python:
 	@-rm -rf _SHTOOLS.so.dSYM/
 	@-rm -rf pyshtools/_SHTOOLS.so.dSYM/
 	@-rm -f *.so
+	@-rm -rf __pycache__/
 	@-rm -f pyshtools/*.so
 	@-rm -f pyshtools/*.pyc
 	@-rm -rf pyshtools/__pycache__/
@@ -336,8 +351,8 @@ clean-python:
 
 clean-libs:
 	@-$(MAKE) -C $(SRCDIR) -f Makefile clean
-	@-rm -rf lib
-	@-rm -rf modules
+	@-rm -rf $(LIBPATH)
+	@-rm -rf $(MODPATH)
 	@-rm -rf NONE
 	@-rm -rf build
 	@-rm -rf pyshtools.egg-info
@@ -385,12 +400,22 @@ fortran-tests-no-timing-mp: fortran-mp
 	@echo "--> Ran all Fortran examples and tests"
 
 run-fortran-tests: fortran
-	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests
+	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo "--> Ran all Fortran examples and tests"
 
 run-fortran-tests-no-timing: fortran
-	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests-no-timing
+	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests-no-timing F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@echo
+	@echo "--> Ran all Fortran examples and tests"
+
+run-fortran-tests-mp: fortran-mp
+	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests LIBNAME="$(LIBNAMEMP)" F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@echo
+	@echo "--> Ran all Fortran examples and tests"
+
+run-fortran-tests-no-timing-mp: fortran-mp
+	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests-no-timing LIBNAME="$(LIBNAMEMP)" F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
 	@echo
 	@echo "--> Ran all Fortran examples and tests"
 
@@ -403,3 +428,6 @@ python-tests-no-timing:
 	@$(MAKE) -C $(PEXDIR) -f Makefile no-timing PYTHON=$(PYTHON)
 	@echo
 	@echo "--> Ran all Python tests"
+
+check:
+	@$(FLAKE8) --extend-ignore=E741,W605 --exclude=versioneer.py,pyshtools/_version.py $(FLAKE8_FILES)

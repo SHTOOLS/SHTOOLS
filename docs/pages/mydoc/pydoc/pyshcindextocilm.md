@@ -1,5 +1,5 @@
 ---
-title: SHCindexToCilm (Python)
+title: SHCindexToCilm()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshcindextocilm.html
@@ -13,7 +13,9 @@ Convert a two-dimensional indexed array of spherical harmonic coefficients to a 
 
 ## Usage
 
+```python
 `cilm` = SHCindexToCilm (`cindex`, [`lmax`])
+```
 
 ## Returns
 
@@ -31,7 +33,3 @@ Convert a two-dimensional indexed array of spherical harmonic coefficients to a 
 ## Description
 
 `SHCindexToCilm` will convert a two-dimensional indexed array of spherical harmonic coefficients to a three-dimensional array of complex spherical harmonic coefficients.  The degree `l` and order `m` corresponds to the index `l*(l+1)/2+m`.
-
-## See also
-
-[shcilmtocindex](pyshcilmtocindex.html), [shcilmtovector](pyshcilmtovector.html), [shvectortocilm](pyshvectortocilm.html)

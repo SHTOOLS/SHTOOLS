@@ -1,10 +1,11 @@
 ---
-title: "Python examples"
+title: "Tutorials & guides"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: python-examples.html
-summary: 
+summary: The easiest way to start learning about pyshtools is to see it in action in a Jupyter notebook.
 toc: true
+folder: mydoc
 ---
 
 <style>
@@ -17,34 +18,29 @@ table:nth-of-type(n) th:nth-of-type(2) {
 }
 </style>
 
-{% include note.html content="In order to access the notebooks, example programs, and example datasets, it will be necessary to download or clone the entire shtools repo from [GitHub](https://github.com/SHTOOLS/SHTOOLS/). These files are not included when installing via pip." %}
+## Tutorials
 
-## Notebooks
+The tutorials are designed for python users who are encountering pyshtools for the first time. Each Jupyter notebook takes the user by the hand and shows how to perform the most basic operations. Each tutorial should take under 15 minutes to read, and at the end of each you will be able to do simple tasks, like make grids of data from spherical harmonic coefficients, and project these in map form.
 
-| Notebook name | Description |
+{% include tip.html content="Clicking on the links below will open the ipython notebook in a read-only *Jupyter notebook viewer*. From this page, you have the option to either download the original source, or to execute and modify the notebook in an interactive *binder* session." %}
+
+| Tutorial | Description |
 | ------------- | ----------- |
-| <a href="pages/mydoc/notebooks/Introduction-1.html" target="_blank" rel="noopener">Introduction 1</a> | Grids and spherical harmonic coefficients. |
-| <a href="pages/mydoc/notebooks/Introduction-2.html" target="_blank" rel="noopener">Introduction 2</a> | Localization windows and spectral analysis. |
-| <a href="pages/mydoc/notebooks/Introduction-3.html" target="_blank" rel="noopener">Introduction 3</a> | Gravity and Magnetic fields. |
-| <a href="pages/mydoc/notebooks/Introduction-4.html" target="_blank" rel="noopener">Introduction 4</a> | Plotting maps. |
-| <a href="pages/mydoc/notebooks/tutorial_1.html" target="_blank" rel="noopener">Tutorial 1</a> | Simple spherical harmonic analyses. |
-| <a href="pages/mydoc/notebooks/tutorial_2.html" target="_blank" rel="noopener">Tutorial 2</a> | Localized spectral analysis on the sphere. |
-| <a href="pages/mydoc/notebooks/tutorial_3.html" target="_blank" rel="noopener">Tutorial 3</a> | The SHTOOLS class interface. |
-| <a href="pages/mydoc/notebooks/tutorial_4.html" target="_blank" rel="noopener">Tutorial 4</a> | Spherical harmonic normalizations and Parseval's theorem. |
-| <a href="pages/mydoc/notebooks/tutorial_5.html" target="_blank" rel="noopener">Tutorial 5</a> | Multitaper spectral analysis class interface. |
-| <a href="pages/mydoc/notebooks/tutorial_6.html" target="_blank" rel="noopener">Tutorial 6</a> | 3D plots of gridded data.|
+| <a href="https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/grids-and-coefficients.ipynb" target="_blank" rel="noopener">Spherical harmonic coefficients and grids</a> | Learn how to transform spherical harmonic coefficients into maps, maps into spherical harmonic coefficients, and how to plot the power spectrum. |
+| <a href="https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/localized-spectral-analysis.ipynb" target="_blank" rel="noopener">Localization windows and spectral analysis</a> | Learn how to obtain the power spectrum of a function, localized to any region on the sphere. |
+| <a href="https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/gravity-and-magnetic-fields.ipynb" target="_blank" rel="noopener">Gravity and magnetic fields</a> | Learn how to read gravity spherical harmonic coefficients from a file, and to make maps of the geoid and free-air gravity. |
+| <a href="https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/plotting-maps.ipynb" target="_blank" rel="noopener">Plotting maps</a> | Learn how to make publication quality images using geographical projections. |
 
-## Test programs
 
-A variety of test programs can be found in the folders in `examples/python`.
+## Guides
 
-| Folder directory | Description |
+These guides assume that the user already has a basic understanding of how pyshtools works. Each notebook describes in a higher level of detail how to use advanced features of pyshtools that often arise in scientific analyses.
+
+| Guide | Description |
 | ------------- | ----------- |
-| `ClassInterface/` | Test the python class interfaces. |
-| `TestLegendre/` | Test and plot the Legendre functions. |
-| `IOStorageConversions/` | Read coefficients from a file and test conversions between real and complex coefficients. |
-| `GlobalSpectralAnalysis/` | Test functions to compute different power spectra from real and complex coefficients. |
-| `LocalizedSpectralAnalysis/` | Test the coupling matrix, localized spectral analysis, and bias routines. |
-| `GravMag/` | Test the gravity and magnetics routines, and compute the crustal thickness of Mars.|
-| `TimingAccuracy/` | Perform timing and accuracy tests using real and complex coefficients, with *Driscoll and Healy* (1994) and Gauss-Legendre quadrature grids.|
-| `Other/` | Test a variety of other routines.|
+| <a href="https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/low-level-spherical-harmonic-analyses.ipynb" target="_blank" rel="noopener">Low-level spherical harmonic analyses</a> | Learn how to do spherical harmonic analyses using low-level functions (without SHCoeffs and SHGrid classes). |
+| <a href="https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/advanced-shcoeffs-and-shgrid-usage.ipynb" target="_blank" rel="noopener">Advanced usage of SHCoeffs and SHGrid</a> | Learn advanced features of the SHCoeffs and SHGrid class interfaces. |
+| <a href="https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/spherical-harmonic-normalizations.ipynb" target="_blank" rel="noopener">Spherical harmonic normalizations</a> | Learn more about spherical harmonic normalizations and Parseval's theorem. |
+| <a href="https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/advanced-localized-spectral-analysis.ipynb" target="_blank" rel="noopener">Advanced localized spectral analysis</a> | Learn more about performing localized spectral analyses on the sphere. |
+| <a href="https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/advanced-shwindow-usage.ipynb" target="_blank" rel="noopener">Advanced usage of SHWindow</a> | Learn advanced features of the SHWindow class interface. |
+| <a href="https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/3d-plots.ipynb" target="_blank" rel="noopener">3D plots</a> | Learn how to make 3-dimensional plots of gridded data. |

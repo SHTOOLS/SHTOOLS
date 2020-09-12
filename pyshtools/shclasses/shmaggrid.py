@@ -7,7 +7,7 @@ import matplotlib.pyplot as _plt
 import copy as _copy
 import xarray as _xr
 
-from .shcoeffsgrid import SHGrid as _SHGrid
+from .shgrid import SHGrid as _SHGrid
 
 
 class SHMagGrid(object):
@@ -31,6 +31,9 @@ class SHMagGrid(object):
                      evaluated on an ellipsoid.
     a              : Semimajor axis of the reference ellipsoid.
     f              : Flattening of the reference ellipsoid, f=(a-b)/a.
+    units          : The units of the gridded magnetic field data.
+    year           : The year of the time-variable magnetic field data.
+    pot_units      : The units of the gridded magnetic potential data.
     lmax           : The maximum spherical harmonic degree resolvable by the
                      grids.
     lmax_calc      : The maximum spherical harmonic degree of the magnetic
@@ -58,15 +61,16 @@ class SHMagGrid(object):
                     instance.
     """
 
-    def __init__(self, rad, theta, phi, total, pot, a, f, lmax, lmax_calc):
+    def __init__(self, rad, theta, phi, total, pot, a, f, lmax, lmax_calc,
+                 units=None, pot_units=None, year=None):
         """
         Initialize the SHMagGrid class.
         """
-        self.rad = _SHGrid.from_array(rad, grid='DH')
-        self.theta = _SHGrid.from_array(theta, grid='DH')
-        self.phi = _SHGrid.from_array(phi, grid='DH')
-        self.total = _SHGrid.from_array(total, grid='DH')
-        self.pot = _SHGrid.from_array(pot, grid='DH')
+        self.rad = _SHGrid.from_array(rad, grid='DH', units=units)
+        self.theta = _SHGrid.from_array(theta, grid='DH', units=units)
+        self.phi = _SHGrid.from_array(phi, grid='DH', units=units)
+        self.total = _SHGrid.from_array(total, grid='DH', units=units)
+        self.pot = _SHGrid.from_array(pot, grid='DH', units=pot_units)
         self.grid = self.rad.grid
         self.sampling = self.rad.sampling
         self.nlat = self.rad.nlat
@@ -77,6 +81,9 @@ class SHMagGrid(object):
         self.f = f
         self.lmax = lmax
         self.lmax_calc = lmax_calc
+        self.units = units
+        self.pot_units = pot_units
+        self.year = year
 
     def copy(self):
         """
@@ -108,9 +115,14 @@ class SHMagGrid(object):
                'lmax = {:d}\n'
                'lmax_calc = {:d}\n'
                'a (m)= {:e}\n'
-               'f = {:e}'
+               'f = {:e}\n'
+               'units (magnetic field) = {:s}\n'
+               'units (potential) = {:s}\n'
+               'year = {:s}'
                .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
-                       self.extend, self.lmax, self.lmax_calc, self.a, self.f))
+                       self.extend, self.lmax, self.lmax_calc, self.a,
+                       self.f, repr(self.units), repr(self.pot_units),
+                       repr(self.year)))
         return str
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],
@@ -823,19 +835,27 @@ class SHMagGrid(object):
                  'lmax_calc': self.lmax_calc,
                  'sampling': self.sampling,
                  'n': self.n,
-                 'extend': self.extend
+                 'extend': repr(self.extend)
                  }
+        if self.year is not None:
+            attrs['year'] = self.year
+        if self.units.lower() == 'nt':
+            mag_units = '$nT$'
+            pot_units = '$m nT$'
+        else:
+            mag_units = '$T$'
+            pot_units = '$m T$'
 
         _total = self.total.to_xarray(title='magnetic field intensity',
-                                      long_name='$|B|$', units='$nT$')
+                                      long_name='$|B|$', units=mag_units)
         _rad = self.rad.to_xarray(title='magnetic field (radial)',
-                                  long_name='$B_r$', units='$nT$')
+                                  long_name='$B_r$', units=mag_units)
         _theta = self.theta.to_xarray(title='magnetic field (theta)',
-                                      long_name='$B_\\theta$', units='$nT$')
+                                      long_name='$B_\\theta$', units=mag_units)
         _phi = self.phi.to_xarray(title='magnetic field (phi)',
-                                  long_name='$B_\\phi$', units='$nT$')
+                                  long_name='$B_\\phi$', units=mag_units)
         _pot = self.pot.to_xarray(title='magnetic field potential',
-                                  long_name='potential', units='$m nT$')
+                                  long_name='potential', units=pot_units)
 
         return _xr.Dataset({'radial': _rad, 'theta': _theta, 'phi': _phi,
                             'total': _total, 'potential': _pot}, attrs=attrs)

@@ -1,5 +1,5 @@
 ---
-title: SHExpandGLQ (Python)
+title: SHExpandGLQ()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshexpandglq.html
@@ -13,7 +13,9 @@ Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical h
 
 ## Usage
 
+```python
 `cilm` = SHExpandGLQ (`gridglq`, `w`, `zero`, [`norm`, `csphase`, `lmax_calc`])
+```
 
 ## Returns
 
@@ -54,7 +56,3 @@ Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw
 summation and the recursive computation of very high degree and
 order normalised associated Legendre functions, J. Geodesy, 76, 279-
 299, 2002.
-
-## See also
-
-[makegridglq](pymakegridglq.html), [shexpandglqc](pyshexpandglqc.html), [makegridglqc](pymakegridglqc.html), [shexpanddh](pyshexpanddh.html), [makegriddh](pymakegriddh.html), [shexpanddhc](pyshexpanddhc.html), [makegriddhc](pymakegriddhc.html), [shexpandlsq](pyshexpandlsq.html), [glqgridcoord](pyglqgridcoord.html), [shglq](pyshglq.html)

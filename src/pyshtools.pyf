@@ -1195,7 +1195,7 @@ python module _SHTOOLS
             integer,optional,intent(in) :: extend = 0
             integer,optional,intent(in),depend(profile),intent(hide) :: profile_d0 = shape(profile,0)
             integer,optional,intent(in),depend(profile),intent(hide) :: profile_d1 = shape(profile,1)
-            integer,optional,intent(in),depend(n),intent(hide) :: dhgrid_d0 = n
+            integer,optional,intent(in),depend(n,extend),intent(hide) :: dhgrid_d0 = n+extend
             integer,optional,intent(in),depend(n,sampling,extend),intent(hide) :: dhgrid_d1 = n*sampling+extend
         end subroutine Curve2Mask
 

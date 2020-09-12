@@ -1,5 +1,5 @@
 ---
-title: SHReadJPLError (Python)
+title: SHReadJPLError()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshreadjplerror.html
@@ -51,7 +51,3 @@ The JPL ascii-formatted file is organized as follows:
 - A list of `J_l`, which is `-cilm[0,l,0]`.
 - A list of the cosine and sine terms.
 - The errors of the above (starting at step 2).
-
-## See also
-
-[shread](pyshread.html), [shread2](pyshread2.html), [shreadjpl](pyshreadjpl.html)

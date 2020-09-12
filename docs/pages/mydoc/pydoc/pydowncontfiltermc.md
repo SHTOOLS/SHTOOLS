@@ -1,5 +1,5 @@
 ---
-title: DownContFilterMC (Python)
+title: DownContFilterMC()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pydowncontfiltermc.html
@@ -13,7 +13,9 @@ Calculate a minimum-curvature downward continuation filter for a given spherical
 
 ## Usage
 
+```python
 `wl` = DownContFilterMC (`l`, `half`, `r`, `d`)
+```
 
 ## Returns
 
@@ -45,7 +47,3 @@ A simple analytic expression exists for the downward continuation filter, follow
 Phipps Morgan, J., and D. K. Blackman, Inversion of combined gravity and bathymetry data for crustal structure: A prescription for downward continuation, Earth Planet. Sci. Lett., 119, 167-179, 1993.
 
 Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.
-
-## See also
-
-[downcontfilterma](pydowncontfilterma.html), [batohilmdh](pybatohilmdh.html) [batohilmrhohdh](pybatohilmrhohdh.html)

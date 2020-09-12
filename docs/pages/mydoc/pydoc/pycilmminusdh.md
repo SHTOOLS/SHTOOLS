@@ -1,5 +1,5 @@
 ---
-title: CilmMinusDH (Python)
+title: CilmMinusDH()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pycilmminusdh.html
@@ -13,7 +13,9 @@ Calculate the gravitational potential interior to relief referenced to a spheric
 
 ## Usage
 
+```python
 `cilm`, `d` = CilmMinusDH (`gridin`, `nmax`, `mass`, `rho`, [`lmax`,  `n`, `sampling`])
+```
 
 ## Returns
 
@@ -57,7 +59,3 @@ This routine uses geodesy 4-pi normalized spherical harmonics that exclude the C
 ## References
 
 Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.
-
-## See also
-
-[cilmminusrhohdh](pycilmminusrhohdh.html), [cilmplusdh](pycilmplusdh.html), [cilmplusrhohdh](pycilmplusrhohdh.html), [makegriddh](pymakegriddh.html)

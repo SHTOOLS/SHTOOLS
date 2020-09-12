@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-shgeoid.html
 summary: 
 toc: true
+folder: mydoc
 ---
 
 <style>
@@ -35,10 +36,13 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `omega` | Angular rotation rate of the body. |
 | `r` | Reference radius of the Taylor expansion. |
 | `order` | Order of the Taylor expansion. |
+| `units` | The units of the gridded data. |
 | `lmax` | The maximum spherical harmonic degree resolvable by the grids. |
 | `lmax_calc` | The maximum spherical harmonic degree of the gravitational potential used in creating the grids. |
 | `nlat`, `nlon` | The number of latitude and longitude bands in the grids. |
 | `sampling` | The longitudinal sampling scheme of the grids: either 1 for `nlon` = `nlat` or 2 for `nlon` = 2 * `nlat`. |
+| `epoch` | The epoch time of the gravity model. |
+
 
 ## Class methods
 

@@ -12,8 +12,8 @@ import copy as _copy
 from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
 
-from .shcoeffsgrid import SHCoeffs
-from .shcoeffsgrid import SHGrid
+from .shcoeffs import SHCoeffs
+from .shgrid import SHGrid
 from .slepiancoeffs import SlepianCoeffs
 
 
@@ -907,10 +907,10 @@ class Slepian(object):
                 axtemp.set_ylabel('Energy', fontsize=axes_labelsize)
 
             if yscale == 'log':
-                axtemp.set_yscale('log', basey=base)
+                axtemp.set_yscale('log', base=base)
 
             if xscale == 'log':
-                axtemp.set_xscale('log', basex=base)
+                axtemp.set_xscale('log', base=base)
                 axtemp.plot(degrees[1:], spectrum[1:, alpha],
                             label='#{:d} [loss={:2.2g}]'
                             .format(alpha, 1-evalue))

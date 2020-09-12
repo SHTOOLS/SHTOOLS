@@ -7,7 +7,7 @@ import matplotlib.pyplot as _plt
 import copy as _copy
 import xarray as _xr
 
-from .shcoeffsgrid import SHGrid as _SHGrid
+from .shgrid import SHGrid as _SHGrid
 
 
 class SHGravGrid(object):
@@ -35,6 +35,9 @@ class SHGravGrid(object):
     omega          : Angular rotation rate of the body.
     normal_gravity : True if the normal gravity is removed from the total
                      gravitational acceleration.
+    units          : The units of the gridded gravity data.
+    pot_units      : The units of the gridded gravitational potential data.
+    epoch          : The epoch time of the gravity model.
     lmax           : The maximum spherical harmonic degree resolvable by the
                      grids.
     lmax_calc      : The maximum spherical harmonic degree of the gravitational
@@ -46,6 +49,7 @@ class SHGravGrid(object):
                      equally spaced grids in degrees.
     extend         : True if the grid contains the redundant column for 360 E
                      and the unnecessary row for 90 S.
+
 
     Methods:
 
@@ -63,15 +67,16 @@ class SHGravGrid(object):
     """
 
     def __init__(self, rad, theta, phi, total, pot, gm, a, f, omega,
-                 normal_gravity, lmax, lmax_calc):
+                 normal_gravity, lmax, lmax_calc, units=None, pot_units=None,
+                 epoch=None):
         """
         Initialize the SHGravGrid class.
         """
-        self.rad = _SHGrid.from_array(rad, grid='DH')
-        self.theta = _SHGrid.from_array(theta, grid='DH')
-        self.phi = _SHGrid.from_array(phi, grid='DH')
-        self.total = _SHGrid.from_array(total, grid='DH')
-        self.pot = _SHGrid.from_array(pot, grid='DH')
+        self.rad = _SHGrid.from_array(rad, grid='DH', units=units)
+        self.theta = _SHGrid.from_array(theta, grid='DH', units=units)
+        self.phi = _SHGrid.from_array(phi, grid='DH', units=units)
+        self.total = _SHGrid.from_array(total, grid='DH', units=units)
+        self.pot = _SHGrid.from_array(pot, grid='DH', units=pot_units)
         self.grid = self.rad.grid
         self.sampling = self.rad.sampling
         self.nlat = self.rad.nlat
@@ -88,6 +93,9 @@ class SHGravGrid(object):
         self.normal_gravity = normal_gravity
         self.lmax = lmax
         self.lmax_calc = lmax_calc
+        self.units = units
+        self.pot_units = pot_units
+        self.epoch = epoch
 
     def copy(self):
         """
@@ -122,11 +130,15 @@ class SHGravGrid(object):
                'a (m)= {:e}\n'
                'f = {:e}\n'
                'omega (rad / s) = {:s}\n'
-               'normal gravity is removed = {:s}'
+               'normal gravity is removed = {:s}\n'
+               'units (gravity) = {:s}\n'
+               'units (potential) = {:s}\n'
+               'epoch = {:s}'
                .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
                        self.extend, self.lmax, self.lmax_calc, self.gm,
                        self.a, self.f, repr(self.omega),
-                       repr(self.normal_gravity)))
+                       repr(self.normal_gravity), repr(self.units),
+                       repr(self.pot_units), repr(self.pot_epoch)))
         return str
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],
@@ -856,8 +868,10 @@ class SHGravGrid(object):
                  'sampling': self.sampling,
                  'normal_gravity': self.normal_gravity,
                  'n': self.n,
-                 'extend': self.extend
+                 'extend': repr(self.extend)
                  }
+        if self.epoch is not None:
+            attrs['epoch'] = self.epoch
 
         _total = self.total.to_xarray(title='total gravity disturbance',
                                       long_name='$|g|$', units='$m s^{-2}$')

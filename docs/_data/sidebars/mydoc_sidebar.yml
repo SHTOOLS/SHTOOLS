@@ -1,9 +1,9 @@
-# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+# Sidebar TOC for the pyshtools project.
 
 entries:
 - title: sidebar
-  product: SHTOOLS
-  version: 4.6
+  product: pyshtools
+  version: 4.7
   folders:
 
   - title:
@@ -19,32 +19,32 @@ entries:
       output: pdf
       type: frontmatter
 
-  - title: Getting started
+  - title: Getting Started
     output: web, pdf
     folderitems:
 
-    - title: Overview
+    - title: Introduction
       url: /index.html
       output: web, pdf
       type: homepage
 
-    - title: Installing for Python
-      url: /installing-python.html
+    - title: Installing
+      url: /python-installing.html
       output: web, pdf
 
-    - title: Installing for Fortran 95
-      url: /installing-fortran.html
-      output: web, pdf
-
-    - title: Using with Python
+    - title: Using pyshtools
       url: /using-with-python.html
       output: web, pdf
 
-    - title: Using with Fortran 95
-      url: /using-with-f95.html
+    - title: Constants & Datasets
+      url: /python-datasets-constants.html
       output: web, pdf
 
-  - title: Spherical harmonics
+    - title: Tutorials & Guides
+      url: /python-examples.html
+      output: web, pdf
+
+  - title: Technical Overview
     output: web, pdf
     folderitems:
 
@@ -56,15 +56,23 @@ entries:
       url: /complex-spherical-harmonics.html
       output: web, pdf
 
+    - title: Grid formats
+      url: /grid-formats.html
+      output: web, pdf
+
+    - title: File formats
+      url: /file-formats.html
+      output: web, pdf
+
     - title: Implementation details
       url: /implementation-details.html
       output: web, pdf
 
-  - title: Python components
+  - title: Python Reference
     output: web, pdf
     folderitems:
 
-    - title: Python classes
+    - title: Classes
       url: /python-classes.html
       output: web, pdf
 
@@ -72,7 +80,7 @@ entries:
       url: /python-legendre-functions.html
       output: web, pdf
 
-    - title: Spherical harmonic transformations
+    - title: Spherical harmonic transforms
       url: /python-spherical-harmonic-transforms.html
       output: web, pdf
 
@@ -96,72 +104,12 @@ entries:
       url: /python-utilities.html
       output: web, pdf
 
-    - title: Constants
-      url: /python-constants.html
-      output: web, pdf
-
-  - title: Fortran 95 components
-    output: web, pdf
-    folderitems:
-
-    - title: Modules
-      url: /f95-modules.html
-      output: web, pdf
-
-    - title: Legendre functions
-      url: /legendre-functions.html
-      output: web, pdf
-
-    - title: Spherical harmonic transformations
-      url: /spherical-harmonic-transforms.html
-      output: web, pdf
-
-    - title: I/O, storage, conversions
-      url: /io.html
-      output: web, pdf
-
-    - title: Global spectral analysis
-      url: /global-spectral-analysis.html
-      output: web, pdf
-
-    - title: Localized spectral analysis
-      url: /localized-spectral-analysis.html
-      output: web, pdf
-
-    - title: Spherical harmonic rotations
-      url: /spherical-harmonic-rotations.html
-      output: web, pdf
-
-    - title: Gravity and magnetics
-      url: /gravity-magnetics.html
-      output: web, pdf
-
-    - title: Miscellaneous
-      url: /miscellaneous-routines.html
-      output: web, pdf
-
-  - title: Examples
-    output: web, pdf
-
-    folderitems:
-    - title: Python
-      url: /python-examples.html
-      output: web, pdf
-
-    - title: Fortran 95
-      url: /fortran-examples.html
-      output: web, pdf
-
   - title: Support
     output: web, pdf
 
     folderitems:
     - title: FAQ
       url: /faq.html
-      output: web, pdf
-
-    - title: Fortran 95 problems
-      url: /fortran-95-problems.html
       output: web, pdf
 
     - title: How to contribute

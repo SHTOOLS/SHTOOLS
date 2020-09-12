@@ -1,5 +1,5 @@
 ---
-title: SHMultiTaperCSE (Python)
+title: SHMultiTaperCSE()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshmultitapercse.html
@@ -13,7 +13,9 @@ Perform a localized multitaper cross-spectral analysis using spherical cap windo
 
 ## Usage
 
+```python
 `mtse`, `sd` = SHMultiTaperCSE (`sh1`, `sh2`, `tapers`, `taper_order`, [`lmax1`, `lmax2`, `lmaxt`, `k`, `lat`, `lon`, `taper_wt`, `norm`, `csphase`])
+```
 
 ## Returns
 
@@ -75,7 +77,3 @@ The employed spherical harmonic normalization and Condon-Shortley phase conventi
 ## References
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
-
-## See also
-
-[shmultitaperse](pyshmultitaperse.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmtvaropt](pyshmtvaropt.html)

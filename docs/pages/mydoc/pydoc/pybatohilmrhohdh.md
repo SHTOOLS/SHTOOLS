@@ -1,5 +1,5 @@
 ---
-title: BAtoHilmRhoHDH (Python)
+title: BAtoHilmRhoHDH()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pybatohilmrhohdh.html
@@ -13,7 +13,9 @@ Calculate iteratively the relief along an interface with lateral density variati
 
 ## Usage
 
+```python
 `cilm` = BAtoHilmRhoHDH (`ba`, `grid`, `rho`, `nmax`, `mass`, `r0`, [`filter_type`, `filter_deg`, `lmax`, `lmax_calc`, `sampling`)
+```
 
 ## Returns
 
@@ -71,7 +73,3 @@ This routine uses geodesy 4-pi normalized spherical harmonics that exclude the C
 ## References
 
 Wieczorek, M. A. and R. J. Phillips, Potential anomalies on a sphere: applications to the thickness of the lunar crust, J. Geophys. Res., 103, 1715-1724, 1998.
-
-## See also
-
-[batohilm](pybatohilmdh.html), [cilmplusdh](pycilmplusdh.html), [cilmplusrhohdh](pycilmplusrhohdh.html), [shexpanddh](pyshexpanddh.html), [makegriddh](pymakegriddh.html), [downcontfilterma](pydowncontfilterma.html), [downcontfiltermc](pydowncontfiltermc.html)

@@ -1,10 +1,12 @@
-# MakeGrid2D
+# MakeGrid2D()
 
 Create a 2D cylindrical map of arbitrary grid spacing from a set of spherical harmonic coefficients.
 
 # Usage
 
+```python
 `grid` = MakeGrid2D (`cilm`, `interval`, [`lmax`, `norm`, `csphase`, `f`, `a`, `north`, `south`, `east`, `west`, `dealloc`])
+```
 
 # Returns
 
@@ -58,7 +60,3 @@ If the optional arguments `f` and `a` are specified, the output function will be
 # References
 
 Holmes, S. A., and W. E. Featherstone, A unified approach to the Clenshaw summation and the recursive computation of very high degree and order normalised associated Legendre functions, J. Geodesy, 76, 279-299, 2002.
-
-# See also
-
-[makegriddh](pymakegriddh.html), [makegriddhc](pymakegriddhc.html), [makegridglq](pymakegridglq.html), [makegridglqc](pymakegridglqc.html), [makegravgriddh](pymakegravgriddh.html), [makemaggriddh](pymakemaggriddh.html)

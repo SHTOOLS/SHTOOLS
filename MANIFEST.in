@@ -1,8 +1,9 @@
 include README.md
 include LICENSE.txt
-include VERSION.txt
 include AUTHORS.md
 include Makefile
+include versioneer.py
+include pyshtools/_version.py
 
 graft examples/ExampleDataFiles
 recursive-include examples/fortran *.f95 input* Makefile

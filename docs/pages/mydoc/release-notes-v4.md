@@ -5,14 +5,95 @@ sidebar: mydoc_sidebar
 permalink: release-notes-v4.html
 summary:
 toc: true
+folder: mydoc
 ---
+## Version 4.7
+
+**Datasets**
+
+The new datasets module allows users to easily download spherical harmonic coefficient datasets and return them as `SHCoeffs`, `SHGravCoeffs` or `SHMagCoeffs` class instances.
+
+To load a dataset, call the relevant method as in these examples:
+```
+    hlm = pysh.datasets.Venus.VenusTopo719()  # Venus shape
+    clm = pysh.datasets.Earth.EGM2008()  # Earth gravity
+    glm = pysh.datasetes.Earth.WDMAM2_800()  # Earth magnetic field
+    clm = pysh.datasets.Moon.GRGM1200B()  # Gravity of the Moon
+```
+
+**Better IO routines**
+
+* Added the functions (in the module `shio`) `shwrite()`,`read_dov()` `write_dov()`, `read_bshc()`, `write_bshc()` and `write_igcem_gfc()` to read and write 'shtools', 'dov', 'bshc', and 'icgem' files.
+* Added the function `shio.read_igrf()` for reading IGRF formatted files, and returning coefficients for a specified year.
+* The `SHCoeffs`, `SHMagCoeffs` and `SHGravCoeffs` methods `to_file()` and `from_file()` now accept all file formats.
+* Added support for reading gzip and zip files in `shread`, `SHCoeffs.from_file()`, `SHGravCoeffs.from_file()`, `SHMagCoeffs.from_file()`, and `read_icgem_gfc()`
+* Fixed a minor bug where netcdf files would not accept boolean attributes.
+
+**Amittance and correlation methods**
+
+* Added the methods `admittance()`, `correlation()` and `admitcorr()` for the classes `SHCoeffs`, `SHGravCoeffs`, and `SHMagCoeffs` to compute the admittance and/or correlation with another function.
+* Added the methods `plot_admittance()`, `plot_correlation()` and `plot_admitcorr()` to easily plot these functions.
+
+**Better plotting routines**
+
+* Added the option `legend_loc` to most plotting routines to allow fine control over where the legend is placed.
+* Minor bug fixes concerning colorbar parameters `cb_offset` and `cb_triangles`.
+
+**Better treatmentment of uncertainties**
+
+* Added the option to include error coefficients in the class `SHCoeffs`.
+* Added the boolean option `errors` to the method `to_array()` in order to control whether the error coefficients are returned with the function spherical harmonic coefficients.
+* Added the option `legend_error` to the `SHCoeffs`, `SHMagCoeffs` and `SHGravCoeffs` method `plot_spectrum()` to provide a customized legend entry for the error spectrum.
+
+**New attributes for `SHCoeffs`, `SHGravCoeffs` and `SHMagCoeffs`**
+
+* Added the attribute `error_kind` to specify the type of errors.
+* Added the attribute `units` to all grid and coefficient classes.
+* Added the attribute `epoch` to `SHGravCoeffs`, `SHGravGrid` , `SHGeoid` and `SHTensor`.
+* Added the attribute `year` to `SHMagCoeffs`, `SHMagGrid` , and `SHTensor`.
+
+**Improved Documentation**
+
+* The web documentation has been broken into two separate components: pyshtools (python) and SHTOOLS (Fortran 95).
+* Reorganized the web documentation for clarity (re-organization of tutorials and guides, creation of a separate page for shtools grid formats, creation of separate pages for datasets, constants, and spherical harmonic coefficient file coeeficients).
+* The python tutorial notebooks are now rendered by the jupyter nbviewer web page. From this viewer, the user can easily download the notebook, or run it in a binder session.
+* Updated the documentation for installing pyshtools using Conda.
+
+**Initial support for fpm**
+
+Initial experimental support is added for use with fpm: the [fortran package manager](https://github.com/fortran-lang/fpm).
+
+To install as a stand-alone project, it is only necesssary to use the command
+```
+fpm build
+```
+This will place the necessary .mod and .a files in a subdirectory of `build`.
+
+To include shtools as a dependency in a project that compiles with fpm, you only need to add the following to the `fpm.toml` file:
+```
+[dependencies]
+SHTOOLS = {git="https://github.com/SHTOOLS/SHTOOLS.git"}
+```
+
+In the current state of fpm (which is undergoing active development), it is not possible to link to system wide libraries, such as fftw and lapack, which are required by shtools.
+
+**Other changes**
+
+* Added error checks to the pyshtools function `YilmIndexVector`.
+* Renamed the `constant` module to `constants`, and reogranized the constants in a more logical way (i.e., `constants.Mars.r` instead of `constants.Mars.r_mars`).
+* Added a gmt xarray accessor for use with pygmt.
+* Fixed a bug in `Curve2Mask` python wrapper when using extended grids, and fixed a bug in the fortran code when the input file contained points at exactly 0 or 360 degree.
+* pyshtools versioning is now done using `versioneer`, instead of the homemade system that was in the setup.py (which was somewhat complicated and needed to set `ISREALESED` to True or False). Versioneer gets the version number automatically from git tags.
+
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker, A. Hattori, S. Schröder, K. Leinweber, A. Vasishta (2020). SHTOOLS: Version 4.7, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+
 ## Version 4.6
 
-### New extended grids
+**New extended grids**
 
 All grid formats now allow to compute the redundant values at 360 E longitude (GLQ and DH), as well as at 90 S (DH only). These *extended* grids are now the default in pyshtools, but remain optional in the Fortran 95 routines. The use of extended grids is controlled by the optional argument `extend`. The purpose of these extended grids is to better integrate with the plotting routines that require these points (i.e.., Cartopy and pygmt).
 
-### Improved plotting and map projections
+**Improved plotting and map projections**
 
 The plotting routine `SHGrid.plot()` has been refactored to allow support for projections using `Cartopy` and `pygmt`.
 
@@ -26,7 +107,7 @@ The plotting routine `SHGrid.plot()` has been refactored to allow support for pr
 * All gravity, magnetics, tensor, localization windows and slepian function plotting routines incorporate these changes.
 * Added a new introductory notebook that shows how to use all features of the `plot()` function.
 
-### Improved integration with xarray DataArrays, xarray DataSets, and netcdf files
+**Improved integration with xarray DataArrays, xarray DataSets, and netcdf files**
 
 * Added the methods `to_netcdf()` and `from_netcdf()` to the `SHCoeffs`, `SHGravCoeffs` and `SHMagCoeffs` classes.
 * Added the method `SHGrid.from_xarray()` to initialize a grid from an xarray DataArray.
@@ -35,7 +116,7 @@ The plotting routine `SHGrid.plot()` has been refactored to allow support for pr
 * Added the methods `SHGravGrid.to_xarray()` and `SHMagGrid.to_xarray()` to export all gridded data (radial, theta, phi, total, and potential) as an xarray DataSet.
 * Added the methods `SHGravTensor.to_xarray()` and `SHMagTensor.to_xarray()`to export all gridded data (Vxx, invariants, eigenvalues) as an xarray DataSet.
 
-### Gravity routine improvements
+**Gravity routine improvements**
 
 * Added the method `SHGravCoeffs.center_of_mass` to calculate the center of mass of a body.
 * Added the method `SHGravCoeffs.inertia_tensor()` to calculate the moment of inertia tensor.
@@ -43,13 +124,15 @@ The plotting routine `SHGrid.plot()` has been refactored to allow support for pr
 * The `read_icgem_gfc()` function was extended with the option `encoding` as some models in ICGEM are not in UTF-8.
 * Addded the method `centroid()` to the class `SHCoeffs`. The centroid is computed as the center of mass of a homogeneous object.
 
-### Other changes
+**Other changes**
 
 * New methods `SHGrid.to_real()` and `SHGrid.to_imag()` return the real and imaginary components of a complex `SHGrid` instance.
 * Added an optional argument `copy` to `SHCoeffs.pad()`.
 * Fixed bugs in the Fortran code of `PlBar_d1` and `PlON_d1` when calculating the Legendre polynomials at the north and south pole.
 * Spherical harmonic coefficients can be read remotely by specifying a URL as the filename. This functionality uses `requests.get()`, and has been implemented in the function `shread()` and the `SHCoeffs` method `from_file()`.
 * Fixed a bug in the fortran code of `Curve2Mask`. As part of this fix, the optional parameter `centralmeridian` has been removed as it is no longer required. The longitudes of the curve can possess values from -360 to 720 degrees, and the routine searches for discontinuities that may occur between two successive points as the longitudes pass from 360 to 0, or -180 to 180 degrees.
+
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker, A. Hattori, S. Schröder, K. Leinweber, A. Vasishta (2020). SHTOOLS: Version 4.6, Zenodo, doi:[10.5281/zenodo.3698050](https://doi.org/10.5281/zenodo.3698050)
 
 ## Version 4.5
 

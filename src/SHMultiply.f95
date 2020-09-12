@@ -1,4 +1,4 @@
-subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
+subroutine SHMultiply(cilmout, cilm1, lmax1, cilm2, lmax2, precomp, norm, &
                       csphase, exitstatus)
 !------------------------------------------------------------------------------
 !
@@ -10,17 +10,17 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
 !   Calling Parameters:
 !
 !       IN
-!           sh1         Spherical harmonic field with maximum spherical harmonic
-!                       degree lmax1.
-!           sh2         Spherical harmonic field with maximun spherical harmonic
-!                       degree lmax2.
-!           lmax1       Maximum spherical harmonic degree of sh1.
-!           lmax2       Maximum spherical harmonic degree of sh2.
+!           cilm1       Spherical harmonic field with maximum spherical
+!                       harmonic degree lmax1.
+!           cilm2       Spherical harmonic field with maximun spherical
+!                       harmonic degree lmax2.
+!           lmax1       Maximum spherical harmonic degree of cilm1.
+!           lmax2       Maximum spherical harmonic degree of cilm2.
 !
 !       OUT 
-!           shout       Spherical harmonic expansion of spatial multiplication
-!                       of sh1 and sh2, with a maximum spherical harmonic
-!                       degree of lmax1 + lmax2.
+!           cilmout     Spherical harmonic expansion of spatial
+!                       multiplication of cilm1 and cilm2, with a maximum
+!                       spherical harmonic degree of lmax1 + lmax2.
 !
 !       OPTIONAL (IN)
 !           precomp     If 1, the array plx will be precomputed when calling
@@ -54,8 +54,8 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
 
     implicit none
 
-    real(dp), intent(out) :: shout(:,:,:)
-    real(dp), intent(in) :: sh1(:,:,:), sh2(:,:,:)
+    real(dp), intent(out) :: cilmout(:,:,:)
+    real(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:)
     integer, intent(in) :: lmax1, lmax2
     integer, intent(in), optional :: precomp, norm, csphase
     integer, intent(out), optional :: exitstatus
@@ -68,13 +68,13 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (size(sh1(:,1,1)) < 2 .or. size(sh1(1,:,1)) < lmax1+1 .or. &
-            size(sh1(1,1,:)) < lmax1+1) then
+    if (size(cilm1(:,1,1)) < 2 .or. size(cilm1(1,:,1)) < lmax1+1 .or. &
+            size(cilm1(1,1,:)) < lmax1+1) then
         print*, "Error --- SHMultiply"
-        print*, "SH1 must be dimensioned as (2, LMAX1+1, LMAX1+1) " // &
+        print*, "CILM1 must be dimensioned as (2, LMAX1+1, LMAX1+1) " // &
                 "where LMAX1 is", lmax1
-        print*, "Input array is dimensioned ", size(sh1(:,1,1)), &
-                size(sh1(1,:,1)), size(sh1(1,1,:)) 
+        print*, "Input array is dimensioned ", size(cilm1(:,1,1)), &
+                size(cilm1(1,:,1)), size(cilm1(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -82,13 +82,13 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
             stop
         end if
 
-    else if (size(sh2(:,1,1)) < 2 .or. size(sh2(1,:,1)) < lmax2+1 &
-            .or. size(sh2(1,1,:)) < lmax2+1) then
+    else if (size(cilm2(:,1,1)) < 2 .or. size(cilm2(1,:,1)) < lmax2+1 &
+            .or. size(cilm2(1,1,:)) < lmax2+1) then
         print*, "Error --- SHMultiply"
-        print*, "SH2 must be dimensioned as (2,LMAX2+1, LMAX2+1) " // &
+        print*, "CILM2 must be dimensioned as (2,LMAX2+1, LMAX2+1) " // &
                 "where LMAX2 is", lmax2
-        print*, "Input array is dimensioned ", size(sh2(:,1,1)), &
-                size(sh2(1,:,1)), size(sh2(1,1,:)) 
+        print*, "Input array is dimensioned ", size(cilm2(:,1,1)), &
+                size(cilm2(1,:,1)), size(cilm2(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -96,13 +96,14 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
             stop
         end if
 
-    else if (size(shout(:,1,1)) < 2 .or. size(shout(1,:,1)) < lmax1+lmax2+1 &
-                .or. size(shout(1,1,:)) < lmax1+lmax2+1) then
+    else if (size(cilmout(:,1,1)) < 2 &
+                .or. size(cilmout(1,:,1)) < lmax1+lmax2+1 &
+                .or. size(cilmout(1,1,:)) < lmax1+lmax2+1) then
         print*, "Error --- SHMultiply"
-        print*, "SHOUT must be dimensioned as (2, LMAX1+LMAX2+1, " // &
+        print*, "CILMOUT must be dimensioned as (2, LMAX1+LMAX2+1, " // &
                 "LMAX1+LMAX2+1) where LMAX1 and LMAX2 are", lmax1, lmax2
-        print*, "Input array is dimensioned ", size(shout(:,1,1)), &
-                size(shout(1,:,1)), size(shout(1,1,:)) 
+        print*, "Input array is dimensioned ", size(cilmout(:,1,1)), &
+                size(cilmout(1,:,1)), size(cilmout(1,1,:)) 
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -255,31 +256,31 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
     if (present(precomp)) then
         if (precomp == 0) then
             if (present(exitstatus)) then
-                call MakeGridGLQ(grid1glq, sh1(1:2,1:lmax1+1, 1:lmax1+1), &
+                call MakeGridGLQ(grid1glq, cilm1(1:2,1:lmax1+1, 1:lmax1+1), &
                                  lmaxout, zero = zero, csphase = phase, &
                                  norm = mnorm, exitstatus = exitstatus)
                 if (exitstatus /= 0) return
-                call MakeGridGLQ(grid2glq, sh2(1:2,1:lmax2+1, 1:lmax2+1), &
+                call MakeGridGLQ(grid2glq, cilm2(1:2,1:lmax2+1, 1:lmax2+1), &
                                  lmaxout, zero = zero, csphase = phase, &
                                  norm = mnorm, exitstatus = exitstatus)
                 if (exitstatus /= 0) return
                 grid1glq(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
                                            * grid2glq(1:nlat,1:nlong)
-                call SHExpandGLQ(shout, lmaxout, grid1glq, w, zero = zero, &
+                call SHExpandGLQ(cilmout, lmaxout, grid1glq, w, zero = zero, &
                                  csphase = phase, norm = mnorm, &
                                  exitstatus = exitstatus)
                 if (exitstatus /= 0) return
 
             else
-                call MakeGridGLQ(grid1glq, sh1(1:2,1:lmax1+1, 1:lmax1+1), &
+                call MakeGridGLQ(grid1glq, cilm1(1:2,1:lmax1+1, 1:lmax1+1), &
                                  lmaxout, zero = zero, csphase = phase, &
                                  norm = mnorm)
-                call MakeGridGLQ(grid2glq, sh2(1:2,1:lmax2+1, 1:lmax2+1), &
+                call MakeGridGLQ(grid2glq, cilm2(1:2,1:lmax2+1, 1:lmax2+1), &
                                  lmaxout, zero = zero, csphase = phase, &
                                  norm = mnorm)
                 grid1glq(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
                                            * grid2glq(1:nlat,1:nlong)
-                call SHExpandGLQ(shout, lmaxout, grid1glq, w, zero = zero, &
+                call SHExpandGLQ(cilmout, lmaxout, grid1glq, w, zero = zero, &
                                  csphase = phase, norm = mnorm)
             end if
 
@@ -302,17 +303,17 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
                 call SHGLQ(lmaxout, zero, w, plx = plx, csphase = phase, &
                            norm = mnorm, exitstatus = exitstatus)
                 if (exitstatus /= 0) return
-                call MakeGridGLQ(grid1glq, sh1(1:2,1:lmax1+1, 1:lmax1+1), &
+                call MakeGridGLQ(grid1glq, cilm1(1:2,1:lmax1+1, 1:lmax1+1), &
                                  lmaxout, plx = plx, csphase = phase, &
                                  norm = mnorm, exitstatus = exitstatus)
                 if (exitstatus /= 0) return
-                call MakeGridGLQ(grid2glq, sh2(1:2,1:lmax2+1, 1:lmax2+1), &
+                call MakeGridGLQ(grid2glq, cilm2(1:2,1:lmax2+1, 1:lmax2+1), &
                                  lmaxout, plx = plx, csphase = phase, &
                                  norm = mnorm, exitstatus = exitstatus)
                 if (exitstatus /= 0) return
                 grid1glq(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
                                            * grid2glq(1:nlat,1:nlong)
-                call SHExpandGLQ(shout, lmaxout, grid1glq, w, plx = plx, &
+                call SHExpandGLQ(cilmout, lmaxout, grid1glq, w, plx = plx, &
                                  csphase = phase, norm = mnorm, &
                                  exitstatus = exitstatus)
                 if (exitstatus /= 0) return
@@ -320,15 +321,15 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
             else
                 call SHGLQ(lmaxout, zero, w, plx = plx, csphase = phase, &
                            norm = mnorm)
-                call MakeGridGLQ(grid1glq, sh1(1:2,1:lmax1+1, 1:lmax1+1), &
+                call MakeGridGLQ(grid1glq, cilm1(1:2,1:lmax1+1, 1:lmax1+1), &
                                  lmaxout, plx = plx, csphase = phase, &
                                  norm = mnorm)
-                call MakeGridGLQ(grid2glq, sh2(1:2,1:lmax2+1, 1:lmax2+1), &
+                call MakeGridGLQ(grid2glq, cilm2(1:2,1:lmax2+1, 1:lmax2+1), &
                                  lmaxout, plx = plx, csphase = phase, &
                                  norm = mnorm)
                 grid1glq(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
                                            * grid2glq(1:nlat,1:nlong)
-                call SHExpandGLQ(shout, lmaxout, grid1glq, w, plx = plx, &
+                call SHExpandGLQ(cilmout, lmaxout, grid1glq, w, plx = plx, &
                                  csphase = phase, norm = mnorm)
             end if
 
@@ -338,31 +339,31 @@ subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, &
 
     else
         if (present(exitstatus)) then
-            call MakeGridGLQ(grid1glq, sh1(1:2,1:lmax1+1, 1:lmax1+1), &
+            call MakeGridGLQ(grid1glq, cilm1(1:2,1:lmax1+1, 1:lmax1+1), &
                              lmaxout, zero = zero, csphase = phase, &
                              norm = mnorm, exitstatus = exitstatus)
             if (exitstatus /= 0) return
-            call MakeGridGLQ(grid2glq, sh2(1:2,1:lmax2+1, 1:lmax2+1), &
+            call MakeGridGLQ(grid2glq, cilm2(1:2,1:lmax2+1, 1:lmax2+1), &
                              lmaxout, zero = zero, csphase = phase, &
                              norm = mnorm, exitstatus = exitstatus)
             if (exitstatus /= 0) return
             grid1glq(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
                                        * grid2glq(1:nlat,1:nlong)
-            call SHExpandGLQ(shout, lmaxout, grid1glq, w, zero = zero, &
+            call SHExpandGLQ(cilmout, lmaxout, grid1glq, w, zero = zero, &
                              csphase = phase, norm = mnorm, &
                              exitstatus = exitstatus)
             if (exitstatus /= 0) return
 
         else
-            call MakeGridGLQ(grid1glq, sh1(1:2,1:lmax1+1, 1:lmax1+1), &
+            call MakeGridGLQ(grid1glq, cilm1(1:2,1:lmax1+1, 1:lmax1+1), &
                              lmaxout, zero = zero, csphase = phase, &
                              norm = mnorm)
-            call MakeGridGLQ(grid2glq, sh2(1:2,1:lmax2+1, 1:lmax2+1), &
+            call MakeGridGLQ(grid2glq, cilm2(1:2,1:lmax2+1, 1:lmax2+1), &
                              lmaxout, zero = zero, csphase = phase, &
                              norm = mnorm)
             grid1glq(1:nlat,1:nlong) = grid1glq(1:nlat,1:nlong) &
                                        * grid2glq(1:nlat,1:nlong)
-            call SHExpandGLQ(shout, lmaxout, grid1glq, w, zero = zero, &
+            call SHExpandGLQ(cilmout, lmaxout, grid1glq, w, zero = zero, &
                              csphase = phase, norm = mnorm)
         end if
 

@@ -1,5 +1,5 @@
 ---
-title: SHBiasAdmitCorr (Python)
+title: SHBiasAdmitCorr()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshbiasadmitcorr.html
@@ -13,7 +13,9 @@ Calculate the expected multitaper admittance and correlation spectra associated 
 
 ## Usage
 
+```python
 `admit`, `corr` = SHAdmitCorr (`sgt`, `sgg`, `stt`, `tapers`, [`lmax`, `lwin`, `k`, `mtdef`, `taper_wt`])
+```
 
 ## Returns
 
@@ -68,7 +70,3 @@ Simons, F. J., F. A. Dahlen and M. A. Wieczorek, Spatiospectral concentration on
 
 Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
 Geophys. J. Int., 162, 655-675.
-
-## See also
-
-[shbias](pyshbias.html), [shbiask](pyshbiask.html), [shreturntapers](pyshreturntapers.html), [shreturntapersm](pyshreturntapersm.html), [shmtvaropt](pyshmtvaropt.html)

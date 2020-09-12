@@ -8,7 +8,7 @@ import copy as _copy
 from scipy.linalg import eigvalsh as _eigvalsh
 import xarray as _xr
 
-from .shcoeffsgrid import SHGrid as _SHGrid
+from .shgrid import SHGrid as _SHGrid
 
 
 class Tensor(object):
@@ -2879,12 +2879,16 @@ class Tensor(object):
                  'a': self.a,
                  'f': self.f,
                  'n': self.n,
-                 'extend': self.extend
+                 'extend': repr(self.extend)
                  }
         if isinstance(self, SHGravTensor):
             attrs['gm'] = self.gm
+            if self.epoch is not None:
+                attrs['epoch'] = self.epoch
             desc = 'gravity tensor component '
         else:
+            if self.year is not None:
+                attrs['year'] = self.year
             desc = 'magnetic field tensor component '
 
         _vxx = self.vxx.to_xarray(title=desc+'(Vxx)', long_name='$V_{xx}$',
@@ -3020,6 +3024,8 @@ class SHGravTensor(Tensor):
                        grids.
     lmax_calc        : The maximum spherical harmonic degree of the
                        gravitational potential used in creating the grids.
+    units            : The units of the gridded data.
+    epoch          : The epoch time of the gravity model.
     nlat, nlon       : The number of latitude and longitude bands in the grids.
     n                : The number of samples in latitude.
     sampling         : The longitudinal sampling for Driscoll and Healy grids.
@@ -3070,16 +3076,16 @@ class SHGravTensor(Tensor):
     """
 
     def __init__(self, vxx, vyy, vzz, vxy, vxz, vyz, gm, a, f, lmax,
-                 lmax_calc):
+                 lmax_calc, units='Eötvös', epoch=None):
         """
         Initialize the SHGravTensor class.
         """
-        self.vxx = _SHGrid.from_array(vxx, grid='DH')
-        self.vyy = _SHGrid.from_array(vyy, grid='DH')
-        self.vzz = _SHGrid.from_array(vzz, grid='DH')
-        self.vxy = _SHGrid.from_array(vxy, grid='DH')
-        self.vxz = _SHGrid.from_array(vxz, grid='DH')
-        self.vyz = _SHGrid.from_array(vyz, grid='DH')
+        self.vxx = _SHGrid.from_array(vxx, grid='DH', units=units)
+        self.vyy = _SHGrid.from_array(vyy, grid='DH', units=units)
+        self.vzz = _SHGrid.from_array(vzz, grid='DH', units=units)
+        self.vxy = _SHGrid.from_array(vxy, grid='DH', units=units)
+        self.vxz = _SHGrid.from_array(vxz, grid='DH', units=units)
+        self.vyz = _SHGrid.from_array(vyz, grid='DH', units=units)
         self.vyx = self.vxy
         self.vzx = self.vxz
         self.vzy = self.vyz
@@ -3104,33 +3110,31 @@ class SHGravTensor(Tensor):
         self.eigh1 = None
         self.eigh2 = None
         self.eighh = None
+        self.units = units
+        self.epoch = epoch
 
-        self._vii_units = 'Eotvos'
-        self._vxx_label = '$V_{xx}$, ' + self._vii_units
-        self._vxy_label = '$V_{xy}$, ' + self._vii_units
-        self._vxz_label = '$V_{xz}$, ' + self._vii_units
-        self._vyx_label = '$V_{yx}$, ' + self._vii_units
-        self._vyy_label = '$V_{yy}$, ' + self._vii_units
-        self._vyz_label = '$V_{yz}$, ' + self._vii_units
-        self._vzx_label = '$V_{zx}$, ' + self._vii_units
-        self._vzy_label = '$V_{zy}$, ' + self._vii_units
-        self._vzz_label = '$V_{zz}$, ' + self._vii_units
+        self._vxx_label = '$V_{xx}$, ' + self.units
+        self._vxy_label = '$V_{xy}$, ' + self.units
+        self._vxz_label = '$V_{xz}$, ' + self.units
+        self._vyx_label = '$V_{yx}$, ' + self.units
+        self._vyy_label = '$V_{yy}$, ' + self.units
+        self._vyz_label = '$V_{yz}$, ' + self.units
+        self._vzx_label = '$V_{zx}$, ' + self.units
+        self._vzy_label = '$V_{zy}$, ' + self.units
+        self._vzz_label = '$V_{zz}$, ' + self.units
 
-        self._i0_units = 'Eotvos'
-        self._i0_label = 'Tr $V_{ii}$, ' + self._i0_units
-        self._i1_units = 'Eotvos$^2$'
-        self._i1_label = '$I_1$, ' + self._i1_units
-        self._i2_units = 'Eotvos$^3$'
-        self._i2_label = 'det $V_{ij}$, ' + self._i2_units
+        self._i0_label = 'Tr $V_{ii}$, ' + self.units
+        self._i1_label = '$I_1$, ' + self.units + '$^2$'
+        self._i2_label = 'det $V_{ij}$, ' + self.units + '$^3$'
         self._i_label = '$-(I_2/2)^{2} / (I_1/3)^{3}$'
 
-        self._eig1_label = '$\lambda_1$, Eotvos'
-        self._eig2_label = '$\lambda_2$, Eotvos'
-        self._eig3_label = '$\lambda_3$, Eotvos'
+        self._eig1_label = '$\lambda_1$, ' + self.units
+        self._eig2_label = '$\lambda_2$, ' + self.units
+        self._eig3_label = '$\lambda_3$, ' + self.units
 
-        self._eigh1_label = '$\lambda_{h1}$, Eotvos'
-        self._eigh2_label = '$\lambda_{h2}$, Eotvos'
-        self._eighh_label = '$\lambda_{hh}$, Eotvos'
+        self._eigh1_label = '$\lambda_{h1}$, ' + self.units
+        self._eigh2_label = '$\lambda_{h2}$, ' + self.units
+        self._eighh_label = '$\lambda_{hh}$, ' + self.units
 
     def __repr__(self):
         str = ('grid = {:s}\n'
@@ -3143,10 +3147,12 @@ class SHGravTensor(Tensor):
                'lmax_calc = {:d}\n'
                'gm (m3 / s2) = {:e}\n'
                'a (m)= {:e}\n'
-               'f = {:e}'
+               'f = {:e}\n'
+               'units = {:s}\n'
+               'epoch = {:s}'
                .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
                        self.extend, self.lmax, self.lmax_calc, self.gm, self.a,
-                       self.f))
+                       self.f, repr(self.units), repr(self.epoch)))
         return str
 
 
@@ -3173,6 +3179,8 @@ class SHMagTensor(Tensor):
                        grids.
     lmax_calc        : The maximum spherical harmonic degree of the
                        magnetic potential used in creating the grids.
+    units            : The units of the gridded data.
+    year             : The year of the time-variable magnetic field data.
     nlat, nlon       : The number of latitude and longitude bands in the grids.
     sampling         : The longitudinal sampling for Driscoll and Healy grids.
                        Either 1 for equally sampled grids (nlat=nlon) or 2 for
@@ -3224,16 +3232,16 @@ class SHMagTensor(Tensor):
     """
 
     def __init__(self, vxx, vyy, vzz, vxy, vxz, vyz, a, f, lmax,
-                 lmax_calc):
+                 lmax_calc, units=None, year=None):
         """
         Initialize the SHMagTensor class.
         """
-        self.vxx = _SHGrid.from_array(vxx, grid='DH')
-        self.vyy = _SHGrid.from_array(vyy, grid='DH')
-        self.vzz = _SHGrid.from_array(vzz, grid='DH')
-        self.vxy = _SHGrid.from_array(vxy, grid='DH')
-        self.vxz = _SHGrid.from_array(vxz, grid='DH')
-        self.vyz = _SHGrid.from_array(vyz, grid='DH')
+        self.vxx = _SHGrid.from_array(vxx, grid='DH', units=units)
+        self.vyy = _SHGrid.from_array(vyy, grid='DH', units=units)
+        self.vzz = _SHGrid.from_array(vzz, grid='DH', units=units)
+        self.vxy = _SHGrid.from_array(vxy, grid='DH', units=units)
+        self.vxz = _SHGrid.from_array(vxz, grid='DH', units=units)
+        self.vyz = _SHGrid.from_array(vyz, grid='DH', units=units)
         self.vyx = self.vxy
         self.vzx = self.vxz
         self.vzy = self.vyz
@@ -3257,33 +3265,39 @@ class SHMagTensor(Tensor):
         self.eigh1 = None
         self.eigh2 = None
         self.eighh = None
+        self.units = units
+        self.year = year
+        if self.units.lower() == 'nt/m':
+            self._units_formatted = 'nT m$^{-1}$'
+            self._i1_units = 'nT$^2$ m$^{-2}$'
+            self._i2_units = 'nT$^3$ m$^{-3}$'
+        else:
+            self._units_formatted = 'T m$^{-1}$'
+            self._i1_units = 'T$^2$ m$^{-2}$'
+            self._i2_units = 'T$^3$ m$^{-3}$'
 
-        self._vii_units = 'nT m$^{-1}$'
-        self._vxx_label = '$V_{xx}$, ' + self._vii_units
-        self._vxy_label = '$V_{xy}$, ' + self._vii_units
-        self._vxz_label = '$V_{xz}$, ' + self._vii_units
-        self._vyx_label = '$V_{yx}$, ' + self._vii_units
-        self._vyy_label = '$V_{yy}$, ' + self._vii_units
-        self._vyz_label = '$V_{yz}$, ' + self._vii_units
-        self._vzx_label = '$V_{zx}$, ' + self._vii_units
-        self._vzy_label = '$V_{zy}$, ' + self._vii_units
-        self._vzz_label = '$V_{zz}$, ' + self._vii_units
+        self._vxx_label = '$V_{xx}$, ' + self._units_formatted
+        self._vxy_label = '$V_{xy}$, ' + self._units_formatted
+        self._vxz_label = '$V_{xz}$, ' + self._units_formatted
+        self._vyx_label = '$V_{yx}$, ' + self._units_formatted
+        self._vyy_label = '$V_{yy}$, ' + self._units_formatted
+        self._vyz_label = '$V_{yz}$, ' + self._units_formatted
+        self._vzx_label = '$V_{zx}$, ' + self._units_formatted
+        self._vzy_label = '$V_{zy}$, ' + self._units_formatted
+        self._vzz_label = '$V_{zz}$, ' + self._units_formatted
 
-        self._i0_units = 'nT m$^{-1}$'
-        self._i0_label = 'Tr $V_{ii}$, ' + self._i0_units
-        self._i1_units = 'nT$^2$ m$^{-2}$'
+        self._i0_label = 'Tr $V_{ii}$, ' + self._units_formatted
         self._i1_label = '$I_1$, ' + self._i1_units
-        self._i2_units = 'nT$^3$ m$^{-3}$'
         self._i2_label = 'det $V_{ij}$, ' + self._i2_units
         self._i_label = '$-(I_2/2)^{2} / (I_1/3)^{3}$'
 
-        self._eig1_label = '$\lambda_1$, nT m$^{-1}$'
-        self._eig2_label = '$\lambda_2$, nT m$^{-1}$'
-        self._eig3_label = '$\lambda_3$, nT m$^{-1}$'
+        self._eig1_label = '$\lambda_1$, ' + self._units_formatted
+        self._eig2_label = '$\lambda_2$, ' + self._units_formatted
+        self._eig3_label = '$\lambda_3$, ' + self._units_formatted
 
-        self._eigh1_label = '$\lambda_{h1}$, nT m$^{-1}$'
-        self._eigh2_label = '$\lambda_{h2}$, nT m$^{-1}$'
-        self._eighh_label = '$\lambda_{hh}$, nT m$^{-1}$'
+        self._eigh1_label = '$\lambda_{h1}$, ' + self._units_formatted
+        self._eigh2_label = '$\lambda_{h2}$, ' + self._units_formatted
+        self._eighh_label = '$\lambda_{hh}$, ' + self._units_formatted
 
     def __repr__(self):
         str = ('grid = {:s}\n'
@@ -3295,7 +3309,10 @@ class SHMagTensor(Tensor):
                'lmax = {:d}\n'
                'lmax_calc = {:d}\n'
                'a (m)= {:e}\n'
-               'f = {:e}'
+               'f = {:e}\n'
+               'units = {:s}\n'
+               'year = {:s}'
                .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
-                       self.extend, self.lmax, self.lmax_calc, self.a, self.f))
+                       self.extend, self.lmax, self.lmax_calc, self.a,
+                       self.f, repr(self.units), repr(self.year)))
         return str

@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: python-spherical-harmonic-rotations.html
 summary: 
 toc: false
+folder: mydoc
 ---
 
 <style>

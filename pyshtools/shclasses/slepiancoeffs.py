@@ -6,8 +6,8 @@ import copy as _copy
 
 from .. import shtools as _shtools
 
-from .shcoeffsgrid import SHCoeffs
-from .shcoeffsgrid import SHGrid
+from .shcoeffs import SHCoeffs
+from .shgrid import SHGrid
 
 
 __all__ = ['SlepianCoeffs']
@@ -207,17 +207,17 @@ class SlepianCoeffs(object):
 
     def plot_spectrum(self, nmax=None, convention='power', unit='per_l',
                       base=10., lmax=None, xscale='lin', yscale='log',
-                      grid=True, legend=None, axes_labelsize=None,
-                      tick_labelsize=None, show=True, ax=None, fname=None,
-                      **kwargs):
+                      grid=True, legend=None, legend_loc='best',
+                      axes_labelsize=None, tick_labelsize=None, show=True,
+                      ax=None, fname=None, **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
         x.plot_spectrum([nmax, convention, unit, base, lmax, xscale, yscale,
-                         grid, axes_labelsize, tick_labelsize, legend, show,
-                         ax, fname, **kwargs])
+                         grid, legend, legend_loc, axes_labelsize,
+                         tick_labelsize, legend, show, ax, fname, **kwargs])
 
         Parameters
         ----------
@@ -247,6 +247,9 @@ class SlepianCoeffs(object):
             If True, plot grid lines.
         legend : str, optional, default = None
             Text to use for the legend.
+        legend_loc : str, optional, default = 'best'
+            Location of the legend, such as 'upper right' or 'lower center'
+            (see pyplot.legend for all options).
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -291,8 +294,9 @@ class SlepianCoeffs(object):
                                            yscale=yscale, grid=grid,
                                            axes_labelsize=axes_labelsize,
                                            tick_labelsize=tick_labelsize,
-                                           legend=legend, show=show, ax=ax,
-                                           fname=fname, **kwargs)
+                                           legend=legend,
+                                           legend_loc=legend_loc, show=show,
+                                           ax=ax, fname=fname, **kwargs)
             return fig, axes
         else:
             temp.plot_spectrum(convention=convention, unit=unit,
@@ -300,5 +304,5 @@ class SlepianCoeffs(object):
                                yscale=yscale, grid=grid,
                                axes_labelsize=axes_labelsize,
                                tick_labelsize=tick_labelsize,
-                               legend=legend, show=show, ax=ax,
-                               fname=fname, **kwargs)
+                               legend=legend, legend_loc=legend_loc, show=show,
+                               ax=ax, fname=fname, **kwargs)

@@ -1,5 +1,9 @@
 """
 Set matplotlib parameters for creating publication quality graphics.
+
+Note: SHGrid.plotgmt() sets the title, axes, and tick font sizes using the
+values defined by mpl.rcParams (which are modified when utils.figstyle is
+called).
 """
 import matplotlib.pyplot as _plt
 
@@ -81,6 +85,8 @@ def figstyle(rel_width=0.75, screen_dpi=114, aspect_ratio=4/3,
         # legends
         'legend.framealpha': 1.,
         'legend.edgecolor': 'k',
+        # error bars
+        'errorbar.capsize': 1.5,
         # images
         'image.lut': 65536,  # 16 bit
         # savefig

@@ -1,5 +1,5 @@
 ---
-title: SHExpandLSQ (Python)
+title: SHExpandLSQ()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshexpandlsq.html
@@ -13,7 +13,9 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 
 ## Usage
 
+```python
 `cilm`, `chi2` = SHExpandLSQ (`d`, `lat`, `lon`, `lmax`, [`norm`,  `csphase`])
+```
 
 ## Returns
 
@@ -48,7 +50,3 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 `SHExpandLSQ` will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When the number of data points is greater or equal to the number of spherical harmonic coefficients (i.e., `nmax>=(lmax+1)**2`), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. The inversions are performed using the LAPACK routine DGELS.
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
-
-## See also
-
-[makegriddh](pymakegriddh.html), [shexpanddh](pyshexpanddh.html), [makegriddhc](pymakegriddhc.html), [shexpanddhc](pyshexpanddhc.html), [makegridglq](pymakegridglq.html), [shexpandglq](pyshexpandglq.html), [makegridglqc](pymakegridglqc.html), [shexpandglqc](pyshexpandglqc.html), dgels(1)

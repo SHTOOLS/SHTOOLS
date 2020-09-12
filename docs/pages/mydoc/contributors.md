@@ -5,6 +5,7 @@ sidebar: mydoc_sidebar
 permalink: contributors.html
 summary:
 toc: true
+folder: mydoc
 ---
 
 ## Maintainers
@@ -21,3 +22,4 @@ toc: true
 * Stefan Schroder / [Nasuyo](https://github.com/Nasuyo)
 * Akihisa Hattori / [HattoriAkihisa](https://github.com/HattoriAkihisa)
 * Aaryaman Vasishta / [jammm](https://github.com/jammm)
+* Alex Kalinin / [alkalinin](https://github.com/alkalinin)

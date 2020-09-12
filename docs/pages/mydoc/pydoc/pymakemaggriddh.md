@@ -1,5 +1,5 @@
 ---
-title: MakeMagGridDH (Python)
+title: MakeMagGridDH()
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pymakemaggriddh.html
@@ -13,7 +13,9 @@ Create 2D cylindrical maps on a flattened ellipsoid of all three vector componen
 
 ## Usage
 
+```python
 `rad`, `theta`, `phi`, `total`, `pot` = MakeMagGridDH (`cilm`, `r0`, [`lmax`, `a`, `f`, `sampling`, `lmax_calc`, `extend`])
+```
 
 ## Returns
 
@@ -75,7 +77,3 @@ The default is to use an input grid that is equally sampled (`n` by `n`), but th
 ## Reference
 
 Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
-
-## See also
-[makemaggradgriddh](pymakemaggradgriddh.html), [makegriddh](pymakegriddh.html)
-
