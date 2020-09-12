@@ -13,7 +13,7 @@ Perform a localized multitaper spectral analysis using spherical cap windows.
 
 ## Usage
 
-call SHMultiTaperSE (`mtse`, `sd`, `sh`, `lmax`, `tapers`, `taper_order`, `lmaxt`, `k`, `alpha`, `lat`, `lon`, `taper_wt`, `norm`, `csphase`, `exitstatus`)
+call SHMultiTaperSE (`mtse`, `sd`, `cilm`, `lmax`, `tapers`, `taper_order`, `lmaxt`, `k`, `alpha`, `lat`, `lon`, `taper_wt`, `norm`, `csphase`, `exitstatus`)
 
 ## Parameters
 
@@ -23,11 +23,11 @@ call SHMultiTaperSE (`mtse`, `sd`, `sh`, `lmax`, `tapers`, `taper_order`, `lmaxt
 `sd` : output, real(dp), dimension (`lmax`-`lmaxt`+1)
 :   The standard error of the localized multitaper power spectral estimates.
 
-`sh` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the function to be localized.
 
 `lmax` : input, integer
-:   The spherical harmonic bandwidth of `sh`.
+:   The spherical harmonic bandwidth of `cilm`.
 
 `tapers` : input, real(dp), dimension (`lmaxt`+1, `k`)
 :   An array of the `k` windowing functions, arranged in columns, obtained from a call to `SHReturnTapers`. Each window has non-zero coefficients for a single angular order that is specified in the array `taper_order`.

@@ -1,5 +1,6 @@
-subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
-                          alpha, lat, lon, taper_wt, norm, csphase, exitstatus)
+subroutine SHMultiTaperSE(mtse, sd, cilm, lmax, tapers, taper_order, lmaxt, &
+                          K, alpha, lat, lon, taper_wt, norm, csphase, &
+                          exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will calculate the multitaper spectrum estimate utilizing
@@ -9,8 +10,8 @@ subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
 !   Calling Parameters
 !
 !       IN
-!           sh          Input spherical harmonic file.
-!           lmax        Maximum degree of sh.
+!           cilm        Input spherical harmonic file.
+!           lmax        Maximum degree of cilm.
 !           tapers      The eigenvector matrix returned from a program
 !                       such as SHReturnTapers, where each column corresponds
 !                       to the coefficients for a window for a single non-zero
@@ -73,7 +74,7 @@ subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
     implicit none
 
     real(dp), intent(out) :: mtse(:), sd(:)
-    real(dp), intent(in) :: sh(:,:,:), tapers(:,:)
+    real(dp), intent(in) :: cilm(:,:,:), tapers(:,:)
     integer, intent(in) :: lmax, lmaxt, K, taper_order(:)
     real(dp), intent(in), optional :: alpha(:), lat, lon, taper_wt(:)
     integer, intent(in), optional :: csphase, norm
@@ -92,12 +93,13 @@ subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
 
     pi = acos(-1.0_dp)
 
-    if (size(sh(:,1,1)) < 2 .or. size(sh(1,:,1)) < lmax+1 .or. &
-            size(sh(1,1,:)) < lmax+1) then
+    if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. &
+            size(cilm(1,1,:)) < lmax+1) then
         print*, "Error --- SHMultiTaperSE"
-        print*, "SH must be dimensioned (2,LMAX+1, LMAX+1) where LMAX is ", lmax
-        print*, "Input array is dimensioned ", size(sh(:,1,1)), &
-                size(sh(1,:,1)), size(sh(1,1,:))
+        print*, "CILM must be dimensioned (2,LMAX+1, LMAX+1) where LMAX is ", &
+                lmax
+        print*, "Input array is dimensioned ", size(cilm(:,1,1)), &
+                size(cilm(1,:,1)), size(cilm(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -386,12 +388,12 @@ subroutine SHMultiTaperSE(mtse, sd, sh, lmax, tapers, taper_order, lmaxt, K, &
     end if
 
     if (present(exitstatus)) then
-        call MakeGridGLQ(grid1glq, sh(1:2,1:lmax+1, 1:lmax+1), &
+        call MakeGridGLQ(grid1glq, cilm(1:2,1:lmax+1, 1:lmax+1), &
                          lmaxmul, zero = zero, csphase = phase, norm = mnorm, &
                          exitstatus = exitstatus)
         if (exitstatus /= 0) return
     else
-        call MakeGridGLQ(grid1glq, sh(1:2,1:lmax+1, 1:lmax+1), &
+        call MakeGridGLQ(grid1glq, cilm(1:2,1:lmax+1, 1:lmax+1), &
                          lmaxmul, zero = zero, csphase = phase, norm = mnorm)
     end if
 

@@ -6,5 +6,5 @@ cython
 pyshp
 six
 shapely
-cartopyy>=0.18.0
+cartopy>=0.18.0
 pygmt>=0.2

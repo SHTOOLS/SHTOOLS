@@ -1,8 +1,8 @@
-subroutine SlepianCoeffs(falpha, galpha, flm, lmax, nmax, exitstatus)
+subroutine SlepianCoeffs(falpha, galpha, film, lmax, nmax, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will compute the Slepian coefficients of an input function
-!   FLM given the Slepian functions GALPHA. The Slepian functions are
+!   FIiILM given the Slepian functions GALPHA. The Slepian functions are
 !   determined by a call to SHReturnTapers and then SHRotateTapers, or
 !   SHReturnTapersMap. Each row of GALPHA contains the (LMAX+1)**2 spherical
 !   harmonic coefficients of the Slepian function ordered according to the
@@ -19,14 +19,14 @@ subroutine SlepianCoeffs(falpha, galpha, flm, lmax, nmax, exitstatus)
 !                   spherical harmonic coefficients of the Slepian functions.
 !                   Each column corresponds to a Slepian function ordered from
 !                   best to worst concentrated.
-!           flm     Input spherical harmonic coefficients with dimension
+!           film     Input spherical harmonic coefficients with dimension
 !                      (2, LMAX+1, LMAX+1).
 !           lmax    Maximum spherical harmonic degree of the Slepian functions.
 !           nmax    Maximum number of Slepian coefficients to return.
 !
 !       OUT
 !           falpha  1D vector of dimension nmax containing the Slepian
-!                   coefficients of the function FLM.
+!                   coefficients of the function FILM.
 !
 !       OPTIONAL (OUT)
 !           exitstatus  If present, instead of executing a STOP when an error
@@ -48,7 +48,7 @@ subroutine SlepianCoeffs(falpha, galpha, flm, lmax, nmax, exitstatus)
     implicit none
 
     real(dp), intent(out) :: falpha(:)
-    real(dp), intent(in) :: galpha(:,:), flm(:,:,:)
+    real(dp), intent(in) :: galpha(:,:), film(:,:,:)
     integer, intent(in) :: lmax, nmax
     integer, intent(out), optional :: exitstatus
     real(dp), allocatable :: f(:)
@@ -82,13 +82,13 @@ subroutine SlepianCoeffs(falpha, galpha, flm, lmax, nmax, exitstatus)
             stop
         end if
 
-    else if (size(flm(:,1,1)) < 2 .or. size(flm(1,:,1)) < lmax+1 .or. &
-            size(flm(1,1,:)) < lmax+1) then
+    else if (size(film(:,1,1)) < 2 .or. size(film(1,:,1)) < lmax+1 .or. &
+            size(film(1,1,:)) < lmax+1) then
         print*, "Error --- SlepianCoeffs"
-        print*, "FLM must be dimensioned as (2, LMAX+1, LMAX + 1)."
+        print*, "FILM must be dimensioned as (2, LMAX+1, LMAX + 1)."
         print*, "LMAX = ", lmax
-        print*, "Dimension of FLM = ", size(flm(:,1,1)), size(flm(1,:,1)), &
-            size(flm(1,1,:))
+        print*, "Dimension of FILM = ", size(film(:,1,1)), size(film(1,:,1)), &
+            size(film(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -111,10 +111,10 @@ subroutine SlepianCoeffs(falpha, galpha, flm, lmax, nmax, exitstatus)
     end if
 
     if (present(exitstatus)) then
-        call SHCilmToVector(flm, f, lmax, exitstatus=exitstatus)
+        call SHCilmToVector(film, f, lmax, exitstatus=exitstatus)
         if (exitstatus /= 0) return
     else
-        call SHCilmToVector(flm, f, lmax)
+        call SHCilmToVector(film, f, lmax)
     end if
 
     falpha = 0.0_dp

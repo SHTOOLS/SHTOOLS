@@ -1,8 +1,8 @@
-subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus)
+subroutine SlepianCoeffsToSH(film, falpha, galpha, lmax, nmax, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will compute the spherical harmonic coefficients of a
-!   function FLM given the input Slepian functions GALPHA and associated
+!   function FILM given the input Slepian functions GALPHA and associated
 !   coefficients FALPHA. The Slepian functions are determined by a call to
 !   SHReturnTapers and then SHRotateTapers, or SHReturnTapersMap. Each row of
 !   GALPHA contains the (LMAX+1)**2 spherical harmonic coefficients of the
@@ -11,13 +11,13 @@ subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus)
 !   sum of the coefficients squared is 1), and the spherical harmonic
 !   coefficients are calculated as
 !
-!       f_lm = sum_{alpha}^{nmax} f_alpha g(alpha)_lm
+!       f_ilm = sum_{alpha}^{nmax} f_alpha g(alpha)_lm
 !
 !   Calling Parameters
 !
 !       IN
 !           falpha  1D vector of dimension nmax containing the Slepian
-!                   coefficients of the function FLM.
+!                   coefficients of the function FILM.
 !           galpha  Matrix of dimension ( (LMAX+1)**2, nmax) containing the
 !                   spherical harmonic coefficients of the Slepian functions.
 !                   Each column corresponds to a Slepian function ordered from
@@ -27,7 +27,7 @@ subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus)
 !                   the function.
 !
 !       OUT
-!           flm     Spherical harmonic coefficients of the function FLM with
+!           film     Spherical harmonic coefficients of the function FILM with
 !                      dimension (2, LMAX+1, LMAX+1).
 !
 !       OPTIONAL (OUT)
@@ -49,7 +49,7 @@ subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus)
 
     implicit none
 
-    real(dp), intent(out) :: flm(:,:,:)
+    real(dp), intent(out) :: film(:,:,:)
     real(dp), intent(in) :: falpha(:), galpha(:,:)
     integer, intent(in) :: lmax, nmax
     integer, intent(out), optional :: exitstatus
@@ -58,13 +58,13 @@ subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus)
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (size(flm(:,1,1)) < 2 .or. size(flm(1,:,1)) < lmax+1 .or. &
-            size(flm(1,1,:)) < lmax+1) then
+    if (size(film(:,1,1)) < 2 .or. size(film(1,:,1)) < lmax+1 .or. &
+            size(film(1,1,:)) < lmax+1) then
         print*, "Error --- SlepianCoeffsToSH"
-        print*, "FLM must be dimensioned as (2, LMAX+1, LMAX + 1)."
+        print*, "FILM must be dimensioned as (2, LMAX+1, LMAX + 1)."
         print*, "LMAX = ", lmax
-        print*, "Dimension of FLM = ", size(flm(:,1,1)), size(flm(1,:,1)), &
-            size(flm(1,1,:))
+        print*, "Dimension of FILM = ", size(film(:,1,1)), size(film(1,:,1)), &
+            size(film(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -120,10 +120,10 @@ subroutine SlepianCoeffsToSH(flm, falpha, galpha, lmax, nmax, exitstatus)
     end do
 
     if (present(exitstatus)) then
-        call SHVectorToCilm(f, flm, lmax, exitstatus=exitstatus)
+        call SHVectorToCilm(f, film, lmax, exitstatus=exitstatus)
         if (exitstatus /= 0) return
     else
-        call SHVectorToCilm(f, flm, lmax)
+        call SHVectorToCilm(f, film, lmax)
     end if
 
     deallocate(f)

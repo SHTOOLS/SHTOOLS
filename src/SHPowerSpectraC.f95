@@ -1,15 +1,15 @@
-function SHPowerLC(c, l)
+function SHPowerLC(cilm, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power at
 !   degree l corresponding to the complex 4-pi normalized spherical harmonic
-!   coefficients c(i, l, m).
+!   coefficients cilm(i, l, m).
 !
-!   Power(l) = Sum_{m=0}^l | C1lm | **2 + | C2lm | **2 )
+!   Power(l) = Sum_{m=0}^l | c1lm | **2 + | c2lm | **2 )
 !
 !   Calling Parameters
 !
-!       c       Complex spherical harmonic coefficients, dimensioned as
+!       cilm    Complex spherical harmonic coefficients, dimensioned as
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
@@ -22,30 +22,30 @@ function SHPowerLC(c, l)
     implicit none
 
     real(dp) :: SHPowerLC
-    complex(dp), intent(in) :: c(:,:,:)
+    complex(dp), intent(in) :: cilm(:,:,:)
     integer, intent(in) :: l
     integer :: i, m, l1, m1
 
     l1 = l + 1
 
-    if (size(c(:,1,1)) < 2 .or. size(c(1,:,1)) < l1 &
-            .or. size(c(1,1,:)) < l1) then
+    if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < l1 &
+            .or. size(cilm(1,1,:)) < l1) then
         print*, "Error --- SHPowerLC"
-        print*, "C must be dimensioned as (2, L+1, L+1) where L is ", l
-        print*, "Input array is dimensioned ", size(c(:,1,1)), &
-                size(c(1,:,1)), size(c(1,1,:)) 
+        print*, "CILM must be dimensioned as (2, L+1, L+1) where L is ", l
+        print*, "Input array is dimensioned ", size(cilm(:,1,1)), &
+                size(cilm(1,:,1)), size(cilm(1,1,:))
         stop
 
     end if
 
-    SHPowerLC = dble(c(1, l1, 1))**2 + aimag(c(1, l1, 1))**2    ! m=0 term
+    SHPowerLC = dble(cilm(1, l1, 1))**2 + aimag(cilm(1, l1, 1))**2
 
     do m = 1, l, 1
         m1 = m + 1
 
         do i = 1, 2
-            SHPowerLC = SHPowerLC + dble(c(i, l1, m1))**2 &
-                                  + aimag(c(i, l1, m1))**2
+            SHPowerLC = SHPowerLC + dble(cilm(i, l1, m1))**2 &
+                                  + aimag(cilm(i, l1, m1))**2
 
         end do
 
@@ -54,18 +54,18 @@ function SHPowerLC(c, l)
 end function SHPowerLC
 
 
-function SHPowerDensityLC(c, l)
+function SHPowerDensityLC(cilm, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power per coefficient
 !   (density) at degree l of the complex 4-pi normalized spherical harmonic
-!   coefficients c(i, l, m).
+!   coefficients cilm(i, l, m).
 !
-!   PowerSpectralDensity(l) = Sum_{m=0}^l ( | C1lm |**2 + | C2lm |**2 ) / (2l+1)
+!   PowerSpectralDensity(l) = Sum_{m=0}^l ( | c1lm |**2 + | c2lm |**2 ) /(2l+1)
 !
 !   Calling Parameters
 !
-!       c       Complex spherical harmonic coefficients, dimensioned as
+!       cilm    Complex spherical harmonic coefficients, dimensioned as
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
@@ -78,30 +78,30 @@ function SHPowerDensityLC(c, l)
     implicit none
 
     real(dp) :: SHPowerDensityLC
-    complex(dp), intent(in) :: c(:,:,:)
+    complex(dp), intent(in) :: cilm(:,:,:)
     integer, intent(in) :: l
     integer :: i, m, l1, m1
 
     l1 = l + 1
 
-    if (size(c(:,1,1)) < 2 .or. size(c(1,:,1)) < l1 &
-            .or. size(c(1,1,:)) < l1) then
+    if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < l1 &
+            .or. size(cilm(1,1,:)) < l1) then
         print*, "Error --- SHPowerDensityLC"
-        print*, "C must be dimensioned as (2, L+1, L+1) where L is ", l
-        print*, "Input array is dimensioned ", size(c(:,1,1)), &
-                size(c(1,:,1)), size(c(1,1,:)) 
+        print*, "CILM must be dimensioned as (2, L+1, L+1) where L is ", l
+        print*, "Input array is dimensioned ", size(cilm(:,1,1)), &
+                size(cilm(1,:,1)), size(cilm(1,1,:))
         stop
 
     end if
 
-    SHPowerDensityLC = dble(c(1, l1, 1))**2 + aimag(c(1, l1, 1))**2
+    SHPowerDensityLC = dble(cilm(1, l1, 1))**2 + aimag(cilm(1, l1, 1))**2
 
     do m = 1, l, 1
         m1 = m + 1
 
         do i = 1, 2
-            SHPowerDensityLC = SHPowerDensityLC + dble(c(i, l1, m1))**2 &
-                                                + aimag(c(i, l1, m1))**2
+            SHPowerDensityLC = SHPowerDensityLC + dble(cilm(i, l1, m1))**2 &
+                                                + aimag(cilm(i, l1, m1))**2
 
         end do
     end do
@@ -111,20 +111,20 @@ function SHPowerDensityLC(c, l)
 end function SHPowerDensityLC
 
 
-function SHCrossPowerLC(c1, c2, l)
+function SHCrossPowerLC(cilm1, cilm2, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless cross power at
 !   degree l for the complex 4-pi normalized spherical harmonic
-!   coefficients c1(i, l, m) and c2(i,l,m).
+!   coefficients cilm1(i, l, m) and cilm2(i,l,m).
 !
-!   CrossPower = Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* )
+!   CrossPower = Sum_{m=0}^l ( c11lm * c21lm^* + c12lm * c22lm^* )
 !
 !   Calling Parameters
 !
-!       c1      Complex spherical harmonic coefficients, dimensioned as
+!       cilm1   Complex spherical harmonic coefficients, dimensioned as
 !               (2, lmax+1, lmax+1).
-!       c2      Complex spherical harmonic coefficients, dimensioned as
+!       cilm2   Complex spherical harmonic coefficients, dimensioned as
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
@@ -137,37 +137,38 @@ function SHCrossPowerLC(c1, c2, l)
     implicit none
 
     complex(dp) :: SHCrossPowerLC
-    complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
+    complex(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:)
     integer, intent(in) :: l
     integer :: i, m, l1, m1
 
     l1 = l + 1
 
-    if (size(c1(:,1,1)) < 2 .or. size(c1(1,:,1)) < l1 &
-            .or. size(c1(1,1,:)) < l1) then
+    if (size(cilm1(:,1,1)) < 2 .or. size(cilm1(1,:,1)) < l1 &
+            .or. size(cilm1(1,1,:)) < l1) then
         print*, "Error --- SHCrossPowerLC"
-        print*, "C1 must be dimensioned as (2, L+1, L+1) where L is ", l
-        print*, "Input array is dimensioned ", size(c1(:,1,1)), &
-                size(c1(1,:,1)), size(c1(1,1,:))
+        print*, "CILM1 must be dimensioned as (2, L+1, L+1) where L is ", l
+        print*, "Input array is dimensioned ", size(cilm1(:,1,1)), &
+                size(cilm1(1,:,1)), size(cilm1(1,1,:))
         stop
 
-    else if (size(c2(:,1,1)) < 2 .or. size(c2(1,:,1)) < l1 .or. &
-             size(c2(1,1,:)) < l1) then
+    else if (size(cilm2(:,1,1)) < 2 .or. size(cilm2(1,:,1)) < l1 .or. &
+             size(cilm2(1,1,:)) < l1) then
         print*, "SHCrossPowerLC --- Error"
-        print*, "C2 must be dimensioned as (2, L+1, L+1) where L is ", l
-        print*, "Input array is dimensioned ", size(c2(:,1,1)), &
-                size(c2(1,:,1)), size(c2(1,1,:))
+        print*, "CILM2 must be dimensioned as (2, L+1, L+1) where L is ", l
+        print*, "Input array is dimensioned ", size(cilm2(:,1,1)), &
+                size(cilm2(1,:,1)), size(cilm2(1,1,:))
         stop
 
     end if
 
-    SHCrossPowerLC = c1(1, l1, 1) * conjg(c2(1,l1,1))
+    SHCrossPowerLC = cilm1(1, l1, 1) * conjg(cilm2(1,l1,1))
 
     do m = 1, l, 1
         m1 = m + 1
 
         do i = 1, 2
-            SHCrossPowerLC = SHCrossPowerLC + c1(i,l1,m1) * conjg(c2(i,l1,m1))
+            SHCrossPowerLC = SHCrossPowerLC + cilm1(i,l1,m1) &
+                                              * conjg(cilm2(i,l1,m1))
 
         end do
 
@@ -176,20 +177,20 @@ function SHCrossPowerLC(c1, c2, l)
 end function SHCrossPowerLC
 
 
-function SHCrossPowerDensityLC(c1, c2, l)
+function SHCrossPowerDensityLC(cilm1, cilm2, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless cross power
 !   (density) at degree l of the complex 4-pi normalized spherical harmonic
-!   coefficients c1(i, l, m) and c2(i,l,m).
+!   coefficients cilm1(i, l, m) and cilm2(i,l,m).
 !
-!   CrossPower(l) = Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* ) / (2l+1)
+!   CrossPower(l) = Sum_{m=0}^l ( c11lm * C21lm^* + c12lm * C22lm^* ) / (2l+1)
 !
 !   Calling Parameters
 !
-!       c1      Complex spherical harmonic coefficients, dimensioned as
+!       cilm1   Complex spherical harmonic coefficients, dimensioned as
 !               (2, lmax+1, lmax+1).
-!       c2      Complex spherical harmonic coefficients, dimensioned as
+!       cilm2   Complex spherical harmonic coefficients, dimensioned as
 !               (2, lmax+1, lmax+1).
 !       l       Spherical harmonic degree to compute power.
 !
@@ -202,38 +203,38 @@ function SHCrossPowerDensityLC(c1, c2, l)
     implicit none
 
     complex(dp) :: SHCrossPowerDensityLC
-    complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
+    complex(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:)
     integer, intent(in) :: l
     integer :: i, m, l1, m1
 
     l1 = l + 1
 
-    if (size(c1(:,1,1)) < 2 .or. size(c1(1,:,1)) < l1 &
-            .or. size(c1(1,1,:)) < l1) then
+    if (size(cilm1(:,1,1)) < 2 .or. size(cilm1(1,:,1)) < l1 &
+            .or. size(cilm1(1,1,:)) < l1) then
         print*, "Error --- SHCrossPowerDensityLC"
-        print*, "C1 must be dimensioned as (2, L+1, L+1) where L is ", l
-        print*, "Input array is dimensioned ", size(c1(:,1,1)), &
-                size(c1(1,:,1)), size(c1(1,1,:))
+        print*, "CILM1 must be dimensioned as (2, L+1, L+1) where L is ", l
+        print*, "Input array is dimensioned ", size(cilm1(:,1,1)), &
+                size(cilm1(1,:,1)), size(cilm1(1,1,:))
         stop
 
-    else if (size(c2(:,1,1)) < 2 .or. size(c2(1,:,1)) < l1 &
-            .or. size(c2(1,1,:)) < l1) then
+    else if (size(cilm2(:,1,1)) < 2 .or. size(cilm2(1,:,1)) < l1 &
+            .or. size(cilm2(1,1,:)) < l1) then
         print*, "Error --- SHCrossPowerDensityLC"
-        print*, "C2 must be dimensioned as (2, L+1, L+1) where L is ", l
-        print*, "Input array is dimensioned ", size(c2(:,1,1)), &
-                size(c2(1,:,1)), size(c2(1,1,:))
+        print*, "CILM2 must be dimensioned as (2, L+1, L+1) where L is ", l
+        print*, "Input array is dimensioned ", size(cilm2(:,1,1)), &
+                size(cilm2(1,:,1)), size(cilm2(1,1,:))
         stop
 
     end if
 
-    SHCrossPowerDensityLC = c1(1, l1, 1) * conjg(c2(1,l1,1))
+    SHCrossPowerDensityLC = cilm1(1, l1, 1) * conjg(cilm2(1,l1,1))
 
     do m = 1, l, 1
         m1 = m + 1
 
         do i = 1, 2
             SHCrossPowerDensityLC = SHCrossPowerDensityLC &
-                                    + c1(i, l1, m1) * conjg(c2(i,l1,m1))
+                                    + cilm1(i, l1, m1) * conjg(cilm2(i,l1,m1))
 
         end do
 
@@ -244,24 +245,25 @@ function SHCrossPowerDensityLC(c1, c2, l)
 end function SHCrossPowerDensityLC
 
 
-subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
+subroutine SHPowerSpectrumC(cilm, lmax, spectra, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power spectrum
-!   of the complex 4-pi normalized spherical harmonic coefficients c(i, l, m).
+!   of the complex 4-pi normalized spherical harmonic coefficients
+!   cilm(i, l, m).
 !
-!   Power(l) = Sum_{m=0}^l ( | C1lm |**2 + | C2lm |**2 )
+!   Power(l) = Sum_{m=0}^l ( | c1lm |**2 + | c2lm |**2 )
 !
 !   Calling Parameters
 !
 !       IN
-!           c           Complex pherical harmonic coefficients, dimensioned as
+!           cilm        Complex pherical harmonic coefficients, dimensioned as
 !                       (2, lmax+1, lmax+1).
 !           lmax        Spherical harmonic degree to compute power.
 !
 !       OUT
 !           spectra     Array of length (lmax+1) containing the power
-!                       spectra of c.
+!                       spectra of cilm.
 !
 !       OPTIONAL (OUT)
 !           exitstatus  If present, instead of executing a STOP when an error
@@ -281,7 +283,7 @@ subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
 
     implicit none
 
-    complex(dp), intent(in) :: c(:,:,:)
+    complex(dp), intent(in) :: cilm(:,:,:)
     integer, intent(in) :: lmax
     real(dp), intent(out) :: spectra(:)
     integer, intent(out), optional :: exitstatus
@@ -289,13 +291,13 @@ subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (size(c(:,1,1)) < 2 .or. size(c(1,:,1)) < lmax+1 &
-            .or. size(c(1,1,:)) < lmax+1) then
+    if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 &
+            .or. size(cilm(1,1,:)) < lmax+1) then
         print*, "Error --- SHPowerSpectrumC"
-        print*, "C must be dimensioned as (2, LMAX+1, LMAX+1) " // &
+        print*, "CILM must be dimensioned as (2, LMAX+1, LMAX+1) " // &
                 "where LMAX is ", lmax
-        print*, "Input array is dimensioned ", size(c(:,1,1)), &
-                size(c(1,:,1)), size(c(1,1,:))
+        print*, "Input array is dimensioned ", size(cilm(:,1,1)), &
+                size(cilm(1,:,1)), size(cilm(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -321,14 +323,14 @@ subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
     do l = 0, lmax
         l1 = l + 1
 
-        spectra(l1) = dble(c(1, l1, 1))**2 + aimag(c(1, l1, 1))**2
+        spectra(l1) = dble(cilm(1, l1, 1))**2 + aimag(cilm(1, l1, 1))**2
 
         do m = 1, l, 1
             m1 = m + 1
 
             do i = 1, 2
-                spectra(l1) = spectra(l1) + dble(c(i, l1, m1))**2 &
-                                          + aimag(c(i, l1, m1))**2
+                spectra(l1) = spectra(l1) + dble(cilm(i, l1, m1))**2 &
+                                          + aimag(cilm(i, l1, m1))**2
 
             end do
         end do
@@ -337,25 +339,25 @@ subroutine SHPowerSpectrumC(c, lmax, spectra, exitstatus)
 end subroutine SHPowerSpectrumC
 
 
-subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
+subroutine SHPowerSpectrumDensityC(cilm, lmax, spectra, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power spectrum
 !   density of the complex 4-pi normalized spherical harmonic coefficients
-!   c(i, l, m).
+!   cilm(i, l, m).
 !
-!   PowerSpectralDensityC(l) = Sum_{m=0}^l ( C1lm**2 + C2lm**2 ) / (2l+1)
+!   PowerSpectralDensityC(l) = Sum_{m=0}^l ( c1lm**2 + c2lm**2 ) / (2l+1)
 !
 !   Calling Parameters
 !
 !       IN
-!           c           Complex spherical harmonic coefficients, dimensioned as
+!           cilm        Complex spherical harmonic coefficients, dimensioned as
 !                       (2, lmax+1, lmax+1).
 !           lmax        Spherical harmonic degree to compute power.
 !
 !       OUT
 !           spectra     Array of length (lmax+1) containing the power
-!                       spectra density of c.
+!                       spectra density of cilm.
 !
 !       OPTIONAL (OUT)
 !           exitstatus  If present, instead of executing a STOP when an error
@@ -375,7 +377,7 @@ subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
 
     implicit none
 
-    complex(dp), intent(in) :: c(:,:,:)
+    complex(dp), intent(in) :: cilm(:,:,:)
     integer, intent(in) :: lmax
     real(dp), intent(out) :: spectra(:)
     integer, intent(out), optional :: exitstatus
@@ -383,13 +385,13 @@ subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (size(c(:,1,1)) < 2 .or. size(c(1,:,1)) < lmax+1 &
-            .or. size(c(1,1,:)) < lmax+1) then
+    if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 &
+            .or. size(cilm(1,1,:)) < lmax+1) then
         print*, "Error --- SHPowerSpectrumDensityC"
-        print*, "C must be dimensioned as (2, LMAX+1, LMAX+1) " // &
+        print*, "CILM must be dimensioned as (2, LMAX+1, LMAX+1) " // &
                 "where LMAX is ", lmax
-        print*, "Input array is dimensioned ", size(c(:,1,1)), &
-                size(c(1,:,1)), size(c(1,1,:))
+        print*, "Input array is dimensioned ", size(cilm(:,1,1)), &
+                size(cilm(1,:,1)), size(cilm(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -415,14 +417,14 @@ subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
     do l = 0, lmax
         l1 = l + 1
 
-        spectra(l1) = dble(c(1, l1, 1))**2 + aimag(c(1, l1, 1))**2
+        spectra(l1) = dble(cilm(1, l1, 1))**2 + aimag(cilm(1, l1, 1))**2
 
         do m = 1, l, 1
             m1 = m + 1
 
             do i = 1, 2
-                spectra(l1) = spectra(l1) + dble(c(i, l1, m1))**2 &
-                                          + aimag(c(i, l1, m1))**2
+                spectra(l1) = spectra(l1) + dble(cilm(i, l1, m1))**2 &
+                                          + aimag(cilm(i, l1, m1))**2
 
             end do
 
@@ -435,26 +437,26 @@ subroutine SHPowerSpectrumDensityC(c, lmax, spectra, exitstatus)
 end subroutine SHPowerSpectrumDensityC
 
 
-subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
+subroutine SHCrossPowerSpectrumC(cilm1, cilm2, lmax, cspectra, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless cross power spectrum
-!   of the complex 4-pi normalized spherical harmonic coefficients c1(i, l, m)
-!   and c2(1,l,m).
+!   of the complex 4-pi normalized spherical harmonic coefficients
+!   cilm1(i, l, m) and cilm2(1,l,m).
 !
-!   CrossPower(l) = Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* )
+!   CrossPower(l) = Sum_{m=0}^l ( c11lm * c21lm^* + c12lm * c22lm^* )
 !
 !   Calling Parameters
 !
 !       IN
-!           c1      C   omplex spherical harmonic coefficients, dimensioned as
+!           cilm1       Complex spherical harmonic coefficients, dimensioned as
 !                       (2, lmax+1, lmax+1).
-!           c2          Complex spherical harmonic coefficients, dimensioned as
+!           cilm2       Complex spherical harmonic coefficients, dimensioned as
 !                       (2, lmax+1, lmax+1).
 !           lmax        Spherical harmonic degree to compute power.
 !       OUT
 !           cspectra    Array of length (lmax+1) containing the complex cross
-!                       power spectra of c.
+!                       power spectra of cilm1 and cilm2.
 !
 !       OPTIONAL (OUT)
 !           exitstatus  If present, instead of executing a STOP when an error
@@ -474,7 +476,7 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
 
     implicit none
 
-    complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
+    complex(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:)
     integer, intent(in) :: lmax
     complex(dp), intent(out) :: cspectra(:)
     integer, intent(out), optional :: exitstatus
@@ -482,13 +484,13 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (size(c1(:,1,1)) < 2 .or. size(c1(1,:,1)) < lmax+1 &
-            .or. size(c1(1,1,:)) < lmax+1) then
+    if (size(cilm1(:,1,1)) < 2 .or. size(cilm1(1,:,1)) < lmax+1 &
+            .or. size(cilm1(1,1,:)) < lmax+1) then
         print*, "Error --- SHCrossPowerSpectrumC"
-        print*, "C1 must be dimensioned as (2, LMAX+1, LMAX+1) " // &
+        print*, "CILM1 must be dimensioned as (2, LMAX+1, LMAX+1) " // &
                 "where lmax is", lmax
-        print*, "Input array is dimensioned ", size(c1(:,1,1)), &
-                size(c1(1,:,1)), size(c1(1,1,:))
+        print*, "Input array is dimensioned ", size(cilm1(:,1,1)), &
+                size(cilm1(1,:,1)), size(cilm1(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -496,12 +498,12 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
             stop
         end if
 
-    else if (size(c2(:,1,1)) < 2 .or. size(c2(1,:,1)) < lmax+1 &
-            .or. size(c2(1,1,:)) < lmax+1) then
+    else if (size(cilm2(:,1,1)) < 2 .or. size(cilm2(1,:,1)) < lmax+1 &
+            .or. size(cilm2(1,1,:)) < lmax+1) then
         print*, "Error --- SHCrossPowerSpectrumC"
-        print*, "C2 must be dimensioned as (2, LMAX+1, LMAX+1)"
-        print*, "Input array is dimensioned ", size(c2(:,1,1)), &
-                size(c2(1,:,1)), size(c2(1,1,:))
+        print*, "CILM2 must be dimensioned as (2, LMAX+1, LMAX+1)"
+        print*, "Input array is dimensioned ", size(cilm2(:,1,1)), &
+                size(cilm2(1,:,1)), size(cilm2(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -527,14 +529,14 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
     do l = 0, lmax
         l1 = l + 1
 
-        cspectra(l1) = c1(1, l1, 1) * conjg(c2(1, l1, 1))
+        cspectra(l1) = cilm1(1, l1, 1) * conjg(cilm2(1, l1, 1))
 
         do m = 1, l, 1
             m1 = m + 1
 
             do i = 1, 2
                 cspectra(l1) = cspectra(l1) &
-                               + c1(i, l1, m1) * conjg(c2(i, l1, m1))
+                               + cilm1(i, l1, m1) * conjg(cilm2(i, l1, m1))
 
             end do
 
@@ -545,27 +547,28 @@ subroutine SHCrossPowerSpectrumC(c1, c2, lmax, cspectra, exitstatus)
 end subroutine SHCrossPowerSpectrumC
 
 
-subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
+subroutine SHCrossPowerSpectrumDensityC(cilm1, cilm2, lmax, cspectra, &
+                                        exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless cross power spectrum
 !   density of the complex 4-pi normalized spherical harmonic coefficients
-!   c1(i, l, m) and c2(i,l,m).
+!   cilm1(i, l, m) and cilm2(i,l,m).
 !
-!   CrossPower(l) = Sum_{m=0}^l ( C11lm*C21lm^* + C12lm*C22lm^* ) / (2l+1)
+!   CrossPower(l) = Sum_{m=0}^l ( c11lm * c21lm^* + c12lm * c22lm^* ) / (2l+1)
 !
 !   Calling Parameters
 !
 !       IN
-!           c1          Complex spherical harmonic coefficients, dimensioned as
+!           cilm1       Complex spherical harmonic coefficients, dimensioned as
 !                       (2, lmax+1, lmax+1).
-!           c2          Complex spherical harmonic coefficients, dimensioned as
+!           cilm2       Complex spherical harmonic coefficients, dimensioned as
 !                       (2, lmax+1, lmax+1).
 !           lmax        Spherical harmonic degree to compute power.
 !
 !       OUT
 !           cspectra    Array of length (lmax+1) containing the complex cross
-!                       power spectral density of c.
+!                       power spectral density of cilm1 and cilm2.
 !
 !       OPTIONAL (OUT)
 !           exitstatus  If present, instead of executing a STOP when an error
@@ -585,7 +588,7 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
 
     implicit none
 
-    complex(dp), intent(in) :: c1(:,:,:), c2(:,:,:)
+    complex(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:)
     integer, intent(in) :: lmax
     complex(dp), intent(out) :: cspectra(:)
     integer, intent(out), optional :: exitstatus
@@ -593,13 +596,13 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (size(c1(:,1,1)) < 2 .or. size(c1(1,:,1)) < lmax+1 &
-            .or. size(c1(1,1,:)) < lmax+1) then
+    if (size(cilm1(:,1,1)) < 2 .or. size(cilm1(1,:,1)) < lmax+1 &
+            .or. size(cilm1(1,1,:)) < lmax+1) then
         print*, "Error --- SHCrossPowerSpectrumDensityC"
-        print*, "C1 must be dimensioned as (2, LMAX+1, LMAX+1) " // &
+        print*, "CILM1 must be dimensioned as (2, LMAX+1, LMAX+1) " // &
                 "where lmax is", lmax
-        print*, "Input array is dimensioned ", size(c1(:,1,1)), &
-                size(c1(1,:,1)), size(c1(1,1,:))
+        print*, "Input array is dimensioned ", size(cilm1(:,1,1)), &
+                size(cilm1(1,:,1)), size(cilm1(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -607,12 +610,12 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
             stop
         end if
 
-    else if (size(c2(:,1,1)) < 2 .or. size(c2(1,:,1)) < lmax+1 &
-            .or. size(c2(1,1,:)) < lmax+1) then
+    else if (size(cilm2(:,1,1)) < 2 .or. size(cilm2(1,:,1)) < lmax+1 &
+            .or. size(cilm2(1,1,:)) < lmax+1) then
         print*, "Error --- SHCrossPowerSpectrumDensityC"
-        print*, "C2 must be dimensioned as (2, LMAX+1, LMAX+1)"
-        print*, "Input array is dimensioned ", size(c2(:,1,1)), &
-                size(c2(1,:,1)), size(c2(1,1,:))
+        print*, "CILM2 must be dimensioned as (2, LMAX+1, LMAX+1)"
+        print*, "Input array is dimensioned ", size(cilm2(:,1,1)), &
+                size(cilm2(1,:,1)), size(cilm2(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -638,14 +641,14 @@ subroutine SHCrossPowerSpectrumDensityC(c1, c2, lmax, cspectra, exitstatus)
     do l = 0, lmax
         l1 = l + 1
 
-        cspectra(l1) = c1(1, l1, 1) * conjg(c2(1, l1, 1))
+        cspectra(l1) = cilm1(1, l1, 1) * conjg(cilm2(1, l1, 1))
 
         do m = 1, l, 1
             m1 = m + 1
 
             do i = 1, 2
                 cspectra(l1) = cspectra(l1) &
-                               + c1(i, l1, m1) * conjg(c2(i, l1, m1))
+                               + cilm1(i, l1, m1) * conjg(cilm2(i, l1, m1))
 
             end do
 

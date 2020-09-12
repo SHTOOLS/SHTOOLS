@@ -7,7 +7,7 @@ dependencies:
     - liblapack>=3.8
     - openblas
     - gmt>=6.1.1
-    - pyshtools>=4.7
+    - pyshtools>=4.7.0
     - numpy
     - scipy>=0.14.0
     - matplotlib>=3.3
@@ -15,7 +15,7 @@ dependencies:
     - xarray
     - requests
     - cartopy>=0.18.0
-    - pygmt>=0.2
+    - pygmt>=0.2.0
     - pooch>=1.1
     - tqdm
     - jupyter

@@ -45,7 +45,7 @@ install:
         xarray
         requests
         cartopy>=0.18.0
-        pygmt
+        pygmt>=0.2.0
         pooch>=1.1
         tqdm
         jupyter

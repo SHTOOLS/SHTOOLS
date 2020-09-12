@@ -1,4 +1,4 @@
-subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
+subroutine SHMultiTaperMaskSE(mtse, sd, cilm, lmax, tapers, lmaxt, K, &
                               taper_wt, norm, csphase, exitstatus)
 !------------------------------------------------------------------------------
 !
@@ -12,8 +12,8 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
 !   Calling Parameters
 !
 !       IN
-!           sh          Input spherical harmonic file.
-!           lmax        Maximum degree of sh.
+!           cilm        Input spherical harmonic file.
+!           lmax        Maximum degree of cilm.
 !           tapers      The eigenvector matrix returned from a program
 !                       such as SHReturnTapersMap, where each column
 !                       corresponds to the spherical-harmonic coefficients of
@@ -60,7 +60,7 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
     implicit none
 
     real(dp), intent(out) :: mtse(:), sd(:)
-    real(dp), intent(in) :: sh(:,:,:), tapers(:,:)
+    real(dp), intent(in) :: cilm(:,:,:), tapers(:,:)
     integer, intent(in) :: lmax, lmaxt, K
     real(dp), intent(in), optional :: taper_wt(:)
     integer, intent(in), optional :: csphase, norm
@@ -78,12 +78,13 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
 
     pi = acos(-1.0_dp)
 
-    if (size(sh(:,1,1)) < 2 .or. size(sh(1,:,1)) < lmax+1 .or. &
-        size(sh(1,1,:)) < lmax+1) then
+    if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. &
+        size(cilm(1,1,:)) < lmax+1) then
         print*, "Error --- SHMultiTaperMaskSE"
-        print*, "SH must be dimensioned (2,LMAX+1, LMAX+1) where LMAX is ", lmax
-        print*, "Input array is dimensioned ", size(sh(:,1,1)), &
-                size(sh(1,:,1)), size(sh(1,1,:))
+        print*, "CILM must be dimensioned (2,LMAX+1, LMAX+1) where LMAX is ", &
+                lmax
+        print*, "Input array is dimensioned ", size(cilm(:,1,1)), &
+                size(cilm(1,:,1)), size(cilm(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -292,7 +293,7 @@ subroutine SHMultiTaperMaskSE(mtse, sd, sh, lmax, tapers, lmaxt, K, &
     !
     !--------------------------------------------------------------------------
 
-    call MakeGridGLQ(grid1glq, sh(1:2,1:lmax+1, 1:lmax+1), &
+    call MakeGridGLQ(grid1glq, cilm(1:2,1:lmax+1, 1:lmax+1), &
                      lmaxmul, zero = zero, csphase = phase, norm = mnorm)
 
     do i = 1, K
