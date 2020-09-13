@@ -16,13 +16,8 @@
  * operator: &
  *
  * A lot of the fortran subroutines have optional arguments. In c/c++ optional
- * arguments in arbitrary order are not possible. Thus, always all arguments
- * need to be specified. However, you can use nullptr, which is equivalent to
- * not specifying the argument in fortran.
- *
- * Currently, the function calls are quite ugly by reason of the large amount of
- * arguments. I am also working on a interface, internally using the same calls
- * but with improved signature. However, the development may take some time.
+ * arguments in arbitrary order are not possible. You can use nullptr, which is
+ * equivalent to not specifying the argument in fortran.
  * 
  *
  */
@@ -39,8 +34,10 @@ main(int argc, char** argv)
   // In Fortran Cilm has the dimension 2 x cilm_dim x cilm_dim
   // In the C interface we always use 1-D arrays
   std::vector<double> cilm(2 * cilm_dim * cilm_dim);
+  
+  int exitstatus;
 
-  shtools::cSHRead(infile.c_str(),
+  shtools::SHRead(infile.c_str(),
                    infile.size(),
                    &cilm[0],
                    cilm_dim,
@@ -49,17 +46,24 @@ main(int argc, char** argv)
                    nullptr,
                    0,
                    nullptr,
-                   0,
-                   0,
-                   0,
-                   nullptr);
-
+                   &exitstatus);
+  
+  std::cerr << "SHRead exit status: " << exitstatus << std::endl;
+  
+  // convert to 'vector' format and print
+  std::vector<double> index(cilm_dim*cilm_dim);
+  shtools::SHCilmToVector(&cilm[0],cilm_dim,&index[0],lmax, &exitstatus);
+  std::cerr << "SHCilmToVector exit status: " << exitstatus << std::endl;
+  for(double d : index )
+      std::cerr << d << " ";
+  std::cerr << std::endl;
+  
   double lat = 10.0;
   double lon = 30.0;
 
   // Here the optional arguments norm, csphase, dealloc are null pointers.
   // Thus, they are not used. 
-  double val = shtools::cMakeGridPoint(
+  double val = shtools::MakeGridPoint(
     &cilm[0], cilm_dim, lmax, lat, lon, nullptr, nullptr, nullptr);
 
   std::cout << "diff to python " << val - 3395259.548270001 << std::endl;
