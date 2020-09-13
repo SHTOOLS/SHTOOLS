@@ -241,7 +241,7 @@ SHRead2.o : ftypes.mod
 SHReadJPL.o : ftypes.mod
 SHReturnTapers.o : ftypes.mod SHTOOLS.mod
 SHReturnTapersM.o : ftypes.mod SHTOOLS.mod
-SHReturnTapersMap.o : SHTOOLS.mod
+SHReturnTapersMap.o : ftypes.mod SHTOOLS.mod
 SHRotateCoef.o : ftypes.mod
 SHRotateRealCoef.o : ftypes.mod SHTOOLS.mod
 SHRotateTapers.o : ftypes.mod SHTOOLS.mod
