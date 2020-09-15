@@ -8,13 +8,8 @@
 #
 ###############################################################################
 
-F95 = gfortran
-
 SHELL = /bin/sh
 
-LIBNAME = SHTOOLS
-LIBPATH = ../lib
-MODPATH = ../modules
 PROG = $(LIBPATH)/lib$(LIBNAME).a
 
 LIBTOOL = libtool
@@ -72,7 +67,6 @@ SRCS0 = CilmPlus.f95 CilmMinus.f95 \
 
 OBJS0 := $(SRCS0:%.f95=%.o)
 
-
 SRCSLAPACK = EigValSym.F95 EigValVecSym.F95 EigValVecSymTri.F95 \
 	SHExpandLSQ.F95 SHMTDebias.F95 SHMTVarOpt.F95
 
@@ -122,7 +116,7 @@ clean-obs-mod:
 clean-prog-mod:
 	@-rm -f $(PROG)
 	@-rm -f $(MODPATH)/*.mod
-	
+
 %.mod: %.f95
 	$(F95) -c $(F95FLAGS) $<
 %.o: %.f95 SHTOOLS.mod
