@@ -268,7 +268,7 @@ fortran-mp:
 	@echo $(F95) $(MODFLAG) $(OPENMPFLAGS) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) $(LAPACK) $(BLAS)
 	@echo
 
-install: fortran
+install:
 	mkdir -pv $(DESTDIR)$(SYSLIBPATH)
 	cp $(LIBPATH)/lib$(LIBNAME).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAME).a
 	-cp $(LIBPATH)/lib$(LIBNAMEMP).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAMEMP).a
