@@ -12,6 +12,22 @@
 #   make clean
 #       Delete the compile executibles.
 #
+#
+#   NOTES
+#
+#   This Makefile is intended to be invoked by the main Makefile in the SHTOOLS
+#   repository. To use this Makefile independently, it is necessary to provide
+#   the following arguments:
+#
+#       F95 - name of the Fortran 95 compiler
+#       F95FLAGS - flags to use with the Fortran 95 compiler
+#       LIBNAME - name of the SHTOOLS library (without lib and .a)
+#       LIBPATH - path to the SHTOOLS library
+#       MODFLAG - flag used to identify the path of the compiled modules
+#       FFTW - all flags necessary to find and link to the FFTW library
+#       LAPACK - all flags necessary to find and link to the LAPACK library
+#       BLAS - all flags necessary to find and link to the BLAS library
+#
 ###############################################################################
 
 SHELL = /bin/sh

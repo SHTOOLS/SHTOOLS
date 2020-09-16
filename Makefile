@@ -122,6 +122,7 @@
 #
 ###############################################################################
 
+# The VERSION number is used only for generating the man pages
 VERSION = 4.7
 
 LIBNAME = SHTOOLS
@@ -134,7 +135,6 @@ JEKYLL = bundle exec jekyll
 FLAKE8 = flake8
 SHELL = /bin/sh
 PY3EXT = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
-
 
 FDOCDIR = src/fdoc
 PYDOCDIR = src/pydoc
@@ -160,59 +160,61 @@ LAPACK_UNDERSCORE = 0
 
 FLAKE8_FILES = setup.py pyshtools examples/python
 
-ifeq ($(F95), f95)
-# Default Absoft f95 flags
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=10
-#-march=host
-MODFLAG = -p $(MODPATH)
-SYSMODFLAG = -p $(SYSMODPATH)
-OPENMPFLAGS ?= -openmp
-BLAS ?= -lblas
-LAPACK ?= -llapack
-else ifeq ($(F95), gfortran)
-# Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3 -std=f2003 -ffast-math
-# -march=native
-MODFLAG = -I$(MODPATH)
-SYSMODFLAG = -I$(SYSMODPATH)
-OPENMPFLAGS ?= -fopenmp
-BLAS ?= -lblas
-LAPACK ?= -llapack
-else ifeq ($(F95), ifort)
-# Default intel fortran flags
-F95FLAGS ?= -m64 -fpp -free -O3 -Tf
-MODFLAG = -I$(MODPATH)
-SYSMODFLAG = -I$(SYSMODPATH)
-OPENMPFLAGS ?= -qopenmp
-LAPACK ?= -mkl
-BLAS ?= 
-else ifeq ($(F95), g95)
-# Default g95 flags.
-F95FLAGS ?= -O3 -fno-second-underscore
-MODFLAG = -I$(MODPATH)
-SYSMODFLAG = -I$(SYSMODPATH)
-OPENMPFLAGS ?=
-BLAS ?= -lblas
-LAPACK ?= -llapack
-else ifeq ($(F95), pgf90)
-# Default pgf90 flags
-F95FLAGS ?= -fast 
-MODFLAG = -Imodpath
-SYSMODFLAG = -Imodpath
-OPENMPFLAGS ?=
-BLAS ?= -lblas
-LAPACK ?= -llapack
+# Set default compiler flags based on the name of the F95 compiler by searching
+# if the short name of the compiler is in $(F95).
+ifeq ($(findstring gfortran,$(F95)),gfortran)
+	# Default gfortran flags
+	F95FLAGS ?= -m64 -fPIC -O3 -std=f2003 -ffast-math
+	# -march=native
+	MODFLAG = -I$(MODPATH)
+	SYSMODFLAG = -I$(SYSMODPATH)
+	OPENMPFLAGS ?= -fopenmp
+	BLAS ?= -lblas
+	LAPACK ?= -llapack
+else ifeq ($(findstring f95,$(F95)),f95)
+	# Default Absoft f95 flags
+	F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=10
+	#-march=host
+	MODFLAG = -p $(MODPATH)
+	SYSMODFLAG = -p $(SYSMODPATH)
+	OPENMPFLAGS ?= -openmp
+	BLAS ?= -lblas
+	LAPACK ?= -llapack
+else ifeq ($(findstring ifort,$(F95)),ifort)
+	# Default intel fortran flags
+	F95FLAGS ?= -m64 -fpp -free -O3 -Tf
+	MODFLAG = -I$(MODPATH)
+	SYSMODFLAG = -I$(SYSMODPATH)
+	OPENMPFLAGS ?= -qopenmp
+	LAPACK ?= -mkl
+	BLAS ?= 
+else ifeq ($(findstring g95,$(F95)),g95)
+	# Default g95 flags.
+	F95FLAGS ?= -O3 -fno-second-underscore
+	MODFLAG = -I$(MODPATH)
+	SYSMODFLAG = -I$(SYSMODPATH)
+	OPENMPFLAGS ?=
+	BLAS ?= -lblas
+	LAPACK ?= -llapack
+else ifeq ($(findstring pgf90,$(F95)),pgf90)
+	# Default pgf90 flags
+	F95FLAGS ?= -fast 
+	MODFLAG = -Imodpath
+	SYSMODFLAG = -Imodpath
+	OPENMPFLAGS ?=
+	BLAS ?= -lblas
+	LAPACK ?= -llapack
 else ifeq ($(origin F95FLAGS), undefined)
-F95FLAGS = -m64 -O3
-MODFLAG = -I$(MODPATH)
-SYSMODFLAG = -I$(SYSMODPATH)
-OPENMPFLAGS ?=
-BLAS ?= -lblas
-LAPACK ?= -llapack
+	F95FLAGS = -m64 -O3
+	MODFLAG = -I$(MODPATH)
+	SYSMODFLAG = -I$(SYSMODPATH)
+	OPENMPFLAGS ?=
+	BLAS ?= -lblas
+	LAPACK ?= -llapack
 endif
 
 ifeq ($(LAPACK_UNDERSCORE),1)
-LAPACK_FLAGS = -DLAPACK_UNDERSCORE
+	LAPACK_FLAGS = -DLAPACK_UNDERSCORE
 endif
 
 

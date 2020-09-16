@@ -6,6 +6,12 @@
 #   make clean
 #       Remove the lib and module files in the LOCAL directory.
 #
+#
+#   Notes:
+#
+#   This Makefile is intended to be invoked by the main Makefile in the SHTOOLS
+#   repository.
+#
 ###############################################################################
 
 SHELL = /bin/sh
@@ -19,22 +25,6 @@ ARFLAGS = -r
 RLIB = ranlib
 RLIBFLAGS =
 LDFLAGS = -s
-
-ifeq ($(F95),f95)
-# Default Absoft Pro Fortran flags
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=11 # -march=host
-else ifeq ($(F95),g95)
-# Default g95 flags.
-F95FLAGS ?= -O3 -fno-second-underscore
-else ifeq ($(F95),gfortran)
-# Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3 -ffast-math
-else ifeq ($(F95),ifort)
-# Default intel fortran flags
-F95FLAGS ?= -m64 -fpp -free -O3 -Tf
-else ifeq ($(origin F95FLAGS), undefined)
-F95FLAGS = -m64 -O3
-endif
 
 SRCSMOD = ftypes.f95 SHTOOLS.f95 FFTW3.f95 PlanetsConstants.f95
 
