@@ -8,3 +8,4 @@ six
 shapely
 cartopy>=0.18.0
 pygmt>=0.2
+flake8
