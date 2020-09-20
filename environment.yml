@@ -21,3 +21,4 @@ dependencies:
     - jupyter
     - pypandoc
     - nb_conda_kernels
+    - pip
