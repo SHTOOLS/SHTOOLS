@@ -33,14 +33,14 @@ from subprocess import check_call  # noqa: E402
 # Convert markdown README.md to restructured text (.rst) for PyPi, and
 # remove the first 5 lines that contain a reference to the shtools logo.
 # pandoc can be installed either by conda or pip:
-# conda install -c conda-forge pandoc pypandoc
-# pip install pypandoc
+#     conda install -c conda-forge pypandoc
+#     pip install pypandoc
 try:
     import pypandoc
     rst = pypandoc.convert_file('README.md', 'rst')
     long_description = rst.split('\n', 5)[5]
 except(IOError, ImportError):
-    print('*** pypandoc is not installed. PYPI description will not be '
+    print('*** pypandoc is not installed. PYPI long_description will not be '
           'formatted correctly. ***')
     long_description = open('README.md').read()
 
@@ -76,18 +76,18 @@ INSTALL_REQUIRES = [
     'astropy',
     'xarray',
     'requests',
-    'pooch',
+    'pooch>=1.1',
     'tqdm'
 ]
 
 EXTRAS_REQUIRE = {
-    'maps': ['cartopy', 'pygmt>=0.2', 'palettable']
+    'extras': ['cartopy>=0.18.0', 'pygmt>=0.2', 'palettable>=3.3']
 }
 
 print('INSTALLING SHTOOLS {}'.format(VERSION))
 
 
-# Custom Builder
+# Custom build class
 class build(_build):
     """This overrides the standard build class to include the doc build."""
 
@@ -109,21 +109,9 @@ class build(_build):
         print('---- ALL DONE ----')
 
 
-# Custom Installer
-class install(_install):
-    """This overrides the standard build class to include the doc build."""
-
-    description = "builds python documentation"
-
-    def run(self):
-        """Build the Fortran library, all python extensions and the docs."""
-        print('---- CUSTOM INSTALL ----')
-        _install.run(self)
-
-
-# Custom Installer
+# Custom develop classs
 class develop(_develop):
-    """This overrides the standard build class to include the doc build."""
+    """This overrides the standard develop class to include the doc build."""
 
     description = "builds python documentation"
 
@@ -144,8 +132,19 @@ class develop(_develop):
         print('---- ALL DONE ----')
 
 
-# configure python extension to be compiled with f2py
+# Custom install class
+class install(_install):
+    """This overrides the standard install class to include the doc build."""
 
+    description = "builds python documentation"
+
+    def run(self):
+        """Build the Fortran library, all python extensions and the docs."""
+        print('---- CUSTOM INSTALL ----')
+        _install.run(self)
+
+
+# configure python extension to be compiled with f2py
 def configuration(parent_package='', top_path=None):
     """Configure all packages that need to be built."""
     config = Configuration('', parent_package, top_path)
@@ -163,7 +162,8 @@ def configuration(parent_package='', top_path=None):
 
     # collect all Fortran sources
     files = os.listdir('src')
-    exclude_sources = ['PlanetsConstants.f95', 'PythonWrapper.f95']
+    exclude_sources = ['PlanetsConstants.f95', 'PythonWrapper.f95',
+                       'cWrapper.f95']
     sources = [os.path.join('src', file) for file in files if
                file.lower().endswith(('.f95', '.c')) and file not in
                exclude_sources]
@@ -223,7 +223,7 @@ metadata = dict(
     download_url='https://github.com/SHTOOLS/SHTOOLS/zipball/master',
     author='The SHTOOLS developers',
     author_email="mark.a.wieczorek@gmail.com",
-    license='BSD',
+    license='BSD-3-Clause',
     keywords=KEYWORDS,
     python_requires=PYTHON_REQUIRES,
     install_requires=INSTALL_REQUIRES,

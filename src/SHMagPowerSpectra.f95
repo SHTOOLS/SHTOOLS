@@ -1,23 +1,23 @@
-function SHMagPowerL(c, a, r, l)
+function SHMagPowerL(cilm, a, r, l)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power for
 !   degree l of the magnetic field evaluated at radius r,
 !   given the Schmidt seminormalized spherical harmonic
-!   coefficients c(i, l, m) of the magnetic potential evaluated
+!   coefficients cilm(i, l, m) of the magnetic potential evaluated
 !   at radius a.
 !
 !   power(l) = (a/r)^(2l+4) (l+1) sum_{m=0}^l ( c1lm**2 + c2lm**2 )
 !
 !   Calling Parameters
 !
-!       c   Schmidt-seminormalized spherical harmonic coefficients of the
-!           magnetic potential evaluated at radius a, dimensioned as
-!           (2, lmax+1, lmax+1).
-!       a   Reference radius of the magnetic potential spherical harmonic
-!           coefficients.
-!       r   Radius to evaluate the magnetic field.
-!       l   Spherical harmonic degree to compute power.
+!       cilm   Schmidt-seminormalized spherical harmonic coefficients of the
+!              magnetic potential evaluated at radius a, dimensioned as
+!              (2, lmax+1, lmax+1).
+!       a      Reference radius of the magnetic potential spherical harmonic
+!              coefficients.
+!       r      Radius to evaluate the magnetic field.
+!       l      Spherical harmonic degree to compute power.
 !
 !   Copyright (c) 2016, SHTOOLS
 !   All rights reserved.
@@ -28,19 +28,20 @@ function SHMagPowerL(c, a, r, l)
     implicit none
 
     real(dp) :: SHMagPowerL
-    real(dp), intent(in) :: c(:,:,:)
+    real(dp), intent(in) :: cilm(:,:,:)
     real(dp), intent(in) :: a, r
     integer, intent(in) :: l
     integer i, m, l1, m1
 
     l1 = l + 1
 
-    if (size(c(:,1,1)) < 2 .or. size(c(1,:,1)) < l1 .or. &
-        size(c(1,1,:)) < l1) then
+    if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < l1 .or. &
+        size(cilm(1,1,:)) < l1) then
         print*, "Error --- SHMagPowerL"
-        print*, "C must be dimensioned as (2, L+1, L+1) where L is ", l
-        print*, "Input array is dimensioned ", size(c(:,1,1)), &
-                                               size(c(1,:,1)), size(c(1,1,:))
+        print*, "CILM must be dimensioned as (2, L+1, L+1) where L is ", l
+        print*, "Input array is dimensioned ", size(cilm(:,1,1)), &
+                                               size(cilm(1,:,1)), &
+                                               size(cilm(1,1,:))
         stop
 
     end if
@@ -50,7 +51,7 @@ function SHMagPowerL(c, a, r, l)
     do m = 0, l
         m1 = m + 1
         do i = 1, 2
-            SHMagPowerL = SHMagPowerL + c(i, l1, m1)**2
+            SHMagPowerL = SHMagPowerL + cilm(i, l1, m1)**2
         end do
     end do
 
@@ -59,13 +60,13 @@ function SHMagPowerL(c, a, r, l)
 end function SHMagPowerL
 
 
-subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra, exitstatus)
+subroutine SHMagPowerSpectrum(cilm, a, r, lmax, spectra, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This function will compute the dimensionless power spectrum
 !   of the magnetic field evaluated at radius r,
 !   given the Schmidt seminormalized spherical harmonic
-!   coefficients c(i, l, m) of the magnetic potential evaluated
+!   coefficients cilm(i, l, m) of the magnetic potential evaluated
 !   at radius a.
 !
 !   power(l) = (a/r)^(2l+4) (l+1) sum_{m=0}^l ( c1lm**2 + c2lm**2 )
@@ -73,9 +74,9 @@ subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra, exitstatus)
 !   Calling Parameters
 !
 !       IN
-!           c       Schmidt seminormalized spherical harmonic coefficients of
-!                   the magnetic potential evaluated at radius a, dimensioned as
-!                   (2, lmax+1, lmax+1).
+!           cilm    Schmidt seminormalized spherical harmonic coefficients of
+!                   the magnetic potential evaluated at radius a, dimensioned
+!                   as (2, lmax+1, lmax+1).
 !           a       Reference radius of the magnetic potential spherical
 !                   harmonic coefficients.
 !           r       Radius to evaluate the magnetic field.
@@ -97,12 +98,12 @@ subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra, exitstatus)
 !   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
-!-------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
     use ftypes
 
     implicit none
 
-    real(dp), intent(in) :: c(:,:,:)
+    real(dp), intent(in) :: cilm(:,:,:)
     real(dp), intent(in) :: a, r
     integer, intent(in) :: lmax
     real(dp), intent(out) ::spectra(:)
@@ -111,13 +112,14 @@ subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra, exitstatus)
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (size(c(:,1,1)) < 2 .or. size(c(1,:,1)) < lmax+1 &
-        .or. size(c(1,1,:)) < lmax+1) then
+    if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 &
+        .or. size(cilm(1,1,:)) < lmax+1) then
         print*, "Error --- SHMagPowerSpectrum"
-        print*, "C must be dimensioned as (2, LMAX+1, LMAX+1) " // &
+        print*, "CILM must be dimensioned as (2, LMAX+1, LMAX+1) " // &
                 "where LMAX is ", lmax
-        print*, "Input array is dimensioned ", size(c(:,1,1)), &
-                                               size(c(1,:,1)), size(c(1,1,:))
+        print*, "Input array is dimensioned ", size(cilm(:,1,1)), &
+                                               size(cilm(1,:,1)), &
+                                               size(cilm(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -147,7 +149,7 @@ subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra, exitstatus)
             m1 = m + 1
 
             do i = 1, 2
-                spectra(l1) = spectra(l1) + c(i, l1, m1)**2
+                spectra(l1) = spectra(l1) + cilm(i, l1, m1)**2
             end do
         end do
 

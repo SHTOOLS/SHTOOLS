@@ -7,20 +7,12 @@ matrix:
       env: PYTHON_VERSION=3.8
     - os: osx
       env: PYTHON_VERSION=3.8
-      before_cache:
-        - brew cleanup
-      cache:
-        directories:
-          - $HOME/Library/Caches/Homebrew
 
 addons:
   apt:
     packages:
+    - gcc
     - gfortran
-  homebrew:
-    packages:
-    - wget
-    update: true
 
 install:
   # Download and install miniconda
@@ -30,34 +22,34 @@ install:
       export OS="Linux";
     fi
 
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -O miniconda.sh
+  - curl -L https://repo.continuum.io/miniconda/Miniconda3-latest-${OS}-x86_64.sh -o miniconda.sh
   - bash miniconda.sh -u -b -p $HOME/miniconda
   - source "$HOME/miniconda/etc/profile.d/conda.sh"
   - hash -r
 
   # Configure conda testing environment
   - conda config --set always_yes yes --set changeps1 no
-  - conda config --append channels conda-forge
+  - conda config --add channels conda-forge
   - conda update -q conda
 
   - conda create -q -n test-environment
         python=$PYTHON_VERSION
+        numpy
         fftw>=3.3.8
         liblapack>=3.8
         openblas
-        gmt
-        numpy
-        scipy
-        matplotlib=3.3.*
+        gmt>=6.1.1
+        scipy>=0.14.0
+        matplotlib>=3.3
         astropy
         xarray
         requests
-        cartopy
-        pygmt
-        pooch
+        cartopy>=0.18.0
+        pygmt>=0.2.0
+        pooch>=1.1
         tqdm
         jupyter
-        palettable
+        palettable>=3.3
         pypandoc
   - conda activate test-environment
 

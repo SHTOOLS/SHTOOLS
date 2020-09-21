@@ -13,7 +13,7 @@ Perform a localized multitaper cross-spectral analysis using using arbitrary win
 
 ## Usage
 
-call SHMultiTaperMaskCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`, `lmaxt`, `k`, `taper_wt`, `norm`, `csphase`, `exitstatus`)
+call SHMultiTaperMaskCSE (`mtse`, `sd`, `cilm1`, `lmax1`, `cilm2`, `lmax2`, `tapers`, `lmaxt`, `k`, `taper_wt`, `norm`, `csphase`, `exitstatus`)
 
 ## Parameters
 
@@ -23,17 +23,17 @@ call SHMultiTaperMaskCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`
 `sd` : output, real(dp), dimension (`lmax`-`lmaxt`+1)
 :   The standard error of the localized multitaper cross-power spectral estimates. `lmax` is the smaller of `lmax1` and `lmax2`.
 
-`sh1` : input, real(dp), dimension (2, `lmax1`+1, `lmax1`+1)
+`cilm1` : input, real(dp), dimension (2, `lmax1`+1, `lmax1`+1)
 :   The spherical harmonic coefficients of the first function.
 
 `lmax1` : input, integer
-:   The spherical harmonic bandwidth of `sh1`.
+:   The spherical harmonic bandwidth of `cilm1`.
 
-`sh2` : input, real(dp), dimension (2, `lmax2`+1, `lmax2`+1)
+`cilm2` : input, real(dp), dimension (2, `lmax2`+1, `lmax2`+1)
 :   The spherical harmonic coefficients of the second function.
 
 `lmax2` : input, integer
-:   The spherical harmonic bandwidth of `sh2`.
+:   The spherical harmonic bandwidth of `cilm2`.
 
 `tapers` : input, real(dp), dimension ((`lmaxt`+1)**2, `k`)
 :   An array of the `k` windowing functions, arranged in columns, obtained from a call to `SHReturnTapersMap`. The spherical harmonic coefficients are packed according to the conventions in `SHCilmToVector`.
@@ -58,7 +58,7 @@ call SHMultiTaperMaskCSE (`mtse`, `sd`, `sh1`, `lmax1`, `sh2`, `lmax2`, `tapers`
 
 ## Description
 
-`SHMultiTaperMaskCSE` will perform a localized multitaper cross-spectral analysis of two input functions expressed in spherical harmonics, `SH1` and `SH2`, using an arbitrary set of windows derived from a mask. The maximum degree of the localized multitaper power spectrum estimate is `lmax-lmaxt`, where `lmax` is the smaller of `lmax1` and `lmax2`. The matrix `tapers` contains the spherical harmonic coefficients of the windows and can be obtained by a call to `SHReturnTapersMap`. The coefficients of each window are stored in a single column, ordered according to the conventions used in `SHCilmToVector`.
+`SHMultiTaperMaskCSE` will perform a localized multitaper cross-spectral analysis of two input functions expressed in spherical harmonics, `cilm1` and `cilm2`, using an arbitrary set of windows derived from a mask. The maximum degree of the localized multitaper power spectrum estimate is `lmax-lmaxt`, where `lmax` is the smaller of `lmax1` and `lmax2`. The matrix `tapers` contains the spherical harmonic coefficients of the windows and can be obtained by a call to `SHReturnTapersMap`. The coefficients of each window are stored in a single column, ordered according to the conventions used in `SHCilmToVector`.
 
 If the optional array `taper_wt` is specified, then these weights will be used in calculating a weighted average of the individual `k` tapered estimates (`mtse`) and the corresponding standard error of the estimates (`sd`). If not present, the weights will all be assumed to be equal. When `taper_wt` is not specified, the mutltitaper spectral estimate for a given degree will be calculated as the average obtained from the `k` individual tapered estimates. The standard error of the multitaper estimate at degree l is simply the population standard deviation, `S = sqrt(sum (Si - mtse)^2 / (k-1))`, divided by sqrt(`k`). See Wieczorek and Simons (2007) for the relevant expressions when weighted estimates are used.
 

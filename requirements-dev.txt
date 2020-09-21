@@ -1,10 +1,10 @@
 ipython
-palettable
+palettable>=3.3
 jupyter
 pypandoc
 cython
 pyshp
 six
 shapely
-cartopy
+cartopy>=0.18.0
 pygmt>=0.2

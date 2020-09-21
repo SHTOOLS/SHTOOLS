@@ -13,7 +13,7 @@ Perform a localized multitaper spectral analysis using arbitrary windows derived
 
 ## Usage
 
-call SHMultiTaperMaskSE (`mtse`, `sd`, `sh`, `lmax`, `tapers`, `lmaxt`, `k`, `taper_wt`, `norm`, `csphase`, `exitstatus`)
+call SHMultiTaperMaskSE (`mtse`, `sd`, `cilm`, `lmax`, `tapers`, `lmaxt`, `k`, `taper_wt`, `norm`, `csphase`, `exitstatus`)
 
 ## Parameters
 
@@ -23,11 +23,11 @@ call SHMultiTaperMaskSE (`mtse`, `sd`, `sh`, `lmax`, `tapers`, `lmaxt`, `k`, `ta
 `sd` : output, real(dp), dimension (`lmax`-`lmaxt`+1)
 :   The standard error of the localized multitaper power spectral estimates.
 
-`sh` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
+`cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the function to be localized.
 
 `lmax` : input, integer
-:   The spherical harmonic bandwidth of `sh`.
+:   The spherical harmonic bandwidth of `cilm`.
 
 `tapers` : input, real(dp), dimension ((`lmaxt`+1)**2, `k`)
 :   An array of the `k` windowing functions, arranged in columns, obtained from a call to `SHReturnTapersMap`. The spherical harmonic coefficients are packed according to the conventions in `SHCilmToVector`.

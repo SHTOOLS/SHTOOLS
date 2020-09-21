@@ -90,6 +90,8 @@ sidebars:
 description: "SHTOOLS/pyshtools is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data."
 # the description is used in the feed.xml file
 
+encoding: utf-8
+
 # needed for sitemap.xml file and github pages
 url : https://shtools.github.io/SHTOOLS
 baseurl: /SHTOOLS

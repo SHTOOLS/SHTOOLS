@@ -22,10 +22,10 @@ Inspect a constant using the print function:
 
     >>> print(G)
       Name   = Gravitational constant
-      Value  = 6.67408e-11
-      Uncertainty  = 3.1e-15
+      Value  = 6.6743e-11
+      Uncertainty  = 1.5e-15
       Unit  = m3 / (kg s2)
-      Reference = CODATA 2014
+      Reference = CODATA 2018
 """
 
 try:
@@ -40,6 +40,7 @@ except ImportError:
 
 from astropy.constants import G
 from astropy.constants import mu0
+from astropy.constants import codata
 
 # == Constants organized by planet ===
 
@@ -49,9 +50,7 @@ from . import Earth
 from . import Moon
 from . import Mars
 
-# === Define groups of constants and __all__ ===
+# === Define __all__ ===
 
-_constants_fundamental = ['G', 'mu0']
-
-__all__ = ['Constant', 'Quantity', 'G', 'mu0', 'Mercury', 'Venus', 'Earth',
-           'Moon', 'Mars']
+__all__ = ['Constant', 'Quantity', 'G', 'mu0', 'codata', 'Mercury', 'Venus',
+           'Earth', 'Moon', 'Mars']

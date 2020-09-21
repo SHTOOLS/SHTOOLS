@@ -9,15 +9,15 @@ dependencies:
     - gmt>=6.1.1
     - numpy
     - scipy>=0.14.0
-    - matplotlib=3.3.*
+    - matplotlib>=3.3
     - astropy
     - xarray
     - requests
-    - pooch
+    - pooch>=1.1
     - tqdm
-    - cartopy
-    - pygmt>=0.2
-    - palettable
+    - cartopy>=0.18.0
+    - pygmt>=0.2.0
+    - palettable>=3.3
     - jupyter
     - pypandoc
     - nb_conda_kernels

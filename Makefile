@@ -19,8 +19,8 @@
 #       make python-tests-no-timing  : Run the Python test/example suite,
 #                                      (excluding timing tests).
 #       make run-notebooks    : Run notebooks to test for errors.
-#       make install-fortran  : Place the compiled libraries and docs in
-#                               $(DESTDIR)$(PREFIX) [default is /usr/local].
+#       make install          : Place the compiled libraries and docs in
+#                               $(DESTDIR)$(PREFIX) [default is {}{usr/local}].
 #       make uninstall        : Remove files copied to $(DESTDIR)$(PREFIX).
 #       make clean            : Return the folder to its original state.
 #       make check            : Check syntax of python files using flake8.
@@ -133,6 +133,8 @@ JUPYTER = jupyter nbconvert --ExecutePreprocessor.kernel_name=python3
 JEKYLL = bundle exec jekyll
 FLAKE8 = flake8
 SHELL = /bin/sh
+PY3EXT = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
+
 
 FDOCDIR = src/fdoc
 PYDOCDIR = src/pydoc
@@ -151,7 +153,6 @@ PYPATH = $(PWD)
 PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
 SYSMODPATH = $(PREFIX)/include
-PY3EXT = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
 SYSSHAREPATH = $(PREFIX)/share
 
 FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
@@ -215,7 +216,7 @@ LAPACK_FLAGS = -DLAPACK_UNDERSCORE
 endif
 
 
-.PHONY: all fortran fortran-mp install-fortran fortran-tests fortran-tests-mp \
+.PHONY: all fortran fortran-mp install fortran-tests fortran-tests-mp \
 	fortran-tests-no-timing fortran-tests-no-timing-mp run-fortran-tests \
 	run-fortran-tests-no-timing doc remove-doc python-tests \
 	python-tests-no-timing uninstall clean clean-fortran-tests \
@@ -265,7 +266,7 @@ fortran-mp:
 	@echo $(F95) $(MODFLAG) $(OPENMPFLAGS) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) $(LAPACK) $(BLAS)
 	@echo
 
-install-fortran: fortran
+install: fortran
 	mkdir -pv $(DESTDIR)$(SYSLIBPATH)
 	cp $(LIBPATH)/lib$(LIBNAME).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAME).a
 	-cp $(LIBPATH)/lib$(LIBNAMEMP).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAMEMP).a

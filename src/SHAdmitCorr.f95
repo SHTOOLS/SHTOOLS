@@ -1,4 +1,4 @@
-subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, exitstatus)
+subroutine SHAdmitCorr(gilm, tilm, lmax, admit, corr, admit_error, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will compute the admittance and correlation between the two
@@ -9,21 +9,21 @@ subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, exitstatus)
 !
 !   Assuming that the two input fields are related by
 !
-!   G = Z T + N
+!   gilm = Z tilm + N
 !
 !   where N is noise, the admittance is calcalated as
 !
-!       Z = < G T > / < T T >,
+!       Z = < gilm tilm > / < tilm tilm >,
 !
 !   the correlation is
 !
-!       correlation = < G T > / sqrt(< G G >) / sqrt(< T T >).
+!       correlation = < gilm tilm > / sqrt(< gilm gilm > < tilm tilm >).
 !
 !   Assuming that the two fields are perfectly correlated, and that the lack of
 !   coherence is a result of noise, the uncertainty on the admittance can be
 !   calculaed from
 !
-!       sigma^2 = ( < G G > / < T T > ) ( 1 - gamma^2) / (2 l).
+!       sigma^2 = ( < gilm gilm > / < tilm tilm > ) ( 1 - gamma^2) / (2 l).
 !
 !   < > signifies an average of over all m. Since only ratios are being used,
 !   < > is implemented only as sums over all m (i.e., by the cross spectra of
@@ -40,16 +40,16 @@ subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, exitstatus)
 !   Calling Parameters
 !
 !       IN
-!           G           First input spherical harmonic coefficients.
-!           T           Second input spherical harmonic coefficients.
+!           gilm        First input spherical harmonic coefficients.
+!           tilm        Second input spherical harmonic coefficients.
 !           lmax        Maximum spherical harmonic degree of the input fields.
 !
 !       OUT
-!           admit       G/T admittance spectra (length lmax+1).
-!           corr        G/T correlation spectra (length lmax+1).
+!           admit       Admittance spectra (length lmax+1).
+!           corr        Correlation spectra (length lmax+1).
 !
 !       OPTIONAL
-!           admit_error G/T addittance error spectra (length lmax+1)
+!           admit_error Addittance error spectra (length lmax+1)
 !                       assuming that the two fields perfectly correlated in
 !                       the abscence of noise.
 !
@@ -72,7 +72,7 @@ subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, exitstatus)
 
     implicit none
 
-    real(dp), intent(in) :: G(:,:,:), T(:,:,:)
+    real(dp), intent(in) :: gilm(:,:,:), tilm(:,:,:)
     integer, intent(in) :: lmax
     real(dp), intent(out) :: admit(:), corr(:)
     real(dp), intent(out), optional :: admit_error(:)
@@ -82,13 +82,13 @@ subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, exitstatus)
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (size(G(:,1,1)) < 2 .or. size(G(1,:,1)) < lmax+1 .or. &
-            size(G(1,1,:)) < lmax+1) then
+    if (size(gilm(:,1,1)) < 2 .or. size(gilm(1,:,1)) < lmax+1 .or. &
+            size(gilm(1,1,:)) < lmax+1) then
         print*, "Error --- SHAdmitCorr"
-        print*, "G must be dimensioned as (2, LMAX+1, LMAX+1) where " // &
+        print*, "GILM must be dimensioned as (2, LMAX+1, LMAX+1) where " // &
                 "LMAX is ", lmax
-        print*, "Input dimension is ", size(G(:,1,1)), size(G(1,:,1)), &
-                size(G(1,1,:))
+        print*, "Input dimension is ", size(gilm(:,1,1)), size(gilm(1,:,1)), &
+                size(gilm(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -96,13 +96,13 @@ subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, exitstatus)
             stop
         end if
 
-    else if (size(T(:,1,1)) < 2 .or. size(T(1,:,1)) < lmax+1 .or. &
-            size(T(1,1,:)) < lmax+1) then
+    else if (size(tilm(:,1,1)) < 2 .or. size(tilm(1,:,1)) < lmax+1 .or. &
+            size(tilm(1,1,:)) < lmax+1) then
         print*, "Error --- SHAdmitCorr"
-        print*, "T must be dimensioned as (2, LMAX+1, LMAX+1) " // &
+        print*, "TILM must be dimensioned as (2, LMAX+1, LMAX+1) " // &
                 "where LMAX is ", lmax
-        print*, "Input dimension is ", size(T(:,1,1)), size(T(1,:,1)), &
-                size(T(1,1,:))
+        print*, "Input dimension is ", size(tilm(:,1,1)), size(tilm(1,:,1)), &
+                size(tilm(1,1,:))
         if (present(exitstatus)) then
             exitstatus = 1
             return
@@ -155,16 +155,16 @@ subroutine SHAdmitCorr(G, T, lmax, admit, corr, admit_error, exitstatus)
     corr = 0.0_dp
 
     if (present(exitstatus)) then
-        call SHCrossPowerSpectrum(G, T, lmax, gt, exitstatus=exitstatus)
+        call SHCrossPowerSpectrum(gilm, tilm, lmax, gt, exitstatus=exitstatus)
         if (exitstatus /= 0) return
-        call SHPowerSpectrum(G, lmax, gg, exitstatus=exitstatus)
+        call SHPowerSpectrum(gilm, lmax, gg, exitstatus=exitstatus)
         if (exitstatus /= 0) return
-        call SHPowerSpectrum(T, lmax, tt, exitstatus=exitstatus)
+        call SHPowerSpectrum(tilm, lmax, tt, exitstatus=exitstatus)
         if (exitstatus /= 0) return
     else
-        call SHCrossPowerSpectrum(G, T, lmax, gt) ! < G T >
-        call SHPowerSpectrum(G, lmax, gg) ! < G G >
-        call SHPowerSpectrum(T, lmax, tt) ! < T T >
+        call SHCrossPowerSpectrum(gilm, tilm, lmax, gt) ! < gilm tilm >
+        call SHPowerSpectrum(gilm, lmax, gg) ! < gilm gilm >
+        call SHPowerSpectrum(tilm, lmax, tt) ! < tilm tilm >
     end if
 
     admit(1:lmax+1) = gt(1:lmax+1) / tt(1:lmax+1)
