@@ -122,6 +122,7 @@
 #
 ###############################################################################
 
+# The VERSION number is used only for generating the man pages
 VERSION = 4.7
 
 LIBNAME = SHTOOLS
@@ -135,12 +136,11 @@ FLAKE8 = flake8
 SHELL = /bin/sh
 PY3EXT = $(shell $(PYTHON) -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))' || echo nopy3)
 
-
 FDOCDIR = src/fdoc
 PYDOCDIR = src/pydoc
 SRCDIR = src
 LIBDIR = lib
-MODDIR = modules
+MODDIR = include
 FEXDIR = examples/fortran
 PEXDIR = examples/python
 NBDIR = examples/notebooks
@@ -160,59 +160,61 @@ LAPACK_UNDERSCORE = 0
 
 FLAKE8_FILES = setup.py pyshtools examples/python
 
-ifeq ($(F95), f95)
-# Default Absoft f95 flags
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=10
-#-march=host
-MODFLAG = -p $(MODPATH)
-SYSMODFLAG = -p $(SYSMODPATH)
-OPENMPFLAGS ?= -openmp
-BLAS ?= -lblas
-LAPACK ?= -llapack
-else ifeq ($(F95), gfortran)
-# Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3 -std=f2003 -ffast-math
-# -march=native
-MODFLAG = -I$(MODPATH)
-SYSMODFLAG = -I$(SYSMODPATH)
-OPENMPFLAGS ?= -fopenmp
-BLAS ?= -lblas
-LAPACK ?= -llapack
-else ifeq ($(F95), ifort)
-# Default intel fortran flags
-F95FLAGS ?= -m64 -fpp -free -O3 -Tf
-MODFLAG = -I$(MODPATH)
-SYSMODFLAG = -I$(SYSMODPATH)
-OPENMPFLAGS ?= -qopenmp
-LAPACK ?= -mkl
-BLAS ?= 
-else ifeq ($(F95), g95)
-# Default g95 flags.
-F95FLAGS ?= -O3 -fno-second-underscore
-MODFLAG = -I$(MODPATH)
-SYSMODFLAG = -I$(SYSMODPATH)
-OPENMPFLAGS ?=
-BLAS ?= -lblas
-LAPACK ?= -llapack
-else ifeq ($(F95), pgf90)
-# Default pgf90 flags
-F95FLAGS ?= -fast 
-MODFLAG = -Imodpath
-SYSMODFLAG = -Imodpath
-OPENMPFLAGS ?=
-BLAS ?= -lblas
-LAPACK ?= -llapack
+# Set default compiler flags based on the name of the F95 compiler by searching
+# if the short name of the compiler is in $(F95).
+ifeq ($(findstring gfortran,$(F95)),gfortran)
+	# Default gfortran flags
+	F95FLAGS ?= -m64 -fPIC -O3 -std=f2003 -ffast-math
+	# -march=native
+	MODFLAG = -I$(MODPATH)
+	SYSMODFLAG = -I$(SYSMODPATH)
+	OPENMPFLAGS ?= -fopenmp
+	BLAS ?= -lblas
+	LAPACK ?= -llapack
+else ifeq ($(findstring f95,$(F95)),f95)
+	# Default Absoft f95 flags
+	F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=10
+	#-march=host
+	MODFLAG = -p $(MODPATH)
+	SYSMODFLAG = -p $(SYSMODPATH)
+	OPENMPFLAGS ?= -openmp
+	BLAS ?= -lblas
+	LAPACK ?= -llapack
+else ifeq ($(findstring ifort,$(F95)),ifort)
+	# Default intel fortran flags
+	F95FLAGS ?= -m64 -fpp -free -O3 -Tf
+	MODFLAG = -I$(MODPATH)
+	SYSMODFLAG = -I$(SYSMODPATH)
+	OPENMPFLAGS ?= -qopenmp
+	LAPACK ?= -mkl
+	BLAS ?= 
+else ifeq ($(findstring g95,$(F95)),g95)
+	# Default g95 flags.
+	F95FLAGS ?= -O3 -fno-second-underscore
+	MODFLAG = -I$(MODPATH)
+	SYSMODFLAG = -I$(SYSMODPATH)
+	OPENMPFLAGS ?=
+	BLAS ?= -lblas
+	LAPACK ?= -llapack
+else ifeq ($(findstring pgf90,$(F95)),pgf90)
+	# Default pgf90 flags
+	F95FLAGS ?= -fast 
+	MODFLAG = -Imodpath
+	SYSMODFLAG = -Imodpath
+	OPENMPFLAGS ?=
+	BLAS ?= -lblas
+	LAPACK ?= -llapack
 else ifeq ($(origin F95FLAGS), undefined)
-F95FLAGS = -m64 -O3
-MODFLAG = -I$(MODPATH)
-SYSMODFLAG = -I$(SYSMODPATH)
-OPENMPFLAGS ?=
-BLAS ?= -lblas
-LAPACK ?= -llapack
+	F95FLAGS = -m64 -O3
+	MODFLAG = -I$(MODPATH)
+	SYSMODFLAG = -I$(SYSMODPATH)
+	OPENMPFLAGS ?=
+	BLAS ?= -lblas
+	LAPACK ?= -llapack
 endif
 
 ifeq ($(LAPACK_UNDERSCORE),1)
-LAPACK_FLAGS = -DLAPACK_UNDERSCORE
+	LAPACK_FLAGS = -DLAPACK_UNDERSCORE
 endif
 
 
@@ -266,7 +268,7 @@ fortran-mp:
 	@echo $(F95) $(MODFLAG) $(OPENMPFLAGS) $(F95FLAGS) -L$(LIBPATH) -l$(LIBNAMEMP) $(FFTW) $(LAPACK) $(BLAS)
 	@echo
 
-install: fortran
+install:
 	mkdir -pv $(DESTDIR)$(SYSLIBPATH)
 	cp $(LIBPATH)/lib$(LIBNAME).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAME).a
 	-cp $(LIBPATH)/lib$(LIBNAMEMP).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAMEMP).a
@@ -276,11 +278,6 @@ install: fortran
 	cp -R examples/fortran/ $(DESTDIR)$(SYSSHAREPATH)/examples/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
 	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
-	awk '{gsub("../../lib","$(PREFIX)/lib");print}' "examples/fortran/Makefile" > "temp.txt"
-	awk '{gsub("../../modules","$(PREFIX)/include");print}' "temp.txt" > "temp2.txt"
-	cp temp2.txt "$(DESTDIR)$(SYSSHAREPATH)/examples/shtools/Makefile"
-	rm temp.txt
-	rm temp2.txt
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
 	@echo "---------------------------------------------------"
@@ -364,7 +361,7 @@ clean-libs:
 	@echo \*\*\* also execute \"pip uninstall pyshtools\".
 
 fortran-tests: fortran
-	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)"
 	@echo
 	@echo "--> Make of Fortran test suite successful"
 	@echo
@@ -373,7 +370,7 @@ fortran-tests: fortran
 	@echo "--> Ran all Fortran examples and tests"
 
 fortran-tests-no-timing: fortran
-	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)"
 	@echo
 	@echo "--> Make of Fortran test suite successful"
 	@echo
@@ -382,7 +379,7 @@ fortran-tests-no-timing: fortran
 	@echo "--> Ran all Fortran examples and tests"
 
 fortran-tests-mp: fortran-mp
-	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)"
 	@echo
 	@echo "--> Make of Fortran test suite successful"
 	@echo
@@ -391,7 +388,7 @@ fortran-tests-mp: fortran-mp
 	@echo "--> Ran all Fortran examples and tests"
 
 fortran-tests-no-timing-mp: fortran-mp
-	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile all F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)"
 	@echo
 	@echo "--> Make of Fortran test suite successful"
 	@echo
@@ -400,22 +397,22 @@ fortran-tests-no-timing-mp: fortran-mp
 	@echo "--> Ran all Fortran examples and tests"
 
 run-fortran-tests: fortran
-	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)"
 	@echo
 	@echo "--> Ran all Fortran examples and tests"
 
 run-fortran-tests-no-timing: fortran
-	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests-no-timing F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests-no-timing F95="$(F95)" F95FLAGS="$(F95FLAGS)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)"
 	@echo
 	@echo "--> Ran all Fortran examples and tests"
 
 run-fortran-tests-mp: fortran-mp
-	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests LIBNAME="$(LIBNAMEMP)" F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests LIBNAME="$(LIBNAMEMP)" F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)"
 	@echo
 	@echo "--> Ran all Fortran examples and tests"
 
 run-fortran-tests-no-timing-mp: fortran-mp
-	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests-no-timing LIBNAME="$(LIBNAMEMP)" F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)"
+	@$(MAKE) -C $(FEXDIR) -f Makefile run-fortran-tests-no-timing LIBNAME="$(LIBNAMEMP)" F95="$(F95)" F95FLAGS="$(OPENMPFLAGS) $(F95FLAGS)" LIBNAME="$(LIBNAMEMP)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)"
 	@echo
 	@echo "--> Ran all Fortran examples and tests"
 

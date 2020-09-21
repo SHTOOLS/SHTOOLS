@@ -6,15 +6,16 @@
 #   make clean
 #       Remove the lib and module files in the LOCAL directory.
 #
+#
+#   Notes:
+#
+#   This Makefile is intended to be invoked by the main Makefile in the SHTOOLS
+#   repository.
+#
 ###############################################################################
-
-F95 = gfortran
 
 SHELL = /bin/sh
 
-LIBNAME = SHTOOLS
-LIBPATH = ../lib
-MODPATH = ../modules
 PROG = $(LIBPATH)/lib$(LIBNAME).a
 
 LIBTOOL = libtool
@@ -24,22 +25,6 @@ ARFLAGS = -r
 RLIB = ranlib
 RLIBFLAGS =
 LDFLAGS = -s
-
-ifeq ($(F95),f95)
-# Default Absoft Pro Fortran flags
-F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=11 # -march=host
-else ifeq ($(F95),g95)
-# Default g95 flags.
-F95FLAGS ?= -O3 -fno-second-underscore
-else ifeq ($(F95),gfortran)
-# Default gfortran flags
-F95FLAGS ?= -m64 -fPIC -O3 -ffast-math
-else ifeq ($(F95),ifort)
-# Default intel fortran flags
-F95FLAGS ?= -m64 -fpp -free -O3 -Tf
-else ifeq ($(origin F95FLAGS), undefined)
-F95FLAGS = -m64 -O3
-endif
 
 SRCSMOD = ftypes.f95 SHTOOLS.f95 FFTW3.f95 PlanetsConstants.f95
 
@@ -71,7 +56,6 @@ SRCS0 = CilmPlus.f95 CilmMinus.f95 \
 	SHSCouplingMatrix.f95 SHMTVar.f95 SHSlepianVar.f95 SHSCouplingMatrixCap.f95
 
 OBJS0 := $(SRCS0:%.f95=%.o)
-
 
 SRCSLAPACK = EigValSym.F95 EigValVecSym.F95 EigValVecSymTri.F95 \
 	SHExpandLSQ.F95 SHMTDebias.F95 SHMTVarOpt.F95
@@ -122,7 +106,7 @@ clean-obs-mod:
 clean-prog-mod:
 	@-rm -f $(PROG)
 	@-rm -f $(MODPATH)/*.mod
-	
+
 %.mod: %.f95
 	$(F95) -c $(F95FLAGS) $<
 %.o: %.f95 SHTOOLS.mod

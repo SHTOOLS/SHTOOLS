@@ -1193,14 +1193,22 @@ class SHGrid(object):
             minor_tick_interval = [None, None]
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if axes_labelsize == 'medium':
-                axes_labelsize = _mpl.rcParams['font.size']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if tick_labelsize == 'medium':
-                tick_labelsize = _mpl.rcParams['font.size']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
+            if type(titlesize) == str:
+                titlesize = _mpl.font_manager \
+                                 .FontProperties(size=titlesize) \
+                                 .get_size_in_points()
         if self.kind == 'complex' and title is None:
             title = ['Real component', 'Imaginary component']
         if xlabel is True:
@@ -1428,14 +1436,22 @@ class SHGrid(object):
                                  .format(repr(colorbar)))
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if axes_labelsize == 'medium':
-                axes_labelsize = _mpl.rcParams['font.size']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if tick_labelsize == 'medium':
-                tick_labelsize = _mpl.rcParams['font.size']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
+            if type(titlesize) == str:
+                titlesize = _mpl.font_manager \
+                                 .FontProperties(size=titlesize) \
+                                 .get_size_in_points()
 
         figure = self._plot_pygmt(
             fig=fig, projection=projection, region=region, width=width,
