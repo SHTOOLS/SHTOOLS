@@ -31,26 +31,8 @@ install:
   - conda config --set always_yes yes --set changeps1 no
   - conda config --add channels conda-forge
   - conda update -q conda
-
-  - conda create -q -n test-environment
-        python=$PYTHON_VERSION
-        numpy
-        fftw>=3.3.8
-        liblapack>=3.8
-        openblas
-        gmt>=6.1.1
-        scipy>=0.14.0
-        matplotlib>=3.3
-        astropy
-        xarray
-        requests
-        cartopy>=0.18.0
-        pygmt>=0.2.0
-        pooch>=1.1
-        tqdm
-        jupyter
-        palettable>=3.3
-        pypandoc
+  - conda create -q -n test-environment python=$PYTHON_VERSION
+  - conda env update -q -n test-environment -f environment.yml
   - conda activate test-environment
 
   # Conda info for debugging

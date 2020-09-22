@@ -15,3 +15,4 @@
 * Akihisa Hattori / [HattoriAkihisa](https://github.com/HattoriAkihisa)
 * Aaryaman Vasishta / [jammm](https://github.com/jammm)
 * Alex Kalinin / [alkalinin](https://github.com/alkalinin)
+* Armin Corbin / [rainbowsend](https://github.com/rainbowsend)

@@ -13,6 +13,7 @@ folder: mydoc
 The binary pre-compiled pyshtools library, with all required dependencies, can be installed with the conda package manager using the command:
 ```bash
 conda install -c conda-forge pyshtools  # Linux and macOS only
+conda update -c conda-forge pyshtools  # to upgrade a pre-existing installation
 ```
 The conda packages do not support Windows architectures at the present time.
 

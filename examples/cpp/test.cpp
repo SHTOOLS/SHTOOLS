@@ -66,7 +66,11 @@ main(int argc, char** argv)
   double val = shtools::MakeGridPoint(
     &cilm[0], cilm_dim, lmax, lat, lon, nullptr, nullptr, nullptr);
 
-  std::cout << "diff to python " << val - 3395259.548270001 << std::endl;
+  double diff = val - 3395259.548270001;
+  std::cout << "diff to python " << diff << std::endl;
 
+  if( std::abs(diff) > 1e-9 ){
+    return 1;
+  }
   return 0;
 }
