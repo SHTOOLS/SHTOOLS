@@ -73,7 +73,7 @@ Update the homebrew installation by editing the file `shtools.rb` in the homebre
 - [ ] Commit and push changes.
 
 ### Update conda-forge ###
-- [ ] Got to [pyshtools-feedstock](https://github.com/conda-forge/pyshtools-feedstock) and check that the `recipe/meta.yaml` file has been updated. This is usually done automatically by conda-forge's bot. If necessary, merge changes into the feedstock.
+- [ ] Go to [pyshtools-feedstock](https://github.com/conda-forge/pyshtools-feedstock) and check that the `recipe/meta.yaml` file has been updated. This is usually done automatically by conda-forge's bot. If necessary, merge changes into the feedstock.
 
 ### Update web documentation ###
 Update the web documentation at shtools.oca.eu.
