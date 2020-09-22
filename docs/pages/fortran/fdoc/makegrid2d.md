@@ -47,7 +47,7 @@ call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `c
 `a` : input, optional, real(dp)
 :   The semi-major axis of the reference ellispoid that is subtracted from the function. The flattening `f` must be specified for this calculation.
 
-`north` : input, real*8, optional, default = 90
+`north` : input, real(dp), optional, default = 90
 :   The maximum latitude of the output raster grid, in degrees. The default is 90 degrees.
 
 `south` : input, optional, real(dp), default = -90
