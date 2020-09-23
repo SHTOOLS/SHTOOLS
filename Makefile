@@ -103,8 +103,10 @@
 #       the distribution. To remake these files for a new release, it will be
 #       necessary to install "pandoc", "ghc" and "cabal-install" (all using
 #       brew on macOS), and then execute "cabal update" and
-#       "cabal install --lib pandoc-types". If errors are encountered try
-#       "brew uninstall pandoc" and "cabal install pandoc".
+#       "cabal install --lib pandoc-types". If errors are encountered,
+#       determine which version of pandoc-types was uses to compile pandoc
+#       using "pandoc --version". Delete ~/.cabal and reinstall a specific
+#       version using "cabal install --lib pandoc-types=1.21".
 #
 #   make remove-doc
 #       Remove the man and html-man pages.

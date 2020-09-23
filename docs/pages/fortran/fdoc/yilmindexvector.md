@@ -13,7 +13,7 @@ Compute the index of an 1D array of spherical harmonic coefficients correspondin
 
 ## Usage
 
-`index` = YilmIndex (`i`, `l`, `m`)
+`index` = YilmIndexVector (`i`, `l`, `m`)
 
 ## Parameters
 

@@ -8,7 +8,7 @@ call MakeEllipseCoord (`coord`, `lat`, `lon`, `dec`, `a_theta`, `b_theta`, `cint
 
 # Parameters
 
-`coord` : output, real*8, dimension(360/`cinterval`, 2)
+`coord` : output, real(dp), dimension(360/`cinterval`, 2)
 :   The latitude (:,1) and longitude (:,2) coordinates of the ellipse in degrees.
 
 `lat` : input, real(dp)

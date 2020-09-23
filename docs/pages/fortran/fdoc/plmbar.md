@@ -23,7 +23,7 @@ call PlmBar (`p`, `lmax`, `z`, `csphase`, `cnorm`, `exitstatus`)
 `lmax` : input, integer
 :   The maximum degree of the associated Legendre functions to be computed. If `lmax = -1`, allocated memory will be deallocated.
 
-`z` : input, real*8
+`z` : input, real(dp)
 :   The argument of the associated Legendre functions.
 
 `csphase` : input, optional, integer

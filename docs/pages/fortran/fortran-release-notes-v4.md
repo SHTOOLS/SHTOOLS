@@ -7,6 +7,16 @@ summary:
 toc: true
 folder: fortran
 ---
+## Version 4.7.1
+
+* Minor modifications were made to the Makefiles in order to submit shtools to the homebrew-core and macports package managers. Relative paths were removed in a few cases by explicitly passing variables such as `$(MODPATH)$` to all dependent sub-makefiles. Default variables are no longer set in the sub-makefiles, as these are not intended to be used independently: All variables are passed directly from the main Makefile. Renamed the directory `modules` to `include` to be consistent with macports and homebrew installations. The `F95FLAGS` are set by searching if the compiler name contains the "short" compiler name. This allows recognizing "gfortran-10" as being "gfortran".
+* Added a `.github` folder with templates for issues and releases checklists.
+* Converted matplotlib relative font sizes (such as 'large') to points when passing font sizes to the Cartopy and pygmt plotting routines.
+* Minor changes to the Travis configuration file, the conda `environment.yml` file, and fortran documentation and man pages.
+* Added initial experimental support for C-binded SHTOOLS wrapper functions. This includes replacing assumed-size arrays with fixed-size arrays with additional arguments for each dimension. Though this is not yet documented, a working example can be found in the folder `examples/cpp`.
+
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, A. Corbin, I. Oshchepkov, B. Xu, and A. Walker, A. Hattori, S. Schröder, K. Leinweber, A. Vasishta (2020). SHTOOLS: Version 4.7.1, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+
 ## Version 4.7
 
 **Datasets**
