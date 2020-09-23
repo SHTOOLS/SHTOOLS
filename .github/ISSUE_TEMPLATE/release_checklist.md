@@ -21,6 +21,7 @@ Make all changes on the branch `develop`. Verify that the version numbers and ot
 - [ ] `environment.yml` : update version numbers of the conda environment, if necesseary
 - [ ] `binder/environment.yml` : update version number of pyshtools and other dependencies
 - [ ] `fpm.toml` : update shtools version number
+- [ ] `AUTHORS.md`, `docs/pages/mydoc/contributors.md`, `docs/pages/fortran/fortran-contributors.md` : Add new contributors, if necessary
 
 Update the documentation files and man pages
 - [ ] `cd docs; bundle update; cd ..` : update the Gemfile for the jekyll web documentation
@@ -56,7 +57,7 @@ For the next steps to work, the file ```.pypirc``` with the username and passwor
     As a sanity check, inspect the pypi project page at https://pypi.org/project/pyshtools/.
 
 ### Build wheels ###
-- [ ] Build wheels for linux, macOS and windows and upload to pypi. This is done using multibuild in combination with Travis and Appveyor.
+- [ ] Build wheels for linux, macOS and windows and upload to pypi. This is done using multibuild in combination with Travis and Appveyor, and requires the pypi upload from the previous step.
     ```
     git clone https://github.com/shtools/build-shtools.git # only necessary the first time.
     cd build-shtools

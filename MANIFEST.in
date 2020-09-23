@@ -9,6 +9,7 @@ graft examples/ExampleDataFiles
 recursive-include examples/fortran *.f95 input* Makefile
 recursive-include examples/python *.py Makefile
 recursive-include examples/notebooks *.ipynb
+recursive-include examples/cpp *.cpp Makefile
 
 graft src/pydoc
 graft src/fdoc
