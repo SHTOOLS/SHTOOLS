@@ -144,6 +144,7 @@ PYDOCDIR = src/pydoc
 SRCDIR = src
 LIBDIR = lib
 MODDIR = include
+INCDIR = src
 CPPDIR = examples/cpp
 FEXDIR = examples/fortran
 PEXDIR = examples/python
@@ -152,6 +153,7 @@ WWWSRC = docs
 WWWDEST = www
 LIBPATH = $(PWD)/$(LIBDIR)
 MODPATH = $(PWD)/$(MODDIR)
+INCPATH = $(PWD)/$(INCDIR)
 PYPATH = $(PWD)
 
 PREFIX = /usr/local
@@ -435,12 +437,12 @@ python-tests-no-timing:
 	@echo "--> Ran all Python tests"
 	
 cpp-tests-no-timing:
-	@$(MAKE) -C $(CPPDIR) -f Makefile all CXX="$(CXX)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)"
+	@$(MAKE) -C $(CPPDIR) -f Makefile all CXX="$(CXX)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)" INCLUDE="-I $(INCPATH)"
 	@echo
 	@echo "--> Make of cpp test suite successful"
 	
 run-cpp-tests-no-timing: cpp-tests-no-timing
-	@$(MAKE) -C $(CPPDIR) -f Makefile run-cpp-tests-no-timing CXX="$(CXX)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)"
+	@$(MAKE) -C $(CPPDIR) -f Makefile run-cpp-tests-no-timing CXX="$(CXX)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)" INCLUDE="-I $(INCPATH)"
 	@echo
 	@echo "--> Ran all cpp examples and tests"
 
