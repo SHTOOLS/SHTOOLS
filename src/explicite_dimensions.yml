@@ -1,0 +1,530 @@
+PlmBar:
+    existing_dim : ['lmax']
+    args:
+        p: ['(lmax+1)*(lmax+2)/2']
+        
+PlmBar_d1:
+    existing_dim : ['lmax']
+    args:
+        p: ['(lmax+1)*(lmax+2)/2']
+        dp1: ['(lmax+1)*(lmax+2)/2']
+       
+PlBar:
+    existing_dim : ['lmax']
+    args:
+        p: ['lmax+1']
+        
+PlBar_d1:
+    existing_dim : ['lmax']
+    args:
+        p: ['lmax+1']
+        dp1: ['lmax+1']
+        
+PlmON:
+    existing_dim : ['lmax']
+    args:
+        p: ['(lmax+1)*(lmax+2)/2']
+        
+PlmON_d1:
+    existing_dim : ['lmax']
+    args:
+        p: ['(lmax+1)*(lmax+2)/2']
+        dp1: ['(lmax+1)*(lmax+2)/2']
+
+PlON:
+    existing_dim : ['lmax']
+    args:
+        p: ['lmax+1']
+        
+PlON_d1:
+    existing_dim : ['lmax']
+    args:
+        p: ['lmax+1']
+        dp1: ['lmax+1']
+        
+PlmSchmidt:
+    existing_dim : ['lmax']
+    args:
+        p: ['(lmax+1)*(lmax+2)/2']
+        
+PlmSchmidt_d1:
+    existing_dim : ['lmax']
+    args:
+        p: ['(lmax+1)*(lmax+2)/2']
+        dp1: ['(lmax+1)*(lmax+2)/2']
+        
+PlSchmidt:
+    existing_dim : ['lmax']
+    args:
+        p: ['lmax+1']
+        
+PlSchmidt_d1:
+    existing_dim : ['lmax']
+    args:
+        p: ['lmax+1']
+        dp1: ['lmax+1']
+        
+PLegendreA:
+    existing_dim : ['lmax']
+    args:
+        p: ['(lmax+1)*(lmax+2)/2']
+        
+PLegendreA_d1:
+    existing_dim : ['lmax']
+    args:
+        p: ['(lmax+1)*(lmax+2)/2']
+        dp1: ['(lmax+1)*(lmax+2)/2']
+        
+PLegendre:
+    existing_dim : ['lmax']
+    args:
+        p: ['lmax+1']
+        
+PLegendre_d1:
+    existing_dim : ['lmax']
+    args:
+        p: ['lmax+1']
+        dp1: ['lmax+1']
+        
+########################################
+        
+SHGLQ:
+    existing_dim : ['lmax']
+    args:
+        zero: ['lmax+1']
+        w: ['lmax+1']
+        plx: ['lmax+1', '(lmax+1)*(lmax+2)/2']
+        
+SHExpandGLQ:
+    existing_dim : ['lmax']
+    args:
+        gridglq: ['lmax+1', '2*lmax+1']
+        w: ['lmax+1']
+        plx: ['lmax+1', '(lmax+1)*(lmax+2)/2']
+        zero: ['lmax+1']
+         
+MakeGridGLQ:
+    existing_dim : ['lmax']
+    args:
+        plx: ['lmax+1', '(lmax+1)*(lmax+2)/2']
+        zero: ['lmax+1']
+        
+SHExpandGLQC:
+    existing_dim : ['lmax']
+    args:
+        gridglq: ['lmax+1', '2*lmax+1']
+        w: ['lmax+1']
+        plx: ['lmax+1', '(lmax+1)*(lmax+2)/2']
+        zero: ['lmax+1']
+        
+MakeGridGLQC:
+    existing_dim : ['lmax']
+    args:
+        plx: ['lmax+1', '(lmax+1)*(lmax+2)/2']
+        zero: ['lmax+1']
+        
+SHExpandLSQ:
+    existing_dim : ['nmax','lmax']
+    args:
+        d: ['nmax']
+        lat: ['nmax']
+        lon: ['nmax']
+        weights: ['nmax']
+     
+        
+SHRead:
+    args:
+        error: ['2', 'cilm_dim', 'cilm_dim']
+        
+SHRead2:
+    args:
+        error: ['2', 'cilm_dim', 'cilm_dim']
+        
+SHReadJPL:
+    args:
+        error: ['2', 'cilm_dim', 'cilm_dim']
+        
+SHCilmToVector:      
+    existing_dim : ['lmax']
+    args:
+        vector: ['(lmax+1)**2']
+        
+SHVectorToCilm:
+    existing_dim : ['lmax']
+    args:
+        vector: ['(lmax+1)**2']
+        
+SHCilmToCindex:
+    args:
+        cindex: ['2',':']
+        
+SHCindexToCilm:
+    args:
+         cindex: ['2',':']
+            
+djpi2:
+    new_dim : ['dj_dim']
+    args:
+        dj: [ 'dj_dim', 'dj_dim', 'dj_dim']
+        
+SHRotateCoef:
+    new_dim : ['dj_dim']
+    args:
+        coef: ['2', ':']
+        rcof: ['2', ':']
+        dj: [ 'dj_dim', 'dj_dim', 'dj_dim']
+        
+SHRotateRealCoef:
+    new_dim : ['dj_dim']
+    args:
+        dj: [ 'dj_dim', 'dj_dim', 'dj_dim']
+        x: ['3']
+        
+SHPowerSpectrum:
+    existing_dim : ['lmax']
+    args:
+        spectra: [ 'lmax+1']
+        
+SHPowerSpectrumDensity:
+    existing_dim : ['lmax']
+    args:
+        spectra: [ 'lmax+1']
+       
+SHCrossPowerSpectrum:
+    existing_dim : ['lmax']
+    args:
+        cspectra: [ 'lmax+1']
+        
+SHCrossPowerSpectrumDensity:
+    existing_dim : ['lmax']
+    args:
+        cspectra: [ 'lmax+1']
+        
+SHAdmitCorr:
+    existing_dim : ['lmax']
+    args:
+        admit: [ 'lmax+1']
+        corr: [ 'lmax+1']
+        admit_error: [ 'lmax+1']
+        
+SHPowerSpectrumC:
+    existing_dim : ['lmax']
+    args:
+        spectra: [ 'lmax+1']
+        
+SHPowerSpectrumDensityC:
+    existing_dim : ['lmax']
+    args:
+        spectra: [ 'lmax+1']
+       
+SHCrossPowerSpectrumC:
+    existing_dim : ['lmax']
+    args:
+        cspectra: [ 'lmax+1']
+        
+SHCrossPowerSpectrumDensityC:
+    existing_dim : ['lmax']
+    args:
+        cspectra: [ 'lmax+1']
+       
+SHMultiTaperSE:
+    existing_dim : ['lmax','lmaxt','k']
+    args:
+        mtse: ['lmax-lmaxt+1']
+        sd:  ['lmax-lmaxt+1']
+        alpha: [ '3']
+        taper_order: ['k']
+        taper_wt: ['k']
+        
+SHMultiTaperCSE:
+    existing_dim : ['lmax1','lmax2','lmaxt','k']
+    args:
+        mtse: ['min(lmax1,lmax2)-lmaxt+1']
+        sd:  ['min(lmax1,lmax2)-lmaxt+1']
+        alpha: [ '3']
+        taper_order: ['k']
+        taper_wt: ['k']
+        
+SHLocalizedAdmitCorr:
+    existing_dim : ['lmax','lwin','k']
+    args:
+        taper_order: ['k']
+        taper_wt: ['k']
+        admit: ['lmax-lwin+1']
+        corr: ['lmax-lwin+1']
+        admit_error: ['lmax-lwin+1']
+        corr_error: ['lmax-lwin+1']
+        
+SHReturnTapers:
+    existing_dim : ['lmax']
+    new_dim : ['tapers_dim']
+    args:
+        eigenvalues: ['(lmax+1)**2']
+        taper_order: ['(lmax+1)**2']
+        degrees: ['lmax+1']
+        tapers: ['tapers_dim', 'tapers_dim**2']
+        
+SHReturnTapersM:
+    existing_dim : ['lmax']
+    new_dim : ['tapers_dim']
+    args:
+        eigenvalues: ['lmax+1']
+        degrees: ['lmax+1']
+        tapers: ['tapers_dim', 'tapers_dim']
+        
+ComputeDm:
+    new_dim : ['dm_dim']
+    existing_dim : ['lmax']
+    args:
+        dm: ['dm_dim','dm_dim']
+        degrees: ['lmax+1']
+        
+ComputeDG82:
+    new_dim : ['dg82_dim']
+    args:
+        dm: ['dg82_dim','dg82_dim']
+
+SHBiasK:
+    existing_dim : ['lwin','ldata','k']
+    args:
+        incspectra: ['ldata+1']
+        outcspectra: ['ldata+lwin+1']
+        taper_wt: ['k']
+        
+SHMTCouplingMatrix:
+    existing_dim : ['k']
+    args:
+        taper_wt: ['k']
+        
+SHBiasAdmitCorr:
+    existing_dim : ['k','lmax','lwin']
+    args:
+        sgt: ['lmax+1']
+        sgg: ['lmax+1']
+        stt: ['lmax+1']
+        admit: ['lmax-lwin+1']
+        corr: ['lmax-lwin+1']
+        taper_wt: ['k']
+        
+SHMTDebias:
+    existing_dim : ['k','lmax','nl']
+    args:
+        mtdebias: ['2',':']
+        mtspectra: ['2',':']
+        lmid: ['(lmax+1)/nl+1']
+        taper_wt: ['k']
+        
+SHMTVarOpt:
+    existing_dim : ['l','lwin','kmax']
+    args:
+        Sff: ['l+lwin+1']
+        var_opt: ['kmax']
+        var_unit: ['kmax']
+        taper_order: ['kmax']
+        
+SHMTVar:
+    existing_dim : ['l','lwin','kmax']
+    args:
+        Sff: ['l+lwin+1']
+        taper_order: ['kmax']
+        
+SHSjkPG:
+    existing_dim : ['lwin']
+    args:
+        incspectra: ['l+lwin+1']
+        hj_real: ['lwin+1']
+        hk_real: ['lwin+1']
+
+SHReturnTapersMap:
+    existing_dim : ['ntapers','lmax']
+    args:
+        eigenvalues: ['ntapers']
+        degrees: ['lmax+1']
+
+SHBiasKMask:
+    existing_dim : ['lwin','ldata','k']
+    args:
+        incspectra: ['ldata+1']
+        outcspectra: ['ldata+lwin+1']
+        taper_wt: ['k']
+        
+SHMultiTaperMaskSE:
+    existing_dim : ['lmax','lmaxt','k']
+    args:
+        mtse: ['lmax-lmaxt+1']
+        sd:  ['lmax-lmaxt+1']
+        taper_wt: ['k']
+
+SHMultiTaperMaskCSE:
+    existing_dim : ['lmax1','lmax2','lmaxt','k']
+    args:
+        mtse: ['min(lmax1,lmax2)-lmaxt+1']
+        sd:  ['min(lmax1,lmax2)-lmaxt+1']
+        taper_wt: ['k']
+        
+ComputeDMap:
+    new_dim : ['dij_dim']
+    existing_dim : ['lmax']
+    args:
+        degrees: ['lmax+1']
+        Dij: ['dij_dim', 'dij_dim']
+
+SHBias:
+    existing_dim : ['lwin','ldata']
+    args:
+        Shh: ['lwin+1']
+        incspectra: ['ldata+1']
+        outcspectra: ['ldata+lwin+1']
+        
+SphericalCapCoef:
+    existing_dim : ['lmax']
+    args:
+        coef: ['lmax+1']
+        
+MakeGravGridDH:
+    new_dim : ['nlat','nlon']
+    args:
+        theta: ['nlat','nlon']
+        phi: ['nlat','nlon']
+        pot: ['nlat','nlon']
+        rad: ['nlat','nlon']
+        total: ['nlat','nlon']
+        
+MakeGravGradGridDH:
+    new_dim : ['nlat','nlon']
+    args:
+        vxx: ['nlat','nlon']
+        vyy: ['nlat','nlon']
+        vzz: ['nlat','nlon']
+        vxy: ['nlat','nlon']
+        vxz: ['nlat','nlon']
+        vyz: ['nlat','nlon']
+        
+MakeMagGradGridDH:
+    new_dim : ['nlat','nlon']
+    args:
+        vxx: ['nlat','nlon']
+        vyy: ['nlat','nlon']
+        vzz: ['nlat','nlon']
+        vxy: ['nlat','nlon']
+        vxz: ['nlat','nlon']
+        vyz: ['nlat','nlon']
+        
+CilmPlus:
+    existing_dim : ['lmax']
+    args:
+        w: ['lmax+1']
+        zero: ['lmax+1']
+
+CilmMinus:
+    existing_dim : ['lmax']
+    args:
+        w: ['lmax+1']
+        zero: ['lmax+1']
+        
+CilmPlusRhoH:
+    existing_dim : ['lmax']
+    args:
+        w: ['lmax+1']
+        zero: ['lmax+1']
+        
+CilmMinusRhoH:
+    existing_dim : ['lmax']
+    args:
+        w: ['lmax+1']
+        zero: ['lmax+1']
+        
+BAtoHilm:
+    existing_dim : ['lmax']
+    args:
+        w: ['lmax+1']
+        zero: ['lmax+1']
+        
+BAtoHilmRhoH:
+    existing_dim : ['lmax']
+    args:
+        w: ['lmax+1']
+        zero: ['lmax+1']
+
+MakeMagGridDH:
+    new_dim : ['nlat','nlon']
+    args:
+        rad_grid: ['nlat','nlon']
+        theta_grid: ['nlat','nlon']
+        phi_grid: ['nlat','nlon']
+        total_grid: ['nlat','nlon']
+        pot_grid: ['nlat','nlon']
+
+SHMagPowerSpectrum:
+    existing_dim : ['lmax']
+    args:
+        spectra: ['lmax+1']
+        
+MakeCircleCoord:
+    args:
+        coord: [':','2']
+        
+MakeEllipseCoord:
+    args:
+        coord: [':','2']
+        
+Wigner3j:
+    existing_dim : ['j2','j3']
+    args:
+        w3j: ['j2+j3+1']
+
+PreGLQ:
+    existing_dim : ['n']
+    args:
+        zero: ['n']
+        w: ['n']
+        
+EigValVecSym:
+    existing_dim : ['n']
+    args:
+        ain:  ['n','n']
+        eig: [':']
+        evec: ['n',':']
+
+EigValVecSymTri:
+    existing_dim : ['n']
+    args:
+        ain:  ['n','n']
+        eig: ['n']
+        evec: ['n','n']
+        
+EigValSym:
+    existing_dim : ['n']
+    args:
+        ain:  ['n','n']
+        eval: ['n']
+        
+SHRotateTapers:
+    existing_dim : ['nrot']
+    new_dim : ['dj_dim']
+    args:
+        dj: [ 'dj_dim', 'dj_dim', 'dj_dim']
+        x: ['3']
+        taper_order: ['nrot']
+
+SlepianCoeffs:
+    existing_dim : ['nmax']
+    args:
+        falpha: [ 'nmax']
+ 
+SlepianCoeffsToSH:
+    existing_dim : ['nmax']
+    args:
+        falpha: [ 'nmax']
+ 
+SHSlepianVar:
+    existing_dim : ['lmax','kmax']
+    args:
+        Sff: [ 'lmax+1']
+        galpha_order: ['kmax']
+ 
+SHSCouplingMatrixCap:
+    existing_dim : ['nmax']
+    args:
+        galpha_order: ['nmax']
+ 
