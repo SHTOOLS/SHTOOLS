@@ -23,6 +23,7 @@ from numpy.distutils.core import setup  # noqa: E402
 from numpy.distutils.command.build import build as _build  # noqa: E402
 from numpy.distutils.command.install import install as _install  # noqa: E402
 from numpy.distutils.command.develop import develop as _develop  # noqa: E402
+from numpy.distutils.command.sdist import sdist  # noqa: E402
 from numpy.distutils.fcompiler import FCompiler  # noqa: E402
 from numpy.distutils.fcompiler import get_default_fcompiler  # noqa: E402
 from numpy.distutils.misc_util import Configuration  # noqa: E402
@@ -210,9 +211,9 @@ def configuration(parent_package='', top_path=None):
     return config
 
 
-CMDCLASS = {'build': build, 'install': install, 'develop': develop}
+CMDCLASS = {'sdist': sdist, 'build': build, 'install': install,
+            'develop': develop}
 CMDCLASS.update(versioneer.get_cmdclass())
-
 
 metadata = dict(
     name='pyshtools',

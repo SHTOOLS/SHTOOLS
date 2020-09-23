@@ -1,0 +1,48 @@
+name: Upload Python Package to PYPI
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v1
+      with:
+        channels: conda-forge
+        auto-update-conda: true
+        miniconda-version: "latest"
+
+    - name: Set up Conda environment
+      shell: bash -l {0}
+      run: |
+        conda create -n pypi python=3.8 \
+                             fftw \
+                             liblapack \
+                             openblas \
+                             numpy \
+                             setuptools \
+                             pypandoc \
+                             versioneer \
+                             twine
+        conda activate pypi
+
+    - name: Build and publish
+      env:
+        # PYPI repository
+        # TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        # TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        # PYPITEST repository
+        TWINE_USERNAME: ${{ secrets.PYPITEST_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPITEST_PASSWORD }}
+        TWINE_REPOSITORY_URL: 'https://test.pypi.org/legacy/'
+      run: |
+        python setup.py sdist
+        twine upload dist/*
