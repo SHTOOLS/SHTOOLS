@@ -11,8 +11,7 @@ FFTW = -lfftw3 -lm
 LAPACK = -llapack
 BLAS = -lblas
 
-LIB = -L $(LIBPATH) -l$(LIBNAME) -L /usr/local/lib/gcc/10/ -lgfortran \
-     -ldl $(FFTW) $(LAPACK) $(BLAS) \
+LIB = -L $(LIBPATH) -l$(LIBNAME) -lgfortran -ldl $(FFTW) $(LAPACK) $(BLAS)
 
 all : test
 
