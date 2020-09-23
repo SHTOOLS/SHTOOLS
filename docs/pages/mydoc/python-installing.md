@@ -26,7 +26,7 @@ pip install --upgrade pyshtools  # to upgrade a pre-existing installation
 ```
 In order to use the map projection routines, it will be necessary to install either Cartopy and/or pygmt separately, as described in the section [Python dependencies](#dependencies).
 
-## Build from source (pip)
+## Build from source
 
 If you wish to compile the archive yourself, first make sure that you have the required dependencies installed for the Fortran-95 components, which inlcude FFTW3 and LAPACK compatible libraries (see [these instructions](fortran-installing.html)). This can be accomplished on most Linux distributions using
 ```bash
@@ -37,6 +37,11 @@ or on macOS by using one of the following
 brew install fftw  # using brew
 sudo port install fftw-3  # using macports
 conda install fftw  # using conda
+```
+Alternatively, all dependencies (with the exception of the fortran compiler) can be installed using the conda `environment.yml` file:
+```bash
+conda env create -n your_env_name -f environment.yml
+conda activate your_env_name
 ```
 Then build from source using the command
 ```bash
