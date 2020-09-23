@@ -1,0 +1,46 @@
+name: Continuous Integration Tests
+
+on:
+  pull_request:
+    branches: [master, develop]
+
+jobs:
+  build:
+
+    runs-on: [ubuntu-latest, macos-latest]
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v1
+      with:
+        channels: conda-forge
+        auto-update-conda: true
+        miniconda-version: "latest"
+
+    - name: Set up Conda environment
+      shell: bash -l {0}
+      run: |
+        conda config --set always_yes yes --set changeps1 no
+        conda create -n test-env python=${{ matrix.python-version }}
+        conda env update -q -n test-env -f environment.yml
+        conda activate test-env
+
+    - name: Build using pip
+      shell: bash -l {0}
+      run: |
+        pip install --no-deps .
+
+    - name: Run tests
+      shell: bash -l {0}
+      run: |
+        python examples/notebooks/test_notebooks.py
+        export MPLBACKEND=Agg
+        make -C examples/python -f Makefile no-timing
+        mkdir empty && cd empty
+        python -c "import pyshtools"
