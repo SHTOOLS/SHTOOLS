@@ -38,7 +38,7 @@ brew install fftw  # using brew
 sudo port install fftw-3  # using macports
 conda install fftw  # using conda
 ```
-Alternatively, all dependencies (with the exception of the fortran compiler) can be installed using the conda `environment.yml` file:
+Alternatively, all dependencies (with the exception of the fortran compiler) can be installed using the conda `environment.yml` file found in the main shtools Github repository:
 ```bash
 conda env create -n your_env_name -f environment.yml
 conda activate your_env_name
