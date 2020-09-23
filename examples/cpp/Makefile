@@ -1,22 +1,27 @@
+CXX = g++
 LD = $(CXX)
 
 OPTIM = -O0
-CXXFLAGS += -Wall -pedantic -std=c++17 $(OPTIM) 
+CXXFLAGS += -Wall -pedantic -std=c++17 $(OPTIM)
 
-INCLUDE= $(MODFLAG)
+INCLUDE = -I ../../src
+LIBPATH = ../../lib
+LIBNAME = SHTOOLS
+FFTW = -lfftw3 -lm
+LAPACK = -llapack
+BLAS = -lblas
 
-LIB= -L$(LIBPATH)/ -l$(LIBNAME) -lgfortran \
-     -ldl $(FFTW) $(LAPACK) $(BLAS)
+LIB = -L $(LIBPATH) -l$(LIBNAME) -lgfortran -ldl $(FFTW) $(LAPACK) $(BLAS)
 
-all: test
+all : test
 
 test.o : test.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -o $@ $<
 	
-test : test.o 
+test : test.o
 	$(LD) -o $@ $< $(LIB)
 	
-run-cpp-tests-no-timing :
+run-cpp-tests-no-timing:
 	./test
 	
 clean :
