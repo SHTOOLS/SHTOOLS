@@ -130,6 +130,7 @@ LIBNAMEMP = SHTOOLS-mp
 
 F95 = gfortran
 PYTHON = python3
+CXX = g++
 JUPYTER = jupyter nbconvert --ExecutePreprocessor.kernel_name=python3
 JEKYLL = bundle exec jekyll
 FLAKE8 = flake8
@@ -141,6 +142,7 @@ PYDOCDIR = src/pydoc
 SRCDIR = src
 LIBDIR = lib
 MODDIR = include
+CPPDIR = examples/cpp
 FEXDIR = examples/fortran
 PEXDIR = examples/python
 NBDIR = examples/notebooks
@@ -164,7 +166,7 @@ FLAKE8_FILES = setup.py pyshtools examples/python
 # if the short name of the compiler is in $(F95).
 ifeq ($(findstring gfortran,$(F95)),gfortran)
 	# Default gfortran flags
-	F95FLAGS ?= -m64 -fPIC -O3 -std=f2003 -ffast-math
+	F95FLAGS ?= -m64 -fPIC -O3 -std=gnu -ffast-math
 	# -march=native
 	MODFLAG = -I$(MODPATH)
 	SYSMODFLAG = -I$(SYSMODPATH)
@@ -323,7 +325,7 @@ run-notebooks:
 	@$(MAKE) -C $(NBDIR) -f Makefile run-notebooks
 	@echo "--> Notebooks executed successfully"
 
-clean: clean-fortran-tests clean-python-tests clean-python clean-libs remove-www
+clean: clean-fortran-tests clean-python-tests clean-python clean-cpp-tests clean-libs remove-www
 
 clean-fortran-tests:
 	@$(MAKE) -C $(FEXDIR) -f Makefile clean
@@ -332,6 +334,10 @@ clean-fortran-tests:
 clean-python-tests:
 	@$(MAKE) -C $(PEXDIR) -f Makefile clean
 	@echo "--> Removed Python test suite executables and files"
+	
+clean-cpp-tests:
+	@$(MAKE) -C $(CPPDIR) -f Makefile clean
+	@echo "--> Removed cpp test suite executables and files"
 
 clean-python:
 	@-rm -rf _SHTOOLS$(PY3EXT).dSYM/
@@ -425,6 +431,17 @@ python-tests-no-timing:
 	@$(MAKE) -C $(PEXDIR) -f Makefile no-timing PYTHON=$(PYTHON)
 	@echo
 	@echo "--> Ran all Python tests"
+	
+cpp-tests-no-timing:
+	@$(MAKE) -C $(CPPDIR) -f Makefile all CXX="$(CXX)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)"
+	@echo
+	@echo "--> Make of cpp test suite successful"
+	
+run-cpp-tests-no-timing: cpp-tests-no-timing
+	@$(MAKE) -C $(CPPDIR) -f Makefile run-cpp-tests-no-timing CXX="$(CXX)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)"
+	@echo
+	@echo "--> Ran all cpp examples and tests"
+
 
 check:
 	@$(FLAKE8) --extend-ignore=E741,W605 --exclude=versioneer.py,pyshtools/_version.py $(FLAKE8_FILES)
