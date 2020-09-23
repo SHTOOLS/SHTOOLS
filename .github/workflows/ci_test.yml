@@ -7,9 +7,10 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest]
         python-version: [3.6, 3.7, 3.8]
 
     steps:
@@ -22,11 +23,12 @@ jobs:
         channels: conda-forge
         auto-update-conda: true
         miniconda-version: "latest"
+        changeps1: False
+        always_yes: True
 
     - name: Set up Conda environment
       shell: bash -l {0}
       run: |
-        conda config --set always_yes yes --set changeps1 no
         conda create -n test-env python=${{ matrix.python-version }}
         conda env update -q -n test-env -f environment.yml
         conda activate test-env

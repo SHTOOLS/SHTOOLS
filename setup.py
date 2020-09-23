@@ -11,7 +11,7 @@ if sys.version_info < min_version:
     error = """\n
 *** Beginning with pyshtools 4.6, Python {0} or above is required.   ***
 *** This error may be a result of using a python-2.7 version of pip. ***
-""".format('.'.join(str(n) for n in min_version))
+*** {1} ***""".format('.'.join(str(n) for n in min_version, sys.version_info))
     raise SystemError(error)
 
 import os  # noqa: E402
