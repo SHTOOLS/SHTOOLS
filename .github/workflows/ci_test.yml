@@ -38,7 +38,8 @@ jobs:
     - name: Build using pip
       # shell: bash
       run: |
-        pip install --no-deps .
+        conda env list
+        pip3 install --no-deps .
 
     - name: Run tests
       # shell: bash -l {0}
