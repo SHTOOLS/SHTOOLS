@@ -30,6 +30,7 @@ jobs:
     - name: Set up Conda environment
       shell: bash
       run: |
+        conda init bash
         conda config --set always_yes yes --set changeps1 no
         conda install -n test_env python=${{ matrix.python-version }}
         conda env update -n test_env -f environment.yml
