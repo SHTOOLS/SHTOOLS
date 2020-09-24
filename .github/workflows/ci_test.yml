@@ -31,16 +31,16 @@ jobs:
       shell: bash
       run: |
         conda config --set always_yes yes --set changeps1 no
-        conda install python=${{ matrix.python-version }}
-        conda env update -f environment.yml
-        conda list
+        conda install -n test_env python=${{ matrix.python-version }}
+        conda env update -n test_env -f environment.yml
+        conda list -n test_env
         conda env list
 
     - name: Build using pip
-      # shell: bash
+      shell: bash
       run: |
-        conda activate test_env
         conda env list
+        conda activate test_env
         pip3 install --no-deps .
 
     - name: Run tests
