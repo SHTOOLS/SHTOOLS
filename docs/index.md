@@ -35,6 +35,7 @@ The Python components of SHTOOLS can be installed using the Python package manag
 pip install pyshtools
 pip install --upgrade pyshtools  # to upgrade a pre-existing installation
 conda install -c conda-forge pyshtools  # Linux and macOS only
+conda update -c conda-forge pyshtools  # to upgrade a pre-existing installation
 ```
 
 ## Permissive licensing
