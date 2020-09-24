@@ -30,7 +30,6 @@ jobs:
     - name: Set up Conda environment
       shell: bash -l {0}
       run: |
-        conda init bash
         conda config --set always_yes yes --set changeps1 no
         conda install -n ci_test python=${{ matrix.python-version }}
         conda env update -n ci_test -f environment.yml
@@ -45,7 +44,7 @@ jobs:
         pip3 install --no-deps .
 
     - name: Run tests
-      # shell: bash -l {0}
+      shell: bash -l {0}
       run: |
         conda env list
         python examples/notebooks/test_notebooks.py
