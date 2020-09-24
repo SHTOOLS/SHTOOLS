@@ -23,6 +23,7 @@ jobs:
     - name: Set up Conda environment
       shell: bash -l {0}
       run: |
+        conda config --set always_yes yes --set changeps1 no
         conda create -n pypi python=3.8 \
                              fftw \
                              liblapack \
