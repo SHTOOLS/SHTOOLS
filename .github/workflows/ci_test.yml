@@ -25,23 +25,23 @@ jobs:
         channels: conda-forge
         auto-update-conda: true
         miniconda-version: "latest"
-        activate-environment: test_env
+        activate-environment: ci_test
 
     - name: Set up Conda environment
-      shell: bash
+      shell: bash -l {0}
       run: |
         conda init bash
         conda config --set always_yes yes --set changeps1 no
-        conda install -n test_env python=${{ matrix.python-version }}
-        conda env update -n test_env -f environment.yml
-        conda list -n test_env
+        conda install -n ci_test python=${{ matrix.python-version }}
+        conda env update -n ci_test -f environment.yml
+        conda list -n ci_test
         conda env list
 
     - name: Build using pip
-      shell: bash
+      shell: bash -l {0}
       run: |
         conda env list
-        conda activate test_env
+        conda activate ci_test
         pip3 install --no-deps .
 
     - name: Run tests
