@@ -27,7 +27,7 @@ jobs:
         miniconda-version: "latest"
 
     - name: Set up Conda environment
-      shell: bash -l {0}
+      shell: bash
       run: |
         conda config --set always_yes yes --set changeps1 no
         conda create -n test_env python=${{ matrix.python-version }}
@@ -35,7 +35,7 @@ jobs:
         conda list -n test_env
 
     - name: Build using pip
-      # shell: bash -l {0}
+      # shell: bash
       run: |
         conda activate test_env
         pip install --no-deps .
