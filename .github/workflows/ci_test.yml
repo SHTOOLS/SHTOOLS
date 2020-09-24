@@ -38,6 +38,7 @@ jobs:
     - name: Build using pip
       # shell: bash
       run: |
+        conda activate test_env
         conda env list
         pip3 install --no-deps .
 
