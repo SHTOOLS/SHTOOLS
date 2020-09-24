@@ -34,6 +34,7 @@ jobs:
         conda install python=${{ matrix.python-version }}
         conda env update -f environment.yml
         conda list
+        conda env list
 
     - name: Build using pip
       # shell: bash
@@ -45,6 +46,7 @@ jobs:
     - name: Run tests
       # shell: bash -l {0}
       run: |
+        conda env list
         python examples/notebooks/test_notebooks.py
         export MPLBACKEND=Agg
         make -C examples/python -f Makefile no-timing
