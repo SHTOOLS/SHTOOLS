@@ -15,6 +15,11 @@ jobs:
         python-version: [3.8]
 
     steps:
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.5
+      with:
+        access_token: ${{ github.token }}
+
     - name: Checkout
       uses: actions/checkout@v2
 
@@ -37,10 +42,9 @@ jobs:
 
     - name: Install gcc for macOS
       shell: bash -l {0}
-      if: ${{ matrix.os == 'macos-latest'}}
+      if: ${{ matrix.os == 'macos-latest' }}
       run: |
         brew install gcc
-        which gfortran
 
     - name: Build using pip
       shell: bash -l {0}
