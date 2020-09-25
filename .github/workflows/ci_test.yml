@@ -15,6 +15,11 @@ jobs:
         python-version: [3.8]
 
     steps:
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.5.0
+      with:
+        access_token: ${{ github.token }}
+
     - name: Checkout
       uses: actions/checkout@v2
 
@@ -34,6 +39,12 @@ jobs:
         conda install -q -n ci_test python=${{ matrix.python-version }}
         conda env update -q -n ci_test -f environment.yml
         conda list -n ci_test
+
+    - name: Install gcc for macOS
+      shell: bash -l {0}
+      if: ${{ matrix.os == 'macos-latest' }}
+      run: |
+        brew install gcc
 
     - name: Build using pip
       shell: bash -l {0}
