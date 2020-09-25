@@ -35,6 +35,13 @@ jobs:
         conda env update -q -n ci_test -f environment.yml
         conda list -n ci_test
 
+    - name: Install gcc for macOS
+      shell: bash -l {0}
+      if: ${{ matrix.os == 'macos-latest'}}
+      run: |
+        brew install gcc
+        which gfortran
+
     - name: Build using pip
       shell: bash -l {0}
       run: |
