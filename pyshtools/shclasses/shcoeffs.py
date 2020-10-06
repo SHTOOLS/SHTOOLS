@@ -1767,7 +1767,7 @@ class SHCoeffs(object):
         The units of the input function must be in meters.
         """
         from .shgravcoeffs import SHGravCoeffs as _SHGravCoeffs
-        from ..constant import G as _G
+        from ..constants import G as _G
 
         density = 1.
         gm = density * _G.value * self.volume()
