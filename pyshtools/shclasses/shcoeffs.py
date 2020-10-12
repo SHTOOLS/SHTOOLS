@@ -1061,9 +1061,10 @@ class SHCoeffs(object):
         ds.to_netcdf(filename)
 
     def to_array(self, normalization=None, csphase=None, lmax=None,
-                 errors=True):
+                 errors=False):
         """
-        Return spherical harmonic coefficients (and errors) as a numpy array.
+        Return spherical harmonic coefficients (and optionally errors) as a
+        numpy array.
 
         Usage
         -----
@@ -1090,7 +1091,7 @@ class SHCoeffs(object):
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output. If lmax is greater
             than x.lmax, the array will be zero padded.
-        errors : bool, optional, default = True
+        errors : bool, optional, default = False
             If True, return separate arrays of the coefficients and errors. If
             False, return only the coefficients.
 
@@ -1102,8 +1103,9 @@ class SHCoeffs(object):
         degree is smaller than the maximum degree of the class instance, the
         coefficients will be truncated. Conversely, if this degree is larger
         than the maximum degree of the class instance, the output array will be
-        zero padded. If the errors of the coefficients are set, they will be
-        output as a separate array.
+        zero padded. If the errors of the coefficients are set, and the
+        optional parameter errors is set to True, the errors will be output as
+        a separate array.
         """
         if normalization is None:
             normalization = self.normalization
