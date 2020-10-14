@@ -17,7 +17,7 @@ Compute the cross-power of two real functions for a single spherical harmonic de
 `cilm2` : input, real(dp), dimension (2, `lmaxin2`+1, `lmaxin2`+1)
 :   The spherical harmonic coefficients of the second function.
 
-`l` : input, integer
+`l` : input, integer(int32)
 :   The spherical harmonic degree. This must be less than or equal to the minimum of `lmaxin1` and `lmaxin2`.
 
 # Description

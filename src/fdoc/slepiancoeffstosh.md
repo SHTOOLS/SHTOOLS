@@ -17,13 +17,13 @@ call SlepianCoeffsToSH(`film`, `falpha`, `galpha`, `lmax`, `nmax`, `exitstatus`)
 `galpha` : input, real(dp), dimension ((`lmax`+1)**2, `nmax`)
 :   An array containing the spherical harmonic coefficients of the Slepian functions. Each column corresponds to a single function of which the spherical harmonic coefficients can be unpacked with `SHVectorToCilm`.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The spherical harmonic bandwidth of the Slepian functions.
 
-`nmax` : input, integer
+`nmax` : input, integer(int32)
 :   The number of expansion coefficients to compute. This must be less than or equal to (`lmax`+1)\*\*2.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description

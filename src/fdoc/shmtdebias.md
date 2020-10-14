@@ -14,31 +14,31 @@ call SHMTDebias (`mtdebias`, `mtspectra`, `lmax`, `tapers`, `lwin`, `k`, `nl`, `
 `mtspectra` : input, real(dp), dimension (2, `lmax`+1)
 :   The localized multitaper spectrum estimate and uncertainty, obtained from a routine such as `SHMultitaperCSE` or `SHMultitaperSE`.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The spherical harmonic bandwidth of the localized multitaper spectrum estimates.
 
 `tapers` : input, real(dp), dimension (`lmaxt`+1, `k`)
 :   An array of the K windowing functions, arranged in columns, obtained from a call to `SHReturnTapers`.
 
-`lwin` : input, integer
+`lwin` : input, integer(int32)
 :   The spherical harmonic bandwidth of the windowing functions in the array `tapers`.
 
-`k` : input, integer
+`k` : input, integer(int32)
 :   The number of tapers utilized in the multitaper spectral analysis.
 
-`nl` : input, integer
+`nl` : input, integer(int32)
 :   The global power spectrum is assumed to be constant within bins of spherical harmonic wdith `nl`. In addition, the global power spectrum will be assumed to be constant beyond `lmax`.
 
 `lmid` : output, real(dp), dimension ((`lmax`+1)/`nl`+1)
 :   The midpoints of the spherical harmonic bins for which the global power spectrum is constant.
 
-`n` : output, integer
+`n` : output, integer(int32)
 :   The number of bins used in `mtdebias` and `lmid`.
 
 `taper_wt` : input, optional, real(dp), dimension (`k`)
 :   The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description

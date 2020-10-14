@@ -41,13 +41,13 @@ subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong, extend, exitstatus)
 
     implicit none
 
-    integer, intent(in) :: lmax
-    integer, intent(out) :: nlat, nlong
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(out) :: nlat, nlong
     real(dp), intent(out) :: latglq(:), longlq(:)
-    integer, intent(in), optional :: extend
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in), optional :: extend
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: pi, upper, lower, zero(lmax+1), w(lmax+1)
-    integer :: i, nlong_out
+    integer(int32) :: i, nlong_out
 
     if (present(exitstatus)) exitstatus = 0
 

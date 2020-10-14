@@ -20,7 +20,7 @@ call MakeMagGridDH (`cilm`, `lmax`, `r0`, `a`, `f`, `rad`, `theta`, `phi`, `tota
 `cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The real Schmidt semi-normalized spherical harmonic coefficients to be expanded in the space domain. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`. Alternatively, `C1lm` and `C2lm` correspond to the positive and negative order coefficients, respectively. The coefficients are assumed to have units of nT.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The maximum spherical harmonic degree of the coefficients `cilm`. This determines the number of samples of the output grids, `n=2*lmax+2`, and the latitudinal sampling interval, `90/(lmax+1)`.
 
 `r0` : input, real(dp)
@@ -44,22 +44,22 @@ call MakeMagGridDH (`cilm`, `lmax`, `r0`, `a`, `f`, `rad`, `theta`, `phi`, `tota
 `total` : output, real(dp), dimension(nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the total magnetic field strength.
 
-`n` : output, integer
+`n` : output, integer(int32)
 :   The number of samples in latitude of the output grids. This is equal to `2lmax+2`.
 
-`sampling` : optional, input, integer, default = 1
+`sampling` : optional, input, integer(int32), default = 1
 :   If 1 (default) the output grids are equally sampled (`n` by `n`). If 2, the grids are equally spaced (`n` by 2`n`).
 
-`lmaxcalc` : optional, input, integer, default = `lmax`
+`lmaxcalc` : optional, input, integer(int32), default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to `lmax`.
 
 `potgrid` : output, real(dp), dimension(nlat, nlong)
 :   A 2D equally sampled or equaly spaced grid of the magnetic potential.
 
-`extend` : input, optional, integer, default = 0
+`extend` : input, optional, integer(int32), default = 0
 :   If 1, compute the longitudinal band for 360 E and the latitudinal band for 90 S. This increases each of the dimensions of the grids by 1.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description

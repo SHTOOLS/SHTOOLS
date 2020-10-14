@@ -93,14 +93,14 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, gilm, &
     implicit none
 
     real(dp), intent(in) :: tapers(:,:), lat, lon, gilm(:,:,:), tilm(:,:,:)
-    integer, intent(in) :: lwin, lmax, K, taper_order(:)
+    integer(int32), intent(in) :: lwin, lmax, K, taper_order(:)
     real(dp), intent(out) :: admit(:), corr(:)
     real(dp), intent(out), optional :: admit_error(:), corr_error(:)
-    integer, intent(in), optional :: mtdef, k1linsig
+    integer(int32), intent(in), optional :: mtdef, k1linsig
     real(dp), intent(in), optional :: taper_wt(:)
-    integer, intent(out), optional :: exitstatus
-    integer :: lmaxwin, l, def, astat(9), phase, norm, i, nlat, nlong
-    integer, save :: first = 1, lmaxwin_last = -1, lwin_last = -1
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: lmaxwin, l, def, astat(9), phase, norm, i, nlat, nlong
+    integer(int32), save :: first = 1, lmaxwin_last = -1, lwin_last = -1
     real(dp) :: pi, g_power(2,lwin+lmax+1), t_power(2,lwin+lmax+1), &
                 gt_power(2,lwin+lmax+1), x(3), sgt(lmax-lwin+1, K), &
                 sgg(lmax-lwin+1, K), stt(lmax-lwin+1, K), &

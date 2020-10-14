@@ -1512,7 +1512,7 @@ class SHCoeffs(object):
         return _cross_spectrum(self.coeffs,
                                clm.to_array(normalization=self.normalization,
                                             csphase=self.csphase,
-                                            lmax=lmax),
+                                            lmax=lmax, errors=False),
                                normalization=self.normalization,
                                convention=convention, unit=unit, base=base,
                                lmax=lmax)
@@ -1962,7 +1962,7 @@ class SHCoeffs(object):
             if self.errors is not None:
                 coeffs, error_coeffs = temp.to_array(
                     normalization=normalization.lower(), csphase=csphase,
-                    lmax=lmax)
+                    lmax=lmax, errors=True)
             else:
                 coeffs = temp.to_array(normalization=normalization.lower(),
                                        csphase=csphase, lmax=lmax)
@@ -1970,7 +1970,7 @@ class SHCoeffs(object):
             if self.errors is not None:
                 coeffs, error_coeffs = temp.to_array(
                     normalization=normalization.lower(), csphase=csphase,
-                    lmax=lmax)
+                    lmax=lmax, errors=True)
             else:
                 coeffs = self.to_array(normalization=normalization.lower(),
                                        csphase=csphase, lmax=lmax)
@@ -2759,7 +2759,7 @@ class SHCoeffs(object):
 
         coeffs = clm.to_array(normalization=self.normalization,
                               csphase=self.csphase,
-                              lmax=self.lmax)
+                              lmax=self.lmax, errors=False)
 
         # Create the matrix of the spectrum for each coefficient
         spectrum = _np.empty((lmax + 1, 2 * lmax + 1))
@@ -3290,7 +3290,8 @@ class SHRealCoeffs(SHCoeffs):
 
         # The coefficients need to be 4pi normalized with csphase = 1
         coeffs = _shtools.SHRotateRealCoef(
-            self.to_array(normalization='4pi', csphase=1), angles, dj_matrix)
+            self.to_array(normalization='4pi', csphase=1, errors=False),
+            angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.
@@ -3299,10 +3300,11 @@ class SHRealCoeffs(SHCoeffs):
                             normalization_out=self.normalization,
                             csphase_out=self.csphase)
             return SHCoeffs.from_array(
-                temp, normalization=self.normalization,
+                temp, errors=self.errors, normalization=self.normalization,
                 csphase=self.csphase, units=self.units, copy=False)
         else:
-            return SHCoeffs.from_array(coeffs, units=self.units, copy=False)
+            return SHCoeffs.from_array(coeffs, errors=self.errors,
+                                       units=self.units, copy=False)
 
     def _expandDH(self, sampling, lmax, lmax_calc, extend):
         """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
@@ -3543,7 +3545,7 @@ class SHComplexCoeffs(SHCoeffs):
         coeffs_rot = _shtools.SHExpandDHC(grid_rot, norm=norm,
                                           csphase=self.csphase)
 
-        return SHCoeffs.from_array(coeffs_rot,
+        return SHCoeffs.from_array(coeffs_rot, errros=self.errors,
                                    normalization=self.normalization,
                                    csphase=self.csphase, units=self.units,
                                    copy=False)

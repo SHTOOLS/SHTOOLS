@@ -1674,7 +1674,8 @@ class SHMagCoeffs(object):
 
         if self.errors is not None:
             coeffs, errors = self.to_array(normalization=normalization.lower(),
-                                           csphase=csphase, lmax=lmax)
+                                           csphase=csphase, lmax=lmax,
+                                           errors=True)
             return SHMagCoeffs.from_array(
                 coeffs, r0=self.r0, errors=errors, error_kind=self.error_kind,
                 normalization=normalization.lower(),
@@ -1843,10 +1844,8 @@ class SHMagCoeffs(object):
         if lmax_calc is None:
             lmax_calc = lmax
 
-        if self.errors is not None:
-            coeffs, errors = self.to_array(normalization='schmidt', csphase=1)
-        else:
-            coeffs = self.to_array(normalization='schmidt', csphase=1)
+        coeffs = self.to_array(normalization='schmidt', csphase=1,
+                               errors=False)
 
         rad, theta, phi, total, pot = _MakeMagGridDH(
             coeffs, self.r0, a=a, f=f, lmax=lmax, lmax_calc=lmax_calc,
@@ -1950,10 +1949,8 @@ class SHMagCoeffs(object):
         if lmax_calc is None:
             lmax_calc = lmax
 
-        if self.errors is not None:
-            coeffs, errors = self.to_array(normalization='schmidt', csphase=1)
-        else:
-            coeffs = self.to_array(normalization='schmidt', csphase=1)
+        coeffs = self.to_array(normalization='schmidt', csphase=1,
+                               errors=False)
 
         if self.units.lower() == 'nt':
             units = 'nT/m'
@@ -2489,7 +2486,8 @@ class SHMagRealCoeffs(SHMagCoeffs):
 
         # The coefficients need to be 4pi normalized with csphase = 1
         coeffs = _SHRotateRealCoef(
-            self.to_array(normalization='4pi', csphase=1), angles, dj_matrix)
+            self.to_array(normalization='4pi', csphase=1, errors=False),
+            angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.
@@ -2497,11 +2495,12 @@ class SHMagRealCoeffs(SHMagCoeffs):
             temp = _convert(coeffs, normalization_in='4pi', csphase_in=1,
                             normalization_out=self.normalization,
                             csphase_out=self.csphase)
-            return SHMagCoeffs.from_array(temp, r0=r0,
+            return SHMagCoeffs.from_array(temp, r0=r0, errors=self.errors,
                                           normalization=self.normalization,
                                           csphase=self.csphase,
                                           units=self.units, year=self.year,
                                           copy=False)
         else:
-            return SHMagCoeffs.from_array(coeffs, r0=r0, units=self.units,
-                                          year=self.year, copy=False)
+            return SHMagCoeffs.from_array(coeffs, r0=r0, errors=self.errors,
+                                          units=self.units, year=self.year,
+                                          copy=False)

@@ -29,7 +29,7 @@ Compute the power of the magnetic field for a single degree `l` given the Schmid
 `r` : input, real(dp)
 :   The radius to evaluate the magnetic field.
 
-`l` : input, integer
+`l` : input, integer(int32)
 :   The spherical harmonic degree for which the power will be calculated.
 
 ## Description

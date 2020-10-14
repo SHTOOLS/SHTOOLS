@@ -26,9 +26,9 @@ function SHConfidence(l_conf, r)
 
     real(dp) :: SHConfidence
     real(dp), intent(in) :: r
-    integer, intent(in) :: l_conf
+    integer(int32), intent(in) :: l_conf
     real(dp) :: prod
-    integer:: l, i
+    integer(int32) :: l, i
 
     SHConfidence = abs(r)
     prod = 1.0_dp

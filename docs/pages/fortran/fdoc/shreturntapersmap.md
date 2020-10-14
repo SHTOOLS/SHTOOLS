@@ -23,25 +23,25 @@ call SHReturnTapersMap (`tapers`, `eigenvalues`, `dh_mask`, `n`, `lmax`, `sampli
 `eigenvalues` : input, real(dp), dimension (`ntapers`)
 :   The concentration factor for each localization window specified in the columns of `tapers`.
 
-`dh_mask` : input, integer, dimension (`n`, `n`\*`sampling`)
+`dh_mask` : input, integer(int32), dimension (`n`, `n`\*`sampling`)
 :   A Driscoll and Healy (1994) sampled grid describing the concentration region R. All elements should either be 1 (for inside the concentration region) or 0 (for outside R).
 
-`n` : input, integer
+`n` : input, integer(int32)
 :   The number of latitudinal samples in `dh_mask`. The effective spherical harmonic bandwidth of this grid is `L=n/2-1`.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The spherical harmonic bandwidth of the localization windows.
 
-`sampling` : input, integer
+`sampling` : input, integer(int32)
 :   For 1, `dh_mask` has `n x n` samples. For 2, `dh_mask` has `n x 2n` samples.
 
-`ntapers` : input, optional, integer, default = (`lmax`+1)\*\*2
+`ntapers` : input, optional, integer(int32), default = (`lmax`+1)\*\*2
 :   The number of best concentrated eigenvalues and corresponding eigenfunctions to return in `tapers` and `eigenvalues`. The default value is to return all tapers.
 
-`degrees` : input, integer, optional, dimension (`lmax`+1)
+`degrees` : input, integer(int32), optional, dimension (`lmax`+1)
 :   List of degrees to use when computing the eigenfunctions. Only those degrees where `degrees(l+1)` is non-zero will be employed.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description

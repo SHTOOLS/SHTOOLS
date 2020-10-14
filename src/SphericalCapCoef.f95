@@ -41,11 +41,11 @@ subroutine SphericalCapCoef(coef, theta, lmax, exitstatus)
 
     real(dp), intent(out) :: coef(:)
     real(dp), intent(in) :: theta
-    integer, intent(in), optional :: lmax
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in), optional :: lmax
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: x, top, bot, pi
     real(dp), allocatable :: pl(:)
-    integer :: l, lmax2, astat
+    integer(int32) :: l, lmax2, astat
 
     if (present(exitstatus)) exitstatus = 0
 

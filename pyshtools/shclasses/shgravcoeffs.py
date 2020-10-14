@@ -2181,7 +2181,8 @@ class SHGravCoeffs(object):
 
         if self.errors is not None:
             coeffs, errors = self.to_array(normalization=normalization.lower(),
-                                           csphase=csphase, lmax=lmax)
+                                           csphase=csphase, lmax=lmax,
+                                           errors=True)
             return SHGravCoeffs.from_array(
                 coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
                 errors=errors, error_kind=self.error_kind,
@@ -2378,10 +2379,7 @@ class SHGravCoeffs(object):
         if lmax_calc is None:
             lmax_calc = lmax
 
-        if self.errors is not None:
-            coeffs, errors = self.to_array(normalization='4pi', csphase=1)
-        else:
-            coeffs = self.to_array(normalization='4pi', csphase=1)
+        coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
 
         rad, theta, phi, total, pot = _MakeGravGridDH(
             coeffs, self.gm, self.r0, a=a, f=f, lmax=lmax,
@@ -2489,10 +2487,7 @@ class SHGravCoeffs(object):
         if lmax_calc is None:
             lmax_calc = lmax
 
-        if self.errors is not None:
-            coeffs, errors = self.to_array(normalization='4pi', csphase=1)
-        else:
-            coeffs = self.to_array(normalization='4pi', csphase=1)
+        coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
 
         if degree0 is False:
             coeffs[0, 0, 0] = 0.
@@ -2591,10 +2586,7 @@ class SHGravCoeffs(object):
                     "grid must be 'DH', 'DH1', or 'DH2'. "
                     "Input value is {:s}.".format(repr(grid)))
 
-        if self.errors is not None:
-            coeffs, errors = self.to_array(normalization='4pi', csphase=1)
-        else:
-            coeffs = self.to_array(normalization='4pi', csphase=1)
+        coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
 
         if omega is None:
             omega = self.omega
@@ -3386,7 +3378,8 @@ class SHGravRealCoeffs(SHGravCoeffs):
 
         # The coefficients need to be 4pi normalized with csphase = 1
         coeffs = _SHRotateRealCoef(
-            self.to_array(normalization='4pi', csphase=1), angles, dj_matrix)
+            self.to_array(normalization='4pi', csphase=1, errors=False),
+            angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.
@@ -3395,9 +3388,10 @@ class SHGravRealCoeffs(SHGravCoeffs):
                             normalization_out=self.normalization,
                             csphase_out=self.csphase)
             return SHGravCoeffs.from_array(
-                temp, normalization=self.normalization,
+                temp, errors=self.errors, normalization=self.normalization,
                 csphase=self.csphase, copy=False, gm=gm, r0=r0, omega=omega,
                 epoch=self.epoch)
         else:
-            return SHGravCoeffs.from_array(coeffs, gm=gm, r0=r0, omega=omega,
+            return SHGravCoeffs.from_array(coeffs, errors=self.errors,
+                                           gm=gm, r0=r0, omega=omega,
                                            epoch=self.epoch, copy=False)

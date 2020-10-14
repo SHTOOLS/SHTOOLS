@@ -30,8 +30,8 @@ function SHMagPowerL(cilm, a, r, l)
     real(dp) :: SHMagPowerL
     real(dp), intent(in) :: cilm(:,:,:)
     real(dp), intent(in) :: a, r
-    integer, intent(in) :: l
-    integer i, m, l1, m1
+    integer(int32), intent(in) :: l
+    integer(int32) i, m, l1, m1
 
     l1 = l + 1
 
@@ -105,10 +105,10 @@ subroutine SHMagPowerSpectrum(cilm, a, r, lmax, spectra, exitstatus)
 
     real(dp), intent(in) :: cilm(:,:,:)
     real(dp), intent(in) :: a, r
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) ::spectra(:)
-    integer, intent(out), optional :: exitstatus
-    integer i, m, l1, m1, l
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 

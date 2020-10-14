@@ -76,10 +76,10 @@ subroutine ComputeDMap(Dij, dh_mask, n_dh, lmax, sampling, degrees, exitstatus)
     implicit none
 
     real(dp), intent(out) :: Dij(:,:)
-    integer, intent(in) :: dh_mask(:,:), n_dh, lmax
-    integer, intent(in), optional:: sampling, degrees(:)
-    integer, intent(out), optional :: exitstatus
-    integer :: nlat, nlong, lmax_dh, astat, i, j, k, l, m, max_mask, min_mask
+    integer(int32), intent(in) :: dh_mask(:,:), n_dh, lmax
+    integer(int32), intent(in), optional:: sampling, degrees(:)
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: nlat, nlong, lmax_dh, astat, i, j, k, l, m, max_mask, min_mask
     real(dp), allocatable :: f(:,:), plm(:), clm(:,:,:), vec(:)
     real(dp) :: colat, lat_int, temp(2*n_dh), lon, lon_int
 

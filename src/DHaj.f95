@@ -27,11 +27,11 @@ subroutine DHaj(n, aj, extend, exitstatus)
 
     implicit none
 
-    integer, intent(in) :: n
+    integer(int32), intent(in) :: n
     real(dp), intent(out) :: aj(:)
-    integer, intent(in), optional :: extend
-    integer, intent(out), optional :: exitstatus
-    integer :: j, l, n_out, extend_grid
+    integer(int32), intent(in), optional :: extend
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: j, l, n_out, extend_grid
     real(dp) :: sum1, pi
 
     if (present(exitstatus)) exitstatus = 0

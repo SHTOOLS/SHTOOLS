@@ -26,7 +26,7 @@ Compute the cross-power spectral density of two real functions for a single sphe
 `cilm2` : input, real(dp), dimension (2, `lmaxin2`+1, `lmaxin2`+1)
 :   The spherical harmonic coefficients of the second real function.
 
-`l` : input, integer
+`l` : input, integer(int32)
 :   The spherical harmonic degree. This must be less than or equal to the minimum of `lmaxin1` and `lmaxin2`.
 
 ## Description

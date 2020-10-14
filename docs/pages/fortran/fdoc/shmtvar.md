@@ -17,19 +17,19 @@ call SHMTVar (`l`, `tapers`, `taper_order`, `lwin`, `kmax`, `sff`, `variance`, `
 
 ## Parameters
 
-`l` : input, integer
+`l` : input, integer(int32)
 :   The spherical harmonic degree used to calculate the theoretical variance.
 
 `tapers` : input, real(dp), dimension (`lwin`+1, `kmax`)
 :   A matrix of localization functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
 
-`taper_order` : input, integer, dimension (`kmax`)
+`taper_order` : input, integer(int32), dimension (`kmax`)
 :   The angular order of the windowing coefficients in `tapers`.
 
-`lwin` : input, integer
+`lwin` : input, integer(int32)
 :   The spherical harmonic bandwidth of the localizing windows.
 
-`kmax` : input, integer
+`kmax` : input, integer(int32)
 :   The maximum number of tapers to be used when calculating the variance.
 
 `sff` : input, real(dp), dimension (`l`+`lwin`+1)
@@ -44,10 +44,10 @@ call SHMTVar (`l`, `tapers`, `taper_order`, `lwin`, `kmax`, `sff`, `variance`, `
 `unweighted_covar` : optional, output, real(dp), dimension (`kmax`, `kmax`)
 :   The unweighted covariance matrix of the `kmax` tapers (i.e., Fij in Wieczorek and Simons 2007).
 
-`nocross` : optional, input, integer, default = 0
+`nocross` : optional, input, integer(int32), default = 0
 :   If 1, only the diagonal terms of the covariance matrix Fij will be computed. If 0, all terms will be computed.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description

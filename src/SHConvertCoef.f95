@@ -48,9 +48,9 @@ subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs, exitstatus)
 
     real(dp), intent(in) :: rcilm(:,:,:)
     real(dp), intent(out) :: ccilm(:,:,:)
-    integer, intent(in), optional :: degmax, convention, switchcs
-    integer, intent(out), optional :: exitstatus
-    integer :: lmax, l, m, convention_flag, switchcs_flag
+    integer(int32), intent(in), optional :: degmax, convention, switchcs
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: lmax, l, m, convention_flag, switchcs_flag
     real(dp) :: pi
 
     if (present(exitstatus)) exitstatus = 0
@@ -256,9 +256,9 @@ subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs, exitstatus)
 
     real(dp), intent(in) :: ccilm(:,:,:)
     real(dp), intent(out) :: rcilm(:,:,:)
-    integer, intent(in), optional :: degmax, convention, switchcs
-    integer, intent(out), optional :: exitstatus
-    integer :: lmax, l, m, convention_flag, switchcs_flag
+    integer(int32), intent(in), optional :: degmax, convention, switchcs
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: lmax, l, m, convention_flag, switchcs_flag
     real(dp) :: pi
 
     if (present(exitstatus)) exitstatus = 0
@@ -451,9 +451,9 @@ subroutine SHCilmToCindex(cilm, cindex, degmax, exitstatus)
 
     real(dp), intent(in) :: cilm(:,:,:)
     real(dp), intent(out) :: cindex(:,:)
-    integer, intent(in), optional :: degmax
-    integer, intent(out), optional :: exitstatus
-    integer :: lmax, l, m, index
+    integer(int32), intent(in), optional :: degmax
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: lmax, l, m, index
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -569,9 +569,9 @@ subroutine SHCindexToCilm(cindex, cilm, degmax, exitstatus)
 
     real(dp), intent(out) :: cilm(:,:,:)
     real(dp), intent(in) :: cindex(:,:)
-    integer, intent(in), optional :: degmax
-    integer, intent(out), optional :: exitstatus
-    integer :: lmax, l, m, index, n
+    integer(int32), intent(in), optional :: degmax
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: lmax, l, m, index, n
 
     if (present(exitstatus)) exitstatus = 0
 

@@ -51,15 +51,15 @@ subroutine EigValVecSymTri(ain, n, eig, evec, ul, exitstatus)
     implicit none
 
     real(dp), intent(in) :: ain(:,:)
-    integer, intent(in) :: n
+    integer(int32), intent(in) :: n
     real(dp), intent(out) :: eig(:), evec(:,:)
     character, intent(in), optional :: ul
-    integer, intent(out), optional :: exitstatus
-    integer, parameter :: nb = 80, nbl = 10
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32), parameter :: nb = 80, nbl = 10
     real(dp) :: d(n), e(n), work(nb*n), vl, vu, abstol, w(n)
     real(dp), allocatable :: z(:,:)
-    integer :: lwork, info, il, iu, m, isuppz(2*n), liwork, &
-               iwork(nbl*n), i, astat
+    integer(int32) :: lwork, info, il, iu, m, isuppz(2*n), liwork, &
+                      iwork(nbl*n), i, astat
 #ifdef LAPACK_UNDERSCORE
 #define dstegr dstegr_
 #endif

@@ -58,9 +58,9 @@ subroutine SHSCouplingMatrix(kij, galpha, lmax, nmax, exitstatus)
 
     real(dp), intent(out) :: kij(:,:)
     real(dp), intent(in) :: galpha(:,:)
-    integer, intent(in) :: lmax, nmax
-    integer, intent(out), optional :: exitstatus
-    integer :: l, lp, m, mp, alpha, ind, indp
+    integer(int32), intent(in) :: lmax, nmax
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: l, lp, m, mp, alpha, ind, indp
     real(dp) :: temp
 
     if (present(exitstatus)) exitstatus = 0

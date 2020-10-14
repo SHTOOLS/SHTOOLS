@@ -46,10 +46,10 @@ subroutine djpi2(dj, lmax, exitstatus)
 
     implicit none
 
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) :: dj(:,:,:)
-    integer, intent(out), optional :: exitstatus
-    integer :: i, l, n, lp1, j, m, isn, np
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: i, l, n, lp1, j, m, isn, np
     real(dp) :: f((lmax+1)*8), f1, f2, g1, g2, en2, fl2p1
 
     if (present(exitstatus)) exitstatus = 0

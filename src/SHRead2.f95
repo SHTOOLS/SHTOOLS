@@ -42,15 +42,15 @@ subroutine SHRead2(filename, cilm, lmax, gm, r0_pot, error, dot, doystart, &
     implicit none
 
     character(*), intent(in) :: filename
-    integer, intent(out) :: lmax
+    integer(int32), intent(out) :: lmax
     real(dp), intent(out) :: cilm(:,:,:), gm, r0_pot
     real(dp), intent(out), optional :: error(:,:,:), dot(:,:,:), doystart, &
                                        doyend, epoch
-    integer, intent(out), optional :: exitstatus
-    integer :: temp_max, mmax, maxl_cilm, maxl_error, maxl_dot
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: temp_max, mmax, maxl_cilm, maxl_error, maxl_dot
     real(dp) :: error_scale, doy1, doy2, epoch_temp
     character(114) :: comment
-    integer :: l, m, stat
+    integer(int32) :: l, m, stat
     character(6) :: c
     real(dp) :: clm, slm, clmsig, slmsig
 

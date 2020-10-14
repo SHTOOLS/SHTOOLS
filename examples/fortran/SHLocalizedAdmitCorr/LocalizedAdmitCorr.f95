@@ -20,9 +20,9 @@ Program LocalizedAdmitCorr
     real(dp), allocatable :: grav(:,:,:), admit(:), corr(:), admit_error(:), &
                              corr_error(:), tapers(:,:), eigenvalues(:), &
                              topo(:,:,:), pot(:,:,:)
-    integer :: lmax_topo, lmax_pot, lmax, option1, l, lwin, lmaxwin, &
-               astat(5), K, degmax
-    integer, allocatable :: taper_order(:)
+    integer(int32) :: lmax_topo, lmax_pot, lmax, option1, l, lwin, lmaxwin, &
+                      astat(5), K, degmax
+    integer(int32), allocatable :: taper_order(:)
 
     pi = acos(-1.0_dp)
 

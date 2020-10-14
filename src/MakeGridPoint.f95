@@ -42,10 +42,10 @@ function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
 
     real(dp) :: MakeGridPoint
     real(dp), intent(in):: cilm(:,:,:), lat, longitude
-    integer, intent(in) :: lmax
-    integer, intent(in), optional :: norm, csphase, dealloc
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(in), optional :: norm, csphase, dealloc
     real(dp) :: pi, x, expand, lon
-    integer :: index, l, m, l1, m1, lmax_comp, phase, astat(3)
+    integer(int32) :: index, l, m, l1, m1, lmax_comp, phase, astat(3)
     real(dp), allocatable :: pl(:), cosm(:), sinm(:)
 
     if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. &

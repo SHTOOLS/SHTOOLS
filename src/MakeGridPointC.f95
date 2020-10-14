@@ -43,11 +43,11 @@ function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
     complex(dp) :: MakeGridPointC
     complex(dp), intent(in):: cilm(:,:,:)
     real(dp), intent(in) :: lat, longitude
-    integer, intent(in) :: lmax
-    integer, intent(in), optional :: norm, csphase, dealloc
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(in), optional :: norm, csphase, dealloc
     real(dp) :: pi, x, lon
     complex(dp) :: expand, i_imag
-    integer :: index, l, m, l1, m1, lmax_comp, phase, astat(4)
+    integer(int32) :: index, l, m, l1, m1, lmax_comp, phase, astat(4)
     real(dp), allocatable :: pl(:), cosm(:), sinm(:), onem(:)
 
     i_imag = cmplx(0.0_dp, 1.0_dp, dp)

@@ -11,7 +11,7 @@ Return a pseudo uniform random deviate between 0 and 1 using the algorithm of Pa
 `rn` : output, real(dp)
 :   The uniform random deviate.
 
-`seed` : input/output, integer
+`seed` : input/output, integer(int32)
 :   Input a negative integer to (re-)initialize the random number generator. Afterwards, this argument should not be modified.
 
 # Description

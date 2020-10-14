@@ -13,12 +13,12 @@ Program TestExpandDH
     use ftypes
 
     implicit none
-    integer, parameter :: maxdeg = 120, maxgrid = 800
+    integer(int32), parameter :: maxdeg = 120, maxgrid = 800
     character(80) :: infile
     real(dp) :: cilm(2, maxdeg+1, maxdeg+1), grid(maxgrid, maxgrid), &
                 griddh(maxgrid, maxgrid), cilm2(2, maxdeg+1, maxdeg+1), &
                 interval, error, maxerror
-    integer :: lmax, n, nlat, nlong, lmax2, l, m, i
+    integer(int32) :: lmax, n, nlat, nlong, lmax2, l, m, i
 
     infile = "../../ExampleDataFiles/MarsTopo719.shape"
 

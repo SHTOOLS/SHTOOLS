@@ -84,9 +84,9 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
 
     real(dp), intent(in) :: tapers(:,:), x(:), dj(:,:,:)
     real(dp), intent(out) :: tapersrot(:,:)
-    integer, intent(in) :: taper_order(:), lmax, nrot
-    integer, intent(out), optional :: exitstatus
-    integer :: astat(5), i
+    integer(int32), intent(in) :: taper_order(:), lmax, nrot
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: astat(5), i
     real(dp), allocatable :: ccilm(:,:,:), cilm(:,:,:), cof(:,:), rcof(:,:), &
                              vec(:)
 

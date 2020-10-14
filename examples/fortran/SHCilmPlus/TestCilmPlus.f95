@@ -59,8 +59,8 @@ program TestCilmPlus
                 d, rho, mass, grav, gm, grid2d(max2dgrid, 2*max2dgrid), &
                 interval, timein, timeout
     real(dp), allocatable :: plxn(:,:),  plx(:,:)
-    integer :: lmax, i, j, l, m, nlat, nlong, nmax, n, astat, lmaxfile, &
-               lmaxn, nlatn, nlongn, precomputeplx
+    integer(int32) :: lmax, i, j, l, m, nlat, nlong, nmax, n, astat, &
+                      lmaxfile, lmaxn, nlatn, nlongn, precomputeplx
     character(200) :: infile, outfile
 
     call cpu_time(timein)

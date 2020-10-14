@@ -56,12 +56,12 @@ subroutine SHMultiply(cilmout, cilm1, lmax1, cilm2, lmax2, precomp, norm, &
 
     real(dp), intent(out) :: cilmout(:,:,:)
     real(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:)
-    integer, intent(in) :: lmax1, lmax2
-    integer, intent(in), optional :: precomp, norm, csphase
-    integer, intent(out), optional :: exitstatus
-    integer :: lmaxout, phase, mnorm, astat(2), nlat, nlong
+    integer(int32), intent(in) :: lmax1, lmax2
+    integer(int32), intent(in), optional :: precomp, norm, csphase
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: lmaxout, phase, mnorm, astat(2), nlat, nlong
     real(dp), allocatable, save :: zero(:), w(:)
-    integer, save :: first = 1, lmaxout_last = -1
+    integer(int32), save :: first = 1, lmaxout_last = -1
     real(dp), allocatable :: grid1glq(:,:), grid2glq(:,:), plx(:,:)
 
 !$OMP   threadprivate(zero, w, first, lmaxout_last)

@@ -24,11 +24,11 @@ subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, &
     real(dp), intent(out) :: mtdebias(:,:), lmid(:)
     real(dp), intent(in) :: mtspectra(:,:), tapers(:,:)
     real(dp), intent(in), optional :: taper_wt(:)
-    integer, intent(in) :: lmax, K, lwin, nl
-    integer, intent(out) :: n
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in) :: lmax, K, lwin, nl
+    integer(int32), intent(out) :: n
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: w3j(lwin+2*lmax+1), sum1, y(lmax+1), ss(lmax+1)
-    integer :: i, j, l, wmin, wmax, nstart, nstop, info, lwork, m, astat(5), &
+    integer(int32) :: i, j, l, wmin, wmax, nstart, nstop, info, lwork, m, astat(5), &
                iwork(8*(lmax+lwin+1))
     real(dp), allocatable :: work(:), Mmt(:,:), a(:,:), vt(:,:), uu(:,:)
 #ifdef LAPACK_UNDERSCORE

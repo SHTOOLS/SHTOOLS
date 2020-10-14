@@ -17,16 +17,16 @@ call DHaj (`n`, `aj`, `exitstatus`)
 
 ## Parameters
 
-`n` : input, integer
+`n` : input, integer(int32)
 :   The number of samples in latitude used in the spherical harmonic transform. This must be even.
 
-`aj` : output, real/*8, dimension (`n`) or (`n`+1)
+`aj` : output, real(dp), dimension (`n`) or (`n`+1)
 :   The latitudinal weights used in the spherical harmonic transform.
 
-`extend` : input, optional, integer, default = 0
+`extend` : input, optional, integer(int32), default = 0
 :   If 1, include the latitudinal band for 90 S, which increases the dimension of `aj` by 1.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description

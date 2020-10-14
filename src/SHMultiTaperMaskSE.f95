@@ -63,12 +63,12 @@ subroutine SHMultiTaperMaskSE(mtse, sd, cilm, lmax, tapers, lmaxt, K, &
     real(dp), intent(in) :: cilm(:,:,:), tapers(:,:)
     integer, intent(in) :: lmax, lmaxt, K
     real(dp), intent(in), optional :: taper_wt(:)
-    integer, intent(in), optional :: csphase, norm
-    integer, intent(out), optional :: exitstatus
-    integer :: i, l, phase, mnorm, astat(7), lmaxmul, nlat, nlong
+    integer(int32), intent(in), optional :: csphase, norm
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: i, l, phase, mnorm, astat(7), lmaxmul, nlat, nlong
     real(dp) :: se(lmax-lmaxt+1, K), pi, factor
     real(dp), allocatable, save :: zero(:), w(:)
-    integer, save :: first = 1, lmaxmul_last = -1
+    integer(int32), save :: first = 1, lmaxmul_last = -1
     real(dp), allocatable :: shwin(:,:,:), shloc(:,:,:), grid1glq(:,:), &
                              gridwinglq(:,:), temp(:,:)
 

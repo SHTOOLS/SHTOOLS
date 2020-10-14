@@ -17,10 +17,10 @@ call BAtoHilm (`cilm`, `ba`, `grid`, `lmax`, `nmax`, `mass`, `r0`, `rho`, `gridt
 `grid` : input, real(dp), dimension (`lmax`+1, 2\*`lmax`+1) for `gridtype` 1, (2\*`lmax`+2, 2\*`lmax`+2) for `gridtype` 2, (2\*`lmax`+2, 4\*`lmax`+4) for `gridtype` 3
 :   The initial estimate for the radii of the interface evaluated on a grid corresponding to a function of maximum spherical harmonic degree `lmax`. This is calculated by a call to either `MakeGridGLQ` or `MakeGridDH`. This grid must contain the degree-0 average radius of the interface.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The spherical harmonic bandwidth of the input relief `grid`, which determines the dimensions of `grid`. If `lmaxcalc` is not set, this determines also the maximum spherical harmonic degree of the output spherical harmonic coefficients of the relief and the input spherical harmonics of the Bouguer anomaly.
 
-`nmax` : input, integer
+`nmax` : input, integer(int32)
 :   The maximum order used in the Taylor-series expansion used in calculating the potential coefficients.
 
 `mass` : input, real(dp)
@@ -32,7 +32,7 @@ call BAtoHilm (`cilm`, `ba`, `grid`, `lmax`, `nmax`, `mass`, `r0`, `rho`, `gridt
 `rho` : input, real(dp)
 :   The density contrast of the relief in kg/m^3.
 
-`gridtype` : input, integer
+`gridtype` : input, integer(int32)
 :   1 = Gauss-Legendre grids, calculated using `SHGLQ` and `MakeGridGLQ`. 2 = Equally sampled Driscoll-Healy grids, `n` by `n`, calculated using `MakeGridDH`. 3 = Equally spaced Driscoll-Healy grids, `n` by 2`n`, calculated using `MakeGridDH`.
 
 `w` : optional, input, real(dp), dimension (`lmax`+1)
@@ -44,16 +44,16 @@ call BAtoHilm (`cilm`, `ba`, `grid`, `lmax`, `nmax`, `mass`, `r0`, `rho`, `gridt
 `zero` : optional, input, real(dp), dimension (`lmax`+1)
 :   The nodes used in the Gauss-Legendre quadrature over latitude, calculated by a call to `SHGLQ`.
 
-`filtertype` : optional, input, integer, default = 0
+`filtertype` : optional, input, integer(int32), default = 0
 :   Apply a filter when calculating the relief in order to minimize the destabilizing effects of downward continuation which amplify uncertainties in the Bouguer anomaly. If 0, no filtering is applied. If 1, use the minimum amplitude filter `DownContFilterMA`. If 2, use the minimum curvature filter `DownContFilterMC`.
 
-`filterdeg` : optional, input, integer
+`filterdeg` : optional, input, integer(int32)
 :   The spherical harmonic degree for which the filter is 0.5.
 
-`lmaxcalc` : optional, input, integer, default = `lmax`
+`lmaxcalc` : optional, input, integer(int32), default = `lmax`
 :   The maximum degree that will be calculated in the spherical harmonic expansions.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description

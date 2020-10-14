@@ -24,13 +24,13 @@ call SHRotateTapers(`tapersrot`, `tapers`, `taper_order`, `lmax`, `nrot`, `x`,
 `tapers` : input, real(dp), dimension (`lmax`+1, `nrot`)
 :   An array containing the eigenfunctions of the spherical-cap concentration problem obtained from `SHReturnTapers`. The functions are listed by columns, ordered from best to worst concentrated.
 
-`taper_order` : input, integer, dimension (`nrot`)
+`taper_order` : input, integer(int32), dimension (`nrot`)
 :   The angular order of the non-zero spherical harmonic coefficients in each column of `tapers`.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The spherical harmonic bandwidth of the functions.
 
-`nrot` : input, integer
+`nrot` : input, integer(int32)
 :   The number of functions to rotate, which must be less than or equal to (`lmax`+1)**2.
 
 `x` : input, real(dp), dimension(3)
@@ -39,7 +39,7 @@ call SHRotateTapers(`tapersrot`, `tapers`, `taper_order`, `lmax`, `nrot`, `x`,
 `dj` : input, real(dp), dimension (`lmax`+1, `lmax`+1, `lmax`+1)
 :   The rotation matrix `dj(pi/2)`, obtained from a call to `djpi2`.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description

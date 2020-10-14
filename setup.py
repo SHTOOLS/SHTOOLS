@@ -12,7 +12,7 @@ if sys.version_info < min_version:
             '*** is required. This error may be a result of using a \n' \
             '*** python-2.7 version of pip. \n' \
             '*** {:}'.format(('.'.join(str(n) for n in min_version)),
-                                 sys.version_info)
+                             sys.version_info)
     raise SystemError(error)
 
 import os  # noqa: E402

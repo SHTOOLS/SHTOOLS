@@ -71,9 +71,9 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
 
     real(dp), intent(in) :: cilm(:,:,:), x(:), dj(:,:,:)
     real(dp), intent(out) :: cilmrot(:,:,:)
-    integer, intent(in) :: lmax
-    integer, intent(out), optional :: exitstatus
-    integer :: astat(3)
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: astat(3)
     real(dp), allocatable :: ccilm(:,:,:), cof(:,:), rcof(:,:)
 
     if (present(exitstatus)) exitstatus = 0

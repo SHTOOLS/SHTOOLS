@@ -69,14 +69,14 @@ subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, &
     implicit none
 
     real(dp), intent(in) :: sgt(:), sgg(:), stt(:), tapers(:,:)
-    integer, intent(in) :: lmax, lwin, K
+    integer(int32), intent(in) :: lmax, lwin, K
     real(dp), intent(out) :: admit(:), corr(:)
-    integer, intent(in), optional :: mtdef
+    integer(int32), intent(in), optional :: mtdef
     real(dp), intent(in), optional :: taper_wt(:)
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: sgt_bias(lmax-lwin+1), sgg_bias(lmax-lwin+1), &
                 stt_bias(lmax-lwin+1), shh(lwin+1)
-    integer :: lmax_calc, def, i
+    integer(int32) :: lmax_calc, def, i
 
     if (present(exitstatus)) exitstatus = 0
 

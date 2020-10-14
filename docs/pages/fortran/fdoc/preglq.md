@@ -23,7 +23,7 @@ call PreGLQ (`lower`, `upper`, `n`, `zero`, `w`, `exitstatus`)
 `upper` : input, real(dp)
 :   The upper bound of the integration.
 
-`n` : input, integer
+`n` : input, integer(int32)
 :   The number of integration points to use. This will integrate exactly a polynomial of degree `2n-1`.
 
 `zero` : output, real(dp), dimension (`n`)
@@ -32,7 +32,7 @@ call PreGLQ (`lower`, `upper`, `n`, `zero`, `w`, `exitstatus`)
 `w` : output, real(dp), dimension (`n`)
 :   The weights used in the Gauss-Legendre quadrature.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description

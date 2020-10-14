@@ -21,7 +21,7 @@ program TestSHExpandLSQ
     real(dp) :: d(dmax), lat(dmax), lon(dmax), cilm(2,degmax+1, degmax+1), &
                 x, y, z, pi, maxerror, cilm1(2,degmax+1, degmax+1), &
                 dd(dmax), misfit
-    integer :: nmax, lmax, l, i, seed, lmaxfile
+    integer(int32) :: nmax, lmax, l, i, seed, lmaxfile
     character(80) :: infile
 
     d = 0.0_dp

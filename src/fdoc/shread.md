@@ -14,19 +14,19 @@ call SHRead (`filename`, `cilm`, `lmax`, `skip`, `header`, `error`, `exitstatus`
 `cilm` : output, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients contained in `filename`.
 
-`lmax` : output, integer
+`lmax` : output, integer(int32)
 :   The maximum spherical harmonic degree of `cilm`. This is the minimum of the maximum spherical harmonic degree of `filename` and the dimension of `cilm`-1.
 
-`skip` : input, optional, integer
+`skip` : input, optional, integer(int32)
 :   The number of lines to skip before parsing `filename`.
 
 `header` : output, optional, real(dp) dimension (`n`)
-:   A vector containing the first `n` numbers in the first line of the file (following any skipped lines). 
+:   A vector containing the first `n` numbers in the first line of the file (following any skipped lines).
 
 `error` : output, optional, real(dp) dimension (2, `lmax`+1, `lmax`+1)
 :   The errors corresponding to the spherical harmonic coefficients `cilm`.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description

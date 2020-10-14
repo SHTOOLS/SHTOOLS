@@ -1,4 +1,4 @@
-integer function PlmIndex(l, m)
+function PlmIndex(l, m)
 !-------------------------------------------------------------------------------
 !
 !   This function will return the index corresponding 
@@ -14,9 +14,12 @@ integer function PlmIndex(l, m)
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, intent(in) :: l, m
+    integer(int32) :: PlmIndex
+    integer(int32), intent(in) :: l, m
 
     if (l < 0) then
         print*, "Error --- PlmIndex"
