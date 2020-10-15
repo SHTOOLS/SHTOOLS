@@ -4,7 +4,7 @@ LD = $(CXX)
 OPTIM = -O0
 CXXFLAGS += -Wall -pedantic -std=c++17 $(OPTIM)
 
-INCLUDE = -I ../../src
+INCLUDE = -I ../../include
 LIBPATH = ../../lib
 LIBNAME = SHTOOLS
 FFTW = -lfftw3 -lm
@@ -21,9 +21,9 @@ test.o : test.cpp
 test : test.o
 	$(LD) -o $@ $< $(LIB)
 	
-run-cpp-tests-no-timing:
+run-cpp-tests-no-timing :
 	./test
 	
 clean :
-	rm -rf *.o
-	rm -rf test
+	@-rm -rf *.o
+	@-rm -rf test
