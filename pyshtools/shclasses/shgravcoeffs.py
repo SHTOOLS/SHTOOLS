@@ -88,6 +88,7 @@ class SHGravCoeffs(object):
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
     kind          : The coefficient data type (only 'real' is permissible).
+    name          : The name of the dataset.
     epoch         : The epoch time of the spherical harmonic coefficients.
     header        : A list of values (of type str) from the header line of the
                     input file used to initialize the class (for 'shtools'
@@ -165,7 +166,7 @@ class SHGravCoeffs(object):
     @classmethod
     def from_array(self, coeffs, gm, r0, omega=None, errors=None,
                    error_kind=None, normalization='4pi', csphase=1, lmax=None,
-                   set_degree0=True, epoch=None, copy=True):
+                   set_degree0=True, name=None, epoch=None, copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
         array.
@@ -174,8 +175,8 @@ class SHGravCoeffs(object):
         -----
         x = SHGravCoeffs.from_array(array, gm, r0, [omega, errors, error_kind,
                                                     normalization, csphase,
-                                                    lmax, set_degree0, epoch,
-                                                    copy])
+                                                    lmax, set_degree0, name,
+                                                    epoch, copy])
 
         Returns
         -------
@@ -211,6 +212,8 @@ class SHGravCoeffs(object):
             class instance. This must be less than or equal to lmaxin.
         set_degree0 : bool, optional, default = True
             If the degree-0 coefficient is zero, set this to 1.
+        name : str, optional, default = None
+            The name of the dataset.
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD.
@@ -278,18 +281,20 @@ class SHGravCoeffs(object):
                                                               0:lmax+1],
                                    error_kind=error_kind,
                                    normalization=normalization.lower(),
-                                   csphase=csphase, epoch=epoch, copy=copy)
+                                   csphase=csphase, name=name, epoch=epoch,
+                                   copy=copy)
         else:
             clm = SHGravRealCoeffs(coeffs[:, 0:lmax+1, 0:lmax+1], gm=gm, r0=r0,
                                    omega=omega,
                                    normalization=normalization.lower(),
-                                   csphase=csphase, epoch=epoch, copy=copy)
+                                   csphase=csphase, name=name, epoch=epoch,
+                                   copy=copy)
         return clm
 
     @classmethod
     def from_zeros(self, lmax, gm, r0, omega=None, errors=None,
                    error_kind=None, normalization='4pi', csphase=1,
-                   epoch=None):
+                   name=None, epoch=None):
         """
         Initialize the class with spherical harmonic coefficients set to zero
         from degree 1 to lmax, and set the degree 0 term to 1.
@@ -298,7 +303,7 @@ class SHGravCoeffs(object):
         -----
         x = SHGravCoeffs.from_zeros(lmax, gm, r0, [omega, errors, error_kind,
                                                    normalization, csphase,
-                                                   epoch])
+                                                   name, epoch])
 
         Returns
         -------
@@ -327,6 +332,8 @@ class SHGravCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
+        name : str, optional, default = None
+            The name of the dataset.
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD.
@@ -364,7 +371,7 @@ class SHGravCoeffs(object):
         clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
                                errors=error_coeffs, error_kind=error_kind,
                                normalization=normalization.lower(),
-                               csphase=csphase, epoch=epoch)
+                               csphase=csphase, name=name, epoch=epoch)
         return clm
 
     @classmethod
@@ -372,7 +379,7 @@ class SHGravCoeffs(object):
                   omega=None, lmax=None, normalization='4pi', skip=0,
                   header=True, header2=False, errors=None, error_kind=None,
                   csphase=1, r0_index=0, gm_index=1, omega_index=None,
-                  header_units='m', set_degree0=True, epoch=None,
+                  header_units='m', set_degree0=True, name=None, epoch=None,
                   encoding=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
@@ -383,15 +390,16 @@ class SHGravCoeffs(object):
                                    r0, omega, lmax, normalization, csphase,
                                    skip, header, header2, errors, error_kind,
                                    gm_index, r0_index, omega_index,
-                                   header_units, set_degree0])
+                                   header_units, set_degree0, name])
         x = SHGravCoeffs.from_file(filename, format='icgem', [lmax, omega,
                                    normalization, csphase, errors, set_degree0,
-                                   epoch, encoding])
+                                   name, name, epoch, encoding])
         x = SHGravCoeffs.from_file(filename, format='bshc', gm, r0, [lmax,
-                                   omega, normalization, csphase, set_degree0])
+                                   omega, normalization, csphase, set_degree0,
+                                   name])
         x = SHGravCoeffs.from_file(filename, format='npy', gm, r0, [lmax,
                                    omega, normalization, csphase, set_degree0,
-                                   **kwargs])
+                                   name, **kwargs])
 
         Returns
         -------
@@ -463,6 +471,8 @@ class SHGravCoeffs(object):
         skip : int, optional, default = 0
             Number of lines to skip at the beginning of the file for 'shtools'
             formatted files.
+        name : str, optional, default = None
+            The name of the dataset.
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD. If format is 'icgem' and epoch is None,
@@ -656,13 +666,13 @@ class SHGravCoeffs(object):
                                errors=error_coeffs, error_kind=error_kind,
                                normalization=normalization.lower(),
                                csphase=csphase, header=header_list,
-                               header2=header2_list, epoch=epoch)
+                               header2=header2_list, name=name, epoch=epoch)
         return clm
 
     @classmethod
     def from_random(self, power, gm, r0, omega=None, function='geoid',
                     lmax=None, normalization='4pi', csphase=1,
-                    exact_power=False, epoch=None):
+                    exact_power=False, name=None, epoch=None):
         """
         Initialize the class of gravitational potential spherical harmonic
         coefficients as random variables with a given spectrum.
@@ -672,7 +682,7 @@ class SHGravCoeffs(object):
         x = SHGravCoeffs.from_random(power, gm, r0, [omega, function, lmax,
                                                      normalization,
                                                      csphase, exact_power,
-                                                     epoch])
+                                                     name, epoch])
 
         Returns
         -------
@@ -708,6 +718,8 @@ class SHGravCoeffs(object):
             The total variance of the coefficients is set exactly to the input
             power. The distribution of power at degree l amongst the angular
             orders is random, but the total power is fixed.
+        name : str, optional, default = None
+            The name of the dataset.
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD.
@@ -820,12 +832,12 @@ class SHGravCoeffs(object):
         clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
                                errors=None,
                                normalization=normalization.lower(),
-                               csphase=csphase, epoch=epoch)
+                               csphase=csphase, name=name, epoch=epoch)
         return clm
 
     @classmethod
     def from_netcdf(self, filename, lmax=None, normalization='4pi', csphase=1,
-                    epoch=None):
+                    name=None, epoch=None):
         """
         Initialize the class with spherical harmonic coefficients from a
         netcdf file.
@@ -833,7 +845,7 @@ class SHGravCoeffs(object):
         Usage
         -----
         x = SHGravCoeffs.from_netcdf(filename, [lmax, normalization, csphase,
-                                                epoch])
+                                                name, epoch])
 
         Returns
         -------
@@ -853,6 +865,8 @@ class SHGravCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention if not specified in the netcdf
             file: 1 to exclude the phase factor, or -1 to include it.
+        name : str, optional, default = None
+            The name of the dataset.
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD.
@@ -947,12 +961,12 @@ class SHGravCoeffs(object):
         clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
                                errors=errors, error_kind=error_kind,
                                normalization=normalization.lower(),
-                               csphase=csphase, epoch=epoch)
+                               csphase=csphase, name=name, epoch=epoch)
         return clm
 
     @classmethod
     def from_shape(self, shape, rho, gm, nmax=7, lmax=None, lmax_grid=None,
-                   lmax_calc=None, omega=None, epoch=None):
+                   lmax_calc=None, omega=None, name=None, epoch=None):
         """
         Initialize a class of gravitational potential spherical harmonic
         coefficients by calculuting the gravitational potential associatiated
@@ -961,7 +975,8 @@ class SHGravCoeffs(object):
         Usage
         -----
         x = SHGravCoeffs.from_shape(shape, rho, gm, [nmax, lmax, lmax_grid,
-                                                     lmax_calc, omega, epoch])
+                                                     lmax_calc, omega, name,
+                                                     epoch])
 
         Returns
         -------
@@ -998,6 +1013,8 @@ class SHGravCoeffs(object):
             onto a grid.
         omega : float, optional, default = None
             The angular rotation rate of the body.
+        name : str, optional, default = None
+            The name of the dataset.
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD.
@@ -1077,7 +1094,8 @@ class SHGravCoeffs(object):
                                   nmax, mass, rho, lmax=lmax)
 
         clm = SHGravRealCoeffs(cilm, gm=gm, r0=d, omega=omega,
-                               normalization='4pi', csphase=1, epoch=epoch)
+                               normalization='4pi', csphase=1, name=name,
+                               epoch=epoch)
         return clm
 
     @property
@@ -3316,7 +3334,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
 
     def __init__(self, coeffs, gm=None, r0=None, omega=None, errors=None,
                  error_kind=None, normalization='4pi', csphase=1, copy=True,
-                 header=None, header2=None, epoch=None):
+                 header=None, header2=None, name=None, epoch=None):
         """Initialize real gravitational potential coefficients class."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -3335,6 +3353,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
         self.gm = gm
         self.r0 = r0
         self.omega = omega
+        self.name = name
         self.epoch = epoch
         self.error_kind = error_kind
 
@@ -3364,12 +3383,13 @@ class SHGravRealCoeffs(SHGravCoeffs):
                 'error_kind = {:s}\n'
                 'header = {:s}\n'
                 'header2 = {:s}\n'
+                'name = {:s}\n'
                 'epoch = {:s}'
                 .format(repr(self.kind), repr(self.normalization),
                         self.csphase, self.lmax, repr(self.gm), repr(self.r0),
                         repr(self.omega), repr(self.error_kind),
                         repr(self.header), repr(self.header2),
-                        repr(self.epoch)))
+                        repr(self.name), repr(self.epoch)))
 
     def _rotate(self, angles, dj_matrix, gm=None, r0=None, omega=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""

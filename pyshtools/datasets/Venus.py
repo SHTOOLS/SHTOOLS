@@ -39,7 +39,8 @@ def VenusTopo719(lmax=719):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='VenusTopo719',
+                               units='m')
 
 
 def MGNP180U(lmax=180):
@@ -65,7 +66,8 @@ def MGNP180U(lmax=180):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, skip=236, header=True,
                                    r0_index=1, gm_index=2, header_units='km',
-                                   errors=True, omega=_omega.value)
+                                   errors=True, omega=_omega.value,
+                                   name='MGNP180U')
 
 
 __all__ = ['VenusTopo719', 'MGNP180U']

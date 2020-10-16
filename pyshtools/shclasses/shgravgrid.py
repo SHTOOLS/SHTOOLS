@@ -138,7 +138,7 @@ class SHGravGrid(object):
                        self.extend, self.lmax, self.lmax_calc, self.gm,
                        self.a, self.f, repr(self.omega),
                        repr(self.normal_gravity), repr(self.units),
-                       repr(self.pot_units), repr(self.pot_epoch)))
+                       repr(self.pot_units), repr(self.epoch)))
         return str
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],

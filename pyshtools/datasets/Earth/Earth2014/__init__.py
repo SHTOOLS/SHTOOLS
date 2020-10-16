@@ -44,7 +44,8 @@ def surface(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, format='bshc', units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, format='bshc',
+                               name='Earth2014.surface', units='m')
 
 
 def bedrock(lmax=2160):
@@ -70,7 +71,8 @@ def bedrock(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, format='bshc', units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, format='bshc',
+                               name='Earth2014.bedrock', units='m')
 
 
 def tbi(lmax=2160):
@@ -96,7 +98,8 @@ def tbi(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, format='bshc', units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, format='bshc',
+                               name='Earth2014.tbi', units='m')
 
 
 def ret(lmax=2160):
@@ -123,7 +126,8 @@ def ret(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, format='bshc', units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, format='bshc',
+                               name='Earth2014.ret', units='m')
 
 
 def ice(lmax=2160):
@@ -149,7 +153,8 @@ def ice(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, format='bshc', units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, format='bshc',
+                               name='Earth2014.ice', units='m')
 
 
 __all__ = ['surface', 'bedrock', 'tbi', 'ret', 'ice']
