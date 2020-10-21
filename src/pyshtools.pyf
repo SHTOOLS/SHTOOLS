@@ -1331,6 +1331,25 @@ python module _SHTOOLS
             integer(int32),intent(in),intent(hide),depend(phi_d1) :: pot_d1 = phi_d1
         end subroutine MakeGravGridDH
 
+        subroutine MakeGravGridPoint(vec,cilm,lmax,gm,r0,r,lat,lon,omega,dealloc,cilm_d0,cilm_d1,cilm_d2)
+            fortranname pymakegravgridpoint
+            integer, parameter :: dp = selected_real_kind(p=15)
+            integer, parameter :: int32 = selected_int_kind(9)
+            real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+            integer(int32),optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
+            real(dp),intent(in) :: gm
+            real(dp),intent(in) :: r0
+            real(dp),intent(in) :: r
+            real(dp),intent(in) :: lat
+            real(dp),intent(in) :: lon
+            real(dp),optional,intent(in) :: omega = 0.0
+            integer(int32),optional,intent(in) :: dealloc = 0
+            integer(int32),optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer(int32),optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer(int32),optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            real(dp),dimension(3),intent(out) :: vec
+        end subroutine MakeGravGridPoint
+
         subroutine MakeGravGradGridDH(exitstatus,cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling,lmax_calc,extend,vyz_d0,vyz_d1,vyy_d0,vyy_d1,cilm_d0,cilm_d1,cilm_d2,vzz_d0,vzz_d1,vxy_d0,vxy_d1,vxx_d0,vxx_d1,vxz_d0,vxz_d1)
             fortranname pymakegravgradgriddh
             integer, parameter :: dp = selected_real_kind(p=15)

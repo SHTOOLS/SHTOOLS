@@ -832,6 +832,16 @@ module SHTOOLS
             integer(int32), intent(out), optional :: exitstatus
         end subroutine MakeGravGridDH
 
+        function MakeGravGridPoint(cilm, lmax, gm, r0, r, lat, lon, omega, &
+                                   dealloc)
+            use iso_fortran_env, only: int32, dp=>real64
+            real(dp), dimension(3) :: MakeGravGridPoint
+            real(dp), intent(in) :: cilm(:,:,:), gm, r0, r, lat, lon
+            integer(int32), intent(in) :: lmax
+            real(dp), intent(in), optional :: omega
+            integer(int32), intent(in), optional :: dealloc
+        end function MakeGravGridPoint
+
         subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, &
                                       vzz, vxy, vxz, vyz, n, sampling, &
                                       lmax_calc, extend, exitstatus)

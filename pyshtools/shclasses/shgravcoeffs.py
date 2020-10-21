@@ -37,6 +37,7 @@ from ..shtools import MakeGravGradGridDH as _MakeGravGradGridDH
 from ..shtools import MakeGeoidGridDH as _MakeGeoidGridDH
 from ..shtools import djpi2 as _djpi2
 from ..shtools import SHRotateRealCoef as _SHRotateRealCoef
+from ..shtools import MakeGravGridPoint as _MakeGravGridPoint
 
 
 class SHGravCoeffs(object):
@@ -2313,21 +2314,27 @@ class SHGravCoeffs(object):
         return clm
 
     # ---- Routines that return different gravity-related class instances ----
-    def expand(self, a=None, f=None, lmax=None, lmax_calc=None,
-               normal_gravity=True, sampling=2, extend=True):
+    def expand(self, a=None, f=None, colat=None, lat=None, lon=None,
+               degrees=True, lmax=None, lmax_calc=None, normal_gravity=True,
+               sampling=2, extend=True):
         """
-        Create 2D cylindrical maps on a flattened and rotating ellipsoid of all
-        three components of the gravity field, the gravity disturbance, and the
-        gravitational potential, and return as a SHGravGrid class instance.
+        Create 2D cylindrical maps on a flattened and rotating ellipsoid of the
+        three components of the gravity vector, the gravity disturbance, and
+        the gravity potential. Alternatively, compute the gravity vector at
+        specified coordinates.
 
         Usage
         -----
-        grav = x.expand([a, f, lmax, lmax_calc, normal_gravity, sampling,
-                         extend])
+        grids = x.expand([a, f, lmax, lmax_calc, normal_gravity, sampling,
+                          extend])
+        g = x.expand(lat, lon, [a, f, lmax, lmax_calc, degrees])
+        g = x.expand(colat, lon, [a, f, lmax, lmax_calc, degrees])
 
         Returns
         -------
-        grav : SHGravGrid class instance.
+        grids : SHGravGrid class instance.
+        g     : (r, theta, phi) components of the gravity vector at the
+                specified points.
 
         Parameters
         ----------
@@ -2336,6 +2343,14 @@ class SHGravCoeffs(object):
             is computed.
         f : optional, float, default = 0
             The flattening of the reference ellipsoid: f=(a-b)/a.
+        lat : int, float, ndarray, or list, optional, default = None
+            Latitude coordinates where the gravity is to be evaluated.
+        colat : int, float, ndarray, or list, optional, default = None
+            Colatitude coordinates where the gravity is to be evaluated.
+        lon : int, float, ndarray, or list, optional, default = None
+            Longitude coordinates where the gravity is to be evaluated.
+        degrees : bool, optional, default = True
+            True if lat, colat and lon are in degrees, False if in radians.
         lmax : optional, integer, default = self.lmax
             The maximum spherical harmonic degree, which determines the number
             of samples of the output grids, n=2lmax+2, and the latitudinal
@@ -2344,10 +2359,11 @@ class SHGravCoeffs(object):
             The maximum spherical harmonic degree used in evaluating the
             functions. This must be less than or equal to lmax.
         normal_gravity : optional, bool, default = True
-            If True, the normal gravity (the gravitational acceleration on the
-            ellipsoid) will be subtracted from the total gravity, yielding the
-            "gravity disturbance." This is done using Somigliana's formula
-            (after converting geocentric to geodetic coordinates).
+            If True (and if a, f and x.omega are set explicitly), the normal
+            gravity (the gravitational acceleration on the rotating ellipsoid)
+            will be subtracted from the total gravitational acceleration,
+            yielding the "gravity disturbance." This is done using Somigliana's
+            formula (after converting geocentric to geodetic coordinates).
         sampling : optional, integer, default = 2
             If 1 the output grids are equally sampled (n by n). If 2 (default),
             the grids are equally spaced in degrees.
@@ -2358,18 +2374,23 @@ class SHGravCoeffs(object):
         Notes
         -----
         This method will create 2-dimensional cylindrical maps of the three
-        components of the gravity field, the total field, and the gravitational
-        potential, and return these as an SHGravGrid class instance. Each
-        map is stored as an SHGrid class instance using Driscoll and Healy
-        grids that are either equally sampled (n by n) or equally spaced
-        in degrees latitude and longitude. All grids use geocentric
-        coordinates, the output is in SI units, and the sign of the radial
-        components is positive when directed upwards. If the optional angular
-        rotation rate omega is specified in the SHGravCoeffs instance, the
-        potential and radial gravitational acceleration will be calculated in a
-        body-fixed rotating reference frame. If normal_gravity is set to True,
-        the normal gravity will be removed from the total field, yielding the
-        gravity disturbance.
+        components of the gravity vector (gravitational force + centrifugal
+        force), the magnitude of the gravity vector, and the gravity
+        potential, and return these as an SHGravGrid class instance. Each map
+        is stored as an SHGrid class instance using Driscoll and Healy grids
+        that are either equally sampled (n by n) or equally spaced in degrees
+        latitude and longitude. All grids use geocentric coordinates, the
+        output is in SI units, and the sign of the radial components is
+        positive when directed upwards. If latitude and longitude coordinates
+        are specified, this method will instead return the gravity vector.
+
+        If the angular rotation rate omega is specified in the SHGravCoeffs
+        instance, both the potential and gravity vectors will be calculated in
+        a body-fixed rotating reference frame and will include the contribution
+        from the centrifugal force. If normal_gravity is set to True, and a, f,
+        and omega are all set explicitly, the normal gravity will be removed
+        from the magnitude of the gravity vector, yielding the gravity
+        disturbance.
 
         The gravitational potential is given by
 
@@ -2384,29 +2405,51 @@ class SHGravCoeffs(object):
         mean equatorial radius) and flattening f. To convert m/s^2 to mGals,
         multiply the gravity grids by 10^5.
         """
+        if lat is not None and colat is not None:
+            raise ValueError('lat and colat can not both be specified.')
+
+        if a is not None and f is not None and self.omega is not None \
+                and normal_gravity is True:
+            ng = 1
+        else:
+            ng = 0
         if a is None:
             a = self.r0
         if f is None:
             f = 0.
-        if normal_gravity is True:
-            ng = 1
+
+        if (lat is not None or colat is not None) and lon is not None:
+            if lmax_calc is None:
+                lmax_calc = self.lmax
+
+            if colat is not None:
+                if type(colat) is list:
+                    lat = list(map(lambda x: 90 - x, colat))
+                else:
+                    lat = 90 - colat
+
+            values = self._expand_coord(a=a, f=f, lat=lat, lon=lon,
+                                        degrees=degrees, lmax_calc=lmax_calc,
+                                        omega=self.omega)
+            return values
+
         else:
-            ng = 0
-        if lmax is None:
-            lmax = self.lmax
-        if lmax_calc is None:
-            lmax_calc = lmax
+            if lmax is None:
+                lmax = self.lmax
+            if lmax_calc is None:
+                lmax_calc = lmax
 
-        coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
+            coeffs = self.to_array(normalization='4pi', csphase=1,
+                                   errors=False)
+            rad, theta, phi, total, pot = _MakeGravGridDH(
+                coeffs, self.gm, self.r0, a=a, f=f, lmax=lmax,
+                lmax_calc=lmax_calc, sampling=sampling, omega=self.omega,
+                normal_gravity=ng, extend=extend)
 
-        rad, theta, phi, total, pot = _MakeGravGridDH(
-            coeffs, self.gm, self.r0, a=a, f=f, lmax=lmax,
-            lmax_calc=lmax_calc, sampling=sampling, omega=self.omega,
-            normal_gravity=ng, extend=extend)
-
-        return _SHGravGrid(rad, theta, phi, total, pot, self.gm, a, f,
-                           self.omega, normal_gravity, lmax, lmax_calc,
-                           units='m/s2', pot_units='m2/s2', epoch=self.epoch)
+            return _SHGravGrid(rad, theta, phi, total, pot, self.gm, a, f,
+                               self.omega, normal_gravity, lmax, lmax_calc,
+                               units='m/s2', pot_units='m2/s2',
+                               epoch=self.epoch)
 
     def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, degree0=False,
                sampling=2, extend=True):
@@ -3415,3 +3458,65 @@ class SHGravRealCoeffs(SHGravCoeffs):
             return SHGravCoeffs.from_array(coeffs, errors=self.errors,
                                            gm=gm, r0=r0, omega=omega,
                                            epoch=self.epoch, copy=False)
+
+    def _expand_coord(self, a, f, lat, lon, degrees, lmax_calc, omega):
+        """Evaluate the gravity at the coordinates lat and lon."""
+        coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
+
+        if degrees is True:
+            latin = lat
+            lonin = lon
+        else:
+            latin = _np.rad2deg(lat)
+            lonin = _np.rad2deg(lon)
+
+        if type(lat) is not type(lon):
+            raise ValueError('lat and lon must be of the same type. ' +
+                             'Input types are {:s} and {:s}.'
+                             .format(repr(type(lat)), repr(type(lon))))
+
+        if type(lat) is int or type(lat) is float or type(lat) is _np.float_:
+            if f == 0.:
+                r = a
+            else:
+                r = _np.cos(_np.deg2rad(latin))**2 + \
+                    _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                r = a * _np.sqrt(1. / r)
+
+            return _MakeGravGridPoint(coeffs, gm=self.gm, r0=self.r0,
+                                      r=r, lat=latin, lon=lonin,
+                                      lmax=lmax_calc, omega=self.omega)
+        elif type(lat) is _np.ndarray:
+            values = _np.empty((len(lat), 3), dtype=float)
+            for i, (latitude, longitude) in enumerate(zip(latin, lonin)):
+                if f == 0.:
+                    r = a
+                else:
+                    r = _np.cos(_np.deg2rad(latin))**2 + \
+                        _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                    r = a * _np.sqrt(1. / r)
+
+                values[i, :] = _MakeGravGridPoint(coeffs, gm=self.gm,
+                                                  r0=self.r0, r=r,
+                                                  lat=latitude, lon=longitude,
+                                                  lmax=lmax_calc,
+                                                  omega=self.omega)
+            return values
+        elif type(lat) is list:
+            values = []
+            for latitude, longitude in zip(latin, lonin):
+                if f == 0.:
+                    r = a
+                else:
+                    r = _np.cos(_np.deg2rad(latin))**2 + \
+                        _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                    r = a * _np.sqrt(1. / r)
+                values.append(
+                    _MakeGravGridPoint(coeffs, gm=self.gm, r0=self.r0,
+                                       r=r, lat=latitude, lon=longitude,
+                                       lmax=lmax_calc, omega=self.omega))
+            return values
+        else:
+            raise ValueError('lat and lon must be either an int, float, '
+                             'ndarray, or list. Input types are {:s} and {:s}.'
+                             .format(repr(type(lat)), repr(type(lon))))

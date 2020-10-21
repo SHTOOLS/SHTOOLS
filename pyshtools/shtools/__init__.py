@@ -93,6 +93,7 @@ from .._SHTOOLS import SHRotateRealCoef
 
 # gravmag
 from .._SHTOOLS import MakeGravGridDH
+from .._SHTOOLS import MakeGravGridPoint
 from .._SHTOOLS import MakeGravGradGridDH
 from .._SHTOOLS import MakeGeoidGridDH
 from .._SHTOOLS import CilmPlusDH
@@ -137,11 +138,11 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'MakeMagGridDH', 'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j',
            'DHaj', 'MakeMagGradGridDH', 'SHRotateTapers', 'SlepianCoeffs',
            'SlepianCoeffsToSH', 'SHSCouplingMatrix', 'SHMTVar', 'SHSlepianVar',
-           'SHSCouplingMatrixCap']
+           'SHSCouplingMatrixCap', 'MakeGravGridPoint']
 
 _fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'DownContFilterMA',
                       'DownContFilterMC', 'SHFindLWin', 'SHSjkPG',
-                      'NormalGravity', 'SHConfidence']
+                      'NormalGravity', 'SHConfidence', 'MakeGravGridPoint']
 
 _fortran_subroutines = list(set(__all__) - set(_fortran_functions))
 

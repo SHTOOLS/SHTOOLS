@@ -8,6 +8,7 @@ Gravity routines
 MakeGravGridDH      Create 2D cylindrical maps on a flattened and rotating
                     ellipsoid of all three components of the gravity field,
                     the gravity disturbance, and the gravitational potential.
+MakeGravGridPoint   Compute the gravity disturbance at a single point.
 MakeGravGradGridDH  Calculate the components of the gravity "gradient" tensor
                     on a flattened ellipsoid.
 MakeGeoidGridDH     Create a global map of the geoid.
@@ -54,6 +55,7 @@ mag_spectrum        Compute the spectrum of either the magnetic potential
                     or magnetic field strength.
 """
 from ..shtools import MakeGravGridDH
+from ..shtools import MakeGravGridPoint
 from ..shtools import MakeGravGradGridDH
 from ..shtools import MakeGeoidGridDH
 from ..shtools import CilmPlusDH
@@ -75,4 +77,4 @@ __all__ = ['MakeGravGridDH', 'MakeGravGradGridDH', 'MakeGeoidGridDH',
            'CilmPlusDH', 'CilmMinusDH', 'CilmPlusRhoHDH', 'CilmMinusRhoHDH',
            'BAtoHilmDH', 'BAtoHilmRhoHDH', 'DownContFilterMA',
            'DownContFilterMC', 'NormalGravity', 'MakeMagGridDH',
-           'MakeMagGradGridDH', 'mag_spectrum']
+           'MakeMagGradGridDH', 'mag_spectrum', 'MakeGravGridPoint']

@@ -1651,6 +1651,28 @@
                             extend=extend,exitstatus=exitstatus)
     end subroutine pyMakeGravGridDH
 
+    subroutine pyMakeGravGridPoint(vec,cilm,lmax,gm,r0,r,lat,lon,omega,&
+                                   dealloc,cilm_d0,cilm_d1,cilm_d2)
+        use shtools, only: MakeGravGridPoint
+        use ftypes
+        implicit none
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer(int32),intent(in) :: lmax
+        real(dp),intent(in) :: gm
+        real(dp),intent(in) :: r0
+        real(dp),intent(in) :: r
+        real(dp),intent(in) :: lat
+        real(dp),intent(in) :: lon
+        real(dp),intent(in) :: omega
+        integer(int32),intent(in) :: dealloc
+        real(dp),dimension(3),intent(out) :: vec
+        vec=MakeGravGridPoint(cilm,lmax,gm,r0,r,lat,lon,omega=omega,&
+                              dealloc=dealloc)
+    end subroutine pyMakeGravGridPoint
+
     subroutine pyMakeGravGradGridDH(exitstatus,cilm,lmax,gm,r0,a,f,vxx,vyy,&
                                     vzz,vxy,vxz,vyz,n,sampling,lmax_calc,&
                                     extend,vyz_d0,vyz_d1,vyy_d0,vyy_d1,&

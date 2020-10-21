@@ -23,6 +23,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Routine name | Description |
 | ------------ | ----------- |
 | [MakeGravGridDH](makegravgriddh.html) | Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three components of the gravity field, the gravity disturbance, and the gravitational potential. |
+| [MakeGravGridPoint](makegravgridpoint.html) | Determine the vector components of the gravitational acceleration at a single point. |
 | [MakeGravGradGridDH](makegravgradgriddh.html) | Calculate the components of the gravity "gradient" tensor on a flattened ellipsoid. |
 | [MakeGeoidGrid](makegeoidgrid.html) | Create a global map of the geoid. |
 | [CilmPlus](cilmplus.html) | Calculate the gravitational potential exterior to relief along a spherical interface using the finite-amplitude algorithm of *Wieczorek and Phillips* (1998). |

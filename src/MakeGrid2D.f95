@@ -34,9 +34,10 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 !                           (4) orthonormalized
 !           csphase     1: Do not include the phase factor of (-1)^m
 !                       -1: Apply the phase factor of (-1)^m.
-!           f           Flattening of the function. If included, an ellipsoid
-!                       with these parameters will be subtracted from the data.
-!           a           Semimajor axis of the function. If included,
+!           f           Flattening of the reference ellipsoid (a-c)/a. If
+!                       included, this ellipsoid will be subtracted from
+!                       the data.
+!           a           Semimajor axis of the reference ellipsoid. If included,
 !                       an ellipsoid with these parameters will be subtracted
 !                       from the data.
 !           north       Maximum latitude to compute, in degrees.
@@ -82,7 +83,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
     integer(int32) :: l, m, j, k, index, l1, m1, lmax_comp, phase, lnorm, &
                       temp, astat(4)
     real(dp) :: pi, latmax, latmin, longmin, longmax, lat, longitude, &
-                x, intervalrad, r_ref
+                x, intervalrad, r_ex
     real(dp), allocatable :: pl(:), cosm(:, :), sinm(:, :), cilm2(:,:, :)
 
     if (present(exitstatus)) exitstatus = 0
@@ -385,10 +386,11 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
             end do
 
             if (present(f)) then
-                r_ref = a**2 * (1.0_dp + tan(lat * pi / 180.0_dp)**2) / &
-                    (1.0_dp + tan(lat * pi / 180.0_dp)**2 / (1.0_dp - f)**2)
-                r_ref = sqrt(r_ref)
-                grid(j,1:nlong) = grid(j,1:nlong) - r_ref
+                lat = lat * pi / 180.0_dp
+                r_ex = cos(lat)**2 + sin(lat)**2 / (1.0_dp - f)**2
+                r_ex = a * sqrt(1.0_dp / r_ex)
+
+                grid(j,1:nlong) = grid(j,1:nlong) - r_ex
             end if
 
         end if

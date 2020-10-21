@@ -57,7 +57,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 !                       used to determine the number of samples N.
 !           r0          Reference radius of potential coefficients.
 !           a           The semimajor axis of the flattened ellipsoid.
-!           f           Flattening of the planet.
+!           f           Flattening of the planet. (a-c)/a.
 !
 !       IN, OPTIONAL
 !           sampling    (1) Grid is N latitudes by N longitudes (default).
@@ -715,9 +715,8 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             r_ex = a * (1.0_dp - f)
 
         else
-            r_ex = (1.0_dp + tan(lat)**2) / &
-                   (1.0_dp  + tan(lat)**2 / (1.0_dp - f)**2 )
-            r_ex = a * sqrt(r_ex)
+            r_ex = cos(lat)**2 + sin(lat)**2 / (1.0_dp - f)**2
+            r_ex = a * sqrt(1.0_dp / r_ex)
 
         end if
 

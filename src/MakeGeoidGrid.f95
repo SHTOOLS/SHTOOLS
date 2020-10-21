@@ -55,8 +55,8 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
 !                       when GRIDTYPE = 1.
 !           lmax_calc   For GRIDTYPE 2, 3, and 4, this specifies the maximum
 !                       spherical harmonic degree to evaluate the function to.
-!           a           Semimajor axis of the reference flattened ellipsoid.
-!           f           Flattening of the reference ellipsoid.
+!           a           Semimajor axis of the reference ellipsoid.
+!           f           Flattening of the reference ellipsoid (a-c)/a.
 !           extend      If 1, return a grid that contains an additional column
 !                       corresponding to 360 E longitude (for GRIDTYPE 1, 2,
 !                       and 3) and an additional row corresponding 90 S
@@ -712,9 +712,9 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
 
             end if
 
-            r_ex = a**2 * (1.0_dp + tan(lat * pi / 180.0_dp)**2) &
-                   / (1.0_dp + tan(lat * pi / 180.0_dp)**2 / (1.0_dp - f)**2)
-            r_ex = sqrt(r_ex)
+            lat = lat * pi / 180.0_dp
+            r_ex = cos(lat)**2 + sin(lat)**2 / (1.0_dp - f)**2
+            r_ex = a * sqrt(1.0_dp / r_ex)
 
             geoid(i,1:nlong) = geoid(i,1:nlong) + r - r_ex
 

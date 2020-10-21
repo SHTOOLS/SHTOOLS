@@ -1,5 +1,4 @@
-function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
-                       csphase, dealloc)
+function MakeGridPoint(cilm, lmax, lat, lon, norm, csphase, dealloc)
 !------------------------------------------------------------------------------
 !
 !   This function will determine the value at a given latitude and
@@ -13,7 +12,7 @@ function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
 !                       (2, lmax+1, lmax+1).
 !           lmax        Maximum degree used in the expansion.
 !           lat         latitude (degrees).
-!           long        longitude (degrees).
+!           lon         longitude (degrees).
 !
 !       OPTIONAL (IN)
 !           norm        Spherical harmonic normalization:
@@ -41,10 +40,10 @@ function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
     implicit none
 
     real(dp) :: MakeGridPoint
-    real(dp), intent(in):: cilm(:,:,:), lat, longitude
+    real(dp), intent(in) :: cilm(:,:,:), lat, lon
     integer(int32), intent(in) :: lmax
     integer(int32), intent(in), optional :: norm, csphase, dealloc
-    real(dp) :: pi, x, expand, lon
+    real(dp) :: pi, x, expand, lon_rad
     integer(int32) :: index, l, m, l1, m1, lmax_comp, phase, astat(3)
     real(dp), allocatable :: pl(:), cosm(:), sinm(:)
 
@@ -83,22 +82,22 @@ function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
 
     end if
 
-    allocate (pl(((lmax+1) * (lmax+2)) / 2), stat = astat(1))
-    allocate (cosm(lmax+1), stat = astat(2))
-    allocate (sinm(lmax+1), stat = astat(3))
+    lmax_comp = min(lmax, size(cilm(1,1,:)) - 1)
+
+    allocate (pl(((lmax_comp+1) * (lmax_comp+2)) / 2), stat = astat(1))
+    allocate (cosm(lmax_comp+1), stat = astat(2))
+    allocate (sinm(lmax_comp+1), stat = astat(3))
 
     if (sum(astat(1:3)) /= 0) then
         print*, "Error --- MakeGridPoint"
-        print*, "Cannot allocate memory for arrays PL, MCOS and MSIN", &
+        print*, "Cannot allocate memory for arrays PL, COSM and SINM", &
                 astat(1), astat(2), astat(3)
         stop
     end if
 
     pi = acos(-1.0_dp)
     x = sin(lat * pi / 180.0_dp)
-    lon = longitude * pi / 180.0_dp
-
-    lmax_comp = min(lmax, size(cilm(1,1,:)) - 1)
+    lon_rad = lon * pi / 180.0_dp
 
     if (present(norm)) then
         if (norm == 1) call PlmBar(pl, lmax_comp, x, csphase = phase)
@@ -119,8 +118,8 @@ function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
     cosm(1) = 1.0_dp
 
     if (lmax_comp > 0) then
-        sinm(2) = sin(lon)
-        cosm(2) = cos(lon)
+        sinm(2) = sin(lon_rad)
+        cosm(2) = cos(lon_rad)
     end if
 
     do m = 2, lmax_comp, 1
@@ -149,11 +148,11 @@ function MakeGridPoint(cilm, lmax, lat, longitude, norm, &
     if (present(dealloc)) then
         if (dealloc == 1) then
             if (present(norm)) then
-                if (norm == 1) call PlmBar(pl, -1, x, csphase = phase)
-                if (norm == 2) call PlmSchmidt(pl, -1, x, csphase = phase)
-                if (norm == 4) call PlmON(pl, -1, x, csphase = phase)
+                if (norm == 1) call PlmBar(pl, -1, x)
+                if (norm == 2) call PlmSchmidt(pl, -1, x)
+                if (norm == 4) call PlmON(pl, -1, x)
             else
-                call PlmBar(pl, -1, x, csphase = phase)
+                call PlmBar(pl, -1, x)
             end if
         end if
     end if

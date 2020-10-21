@@ -28,9 +28,9 @@ LDFLAGS = -s
 
 SRCSMOD = ftypes.f95 SHTOOLS.f95 FFTW3.f95 PlanetsConstants.f95
 
-MOD = ftypes.mod SHTOOLS.mod FFTW3.mod PlanetsConstants.mod
+MOD := $(SRCSMOD:%.f95=%.mod)
 
-OBJSMOD = ftypes.o SHTOOLS.o FFTW3.o PlanetsConstants.o
+OBJSMOD := $(SRCSMOD:%.f95=%.o)
 
 SRCS0 = CilmPlus.f95 CilmMinus.f95 \
 	ComputeDG82.f95 ComputeDm.f95 DHaj.f95 djpi2.f95 BAtoHilm.f95 \
@@ -53,8 +53,8 @@ SRCS0 = CilmPlus.f95 CilmMinus.f95 \
 	CilmPlusRhoH.f95 CilmMinusRhoH.f95 BAtoHilmRhoH.f95 NormalGravity.f95 \
 	SHMultiTaperMaskSE.f95 SHMultiTaperMaskCSE.f95 SHBiasKMask.f95 \
 	SHRotateTapers.f95 SlepianCoeffs.f95 SlepianCoeffsToSH.f95 \
-	SHSCouplingMatrix.f95 SHMTVar.f95 SHSlepianVar.f95 SHSCouplingMatrixCap.f95 \
-	cWrapper.f95
+	SHSCouplingMatrix.f95 SHMTVar.f95 SHSlepianVar.f95 \
+	SHSCouplingMatrixCap.f95 cWrapper.f95 MakeGravGridPoint.f95
 
 OBJS0 := $(SRCS0:%.f95=%.o)
 
