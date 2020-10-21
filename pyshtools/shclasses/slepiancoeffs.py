@@ -27,6 +27,7 @@ class SlepianCoeffs(object):
     galpha          : A Slepian class instance that contains the associated
                       Slepian functions.
     nmax            : The number of Slepian expansion coefficients.
+    name            : The name of the dataset.
 
     Each class instance provides the following methods:
 
@@ -40,7 +41,7 @@ class SlepianCoeffs(object):
     info()          : Print a summary of the data stored in the SlepianCoeffs
                       instance.
 """
-    def __init__(self, falpha, galpha, copy=True):
+    def __init__(self, falpha, galpha, name=None, copy=True):
         """
         Initialize the SlepianCoeffs class.
         """
@@ -52,6 +53,7 @@ class SlepianCoeffs(object):
             self.galpha = galpha
 
         self.nmax = len(self.falpha)
+        self.name = name
 
     def copy(self):
         """
@@ -76,7 +78,8 @@ class SlepianCoeffs(object):
     def __repr__(self):
         str = ('nmax = {:d}\n'
                'lmax = {:d}\n'
-               .format(self.nmax, self.galpha.lmax))
+               'name = {:s}\n'
+               .format(self.nmax, self.galpha.lmax, repr(self.name)))
         str += '\nSlepian functions:\n' + self.galpha.__repr__()
         return str
 

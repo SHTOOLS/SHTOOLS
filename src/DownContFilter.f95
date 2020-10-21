@@ -21,7 +21,7 @@ function DownContFilterMA(l, half, r, d)
     implicit none
 
     real(dp) :: DownContFilterMA
-    integer, intent(in) :: l, half
+    integer(int32), intent(in) :: l, half
     real(dp), intent(in) :: r, d
     real(dp) :: const
 
@@ -73,7 +73,7 @@ function DownContFilterMC(l, half, r, d)
     implicit none
 
     real(dp) :: DownContFilterMC
-    integer, intent(in) :: l, half
+    integer(int32), intent(in) :: l, half
     real(dp), intent(in) :: r, d
     real(dp) :: const
 

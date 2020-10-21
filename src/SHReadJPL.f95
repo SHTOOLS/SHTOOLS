@@ -45,14 +45,14 @@ subroutine SHReadJPL(filename, cilm, lmax, error, gm, formatstring, exitstatus)
     implicit none
 
     character(*), intent(in) :: filename
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) :: cilm(:,:,:)
     real(dp), intent(out), optional :: error(:,:,:), gm(2)
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(out), optional :: exitstatus
     character(6), intent(in), optional :: formatstring
     real(dp) :: gm1, gm2
     logical :: gmpresent
-    integer :: l, m, stat, i, ll1, mm1, ll2, mm2, skip
+    integer(int32) :: l, m, stat, i, ll1, mm1, ll2, mm2, skip
     character(4) :: c, s, j, js, cs, ss
     character(14) :: dumb, dumb2
     character(2) :: inum

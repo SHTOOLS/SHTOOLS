@@ -1,4 +1,4 @@
-integer function YilmIndexVector(i, l, m)
+function YilmIndexVector(i, l, m)
 !-------------------------------------------------------------------------------
 !
 !   This function will give the index in a 1-dimensional array of the spherical 
@@ -19,9 +19,12 @@ integer function YilmIndexVector(i, l, m)
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, intent(in) :: i, l, m
+    integer(int32) :: YilmIndexVector
+    integer(int32), intent(in) :: i, l, m
 
     if (i /= 1 .and. i /= 2) then
         print*, "Error --- YilmIndexVector"

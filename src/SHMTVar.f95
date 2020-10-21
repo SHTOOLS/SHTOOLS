@@ -56,13 +56,13 @@ subroutine SHMTVar(l, tapers, taper_order, lwin, kmax, Sff, variance, &
 
     real(dp), intent(in) :: tapers(:,:), Sff(:)
     real(dp), intent(out) :: variance
-    integer, intent(in) :: l, lwin, kmax, taper_order(:)
+    integer(int32), intent(in) :: l, lwin, kmax, taper_order(:)
     real(dp), intent(in), optional :: taper_wt(:)
     real(dp), intent(out), optional :: unweighted_covar(:, :)
-    integer, intent(in), optional :: nocross
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in), optional :: nocross
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: Fij(kmax, kmax)
-    integer :: i, j, m, mp
+    integer(int32) :: i, j, m, mp
     complex(dp) :: temp1
 
     if (present(exitstatus)) exitstatus = 0

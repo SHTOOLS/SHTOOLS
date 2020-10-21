@@ -77,16 +77,16 @@ subroutine PlmON_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
 
     implicit none
 
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) :: p(:), dp1(:)
     real(dp), intent(in) :: z
-    integer, intent(in), optional :: csphase, cnorm
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in), optional :: csphase, cnorm
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: pm2, pm1, pmm, plm, rescalem, pi, u, scalef
     real(dp), save, allocatable :: f1(:), f2(:), sqr(:)
-    integer :: k, kstart, m, l, sdim, astat(3)
-    integer, save :: lmax_old = 0
-    integer(int1) :: phase
+    integer(int32) :: k, kstart, m, l, sdim, astat(3)
+    integer(int32), save :: lmax_old = 0
+    integer(int32) :: phase
 
 !$OMP    threadprivate(f1, f2, sqr, lmax_old)
 

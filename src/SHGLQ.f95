@@ -56,12 +56,12 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
 
     implicit none
 
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) :: zero(:), w(:)
     real(dp), intent(out), optional :: plx(:,:)
-    integer, intent(in), optional :: norm, csphase, cnorm
-    integer, intent(out), optional :: exitstatus
-    integer :: n, i, astat, phase, l, m, i_s, cnormin, lnorm
+    integer(int32), intent(in), optional :: norm, csphase, cnorm
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: n, i, astat, phase, l, m, i_s, cnormin, lnorm
     real(dp) :: upper, lower, pi
     real(dp), allocatable :: pl(:)
 

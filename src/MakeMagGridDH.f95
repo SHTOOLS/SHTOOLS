@@ -95,12 +95,12 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
     real(dp), intent(out) :: rad_grid(:,:), theta_grid(:,:), phi_grid(:,:), &
                              total_grid(:,:)
     real(dp), intent(out), optional :: pot_grid(:,:)
-    integer, intent(in) :: lmax
-    integer, intent(out) :: n
-    integer, intent(in), optional :: sampling, lmax_calc, extend
-    integer, intent(out), optional :: exitstatus
-    integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), nlong, &
-               nlat_out, nlong_out, extend_grid
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(out) :: n
+    integer(int32), intent(in), optional :: sampling, lmax_calc, extend
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), nlong, &
+                      nlat_out, nlong_out, extend_grid
     real(dp) :: grid(4*lmax+4), pi, theta, scalef, rescalem, u, p, dpl, &
                 pmm, pm1, pm2, z, tempr, r_ex, lat, prefactor(lmax), &
                 coefr0, coefu0, coefrs0, coeft0, coefts0, coefp0, coefps0, &
@@ -110,8 +110,8 @@ subroutine MakeMagGridDH(cilm, lmax, r0, a, f, rad_grid, theta_grid, &
                   coefps(2*lmax+3), coefu(2*lmax+3), coefus(2*lmax+3), tempc
     type(C_PTR) :: plan
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer(int1), save, allocatable :: fsymsign(:,:)
-    integer, save :: lmax_old = 0
+    integer(int8), save, allocatable :: fsymsign(:,:)
+    integer(int32), save :: lmax_old = 0
     logical :: calcu
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)

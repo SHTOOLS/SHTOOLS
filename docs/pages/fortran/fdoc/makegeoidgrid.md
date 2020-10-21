@@ -23,7 +23,7 @@ call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`,
 `cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients (geodesy normalized) of the gravitational potential referenced to a spherical interface of radius `r0pot`.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The maximum spherical harmonic degree of the gravitational-potential coefficients. For `gridtype`s 1, 2 and 3, this determines the number of latitudinal and longitudinal samples.
 
 `r0` : input, real(dp)
@@ -41,22 +41,22 @@ call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`,
 `r` : input, real(dp)
 :   The radius of the reference sphere that the Taylor expansion of the potential is performed on. If `a` and `f` are not specified, the geoid height will be referenced to this spherical interface.
 
-`gridtype` : input, integer
+`gridtype` : input, integer(int32)
 :   The output grid is (1) a Gauss-Legendre quadrature grid whose grid nodes are determined by `lmax`, (2) an equally sampled `n` by `n` grid used with the Driscoll and Healy (1994) sampling theorem, (3) ar a similar `n` by 2`n` grid that is oversampled in longitude, or (4) a 2D Cartesian grid with latitudinal and longitudinal spacing given by `interval`.
 
-`order` : input, integer
+`order` : input, integer(int32)
 :   The order of the Taylor series expansion of the potential about the reference radius `r`. This can be either 1, 2, or 3.
 
-`nlat` : output, integer
+`nlat` : output, integer(int32)
 :   The number of latitudinal samples.
 
-`nlong` : output, integer
+`nlong` : output, integer(int32)
 :   The number of longitudinal samples.
 
 `interval`: optional, input, real(dp)
 :   The latitudinal and longitudinal spacing of the output grid when `gridtype` is 4.
 
-`lmax_calc` : optional, input, integer
+`lmax_calc` : optional, input, integer(int32)
 :   The maximum degree used in evaluating the spherical harmonic coefficients. This must be less than or equal to `lmax`.
 
 `a` : optional, input, real(dp), default = `r0`
@@ -65,10 +65,10 @@ call MakeGeoidGrid (`geoid`, `cilm`, `lmax`, `r0`, `gm`, `potref`, `omega`, `r`,
 `f` : optional, input, real(dp), default = 0
 :   The flattening `(R_equator-R_pole)/R_equator` of the reference ellipsoid. The optional parameter `a` (i.e., `R_equator`) must be specified.
 
-`extend` : input, optional, integer, default = 0
+`extend` : input, optional, integer(int32), default = 0
 :   If 1, compute the longitudinal band corresponding to 360 E for `gridtype` 1, 2 and 3, and compute the latitudinal band for 90 S for `gridtype` 2 and 3.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description

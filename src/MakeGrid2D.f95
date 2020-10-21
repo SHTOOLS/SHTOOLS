@@ -74,15 +74,15 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 
     real(dp), intent(in) :: cilm(:,:,:), interval
     real(dp), intent(out) :: grid(:,:)
-    integer, intent(in) :: lmax
-    integer, intent(out) :: nlat, nlong
-    integer, intent(in), optional :: norm, csphase, dealloc
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(out) :: nlat, nlong
+    integer(int32), intent(in), optional :: norm, csphase, dealloc
     real(dp), intent(in), optional :: f, a, north, south, east, west
-    integer, intent(out), optional :: exitstatus
-    integer :: l, m, j, k, index, l1, m1, lmax_comp, phase, lnorm, temp, &
-               astat(4)
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: l, m, j, k, index, l1, m1, lmax_comp, phase, lnorm, &
+                      temp, astat(4)
     real(dp) :: pi, latmax, latmin, longmin, longmax, lat, longitude, &
-              x, intervalrad, r_ref
+                x, intervalrad, r_ref
     real(dp), allocatable :: pl(:), cosm(:, :), sinm(:, :), cilm2(:,:, :)
 
     if (present(exitstatus)) exitstatus = 0

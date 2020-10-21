@@ -23,25 +23,25 @@ call SHMultiply (`cilmout`, `cilm1`, `lmax1`, `cilm2`, `lmax2`, `precomp`, `norm
 `cilm1` : input, real(dp), dimension (2, `lmax1`+1, `lmax1`+1)
 :   The spherical harmonic coefficients of the first function.
 
-`lmax1` : input, integer
+`lmax1` : input, integer(int32)
 :   The maximum spherical harmonic degree used in evaluting `cilm1`.
 
 `cilm2` : input, real(dp), dimension (2, `lmax2`+1, `lmax2`+1)
 :   The spherical harmonic coefficients of the second function.
 
-`lmax2` : input, integer
+`lmax2` : input, integer(int32)
 :   The maximum spherical harmonic degree used in evaluting `cilm2`.
 
-`precomp` : input, optional, integer, default = 0
+`precomp` : input, optional, integer(int32), default = 0
 :   If 1, the array of Legendre functions `plx` will be precomputed on the Gauss-Legendre quadrature nodes.
 
-`norm` : input, optional, integer, default = 1
+`norm` : input, optional, integer(int32), default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : input, optional, integer, default = 1
+`csphase` : input, optional, integer(int32), default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description

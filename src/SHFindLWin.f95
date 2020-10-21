@@ -28,13 +28,13 @@ function SHFindLWin(theta0, m, alpha, taper_number)
 
     implicit none
 
-    integer :: SHFindLWin
+    integer(int32) :: SHFindLWin
     real(dp), intent(in) :: theta0, alpha
-    integer, intent(in) :: m
-    integer, intent(in), optional :: taper_number
+    integer(int32), intent(in) :: m
+    integer(int32), intent(in), optional :: taper_number
     real(dp), allocatable :: dllm(:,:), eval(:)
     real(dp) :: pi, alpha1
-    integer :: l, astat(2), tn
+    integer(int32) :: l, astat(2), tn
 
     if (alpha < 0.0_dp .or. alpha > 1.0_dp) then
         print*, "Error --- SHFindLWin"

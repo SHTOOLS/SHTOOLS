@@ -1,16 +1,10 @@
 module ftypes
 !------------------------------------------------------------------------------
 !
-! Define data types for Fortran 95 reals and integers.
+!   Define data types for Fortran 95 reals and integers.
 !
 !------------------------------------------------------------------------------
-    implicit none
-
-    integer, parameter :: sp = selected_real_kind(p=6)
-    integer, parameter :: dp = selected_real_kind(p=15)
-    integer, parameter :: qp = selected_real_kind(p=33)
-    integer, parameter :: int1 = selected_int_kind(2)
-    integer, parameter :: int4 = selected_int_kind(9)
-    integer, parameter :: int8 = selected_int_kind(18)
+    use iso_fortran_env, only: sp=>real32, dp=>real64, qp=>real128
+    use iso_fortran_env, only: int8, int16, int32, int64
 
 end module ftypes

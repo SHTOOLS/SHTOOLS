@@ -110,12 +110,12 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
     real(dp), intent(in) :: cilm(:,:,:), r0, a, f
     real(dp), intent(out) :: vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), &
                              vxz(:,:), vyz(:,:)
-    integer, intent(in) :: lmax
-    integer, intent(out) :: n
-    integer, intent(in), optional :: sampling, lmax_calc, extend
-    integer, intent(out), optional :: exitstatus
-    integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), nlong, &
-               nlat_out, nlong_out, extend_grid
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(out) :: n
+    integer(int32), intent(in), optional :: sampling, lmax_calc, extend
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), nlong, &
+                      nlat_out, nlong_out, extend_grid
     real(dp) :: grid(4*lmax+4), pi, theta, scalef, rescalem, u, p, dpl, dpl2, &
                 dpl2s, pmm, sint, pm1, pm2, z, tempr, r_ex, lat, &
                 prefactor(lmax), coefr0, coefrs0, coeft0, coefts0, coefp0, &
@@ -131,8 +131,8 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 coeftts(2*lmax+3)
     type(C_PTR) :: plan
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer(int1), save, allocatable :: fsymsign(:,:)
-    integer, save :: lmax_old = 0
+    integer(int8), save, allocatable :: fsymsign(:,:)
+    integer(int32), save :: lmax_old = 0
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old)
 

@@ -73,12 +73,12 @@ subroutine SHAdmitCorr(gilm, tilm, lmax, admit, corr, admit_error, exitstatus)
     implicit none
 
     real(dp), intent(in) :: gilm(:,:,:), tilm(:,:,:)
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) :: admit(:), corr(:)
     real(dp), intent(out), optional :: admit_error(:)
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: gt(lmax+1), gg(lmax+1), tt(lmax+1)
-    integer :: l, l1
+    integer(int32) :: l, l1
 
     if (present(exitstatus)) exitstatus = 0
 

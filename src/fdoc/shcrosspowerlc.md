@@ -17,7 +17,7 @@ Compute the cross-power of two complex functions for a single spherical harmonic
 `cilm2` : input, complex(dp), dimension (2, `lmaxin2`+1, `lmaxin2`+1)
 :   The second complex function expressed in complex spherical harmonics.
 
-`l` : input, integer
+`l` : input, integer(int32)
 :   The spherical harmonic degree. This must be less than or equal to the minimum of `lmaxin1` and `lmaxin2`.
 
 # Description

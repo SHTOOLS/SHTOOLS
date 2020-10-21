@@ -14,7 +14,7 @@ Compute the power of a real function for a single spherical harmonic degree.
 `cilm` : input, real(dp), dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The spherical harmonic coefficients of the function.
 
-`l` : input, integer
+`l` : input, integer(int32)
 :   The spherical harmonic degree. This must be less than or equal to `lmaxin`.
 
 # Description

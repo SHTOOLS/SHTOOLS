@@ -83,14 +83,14 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
 
     real(dp), intent(out) :: geoid(:,:)
     real(dp), intent(in) :: cilm(:,:,:), r0pot, GM, r, PotRef, omega
-    integer, intent(in) :: lmax, order, gridtype
-    integer, intent(in), optional :: lmax_calc, extend
-    integer, intent(out) :: nlat, nlong
+    integer(int32), intent(in) :: lmax, order, gridtype
+    integer(int32), intent(in), optional :: lmax_calc, extend
+    integer(int32), intent(out) :: nlat, nlong
     real(dp), intent(in), optional :: interval, a, f
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: pi, r_ex, lat
-    integer :: l, nlat1, nlong1, lmax_comp, astat, n, i, astat1, astat2, &
-               extend_grid
+    integer(int32) :: l, nlat1, nlong1, lmax_comp, astat, n, i, astat1, &
+                      astat2, extend_grid
     real(dp), allocatable :: grida(:,:), gridb(:,:), gridc(:,:), gridd(:,:), &
                              zero(:), w(:), qq(:,:), pp(:,:), uu(:,:), &
                              cilm1(:,:,:), cilm2(:,:,:)

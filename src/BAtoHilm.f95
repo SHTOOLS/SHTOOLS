@@ -77,12 +77,12 @@ subroutine BAtoHilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
     real(dp), intent(out) :: cilm(:,:,:)
     real(dp), intent(in) :: ba(:,:,:), grid(:,:), mass, r0, rho
     real(dp), intent(in), optional :: plx(:,:), zero(:), w(:)
-    integer, intent(in) :: lmax, nmax, gridtype
-    integer, intent(in), optional :: filter_type, filter_deg, lmax_calc
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in) :: lmax, nmax, gridtype
+    integer(int32), intent(in), optional :: filter_type, filter_deg, lmax_calc
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: prod, pi, d, filter(lmax+1)
     real(dp), allocatable :: cilmn(:, :, :), grid2(:,:)
-    integer :: j, l, n, nlong, nlat, astat(2), lmax_out, lmax_calc2
+    integer(int32) :: j, l, n, nlong, nlat, astat(2), lmax_out, lmax_calc2
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -522,7 +522,7 @@ subroutine BAtoHilm(cilm, ba, grid, lmax, nmax, mass, r0, rho, gridtype, w, &
         !
         !----------------------------------------------------------------------
             implicit none
-            integer :: i, j
+            integer(int32) :: i, j
             real(dp) :: fact
 
             if (i == 0) then

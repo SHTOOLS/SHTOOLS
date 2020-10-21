@@ -44,9 +44,9 @@ subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
     real(dp), intent(in) :: lat, lon, theta0
     real(dp), intent(out) :: coord(:,:)
     real(dp), intent(in), optional :: cinterval
-    integer, intent(out), optional :: cnum, exitstatus
+    integer(int32), intent(out), optional :: cnum, exitstatus
     real(dp) :: pi, interval, xold, yold, zold, x, y, z, x1, phi
-    integer :: k, num
+    integer(int32) :: k, num
 
     if (present(exitstatus)) exitstatus = 0
 

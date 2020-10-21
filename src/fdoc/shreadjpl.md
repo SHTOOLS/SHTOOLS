@@ -14,7 +14,7 @@ call SHReadJPL (`filename`, `cilm`, `lmax`, `error`, `gm`, `formatstring`, `exit
 `cilm` : output, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients contained in `filename`.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The maximum spherical harmonic degree of `cilm`.
 
 `error` : output, optional, real(dp), dimension (2, `lmax`+1, `lmax`+1)
@@ -26,7 +26,7 @@ call SHReadJPL (`filename`, `cilm`, `lmax`, `error`, `gm`, `formatstring`, `exit
 `formatstring` : input character(6), optional, default = "E19.12"
 :   The format string used to read the elements of `cilm` and `cilm_error`. The default is "E19.12".
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description

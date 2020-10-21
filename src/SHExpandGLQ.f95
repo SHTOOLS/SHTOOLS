@@ -79,20 +79,20 @@ subroutine SHExpandGLQ(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     real(dp), intent(in) :: w(:), gridglq(:,:)
     real(dp), intent(in), optional :: plx(:,:), zero(:)
     real(dp), intent(out) :: cilm(:,:,:)
-    integer, intent(in) :: lmax
-    integer, intent(in), optional :: norm, csphase, lmax_calc
-    integer, intent(out), optional :: exitstatus
-    integer :: nlong, nlat, i, l, k, m, l1, m1, i_s, astat(4), &
-               lnorm, lmax_comp
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(in), optional :: norm, csphase, lmax_calc
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: nlong, nlat, i, l, k, m, l1, m1, i_s, astat(4), &
+                      lnorm, lmax_comp
     real(dp) :: pi, gridl(2*lmax+1), gridls(2*lmax+1), prod, scalef, &
                 rescalem, u, p, pmm, pm1, pm2, z, fcoef1(2, lmax+1), &
                 fcoef2(2, lmax+1), ffc(1:2,-1:1)
     complex(dp) :: cc(lmax+1), ccs(lmax+1)
     type(C_PTR) :: plan, plans
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer(int1), save, allocatable :: fsymsign(:,:)
-    integer, save :: lmax_old = 0, norm_old = 0
-    integer :: phase
+    integer(int8), save, allocatable :: fsymsign(:,:)
+    integer(int32), save :: lmax_old = 0, norm_old = 0
+    integer(int32) :: phase
 
 !$OMP   threadprivate(sqr, ff1, ff2, fsymsign, lmax_old, norm_old)
 

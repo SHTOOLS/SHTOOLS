@@ -11,10 +11,10 @@ Compute the minimum-amplitude downward continuation filter of Wieczorek and Phil
 `wl` : output, real(dp)
 :   The amplitude of the downward continuation filter.
 
-`l` : input, integer
+`l` : input, integer(int32)
 :   The spherical harmonic degree.
 
-`half` : input, integer
+`half` : input, integer(int32)
 :   The spherical harmonic degree where the filter is equal to 0.5.
 
 `r` : input, real(dp)

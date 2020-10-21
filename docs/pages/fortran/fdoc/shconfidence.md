@@ -20,7 +20,7 @@ Compute the probability that two functions are correlated at a given spherical h
 `prob` : output, real(dp)
 :   Probability that two functions expressed in spherical coefficients with spectral correlation `corr` are correlated at degree `l`.
 
-`l` : input,  integer
+`l` : input,  integer(int32)
 :   The spherical harmonic degree.
 
 `corr` : input, real(dp)

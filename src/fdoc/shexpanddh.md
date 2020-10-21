@@ -11,28 +11,28 @@ call SHExpandDH (`griddh`, `n`, `cilm`, `lmax`, `norm`, `sampling`, `csphase`, `
 `griddh` : input, real(dp), dimension (`n`, `n`) or (`n`, 2\*`n`)
 :   A 2D equally sampled (default) or equally spaced grid that conforms to the sampling theorem of Driscoll and Healy (1994). The first latitudinal band corresponds to 90 N, the latitudinal band for 90 S is not included, and the latitudinal sampling interval is 180/`n` degrees. The first longitudinal band is 0 E, the longitude band for 360 E is not included, and the longitudinal sampling interval is 360/`n` for an equally and 180/`n` for an equally spaced grid, respectively.
 
-`n` : input, integer
+`n` : input, integer(int32)
 :   The number of samples in latitude of `griddh`. If `sampling` is 1 (default) then the number of samples in longitude is `n`. If `sampling` is 2 then the number of longitudinal samples is `2n`. `n` must be even.
 
-`cilm` : output, real(dp), dimension (2, `n`/2, `n`/2) or (2, `lmax_calc`+1, `lmax_calc`+1) 
+`cilm` : output, real(dp), dimension (2, `n`/2, `n`/2) or (2, `lmax_calc`+1, `lmax_calc`+1)
 :   The real spherical harmonic coefficients of the function. These will be exact if the function is bandlimited to degree `lmax=n/2-1`. The coefficients `c1lm` and `c2lm` refer to the cosine (`clm`) and sine (`slm`) coefficients, respectively, with `clm=cilm(1,l+1,m+1)` and `slm=cilm(2,l+1,m+1)`.
 
-`lmax` : output, integer
+`lmax` : output, integer(int32)
 :   The maximum spherical harmonic bandwidth of the input grid, which is `n/2-1`. If the optional parameter `lmax_calc` is not specified, this corresponds to the maximum spherical harmonic degree of the output coefficients `cilm`.
 
-`norm` : input, optional, integer, default = 1
+`norm` : input, optional, integer(int32), default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`sampling` : input, optional, integer, default = 1
+`sampling` : input, optional, integer(int32), default = 1
 :   If 1 (default) the input grid is equally sampled (`n` by `n`). If 2, the grid is equally spaced (`n` by `2n`).
 
-`csphase` : input, optional, integer, default = 1
+`csphase` : input, optional, integer(int32), default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`lmax_calc` : input, optional, integer, default = `lmax`
+`lmax_calc` : input, optional, integer(int32), default = `lmax`
 :   The maximum spherical harmonic degree calculated in the spherical harmonic expansion.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description

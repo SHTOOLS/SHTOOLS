@@ -38,9 +38,9 @@ function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, mj, mk, lwin, &
 
     complex(dp) :: SHSjkPG
     real(dp), intent(in) :: incspectra(:), hj_real(:), hk_real(:)
-    integer, intent(in) :: lwin, l, m, mprime, mj, mk, hkcc
-    integer :: i, l1, l3, imin, imax, m1, m3, m2, &
-               l10min, l10max, l1min, l1max, l30min, l30max, l3min, l3max
+    integer(int32), intent(in) :: lwin, l, m, mprime, mj, mk, hkcc
+    integer(int32) :: i, l1, l3, imin, imax, m1, m3, m2, l10min, l10max, &
+                      l1min, l1max, l30min, l30max, l3min, l3max
     complex(dp) :: hj(lwin+1), hk(lwin+1), tj(lwin+1), tk(lwin+1), sum2, &
                    sum3, sum4
     real(dp) :: wl10(lwin+l+1), wl30(lwin+l+1), wl1(lwin+l+1), wl3(lwin+l+1), &

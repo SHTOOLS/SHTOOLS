@@ -47,7 +47,8 @@ def shape_air(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='Earth2020.shape_air',
+                               units='m')
 
 
 def shape_bathy(lmax=2160):
@@ -73,7 +74,8 @@ def shape_bathy(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='Earth2012.shape_bathy',
+                               units='m')
 
 
 def shape_bathy_bed(lmax=2160):
@@ -101,7 +103,8 @@ def shape_bathy_bed(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax,
+                               name='Earth2012.shape_bathy_bed', units='m')
 
 
 def shape_ret(lmax=2160):
@@ -127,7 +130,8 @@ def shape_ret(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='Earth2012.shape_ret',
+                               units='m')
 
 
 def topo_air(lmax=2160):
@@ -154,7 +158,8 @@ def topo_air(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='Earth2012.topo_air',
+                               units='m')
 
 
 def topo_bathy(lmax=2160):
@@ -182,7 +187,8 @@ def topo_bathy(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='Earth2012.topo_bathy',
+                               units='m')
 
 
 def topo_bathy_bed(lmax=2160):
@@ -211,7 +217,8 @@ def topo_bathy_bed(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax,
+                               name='Earth2012.topo_bathy_bed', units='m')
 
 
 def ret(lmax=2160):
@@ -237,7 +244,8 @@ def ret(lmax=2160):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='Earth2012.ret',
+                               units='m')
 
 
 __all__ = ['shape_air', 'shape_bathy', 'shape_bathy_bed', 'shape_ret',

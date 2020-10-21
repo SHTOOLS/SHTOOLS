@@ -11,10 +11,10 @@ call SHLocalizedAdmitCorr (`tapers`, `taper_order`, `lwin`, `lat`, `lon`, `gilm`
 `tapers` : input, real(dp), dimension (`lwin`+1, `k`)
 :   A matrix of spherical cap localization functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
 
-`taper_order` : input, integer, dimension (`k`)
+`taper_order` : input, integer(int32), dimension (`k`)
 :   The angular order of the windowing coefficients in `tapers`.
 
-`lwin` : input, integer
+`lwin` : input, integer(int32)
 :   The spherical harmonic bandwidth of the localizing windows.
 
 `lat` : input, real(dp)
@@ -29,7 +29,7 @@ call SHLocalizedAdmitCorr (`tapers`, `taper_order`, `lwin`, `lat`, `lon`, `gilm`
 `tilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The spherical harmonic coefficients of the function T.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The maximum spherical harmonic degree of the input functions corresponding to `gilm` and `tilm`.
 
 `admit` : output, real(dp), dimension (`lmax`-`lwin`+1)
@@ -38,7 +38,7 @@ call SHLocalizedAdmitCorr (`tapers`, `taper_order`, `lwin`, `lat`, `lon`, `gilm`
 `corr` : output, real(dp), dimension (`lmax`-`lwin`+1)
 :   The degree correlation function, which is equal to `Sgt/sqrt(Sgg Stt)`.
 
-`k` : input, integer
+`k` : input, integer(int32)
 :   The number of tapers to be used in the multitaper spectral analysis.
 
 `admit_error` : output, optional, real(dp), dimension (`lmax`-`lwin`+1)
@@ -50,13 +50,13 @@ call SHLocalizedAdmitCorr (`tapers`, `taper_order`, `lwin`, `lat`, `lon`, `gilm`
 `taper_wt` : input, optional, real(dp), dimension (`k`)
 :   The weights to be applied to the spectral estimates when calculating the admittance, correlation, and their associated errors. This must sum to unity.
 
-`mtdef` : input, optional, integer, default = 1
+`mtdef` : input, optional, integer(int32), default = 1
 :   1 (default): Calculate the multitaper spectral estimates Sgt, Sgg and Stt first, and then use these to calculate the admittance and correlation functions. 2: Calculate admittance and correlation spectra using each individual taper, and then average these to obtain the multitaper admittance and correlation functions.
 
-`k1linsig` : input, optional, integer
+`k1linsig` : input, optional, integer(int32)
 :   If equal to one, and only a single taper is being used, the errors in the admittance function will be calculated by assuming that the coefficients of `gilm` and `tilm` are related by a linear degree-dependent transfer function and that the lack of correlation is a result of uncorrelated noise. This is the square root of eq. 33 of Simons et al. 1997.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description

@@ -15,11 +15,11 @@ Program TimingAccuracyDHC
 
     implicit none
 
-    integer, parameter :: maxdeg = 2800
+    integer(int32), parameter :: maxdeg = 2800
     character(200) :: outfile1, outfile2, outfile3, outfile4, outfile
     complex(dp), allocatable :: cilm(:,:,:), cilm2(:,:,:), griddh(:,:)
     real(dp) :: maxerror, err1, err2, beta, rms, timein(3), timeout(3)
-    integer :: lmax, l, m, seed, n, sampling, lmaxout, astat(3)
+    integer(int32) :: lmax, l, m, seed, n, sampling, lmaxout, astat(3)
 
     allocate(cilm(2,maxdeg+1,maxdeg+1), stat=astat(1))
     allocate(cilm2(2,maxdeg+1,maxdeg+1), stat=astat(2))

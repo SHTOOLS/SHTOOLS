@@ -23,8 +23,8 @@ function SHPowerLC(cilm, l)
 
     real(dp) :: SHPowerLC
     complex(dp), intent(in) :: cilm(:,:,:)
-    integer, intent(in) :: l
-    integer :: i, m, l1, m1
+    integer(int32), intent(in) :: l
+    integer(int32) :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -79,8 +79,8 @@ function SHPowerDensityLC(cilm, l)
 
     real(dp) :: SHPowerDensityLC
     complex(dp), intent(in) :: cilm(:,:,:)
-    integer, intent(in) :: l
-    integer :: i, m, l1, m1
+    integer(int32), intent(in) :: l
+    integer(int32) :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -138,8 +138,8 @@ function SHCrossPowerLC(cilm1, cilm2, l)
 
     complex(dp) :: SHCrossPowerLC
     complex(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:)
-    integer, intent(in) :: l
-    integer :: i, m, l1, m1
+    integer(int32), intent(in) :: l
+    integer(int32) :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -204,8 +204,8 @@ function SHCrossPowerDensityLC(cilm1, cilm2, l)
 
     complex(dp) :: SHCrossPowerDensityLC
     complex(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:)
-    integer, intent(in) :: l
-    integer :: i, m, l1, m1
+    integer(int32), intent(in) :: l
+    integer(int32) :: i, m, l1, m1
 
     l1 = l + 1
 
@@ -284,10 +284,10 @@ subroutine SHPowerSpectrumC(cilm, lmax, spectra, exitstatus)
     implicit none
 
     complex(dp), intent(in) :: cilm(:,:,:)
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) :: spectra(:)
-    integer, intent(out), optional :: exitstatus
-    integer :: i, m, l1, m1, l
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -378,10 +378,10 @@ subroutine SHPowerSpectrumDensityC(cilm, lmax, spectra, exitstatus)
     implicit none
 
     complex(dp), intent(in) :: cilm(:,:,:)
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) :: spectra(:)
-    integer, intent(out), optional :: exitstatus
-    integer :: i, m, l1, m1, l
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -477,10 +477,10 @@ subroutine SHCrossPowerSpectrumC(cilm1, cilm2, lmax, cspectra, exitstatus)
     implicit none
 
     complex(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:)
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     complex(dp), intent(out) :: cspectra(:)
-    integer, intent(out), optional :: exitstatus
-    integer :: i, m, l1, m1, l
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -589,10 +589,10 @@ subroutine SHCrossPowerSpectrumDensityC(cilm1, cilm2, lmax, cspectra, &
     implicit none
 
     complex(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:)
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     complex(dp), intent(out) :: cspectra(:)
-    integer, intent(out), optional :: exitstatus
-    integer :: i, m, l1, m1, l
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: i, m, l1, m1, l
 
     if (present(exitstatus)) exitstatus = 0
 

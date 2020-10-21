@@ -20,10 +20,10 @@ call SHReturnTapersM (`theta0`, `lmax`, `m`, `tapers`, `eigenvalues`, `shannon`,
 `theta0` : input, real(dp)
 :   The angular radius of the spherical cap in radians.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The spherical harmonic bandwidth of the localization windows.
 
-`m` : input, integer
+`m` : input, integer(int32)
 :   The angular order of the localization windows.
 
 `tapers` : output, real(dp), dimension (`lmax`+1, `lmax`+1)
@@ -35,13 +35,13 @@ call SHReturnTapersM (`theta0`, `lmax`, `m`, `tapers`, `eigenvalues`, `shannon`,
 `shannon` : output, optional, real(dp)
 :   The Shannon number, which is the trace of the concentration kernel.
 
-`degrees` : input, integer, optional, dimension (`lmax`+1)
+`degrees` : input, integer(int32), optional, dimension (`lmax`+1)
 :   List of degrees to use when computing the eigenfunctions. Only those degrees where `degrees(l+1)` is non-zero will be employed.
 
-`ntapers` : output, integer, optional
+`ntapers` : output, integer(int32), optional
 :   The number of non-zero tapers.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description

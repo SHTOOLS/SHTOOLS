@@ -49,10 +49,10 @@ subroutine SlepianCoeffs(falpha, galpha, film, lmax, nmax, exitstatus)
 
     real(dp), intent(out) :: falpha(:)
     real(dp), intent(in) :: galpha(:,:), film(:,:,:)
-    integer, intent(in) :: lmax, nmax
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in) :: lmax, nmax
+    integer(int32), intent(out), optional :: exitstatus
     real(dp), allocatable :: f(:)
-    integer :: i, astat
+    integer(int32) :: i, astat
 
     if (present(exitstatus)) exitstatus = 0
 

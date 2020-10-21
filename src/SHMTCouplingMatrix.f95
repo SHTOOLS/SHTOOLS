@@ -34,10 +34,10 @@ subroutine SHMTCouplingMatrix(Mmt, lmax, tapers_power, lwin, K, taper_wt, &
     real(dp), intent(out) :: Mmt(:,:)
     real(dp), intent(in) :: tapers_power(:,:)
     real(dp), intent(in), optional :: taper_wt(:)
-    integer, intent(in) :: lmax, K, lwin
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in) :: lmax, K, lwin
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: w3j(lwin+2*lmax+1), sum1
-    integer :: i, j, l, wmin, wmax
+    integer(int32) :: i, j, l, wmin, wmax
 
     if (present(exitstatus)) exitstatus = 0
 

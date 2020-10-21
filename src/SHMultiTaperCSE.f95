@@ -77,13 +77,13 @@ subroutine SHMultiTaperCSE(mtse, sd, cilm1, lmax1, cilm2, lmax2, tapers, &
 
     real(dp), intent(out) :: mtse(:), sd(:)
     real(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:), tapers(:,:)
-    integer, intent(in) :: lmax1, lmax2, lmaxt, K, taper_order(:)
+    integer(int32), intent(in) :: lmax1, lmax2, lmaxt, K, taper_order(:)
     real(dp), intent(in), optional :: alpha(:), lat, lon, taper_wt(:)
-    integer, intent(in), optional :: csphase, norm
-    integer, intent(out), optional :: exitstatus
-    integer :: i, l, lmax, phase, mnorm, astat(9), lmaxmul, nlat, nlong
+    integer(int32), intent(in), optional :: csphase, norm
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: i, l, lmax, phase, mnorm, astat(9), lmaxmul, nlat, nlong
     real(dp), allocatable, save :: zero(:), w(:)
-    integer, save :: first = 1, lmaxmul_last = -1
+    integer(int32), save :: first = 1, lmaxmul_last = -1
     real(dp) :: se(lmax1-lmaxt+1,K), x(3), pi, factor
     real(dp), allocatable :: shwin(:,:,:), shloc1(:,:,:),  shloc2(:,:,:), &
                              dj(:,:,:), shwinrot(:,:,:), grid1glq(:,:), &

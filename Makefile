@@ -125,7 +125,7 @@
 ###############################################################################
 
 # The VERSION number is used only for generating the man pages
-VERSION = 4.7
+VERSION = 4.8
 
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
@@ -144,7 +144,7 @@ PYDOCDIR = src/pydoc
 SRCDIR = src
 LIBDIR = lib
 MODDIR = include
-INCDIR = src
+INCDIR = include
 CPPDIR = examples/cpp
 FEXDIR = examples/fortran
 PEXDIR = examples/python
@@ -159,6 +159,7 @@ PYPATH = $(PWD)
 PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
 SYSMODPATH = $(PREFIX)/include
+SYSINCPATH = $(PREFIX)/include
 SYSSHAREPATH = $(PREFIX)/share
 
 FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
@@ -280,6 +281,8 @@ install:
 	-cp $(LIBPATH)/lib$(LIBNAMEMP).a $(DESTDIR)$(SYSLIBPATH)/lib$(LIBNAMEMP).a
 	mkdir -pv $(DESTDIR)$(SYSMODPATH)
 	cp $(MODPATH)/*.mod $(DESTDIR)$(SYSMODPATH)/
+	mkdir -pv $(DESTDIR)$(SYSINCPATH)
+	cp $(INCPATH)/*.h $(DESTDIR)$(SYSINCPATH)/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/examples/shtools
 	cp -R examples/fortran/ $(DESTDIR)$(SYSSHAREPATH)/examples/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
@@ -297,6 +300,7 @@ uninstall:
 	-rm -r $(SYSMODPATH)/planetsconstants.mod
 	-rm -r $(SYSMODPATH)/shtools.mod
 	-rm -r $(SYSMODPATH)/ftypes.mod
+	-rm -r $(SYSINCPATH)/shtools.h
 	-rm -r $(SYSSHAREPATH)/examples/shtools
 	$(MAKE) -C $(FDOCDIR) -f Makefile uninstall PREFIX=$(PREFIX)
 
@@ -359,7 +363,7 @@ clean-python:
 clean-libs:
 	@-$(MAKE) -C $(SRCDIR) -f Makefile clean
 	@-rm -rf $(LIBPATH)
-	@-rm -rf $(MODPATH)
+	@-rm -rf $(MODPATH)/*.mod
 	@-rm -rf NONE
 	@-rm -rf build
 	@-rm -rf pyshtools.egg-info
@@ -435,17 +439,16 @@ python-tests-no-timing:
 	@$(MAKE) -C $(PEXDIR) -f Makefile no-timing PYTHON=$(PYTHON)
 	@echo
 	@echo "--> Ran all Python tests"
-	
-cpp-tests-no-timing:
-	@$(MAKE) -C $(CPPDIR) -f Makefile all CXX="$(CXX)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)" INCLUDE="-I $(INCPATH)"
+
+cpp-tests:
+	@$(MAKE) -C $(CPPDIR) -f Makefile all CXX="$(CXX)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" INCLUDE="-I $(INCPATH)"
 	@echo
 	@echo "--> Make of cpp test suite successful"
-	
-run-cpp-tests-no-timing: cpp-tests-no-timing
-	@$(MAKE) -C $(CPPDIR) -f Makefile run-cpp-tests-no-timing CXX="$(CXX)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" MODFLAG="$(MODFLAG)" INCLUDE="-I $(INCPATH)"
+
+run-cpp-tests: cpp-tests
+	@$(MAKE) -C $(CPPDIR) -f Makefile run-cpp-tests-no-timing CXX="$(CXX)" LIBNAME="$(LIBNAME)" FFTW="$(FFTW)" LAPACK="$(LAPACK)" BLAS="$(BLAS)" LIBPATH="$(LIBPATH)" INCLUDE="-I $(INCPATH)"
 	@echo
 	@echo "--> Ran all cpp examples and tests"
-
 
 check:
 	@$(FLAKE8) --extend-ignore=E741,W605 --exclude=versioneer.py,pyshtools/_version.py $(FLAKE8_FILES)

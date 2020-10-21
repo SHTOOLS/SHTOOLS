@@ -71,14 +71,14 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 
     real(dp), intent(in) :: d(:), lat(:), lon(:)
     real(dp), intent(out) :: cilm(:,:,:)
-    integer, intent(in) :: nmax, lmax
-    integer, intent(in), optional :: norm, csphase
+    integer(int32), intent(in) :: nmax, lmax
+    integer(int32), intent(in), optional :: norm, csphase
     real(dp), intent(out), optional :: chi2
     real(dp), intent(in), optional :: weights(:)
-    integer, intent(out), optional :: exitstatus
-    integer, parameter :: opt = 80
-    integer :: ncoef, i, l, m, ind1, ind2, info, lwork, opt1, phase, &
-               astat(7), lnorm
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32), parameter :: opt = 80
+    integer(int32) :: ncoef, i, l, m, ind1, ind2, info, lwork, opt1, phase, &
+                      astat(7), lnorm
     real(dp) :: pi, lonr, small
     real(dp), allocatable :: mm(:), gg(:, :), p(:), work(:), b(:, :), y(:), &
                              din(:)

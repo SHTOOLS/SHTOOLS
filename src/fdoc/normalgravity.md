@@ -14,7 +14,7 @@ Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates 
 `geocentriclat`: input, real(dp)
 :   Geocentric latitude in degrees.
 
-`gm` : input, real(dp) 
+`gm` : input, real(dp)
 :   The gravitational constant multiplied by the mass of the planet.
 
 `omega` : input, real(dp)

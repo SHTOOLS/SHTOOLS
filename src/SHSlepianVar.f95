@@ -49,9 +49,9 @@ subroutine SHSlepianVar(l, galpha, galpha_order, lmax, kmax, Sff, variance, &
 
     real(dp), intent(in) :: galpha(:,:), Sff(:)
     real(dp), intent(out) :: variance
-    integer, intent(in) :: l, lmax, kmax, galpha_order(:)
-    integer, intent(out), optional :: exitstatus
-    integer :: m, lp, alpha, beta
+    integer(int32), intent(in) :: l, lmax, kmax, galpha_order(:)
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: m, lp, alpha, beta
     real(dp) :: fmm
 
     if (present(exitstatus)) exitstatus = 0

@@ -44,9 +44,9 @@ subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, &
     real(dp), intent(in) :: lat, lon, A_theta, B_theta, dec
     real(dp), intent(out) :: coord(:,:)
     real(dp), intent(in), optional :: cinterval
-    integer, intent(out), optional :: cnum, exitstatus
+    integer(int32), intent(out), optional :: cnum, exitstatus
     real(dp) :: pi, interval, xold, yold, zold, x, y, z, x1, phi, r
-    integer :: k, num
+    integer(int32) :: k, num
 
     if (present(exitstatus)) exitstatus = 0
 

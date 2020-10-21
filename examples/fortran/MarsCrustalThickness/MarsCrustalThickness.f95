@@ -40,8 +40,9 @@ program MarsCrustalThickness
                              moho_grid3(:,:), temp_grid(:,:), topo_c(:,:,:), &
                              moho_c(:,:,:), bc(:,:,:), ba(:,:,:), cilm(:,:,:), &
                              pot(:,:,:), misfit(:,:,:)
-    integer :: l, m, lmax, i, nmax, nlat, nlong, gridtype, astat(12), n_out, &
-               iter, j, r1, lmaxp, lmaxt, filter_type, half, degmax, sampling
+    integer(int32) :: l, m, lmax, i, nmax, nlat, nlong, gridtype, astat(12), &
+                      n_out, iter, j, r1, lmaxp, lmaxt, filter_type, half, &
+                      degmax, sampling
     character(120) :: grav_file, moho_out, thick_grid_out, topo_file, &
                       misfit_file
 

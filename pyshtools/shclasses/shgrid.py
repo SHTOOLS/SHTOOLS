@@ -267,19 +267,21 @@ class SHGrid(object):
             temp.data[:, :] = a
         elif c is not None and b is None:
             for ilat, lat in enumerate(temp.lats()):
-                temp.data[ilat, :] = _np.sqrt(
-                    a**2 * _np.cos(_np.deg2rad(lat))**2 +
-                    c**2 * _np.sin(_np.deg2rad(lat))**2)
+                temp.data[ilat, :] = 1. / _np.sqrt(
+                    _np.cos(_np.deg2rad(lat))**2 / a**2 +
+                    _np.sin(_np.deg2rad(lat))**2 / c**2
+                    )
         else:
             if c is None:
                 c = b
             cos2 = _np.cos(_np.deg2rad(temp.lons()))**2
             sin2 = _np.sin(_np.deg2rad(temp.lons()))**2
             for ilat, lat in enumerate(temp.lats()):
-                temp.data[ilat, :] = _np.sqrt(
-                    a**2 * _np.cos(_np.deg2rad(lat))**2 * cos2 +
-                    b**2 * _np.cos(_np.deg2rad(lat))**2 * sin2 +
-                    c**2 * _np.sin(_np.deg2rad(lat))**2)
+                temp.data[ilat, :] = 1. / _np.sqrt(
+                    _np.cos(_np.deg2rad(lat))**2 * cos2 / a**2 +
+                    _np.cos(_np.deg2rad(lat))**2 * sin2 / b**2 +
+                    _np.sin(_np.deg2rad(lat))**2 / c**2
+                    )
 
         return temp
 

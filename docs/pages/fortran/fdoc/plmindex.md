@@ -17,13 +17,13 @@ Compute the index of an array corresponding to degree `l` and angular order `m`.
 
 ## Parameters
 
-`index` : function output, integer
+`index` : function output, integer(int32)
 :   Index of an array of associated Legendre functions corresponding to degree `l` and angular order `m`.
 
-`l` : input, integer
+`l` : input, integer(int32)
 :   The spherical harmonic degree.
 
-`m` : input, integer
+`m` : input, integer(int32)
 :   The angular order.
 
 ## Description

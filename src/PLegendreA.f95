@@ -44,14 +44,14 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
 
     implicit none
 
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) :: p(:)
     real(dp), intent(in) :: z
-    integer, intent(in), optional :: csphase
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in), optional :: csphase
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: pm2, pm1, pmm, sinsq, sinsqr, fact, plm
-    integer :: k, kstart, m, l
-    integer(int1) :: phase
+    integer(int32) :: k, kstart, m, l
+    integer(int32) :: phase
 
     if (present(exitstatus)) exitstatus = 0
 

@@ -73,12 +73,12 @@ subroutine CilmMinus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, &
     real(dp), intent(in) :: gridin(:,:), mass, rho
     real(dp), intent(in), optional :: w(:), zero(:), plx(:,:), dref
     real(dp), intent(out) :: cilm(:,:,:), d
-    integer, intent(in) :: lmax, nmax, gridtype
-    integer, intent(in), optional :: n
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in) :: lmax, nmax, gridtype
+    integer(int32), intent(in), optional :: n
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: prod, pi, scalef
     real(dp), allocatable :: cilmn(:, :, :), grid(:, :)
-    integer :: j, l, k, nlat, nlong, astat(2), lmax_dh
+    integer(int32) :: j, l, k, nlat, nlong, astat(2), lmax_dh
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -536,7 +536,7 @@ subroutine CilmMinus(cilm, gridin, lmax, nmax, mass, d, rho, gridtype, w, &
         !
         !----------------------------------------------------------------------
             implicit none
-            integer :: i, j
+            integer(int32) :: i, j
             real(dp) :: fact
 
             if (i == 0) then

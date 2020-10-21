@@ -14,10 +14,10 @@ call CilmPlus (`cilm`, `gridin`, `lmax`, `nmax`, `mass`, `d`, `rho`, `gridtype`,
 `gridin` : input, real(dp), dimension (`lmax`+1, 2\*`lmax`+1) for gridtype 1, (`n`, `n`) for gridtype 2, (`n`, 2\*`n`) for gridtype 3
 :   The radii of the interface evaluated on a grid corresponding to a function of maximum spherical harmonic degree `lmax`. This is calculated by a call to either `MakeGridGLQ` or `MakeGridDH`.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The maximum spherical harmonic degree of the output spherical harmonic coefficients. This degree also determines the dimension of the input relief `gridin` for `gridtype` 1. For Driscoll-Healy grids, `lmax` must be less than or equal to `n/2-1`.
 
-`nmax` : input, integer
+`nmax` : input, integer(int32)
 :   The maximum order used in the Taylor-series expansion used in calculating the potential coefficients.
 
 `mass` : input, real(dp)
@@ -29,7 +29,7 @@ call CilmPlus (`cilm`, `gridin`, `lmax`, `nmax`, `mass`, `d`, `rho`, `gridtype`,
 `rho` : input, real(dp)
 :   The density contrast of the relief in kg/m^3.
 
-`gridtype` : input, integer
+`gridtype` : input, integer(int32)
 :   1 = Gauss-Legendre grids, calculated using `SHGLQ` and `MakeGridGLQ>`. 2 = Equally sampled Driscoll-Healy grids, `n` by `n`, calculated using `MakeGridDH`. 3 = Equally spaced Driscoll-Healy grids, `n` by 2`n`, calculated using `MakeGridDH`.
 
 `w` : optional, input, real(dp), dimension (`lmax`+1)
@@ -41,13 +41,13 @@ call CilmPlus (`cilm`, `gridin`, `lmax`, `nmax`, `mass`, `d`, `rho`, `gridtype`,
 `plx` : optional, input, real(dp), dimension (`lmax`+1, (`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the associated Legendre functions calculated at the nodes used in the Gauss-Legendre quadrature for `gridtype` 1. These are determined from a call to `SHGLQ`. One of `plx` or `zero` must be present when `gridtype=1`, but not both.
 
-`n` : optional, input, integer
+`n` : optional, input, integer(int32)
 :   The number of samples in latitude when using Driscoll-Healy grids. For a function bandlimited to `lmax`, `n=2(lmax+1)`. This is required for gridtypes 2 and 3.
 
 `dref` : optional, input, real(dp)
 :   The reference radius to be used when calculating both the relief and spherical harmonic coefficients. If this is not specified, this parameter will be set equal to the mean radius of `gridin`.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description

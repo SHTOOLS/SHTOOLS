@@ -59,17 +59,17 @@ subroutine EigValVecSym(ain, n, eig, evec, ul, K, exitstatus)
     implicit none
 
     real(dp), intent(in) :: ain(:,:)
-    integer, intent(in) :: n
+    integer(int32), intent(in) :: n
     real(dp), intent(out) :: eig(:), evec(:,:)
     character, intent(in), optional :: ul
-    integer, intent(in), optional :: K
-    integer, intent(out), optional :: exitstatus
-    integer, parameter :: nb = 80, nbl = 10
+    integer(int32), intent(in), optional :: K
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32), parameter :: nb = 80, nbl = 10
     character :: uplo
     real(dp) :: d(n), e(n), tau(n-1), work(nb*n), vl, vu, abstol, w(n)
     real(dp), allocatable :: a(:,:), z(:,:)
-    integer :: lwork, info, il, iu, m, isuppz(2*n), liwork, iwork(nbl*n), &
-               i, astat(2)
+    integer(int32) :: lwork, info, il, iu, m, isuppz(2*n), liwork, &
+                      iwork(nbl*n), i, astat(2)
 #ifdef LAPACK_UNDERSCORE
 #define dsytrd dsytrd_
 #define dstegr dstegr_

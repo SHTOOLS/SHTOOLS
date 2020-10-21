@@ -23,7 +23,7 @@ call SHAdmitCorr (`gilm`, `tilm`, `lmax`, `admit`, `corr`, `admit_error`, `exits
 `tilm` : input, real(dp), dimension (2, `lmaxt`+1, `lmaxt`+1)
 :   The real spherical harmonic coefficients of the function `T`.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The maximum spherical harmonic degree that will be calculated for the admittance and correlation spectra. This must be less than or equal to the minimum of `lmaxg` and `lmaxt`.
 
 `admit` : output, real(dp), dimension (`lmax`+1)
@@ -35,7 +35,7 @@ call SHAdmitCorr (`gilm`, `tilm`, `lmax`, `admit`, `corr`, `admit_error`, `exits
 `admit_error` : output, optional, real(dp), dimension (`lmax`+1)
 :   The uncertainty of the admittance function, assuming that `gilm` and `tilm` are related by a linear isotropic transfer function, and that the lack of correlation is a result of uncorrelated noise.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description
