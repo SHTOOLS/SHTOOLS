@@ -1,11 +1,11 @@
-function MakeGravGridPoint(cilm, lmax, gm, r0, r, lat, lon, omega, dealloc)
+function MakeMagGridPoint(cilm, lmax, a, r, lat, lon, dealloc)
 !------------------------------------------------------------------------------
 !
 !   This function will determine the 3 components (r-hat, theta-hat, phi-hat)
-!   of the gravity vector (gravitational force + centrifugal force) at a given
-!   latitude, longitude and radius. Latitude and longitude must be input in
-!   degrees. The input coefficients must be 4-pi normalized, excluding the
-!   Condon-Shortley phase factor.
+!   of the magnetic field vector at a given latitude, longitude and radius.
+!   Latitude and longitude must be input in degrees. The input coefficients
+!   must be Schmidt semi-normalized, excluding the Condon-Shortley phase
+!   factor.
 !
 !   Calling Parameters
 !
@@ -13,19 +13,14 @@ function MakeGravGridPoint(cilm, lmax, gm, r0, r, lat, lon, omega, dealloc)
 !           cilm        Spherical harmonic coefficients, with dimensions
 !                       (2, lmax+1, lmax+1).
 !           lmax        Maximum degree used in the expansion.
-!           gm          Product of the gravitatonal constant and the planet's
-!                       mass.
-!           r0          Reference radius of the potential coefficients.
-!           r           Radius where the gravity vector is computed (meters).
+!           a          Reference radius of the potential coefficients.
+!           r           Radius where the magnetic field is computed (meters).
 !           lat         Latitude where the gravity vector is computed, in
 !                       degrees.
 !           lon         Longitude where the gravity vector is computed, in
 !                       degrees.
 !
 !       OPTIONAL (IN)
-!           omega       The angular rotation rate of the planet. If present,
-!                       compute the gravity vector in a body-fixed rotating
-!                       frame.
 !           dealloc     If (1) deallocate saved memory in the Legendre function
 !                       routines. Default (0) is not to deallocate memory.
 !
@@ -33,14 +28,13 @@ function MakeGravGridPoint(cilm, lmax, gm, r0, r, lat, lon, omega, dealloc)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: PlmBar_d1
+    use SHTOOLS, only: PlmSchmidt_d1
     use ftypes
 
     implicit none
 
-    real(dp), dimension(3) :: MakeGravGridPoint
-    real(dp), intent(in) :: cilm(:,:,:), gm, r0, r, lat, lon
-    real(dp), intent(in), optional :: omega
+    real(dp), dimension(3) :: MakeMagGridPoint
+    real(dp), intent(in) :: cilm(:,:,:), a, r, lat, lon
     integer(int32), intent(in) :: lmax
     integer(int32), intent(in), optional :: dealloc
     real(dp) :: pi, x, expand(3), lon_rad, prefactor(lmax)
@@ -49,7 +43,7 @@ function MakeGravGridPoint(cilm, lmax, gm, r0, r, lat, lon, omega, dealloc)
 
     if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. &
             size(cilm(1,1,:)) < lmax+1) then
-        print*, "Error --- MakeGravGridPoint"
+        print*, "Error --- MakeMagGridPoint"
         print*, "CILM must be dimensioned as (2, LMAX+1, LMAX+1) " // &
                 "where LMAX is ", lmax
         print*, "Input dimension is ", size(cilm(:,1,1)), size(cilm(1,:,1)), &
@@ -65,7 +59,7 @@ function MakeGravGridPoint(cilm, lmax, gm, r0, r, lat, lon, omega, dealloc)
     allocate (sinm(lmax_comp+1), stat = astat(4))
 
     if (sum(astat(1:4)) /= 0) then
-        print*, "Error --- MakeGravGridPoint"
+        print*, "Error --- MakeMagGridPoint"
         print*, "Cannot allocate memory for arrays PL, DPL, COSM and SINM", &
                 astat(1), astat(2), astat(3), astat(4)
         stop
@@ -75,7 +69,7 @@ function MakeGravGridPoint(cilm, lmax, gm, r0, r, lat, lon, omega, dealloc)
     x = sin(lat * pi / 180.0_dp)
     lon_rad = lon * pi / 180.0_dp
 
-    call PlmBar_d1(pl, dpl, lmax_comp, x, csphase = 1)
+    call PlmSchmidt_d1(pl, dpl, lmax_comp, x, csphase = 1)
     dpl = -dpl * cos(lat * pi / 180.0_dp)
 
     ! Precompute sines and cosines. Use multiple angle identity to minimize
@@ -94,9 +88,9 @@ function MakeGravGridPoint(cilm, lmax, gm, r0, r, lat, lon, omega, dealloc)
         cosm(m1) = 2 * cosm(m) * cosm(2) - cosm(m-1)
     end do
 
-    prefactor(1) = r0 / r  ! l=1
+    prefactor(1) = a / r  ! l=1
     do l = 2, lmax_comp, 1
-        prefactor(l) = prefactor(l-1) * (r0 / r)
+        prefactor(l) = prefactor(l-1) * (a / r)
     end do
 
     expand(1) = -cilm(1,1,1)
@@ -122,27 +116,19 @@ function MakeGravGridPoint(cilm, lmax, gm, r0, r, lat, lon, omega, dealloc)
 
     end do
 
-    expand(1:3) = expand(1:3) * gm / r**2
+    expand(1:3) = -expand(1:3) * (a / r)**2
     if (abs(lat) /= 90.0_dp) then
         expand(3) = expand(3) / cos(lat * pi / 180.0_dp)
     else
         expand(3) = 0.0_dp
     end if
 
-    ! Add rotational effects
-    if (present(omega)) then
-        expand(1) = expand(1) + r * ( cos(lat * pi / 180.0_dp) * omega )**2
-        expand(2) = expand(2) + r * cos(lat * pi / 180.0_dp) * &
-                                sin(lat * pi / 180.0_dp) * omega**2
-
-    end if
-
-    MakeGravGridPoint(1:3) = expand(1:3)
+    MakeMagGridPoint(1:3) = expand(1:3)
 
     ! deallocate memory
     if (present(dealloc)) then
         if (dealloc == 1) then
-            call PlmBar_d1(pl, dpl, -1, x)
+            call PlmSchmidt_d1(pl, dpl, -1, x)
         end if
     end if
 
@@ -151,4 +137,4 @@ function MakeGravGridPoint(cilm, lmax, gm, r0, r, lat, lon, omega, dealloc)
     deallocate (cosm)
     deallocate (sinm)
 
-end function MakeGravGridPoint
+end function MakeMagGridPoint

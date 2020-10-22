@@ -28,10 +28,10 @@ Determine the three components of the gravity vector at a single point.
 :   The radius to evaluate the gravity field.
 
 `lat` : float
-:   The latitude of the point in DEGREES.
+:   The latitude of the point in degrees.
 
 `lon` : float
-:   The longitude of the point in DEGREES.
+:   The longitude of the point in degrees.
 
 `lmax` : optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree used in evaluating the function.

@@ -868,6 +868,14 @@ module SHTOOLS
             integer(int32), intent(out), optional :: exitstatus
         end subroutine MakeMagGradGridDH
 
+        function MakeMagGridPoint(cilm, lmax, a, r, lat, lon, dealloc)
+            use iso_fortran_env, only: int32, dp=>real64
+            real(dp), dimension(3) :: MakeMagGridPoint
+            real(dp), intent(in) :: cilm(:,:,:), a, r, lat, lon
+            integer(int32), intent(in) :: lmax
+            integer(int32), intent(in), optional :: dealloc
+        end function MakeMagGridPoint
+
         subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, &
                                  r, gridtype, order, nlat, nlong, interval, &
                                  lmax_calc, a, f, extend, exitstatus)

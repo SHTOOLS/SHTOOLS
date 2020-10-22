@@ -106,6 +106,7 @@ from .._SHTOOLS import DownContFilterMA
 from .._SHTOOLS import DownContFilterMC
 from .._SHTOOLS import NormalGravity
 from .._SHTOOLS import MakeMagGridDH
+from .._SHTOOLS import MakeMagGridPoint
 from .._SHTOOLS import MakeMagGradGridDH
 
 # utils
@@ -138,11 +139,12 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'MakeMagGridDH', 'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j',
            'DHaj', 'MakeMagGradGridDH', 'SHRotateTapers', 'SlepianCoeffs',
            'SlepianCoeffsToSH', 'SHSCouplingMatrix', 'SHMTVar', 'SHSlepianVar',
-           'SHSCouplingMatrixCap', 'MakeGravGridPoint']
+           'SHSCouplingMatrixCap', 'MakeGravGridPoint', 'MakeMagGridPoint']
 
 _fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'DownContFilterMA',
                       'DownContFilterMC', 'SHFindLWin', 'SHSjkPG',
-                      'NormalGravity', 'SHConfidence', 'MakeGravGridPoint']
+                      'NormalGravity', 'SHConfidence', 'MakeGravGridPoint',
+                      'MakeMagGridPoint']
 
 _fortran_subroutines = list(set(__all__) - set(_fortran_functions))
 

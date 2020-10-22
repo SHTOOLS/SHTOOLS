@@ -54,7 +54,8 @@ SRCS0 = CilmPlus.f95 CilmMinus.f95 \
 	SHMultiTaperMaskSE.f95 SHMultiTaperMaskCSE.f95 SHBiasKMask.f95 \
 	SHRotateTapers.f95 SlepianCoeffs.f95 SlepianCoeffsToSH.f95 \
 	SHSCouplingMatrix.f95 SHMTVar.f95 SHSlepianVar.f95 \
-	SHSCouplingMatrixCap.f95 cWrapper.f95 MakeGravGridPoint.f95
+	SHSCouplingMatrixCap.f95 cWrapper.f95 MakeGravGridPoint.f95 \
+	MakeMagGridPoint.f95
 
 OBJS0 := $(SRCS0:%.f95=%.o)
 
