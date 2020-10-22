@@ -19,10 +19,10 @@ Evaluate a complex function expressed in complex spherical harmonics at a single
 :   The complex spherical harmonic coefficients of the function. The coefficients `C0lm` and `C1lm` refer to the positive and negative angular orders, respectively, with `Clm=cilm[0,1,m]` and `Cl-m=cilm[1,l,m]`.
 
 `lat` : float
-:   The latitude of the point in DEGREES.
+:   The latitude of the point in degrees.
 
 `lon` : float
-:   The longitude of the point in DEGREES.
+:   The longitude of the point in degrees.
 
 `lmax` : optional, integer, default = `lmaxin`
 :   The maximum spherical harmonic degree used in evaluating the function.

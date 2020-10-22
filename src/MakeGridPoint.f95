@@ -3,7 +3,7 @@ function MakeGridPoint(cilm, lmax, lat, lon, norm, csphase, dealloc)
 !
 !   This function will determine the value at a given latitude and
 !   longitude corresponding to the given set of spherical harmonics.
-!   Latitude and Longitude are assumed to be in DEGREES!
+!   Latitude and Longitude must be in degrees.
 !
 !   Calling Parameters
 !
@@ -24,11 +24,6 @@ function MakeGridPoint(cilm, lmax, lat, lon, norm, csphase, dealloc)
 !                       -1: Apply the phase factor of (-1)^m.
 !           dealloc     If (1) Deallocate saved memory in Legendre function
 !                       routines. Default (0) is not to deallocate memory.
-!
-!   Notes:
-!       1.  If lmax is greater than the the maximum spherical harmonic
-!           degree of the input file, then this file will be ZERO PADDED!
-!           (i.e., those degrees after lmax are assumed to be zero).
 !
 !   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.

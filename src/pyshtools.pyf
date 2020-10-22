@@ -1425,6 +1425,23 @@ python module _SHTOOLS
             integer(int32),optional,intent(in),depend(vyz_d1),intent(hide) :: vxz_d1 = vyz_d1
         end subroutine MakeMagGradGridDH
 
+        subroutine MakeMagGridPoint(vec,cilm,lmax,a,r,lat,lon,dealloc,cilm_d0,cilm_d1,cilm_d2)
+            fortranname pymakemaggridpoint
+            integer, parameter :: dp = selected_real_kind(p=15)
+            integer, parameter :: int32 = selected_int_kind(9)
+            real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+            integer(int32),optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
+            real(dp),intent(in) :: a
+            real(dp),intent(in) :: r
+            real(dp),intent(in) :: lat
+            real(dp),intent(in) :: lon
+            integer(int32),optional,intent(in) :: dealloc = 0
+            integer(int32),optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
+            integer(int32),optional,intent(in),depend(cilm),intent(hide) :: cilm_d1 = shape(cilm,1)
+            integer(int32),optional,intent(in),depend(cilm),intent(hide) :: cilm_d2 = shape(cilm,2)
+            real(dp),dimension(3),intent(out) :: vec
+        end subroutine MakeMagGridPoint
+
         subroutine MakeGeoidGridDH(exitstatus,geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,sampling,order,nlat,nlong,lmax_calc,a,f,extend,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
             fortranname pymakegeoidgriddh
             integer, parameter :: dp = selected_real_kind(p=15)

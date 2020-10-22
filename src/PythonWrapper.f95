@@ -1762,6 +1762,25 @@
                                 extend=extend,exitstatus=exitstatus)
     end subroutine pyMakeMagGradGridDH
 
+    subroutine pyMakeMagGridPoint(vec,cilm,lmax,a,r,lat,lon,dealloc,cilm_d0,&
+                                  cilm_d1,cilm_d2)
+        use shtools, only: MakeMagGridPoint
+        use ftypes
+        implicit none
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer(int32),intent(in) :: lmax
+        real(dp),intent(in) :: a
+        real(dp),intent(in) :: r
+        real(dp),intent(in) :: lat
+        real(dp),intent(in) :: lon
+        integer(int32),intent(in) :: dealloc
+        real(dp),dimension(3),intent(out) :: vec
+        vec=MakeMagGridPoint(cilm,lmax,a,r,lat,lon,dealloc=dealloc)
+    end subroutine pyMakeMagGridPoint
+
     subroutine pyMakeGeoidGridDH(exitstatus,geoid,cilm,lmax,r0pot,GM,PotRef,&
                                  omega,r,sampling,order,nlat,nlong,lmax_calc,&
                                  a,f,extend,cilm_d0,cilm_d1,cilm_d2,geoid_d0,&

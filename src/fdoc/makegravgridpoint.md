@@ -27,10 +27,10 @@ Determine the three components of the gravity vector at a single point.
 :   The radius to evaluate the gravity field.
 
 `lat` : input, real(dp)
-:   The latitude of the point in DEGREES.
+:   The latitude of the point in degrees.
 
 `lon` : input, real(dp)
-:   The longitude of the point in DEGREES.
+:   The longitude of the point in degrees.
 
 `omega` : optional, input, real(dp)
 :   The angular rotation rate of the planet.
@@ -52,4 +52,4 @@ The coefficients are referenced to a radius `r0`, and the output accelerations a
 
 # See also
 
-[makegeoidgrid](makegeoidgrid.html), [makegravgradgriddh](makegravgradgriddh.html), [normalgravity](normalgravity.html), [makegriddh](makegriddh.html)
+[makegeoidgrid](makegeoidgrid.html), [makegravgradgriddh](makegravgradgriddh.html), [normalgravity](normalgravity.html)

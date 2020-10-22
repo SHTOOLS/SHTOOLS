@@ -41,6 +41,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Function name | Description |
 | ------------- | ----------- |
 | [MakeMagGridDH](pymakemaggriddh.html) | Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential. |
+| [MakeMagGridPoint](pymakemaggridpoint.html) | Determine the vector components of the magnetic field at a single point. |
 | [MakeMagGradGridDH](pymakemaggradgriddh.html) | Calculate the components of the magnetic field tensor on a flattened ellipsoid. |
 | [mag_spectrum](mag_spectrum.html) | Compute the spectrum of either the magnetic potential or magnetic field strength. |
 
