@@ -1490,6 +1490,25 @@
                                 ,pot=pot,extend=extend,exitstatus=exitstatus)
     end subroutine cMakeGravGridDH
 
+    function cMakeGravGridPoint(cilm,cilm_dim,lmax,gm,r0,r,lat,lon,omega,dealloc)  bind(c&
+                                , name="MakeGravGridPoint")
+        use, intrinsic :: iso_c_binding
+        use shtools, only: MakeGravGridPoint
+        implicit none
+        real(kind=c_double), dimension(3) :: cMakeGravGridPoint
+        integer(kind=c_int), value,intent(in) :: cilm_dim
+        real(kind=c_double), dimension(2,cilm_dim,cilm_dim),intent(in) :: cilm
+        real(kind=c_double), value,intent(in) :: lat
+        real(kind=c_double), value,intent(in) :: lon
+        integer(kind=c_int), value,intent(in) :: lmax
+        real(kind=c_double), value,intent(in) :: gm
+        real(kind=c_double), value,intent(in) :: r0
+        real(kind=c_double), value,intent(in) :: r
+        real(kind=c_double), optional,intent(in) :: omega
+        integer(kind=c_int), optional,intent(in) :: dealloc
+        cMakeGravGridPoint=MakeGravGridPoint(cilm,lmax,gm,r0,r,lat,lon,omega=omega,dealloc=dealloc)
+    end function cMakeGravGridPoint
+
     subroutine cMakeGravGradGridDH(cilm,cilm_dim,lmax,gm,r0,a,f,vxx,nlon,nlat,vyy&
                                        ,vzz,vxy,vxz,vyz,n,sampling,lmax_calc,extend&
                                        ,exitstatus)  bind(c, name="MakeGravGradGridDH")
@@ -1835,6 +1854,23 @@
                                ,n,sampling=sampling,lmax_calc=lmax_calc,pot_grid=pot_grid&
                                ,extend=extend,exitstatus=exitstatus)
     end subroutine cMakeMagGridDH
+
+    function cMakeMagGridPoint(cilm,cilm_dim,lmax,a,r,lat,lon,dealloc)  bind(c&
+                                , name="MakeMagGridPoint")
+        use, intrinsic :: iso_c_binding
+        use shtools, only: MakeMagGridPoint
+        implicit none
+        real(kind=c_double), dimension(3) :: cMakeMagGridPoint
+        integer(kind=c_int), value,intent(in) :: cilm_dim
+        real(kind=c_double), dimension(2,cilm_dim,cilm_dim),intent(in) :: cilm
+        real(kind=c_double), value,intent(in) :: lat
+        real(kind=c_double), value,intent(in) :: lon
+        integer(kind=c_int), value,intent(in) :: lmax
+        real(kind=c_double), value,intent(in) :: a
+        real(kind=c_double), value,intent(in) :: r
+        integer(kind=c_int), optional,intent(in) :: dealloc
+        cMakeMagGridPoint=MakeMagGridPoint(cilm,lmax,a,r,lat,lon,dealloc=dealloc)
+    end function cMakeMagGridPoint
 
     subroutine cSHMagPowerSpectrum(cilm,cilm_dim,a,r,lmax,spectra,exitstatus)  bind(c&
                                        , name="SHMagPowerSpectrum")
