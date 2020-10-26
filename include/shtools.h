@@ -744,6 +744,17 @@ extern "C"
                       double* pot = nullptr,
                       const int* extend = nullptr,
                       int* exitstatus = nullptr);
+  void MakeGravGridPoint(const double* cilm,
+                         const int cilm_dim,
+                         const int lmax,
+                         const double gm,
+                         const double r0,
+                         const double r,
+                         const double lat,
+                         const double lon,
+                         double* vec,
+                         const double* omega = nullptr,
+                         const int* dealloc = nullptr);
   void MakeGravGradGridDH(const double* cilm,
                           const int cilm_dim,
                           const int lmax,
@@ -961,6 +972,15 @@ extern "C"
                      double* pot_grid = nullptr,
                      const int* extend = nullptr,
                      int* exitstatus = nullptr);
+  void MakeMagGridPoint(const double* cilm,
+                        const int cilm_dim,
+                        const int lmax,
+                        const double a,
+                        const double r,
+                        const double lat,
+                        const double lon,
+                        double* vec,
+                        const int* dealloc = nullptr);
   void SHMagPowerSpectrum(const double* cilm,
                           const int cilm_dim,
                           const double a,
