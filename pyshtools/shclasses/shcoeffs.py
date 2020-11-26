@@ -2109,10 +2109,14 @@ class SHCoeffs(object):
                 lmax_calc = self.lmax
 
             if colat is not None:
-                if type(colat) is list:
-                    lat = list(map(lambda x: 90 - x, colat))
+                if degrees:
+                    temp = 90.
                 else:
-                    lat = 90 - colat
+                    temp = _np.pi/2.
+                if type(colat) is list:
+                    lat = list(map(lambda x: temp - x, colat))
+                else:
+                    lat = temp - colat
 
             values = self._expand_coord(lat=lat, lon=lon, degrees=degrees,
                                         lmax_calc=lmax_calc)

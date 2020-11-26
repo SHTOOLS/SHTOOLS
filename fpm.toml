@@ -4,7 +4,11 @@ license = "BSD-3-Clause"
 author = "Mark A. Wieczorek"
 maintainer = "mark.a.wieczorek@gmail.com"
 copyright = "2020 SHTOOLS"
+description = "Tools for working with spherical harmonics"
+categories = "science"
+keywords = ["spherical harmonics"]
+homepage = "https://shtools.oca.eu/shtools/public/index.html"
 
 [library]
-source-dir="src"
 build-script = "make all F95=$FC LIBPATH=$BUILD_DIR MODPATH=$BUILD_DIR"
+source-dir = "src"
