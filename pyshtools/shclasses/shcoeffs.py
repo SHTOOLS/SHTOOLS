@@ -2113,6 +2113,7 @@ class SHCoeffs(object):
                     temp = 90.
                 else:
                     temp = _np.pi/2.
+
                 if type(colat) is list:
                     lat = list(map(lambda x: temp - x, colat))
                 else:
