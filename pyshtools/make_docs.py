@@ -67,6 +67,8 @@ def process_mddoc(fname_mddoc):
     reh1b = re.compile('\n# (.*?)\n', re.DOTALL)
     recode = re.compile('`(.*?)`', re.DOTALL)
     restaresc = re.compile(r'(\\\*)', re.DOTALL)
+    repycodestart = re.compile(r'```python\n', re.DOTALL)
+    repycodeend = re.compile(r'```\n', re.DOTALL)
     # rebold = re.compile('(?![\])[*](.*?)(?![\])[*]',re.DOTALL)
 
     # ---- open md file and search for patterns ----
@@ -78,6 +80,14 @@ def process_mddoc(fname_mddoc):
     match = revalue.search(mdstring)
     if match is not None:
         mdstring = re.sub(match.group(0), '', mdstring)
+
+    # Remove python code block around usage StringEnd
+    match = repycodestart.search(mdstring)
+    if match is not None:
+        mdstring = mdstring.replace(match.group(0), '')
+    match = repycodeend.search(mdstring)
+    if match is not None:
+        mdstring = mdstring.replace(match.group(0), '')
 
     match = retail.search(mdstring)
     if match is not None:

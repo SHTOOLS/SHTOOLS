@@ -1,6 +1,6 @@
 # MakeGravGridDH()
 
-Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three components of the gravity field, the gravity disturbance, and the gravitational potential.
+Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three components of the gravity, the gravity disturbance, and the gravitational potential.
 
 # Usage
 
@@ -62,7 +62,7 @@ Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three co
 
 # Description
 
-`MakeGravGridDH` will create 2-dimensional cylindrical maps from the spherical harmonic coefficients `cilm`, equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) in latitude and longitude, for the three vector components of the gravity field, the magnitude of the gravity field, and the potential (all using geocentric coordinates). The gravitational potential is given by
+`MakeGravGridDH` will create 2-dimensional cylindrical maps from the spherical harmonic coefficients `cilm`, equally sampled (`n` by `n`) or equally spaced (`n` by 2`n`) in latitude and longitude, for the three vector components of the gravity vector (gravitational force + centrifugal force), the magnitude of the gravity vector, and the gravity potential (all using geocentric coordinates). The gravitational potential is given by
 
 `V = GM/r Sum_{l=0}^lmax (r0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm}`,
 
@@ -70,9 +70,9 @@ and the gravitational acceleration is
 
 `B = Grad V`.
 
-The coefficients are referenced to a radius `r0`, and the function is computed on a flattened ellipsoid with semi-major axis `a` (i.e., the mean equatorial radius) and flattening `f`. All grids are output in SI units, and the sign of the radial components is positive when directed upwards. If the optional angular rotation rate `omega` is specified, the potential and radial gravitational acceleration will be calculated in a body-fixed rotating reference frame.
+The coefficients are referenced to a radius `r0`, and the function is computed on a flattened ellipsoid with semi-major axis `a` (i.e., the mean equatorial radius) and flattening `f`. All grids are output in SI units, and the sign of the radial components is positive when directed upwards.
 
-To remove the "normal gravity" (the total gravitational acceleration on the ellipsoid) from the magnitude of the total gravity field (to obtain the "gravity disturbance"), set `normal_gravity` to 1. To convert m/s^2 to mGals, multiply the gravity grids by 10^5.
+If the optional angular rotation rate `omega` is specified, the potential and gravity vectors will be calculated in a body-fixed rotating reference frame and will include the contribution from the centrifugal force. If `normal_gravity` is set to 1, the normal gravity will be removed from the magnitude of the gravity vector, yielding the gravity disturbance. To convert m/s^2 to mGals, multiply the gravity grids by 10^5.
 
 The calculated values should be considered exact only when the radii on the ellipsoid are greater than the maximum radius of the planet (the potential coefficients are simply downward continued in the spectral domain). The components of the gravity vector are calculated using spherical coordinates whose origin is at the center of the planet, and the components are thus not normal to the reference ellipsoid.
 

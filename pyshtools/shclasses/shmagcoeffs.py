@@ -29,6 +29,7 @@ from ..shtools import MakeMagGridDH as _MakeMagGridDH
 from ..shtools import MakeMagGradGridDH as _MakeMagGradGridDH
 from ..shtools import djpi2 as _djpi2
 from ..shtools import SHRotateRealCoef as _SHRotateRealCoef
+from ..shtools import MakeMagGridPoint as _MakeMagGridPoint
 
 
 class SHMagCoeffs(object):
@@ -1793,20 +1794,26 @@ class SHMagCoeffs(object):
         return clm
 
     # ---- Routines that return different magnetic-related class instances ----
-    def expand(self, a=None, f=None, lmax=None, lmax_calc=None, sampling=2,
+    def expand(self, a=None, f=None, lat=None, colat=None, lon=None,
+               degrees=True, lmax=None, lmax_calc=None, sampling=2,
                extend=True):
         """
-        Create 2D cylindrical maps on a flattened and rotating ellipsoid of all
-        three components of the magnetic field, the total magnetic intensity,
-        and the magnetic potential, and return as a SHMagGrid class instance.
+        Create 2D cylindrical maps on a flattened ellipsoid of all three
+        components of the magnetic field, the total magnetic intensity,
+        and the magnetic potential. Alternatively, compute the magnetic field
+        vector at specified coordinates.
 
         Usage
         -----
-        mag = x.expand([a, f, lmax, lmax_calc, sampling, extend])
+        grids = x.expand([a, f, lmax, lmax_calc, sampling, extend])
+        g = x.expand(lat, lon, [a, f, lmax, lmax_calc, degrees])
+        g = x.expand(colat, lon, [a, f, lmax, lmax_calc, degrees])
 
         Returns
         -------
-        mag : SHMagGrid class instance.
+        grids : SHMagGrid class instance.
+        g     : (r, theta, phi) components of the magnetic field at the
+                specified points.
 
         Parameters
         ----------
@@ -1815,6 +1822,14 @@ class SHMagCoeffs(object):
             is computed.
         f : optional, float, default = 0
             The flattening of the reference ellipsoid: f=(a-b)/a.
+        lat : int, float, ndarray, or list, optional, default = None
+            Latitude coordinates where the magnetic field is to be evaluated.
+        colat : int, float, ndarray, or list, optional, default = None
+            Colatitude coordinates where the magnetic field is to be evaluated.
+        lon : int, float, ndarray, or list, optional, default = None
+            Longitude coordinates where the magnetic field is to be evaluated.
+        degrees : bool, optional, default = True
+            True if lat, colat and lon are in degrees, False if in radians.
         lmax : optional, integer, default = self.lmax
             The maximum spherical harmonic degree, which determines the number
             of samples of the output grids, n=2lmax+2, and the latitudinal
@@ -1838,7 +1853,9 @@ class SHMagCoeffs(object):
         grids that are either equally sampled (n by n) or equally spaced
         in degreess latitude and longitude. All grids use geocentric
         coordinates, and the units are either in nT (for the magnetic field),
-        or nT m (for the potential),
+        or nT m (for the potential). If latitude and longitude coordinates
+        are specified, this method will instead return only the magnetic field
+        vector.
 
         The magnetic potential is given by
 
@@ -1852,21 +1869,45 @@ class SHMagCoeffs(object):
         computed on a flattened ellipsoid with semi-major axis a (i.e., the
         mean equatorial radius) and flattening f.
         """
+        if lat is not None and colat is not None:
+            raise ValueError('lat and colat can not both be specified.')
+
         if a is None:
             a = self.r0
         if f is None:
             f = 0.
-        if lmax is None:
-            lmax = self.lmax
-        if lmax_calc is None:
-            lmax_calc = lmax
 
-        coeffs = self.to_array(normalization='schmidt', csphase=1,
-                               errors=False)
+        if (lat is not None or colat is not None) and lon is not None:
+            if lmax_calc is None:
+                lmax_calc = self.lmax
 
-        rad, theta, phi, total, pot = _MakeMagGridDH(
-            coeffs, self.r0, a=a, f=f, lmax=lmax, lmax_calc=lmax_calc,
-            sampling=sampling, extend=extend)
+            if colat is not None:
+                if degrees:
+                    temp = 90.
+                else:
+                    temp = _np.pi/2.
+
+                if type(colat) is list:
+                    lat = list(map(lambda x: temp - x, colat))
+                else:
+                    lat = temp - colat
+
+            values = self._expand_coord(a=a, f=f, lat=lat, lon=lon,
+                                        degrees=degrees, lmax_calc=lmax_calc)
+            return values
+
+        else:
+            if lmax is None:
+                lmax = self.lmax
+            if lmax_calc is None:
+                lmax_calc = lmax
+
+            coeffs = self.to_array(normalization='schmidt', csphase=1,
+                                   errors=False)
+
+            rad, theta, phi, total, pot = _MakeMagGridDH(
+                coeffs, self.r0, a=a, f=f, lmax=lmax, lmax_calc=lmax_calc,
+                sampling=sampling, extend=extend)
 
         return _SHMagGrid(rad, theta, phi, total, pot, a, f, lmax, lmax_calc,
                           units=self.units, pot_units=self.units+' m',
@@ -2524,3 +2565,62 @@ class SHMagRealCoeffs(SHMagCoeffs):
             return SHMagCoeffs.from_array(coeffs, r0=r0, errors=self.errors,
                                           units=self.units, year=self.year,
                                           copy=False)
+
+    def _expand_coord(self, a, f, lat, lon, degrees, lmax_calc):
+        """Evaluate the magnetic field at the coordinates lat and lon."""
+        coeffs = self.to_array(normalization='schmidt', csphase=1,
+                               errors=False)
+
+        if degrees is True:
+            latin = lat
+            lonin = lon
+        else:
+            latin = _np.rad2deg(lat)
+            lonin = _np.rad2deg(lon)
+
+        if type(lat) is not type(lon):
+            raise ValueError('lat and lon must be of the same type. ' +
+                             'Input types are {:s} and {:s}.'
+                             .format(repr(type(lat)), repr(type(lon))))
+
+        if type(lat) is int or type(lat) is float or type(lat) is _np.float_:
+            if f == 0.:
+                r = a
+            else:
+                r = _np.cos(_np.deg2rad(latin))**2 + \
+                    _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                r = a * _np.sqrt(1. / r)
+
+            return _MakeMagGridPoint(coeffs, a=self.r0, r=r, lat=latin,
+                                     lon=lonin, lmax=lmax_calc)
+        elif type(lat) is _np.ndarray:
+            values = _np.empty((len(lat), 3), dtype=float)
+            for i, (latitude, longitude) in enumerate(zip(latin, lonin)):
+                if f == 0.:
+                    r = a
+                else:
+                    r = _np.cos(_np.deg2rad(latin))**2 + \
+                        _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                    r = a * _np.sqrt(1. / r)
+
+                values[i, :] = _MakeMagGridPoint(coeffs, a=self.r0, r=r,
+                                                 lat=latitude, lon=longitude,
+                                                 lmax=lmax_calc)
+            return values
+        elif type(lat) is list:
+            values = []
+            for latitude, longitude in zip(latin, lonin):
+                if f == 0.:
+                    r = a
+                else:
+                    r = _np.cos(_np.deg2rad(latin))**2 + \
+                        _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                    r = a * _np.sqrt(1. / r)
+                values.append(
+                    _MakeMagGridPoint(coeffs, a=self.r0, r=r, lat=latitude,
+                                      lon=longitude, lmax=lmax_calc))
+            return values
+        else:
+            raise ValueError('lat and lon must be either an int, float, '
+                             'ndarray, or list. Input types are {:s} and {:s}.'
+                             .format(repr(type(lat)), repr(type(lon))))

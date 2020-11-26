@@ -50,7 +50,7 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md \
 	shmultitapermaskcse.md shmultitapermaskse.md shbiaskmask.md dhaj.md \
 	makemaggradgriddh.md shrotatetapers.md slepiancoeffs.md \
 	slepiancoeffstosh.md shscouplingmatrix.md shslepianvar.md \
-	shscouplingmatrixcap.md
+	shscouplingmatrixcap.md makegravgridpoint.md makemaggridpoint.md
 
 MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 \
 	plmbar_d1.1 plbar.1 plbar_d1.1 plon.1 plmon.1 plmon_d1.1 plon_d1.1 \
@@ -79,7 +79,8 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 \
 	shmagpowerspectrum.1 shmagpowerl.1 shmtcouplingmatrix.1 \
 	shmultitapermaskcse.1 shmultitapermaskse.1 shbiaskmask.1 dhaj.1 shglq.1 \
 	makemaggradgriddh.1 shrotatetapers.1 slepiancoeffs.1 slepiancoeffstosh.1 \
-	shscouplingmatrix.1 shslepianvar.1 shscouplingmatrixcap.1)
+	shscouplingmatrix.1 shslepianvar.1 shscouplingmatrixcap.1 \
+	makegravgridpoint.1 makemaggridpoint.1)
 
 
 all: install-man

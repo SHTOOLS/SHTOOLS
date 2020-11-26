@@ -30,7 +30,7 @@ Evaluate a real function expressed in real spherical harmonics at a single point
 `lat` : float
 :   The latitude of the point in DEGREES.
 
-`lon` : float 
+`lon` : float
 :   The longitude of the point in DEGREES.
 
 `lmax` : optional, integer, default = `lmaxin`

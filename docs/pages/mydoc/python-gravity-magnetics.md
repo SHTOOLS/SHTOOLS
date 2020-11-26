@@ -23,6 +23,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Function name | Description |
 | ------------- | ----------- |
 | [MakeGravGridDH](pymakegravgriddh.html) | Create 2D cylindrical maps on a flattened and rotating ellipsoid of all three components of the gravity field, the gravity disturbance, and the gravitational potential. |
+| [MakeGravGridPoint](pymakegravgridpoint.html) | Determine the vector components of the gravitational acceleration at a single point. |
 | [MakeGravGradGridDH](pymakegravgradgriddh.html) | Calculate the components of the gravity "gradient" tensor on a flattened ellipsoid. |
 | [MakeGeoidGridDH](pymakegeoidgriddh.html) | Create a global map of the geoid. |
 | [CilmPlusDH](pycilmplusdh.html) | Calculate the gravitational potential exterior to relief along a spherical interface using the finite-amplitude algorithm of *Wieczorek and Phillips* (1998) on a *Driscoll and Healy* (1994) grid. |
@@ -40,6 +41,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Function name | Description |
 | ------------- | ----------- |
 | [MakeMagGridDH](pymakemaggriddh.html) | Create 2D cylindrical maps on a flattened ellipsoid of all three vector components of the magnetic field, the magnitude of the magnetic field, and the magnetic potential. |
+| [MakeMagGridPoint](pymakemaggridpoint.html) | Determine the vector components of the magnetic field at a single point. |
 | [MakeMagGradGridDH](pymakemaggradgriddh.html) | Calculate the components of the magnetic field tensor on a flattened ellipsoid. |
 | [mag_spectrum](mag_spectrum.html) | Compute the spectrum of either the magnetic potential or magnetic field strength. |
 

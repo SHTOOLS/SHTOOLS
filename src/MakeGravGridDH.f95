@@ -3,20 +3,21 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                         normal_gravity, pot_grid, extend, exitstatus)
 !------------------------------------------------------------------------------
 !
-!   Given the gravitational spherical harmonic coefficients CILM, this
-!   subroutine will compute a 2D Driscol and Healy sampled grid of the three
-!   components and magnitude of the gravity in SI units. The output grids are
-!   cacluated on a flattened ellipsoid with semi-major axis A and flattening F.
-!   The output grids contain N samples in latitude and longitude by default,
-!   but if the optional parameter SAMPLING is set to 2, the grids will contain
-!   N samples in latitude and 2N samples in longitude. In order to calculate
-!   the entire gravitational acceleration, it is necessary that the degree-0
-!   term be set equal to 1. Radial gravity is assumed to be positive when
-!   directed UPWARDS. If the optional parameter OMEGA is specified, the
-!   gravitational acceleration will be calculated in the reference frame
-!   of a rotating body. If the parameter NORMAL_GRAVITY is set to 1, the normal
-!   gravity predicted for a flattened ellipsoid with A, F, and OMEGA will be
-!   removed from the magnitude of the total acceleration.
+!   Given the spherical harmonic coefficients CILM of the gravitational
+!   potential, this subroutine will compute 2D Driscol and Healy sampled grids
+!   of the three vector components of the gravity vector (gravitational force +
+!   centrifugal force), and the magnitude of the gravity vector in SI units.
+!   The output grids are calculated on a flattened ellipsoid with semi-major
+!   axis A and flattening F. In order to calculate the entire gravity vector,
+!   it is necessary that the degree-0 term be set equal to 1. Radial gravity is
+!   positive when directed UPWARDS.
+!
+!   If the optional parameter OMEGA is specified, the gravity vector will be
+!   calculated in the reference frame of a rotating body and will include the
+!   contribution of the centrifugal force. If the parameter NORMAL_GRAVITY is
+!   set to 1, the normal gravity predicted for a flattened ellipsoid with A, F,
+!   and OMEGA will be removed from the magnitude of the total gravity, yielding
+!   the gravity disturbance.
 !
 !   The gravitational potential is defined as
 !
@@ -26,16 +27,19 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !
 !       B = Grad V.
 !
-!   When SAMPLING = 1, the output grids contain N samples in latitude from
-!   90 to -90 + interval and N samples in longitude from 0 to 360-2*interval,
-!   where N=2*(LMAX+1) and interval=180/N. When SAMPLING = 2, the grids are
-!   equally spaced in degrees latitude and longitude with dimension (N x 2N).
-!   If the optional parameter EXTEND is set to 1, the output grids will contain
-!   an extra column corresponding to 360 E and an extra row corresponding to
-!   90 S, which increases each of the dimensions of the grid by one.
+!   The output grids contain N samples in latitude and longitude by default,
+!   but if the optional parameter SAMPLING is set to 2, the grids will contain
+!   N samples in latitude and 2N samples in longitude. When SAMPLING = 1, the
+!   output grids contain N samples in latitude from 90 to -90 + interval and N
+!   samples in longitude from 0 to 360-2*interval, where N=2*(LMAX+1) and
+!   interval=180/N. When SAMPLING = 2, the grids are equally spaced in degrees
+!   latitude and longitude with dimension (N x 2N). If the optional parameter
+!   EXTEND is set to 1, the output grids will contain an extra column
+!   corresponding to 360 E and an extra row corresponding to 90 S, which
+!   increases each of the dimensions of the grid by one.
 !
-!   This routine assumes that the spherical harmonic coefficients of geodesy
-!   are 4-pi normalized.
+!   This routine assumes that the spherical harmonic coefficients are
+!   4-pi normalized and exclude the Condon-Shortley phase factor.
 !
 !   Calling Parameters
 !
@@ -45,7 +49,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !                       used to determine the number of samples N.
 !           GM          Product of the gravitatonal constant and the planet's
 !                       mass.
-!           r0          Reference radius of potential coefficients.
+!           r0          Reference radius of the potential coefficients.
 !           a           The semimajor axis of the flattened ellipsoid.
 !           f           Flattening of the planet.
 !
@@ -68,19 +72,19 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !
 !       OUT
 !           rad_grid    Gridded expansion of the radial component of the
-!                       gravitational field.
+!                       gravity field.
 !           theta_grid  Gridded expansaion of the theta component of the
-!                       gravitational field.
+!                       gravity field.
 !           phi_grid    Gridded expansaion of the phi component of the
-!                       gravitational field.
+!                       gravity field.
 !           total_grid  Gridded expansaion of the the magnitude of the
-!                       gravitational field.
+!                       gravity field.
 !           N           Number of samples in latitude. Number of samples in
 !                       longitude is N when sampling is 1 (default), and is 2N
 !                       when sampling is 2.
 !
 !       OUT, OPTIONAL
-!           pot_grid    Gravitational potential on the ellipsoid in SI units.
+!           pot_grid    Gravity potential on the ellipsoid in SI units.
 !           exitstatus  If present, instead of executing a STOP when an error
 !                       is encountered, the variable exitstatus will be
 !                       returned describing the error.
@@ -622,9 +626,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
             r_ex = a * (1.0_dp - f)
 
         else
-            r_ex = (1.0_dp + tan(lat)**2) / &
-                   (1.0_dp  + tan(lat)**2 / (1.0_dp - f)**2 )
-            r_ex = a * sqrt(r_ex)
+            r_ex = cos(lat)**2 + sin(lat)**2 / (1.0_dp - f)**2
+            r_ex = a * sqrt(1.0_dp / r_ex)
 
         end if
 

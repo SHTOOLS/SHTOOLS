@@ -2104,22 +2104,20 @@ class SHCoeffs(object):
         if lat is not None and colat is not None:
             raise ValueError('lat and colat can not both be specified.')
 
-        if lat is not None and lon is not None:
+        if (lat is not None or colat is not None) and lon is not None:
             if lmax_calc is None:
                 lmax_calc = self.lmax
 
-            values = self._expand_coord(lat=lat, lon=lon, degrees=degrees,
-                                        lmax_calc=lmax_calc)
-            return values
+            if colat is not None:
+                if degrees:
+                    temp = 90.
+                else:
+                    temp = _np.pi/2.
 
-        if colat is not None and lon is not None:
-            if lmax_calc is None:
-                lmax_calc = self.lmax
-
-            if type(colat) is list:
-                lat = list(map(lambda x: 90 - x, colat))
-            else:
-                lat = 90 - colat
+                if type(colat) is list:
+                    lat = list(map(lambda x: temp - x, colat))
+                else:
+                    lat = temp - colat
 
             values = self._expand_coord(lat=lat, lon=lon, degrees=degrees,
                                         lmax_calc=lmax_calc)
