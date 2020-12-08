@@ -2829,17 +2829,18 @@ class SHGravCoeffs(object):
 
     def plot_spectrum2d(self, function='geoid', xscale='lin', yscale='lin',
                         grid=True, axes_labelsize=None, tick_labelsize=None,
-                        vscale='log', vrange=None, vmin=None, vmax=None,
-                        lmax=None, errors=False, show=True, ax=None,
-                        fname=None):
+                        cmap='viridis', cmap_limits=None, cmap_rlimits=None,
+                        cmap_reverse=False, cmap_scale='log', lmax=None,
+                        errors=False, show=True, ax=None, fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree and order.
 
         Usage
         -----
         x.plot_spectrum2d([function, xscale, yscale, grid, axes_labelsize,
-                           tick_labelsize, vscale, vrange, vmin, vmax, lmax,
-                           errors, show, ax, fname])
+                           tick_labelsize, cmap,cmap_limits, cmap_rlimits,
+                           cmap_reverse, cmap_scale, lmax, errors, show, ax,
+                           fname])
 
         Parameters
         ----------
@@ -2857,17 +2858,22 @@ class SHGravCoeffs(object):
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        vscale : str, optional, default = 'log'
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2] for linear scales
+            and log10(cmap_limits[1]/cmap_limits[0])*cmap_limits[2] for
+            logarithmic scales.
+        cmap_rlimits : list, optional, default = None
+           Set the colormap range (min, max) relative to the maximum value.
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cmap_scale : str, optional, default = 'log'
             Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
-        vrange : (float, float), optional, default = None
-            Colormap range (min, max), relative to the maximum value. If None,
-            scale the image to the maximum and minimum values.
-        vmin : float, optional, default=None
-            The minmum range of the colormap. If None, the minimum value of the
-            spectrum will be used.
-        vmax : float, optional, default=None
-            The maximum range of the colormap. If None, the maximum value of
-            the spectrum will be used.
         lmax : int, optional, default = self.lmax
             The maximum spherical harmonic degree to plot.
         errors : bool, optional, default = False
@@ -2969,34 +2975,53 @@ class SHGravCoeffs(object):
         else:
             axes = ax
 
-        if vrange is not None:
-            vmin = _np.nanmax(spectrum) * vrange[0]
-            vmax = _np.nanmax(spectrum) * vrange[1]
-        else:
-            if vmin is None:
+        # make colormap
+        if cmap_limits is None and cmap_rlimits is None:
+            if cmap_scale.lower() == 'log':
                 _temp = spectrum
                 _temp[_temp == 0] = _np.NaN
                 vmin = _np.nanmin(_temp)
-            if vmax is None:
-                vmax = _np.nanmax(spectrum)
+            else:
+                vmin = _np.nanmin(spectrum)
+            vmax = _np.nanmax(spectrum)
+            cmap_limits = [vmin, vmax]
+        elif cmap_rlimits is not None:
+            vmin = _np.nanmax(spectrum) * cmap_rlimits[0]
+            vmax = _np.nanmax(spectrum) * cmap_rlimits[1]
+            cmap_limits = [vmin, vmax]
+        if len(cmap_limits) == 3:
+            if cmap_scale.lower() == 'log':
+                num = int(_np.log10(cmap_limits[1]/cmap_limits[0])
+                          * cmap_limits[2])
+            else:
+                num = int((cmap_limits[1] - cmap_limits[0]) / cmap_limits[2])
+            if isinstance(cmap, _mpl.colors.Colormap):
+                cmap_scaled = cmap._resample(num)
+            else:
+                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+        else:
+            cmap_scaled = _mpl.cm.get_cmap(cmap)
+        if cmap_reverse:
+            cmap_scaled = cmap_scaled.reversed()
 
-        if vscale.lower() == 'log':
-            norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)
+        if cmap_scale.lower() == 'log':
+            norm = _mpl.colors.LogNorm(cmap_limits[0], cmap_limits[1],
+                                       clip=True)
             # Clipping is required to avoid an invalid value error
-        elif vscale.lower() == 'lin':
-            norm = _plt.Normalize(vmin, vmax)
+        elif cmap_scale.lower() == 'lin':
+            norm = _plt.Normalize(cmap_limits[0], cmap_limits[1])
         else:
             raise ValueError(
-                "vscale must be 'lin' or 'log'. " +
-                "Input value is {:s}.".format(repr(vscale)))
+                "cmap_scale must be 'lin' or 'log'. " +
+                "Input value is {:s}.".format(repr(cmap_scale)))
 
         if (xscale == 'lin'):
             cmesh = axes.pcolormesh(lgrid, mgrid, spectrum_masked,
-                                    norm=norm, cmap='viridis')
+                                    norm=norm, cmap=cmap_scaled)
             axes.set(xlim=(-0.5, lmax + 0.5))
         elif (xscale == 'log'):
             cmesh = axes.pcolormesh(lgrid[1:], mgrid[1:], spectrum_masked[1:],
-                                    norm=norm, cmap='viridis')
+                                    norm=norm, cmap=cmap_scaled)
             axes.set(xscale='log', xlim=(1., lmax + 0.5))
         else:
             raise ValueError(

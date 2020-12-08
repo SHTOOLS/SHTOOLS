@@ -4,7 +4,7 @@
 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.592762.svg)](https://doi.org/10.5281/zenodo.592762)
 [![Paper](https://img.shields.io/badge/paper-10.1029/2018GC007529-orange.svg)](https://doi.org/10.1029/2018GC007529)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/SHTOOLS/SHTOOLS/master?filepath=examples%2Fnotebooks%2F)
-[![Chat on matrix](https://img.shields.io/badge/chat-on_[matrix]-4bb596.svg)](https://matrix.to/#/!SrkiFczPSWmYrlSNYF:matrix.org?via=matrix.org)
+[![Chat on matrix](https://img.shields.io/badge/chat-on_[matrix]-4bb596.svg)](https://matrix.to/#/!ybJeMAqDcoGstmcNaz:gitter.im?via=gitter.im&via=matrix.org)
 [![Chat at gitter](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Twitter](https://img.shields.io/twitter/follow/pyshtools.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=pyshtools)
 
