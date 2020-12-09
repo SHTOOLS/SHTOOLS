@@ -1112,7 +1112,8 @@ class SHGrid(object):
             Specify which axes should have ticks drawn and annotated. Capital
             letters plot the ticks and annotations, whereas small letters plot
             only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
-            and north boundaries of the plot.
+            and north boundaries of the plot, respectively. Alternatively, use
+            'L', 'B', 'R', and 'T' for left, bottom, right, and top.
         xlabel : str, optional, default = 'Longitude' or 'GLQ longitude index'
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude' or 'GLQ latitude index'
@@ -1732,27 +1733,27 @@ class DHRealGrid(SHGrid):
                 endpoint=True)
 
         # determine which ticks to plot
-        if 'W' in ticks:
+        if 'W' in ticks or 'L' in ticks:
             left, labelleft = True, True
-        elif 'w' in ticks:
+        elif 'w' in ticks or 'l' in ticks:
             left, labelleft = True, False
         else:
             left, labelleft = False, False
-        if 'S' in ticks:
+        if 'S' in ticks or 'B' in ticks:
             bottom, labelbottom = True, True
-        elif 's' in ticks:
+        elif 's' in ticks or 'b' in ticks:
             bottom, labelbottom = True, False
         else:
             bottom, labelbottom = False, False
-        if 'E' in ticks:
+        if 'E' in ticks or 'R' in ticks:
             right, labelright = True, True
-        elif 'e' in ticks:
+        elif 'e' in ticks or 'r' in ticks:
             right, labelright = True, False
         else:
             right, labelright = False, False
-        if 'N' in ticks:
+        if 'N' in ticks or 'T' in ticks:
             top, labeltop = True, True
-        elif 'n' in ticks:
+        elif 'n' in ticks or 't' in ticks:
             top, labeltop = True, False
         else:
             top, labeltop = False, False
@@ -1818,8 +1819,10 @@ class DHRealGrid(SHGrid):
             if cb_offset is None:
                 if colorbar in set(['left', 'right']):
                     offset = 0.15
-                    if (colorbar == 'left' and 'W' in ticks) or \
-                            (colorbar == 'right' and 'E' in ticks):
+                    if (colorbar == 'left' and
+                        ('W' in ticks or 'L' in ticks)) or \
+                            (colorbar == 'right' and
+                             ('E' in ticks or 'R' in ticks)):
                         offset += 2 * tick_labelsize / 72.
                     # add space for ylabel on left of plot only
                     if ylabel != '' and ylabel is not None and \

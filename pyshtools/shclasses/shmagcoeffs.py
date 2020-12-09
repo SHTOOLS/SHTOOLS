@@ -2179,20 +2179,23 @@ class SHMagCoeffs(object):
                 fig.savefig(fname)
             return fig, axes
 
-    def plot_spectrum2d(self, function='total', xscale='lin', yscale='lin',
-                        grid=True, axes_labelsize=None, tick_labelsize=None,
-                        cmap='viridis', cmap_limits=None, cmap_rlimits=None,
+    def plot_spectrum2d(self, function='total', ticks='WSen',
+                        xlabel='Spherical harmonic degree',
+                        ylabel='Spherical harmonic order', cmap='viridis',
+                        cmap_limits=None, cmap_rlimits=None,
                         cmap_reverse=False, cmap_scale='log', lmax=None,
-                        errors=False, show=True, ax=None, fname=None):
+                        errors=False, xscale='lin', yscale='lin', grid=True,
+                        axes_labelsize=None, tick_labelsize=None, show=True,
+                        ax=None, fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree and order.
 
         Usage
         -----
-        x.plot_spectrum2d([function, xscale, yscale, grid, axes_labelsize,
-                           tick_labelsize, cmap,cmap_limits, cmap_rlimits,
-                           cmap_reverse, cmap_scale, lmax, errors, show, ax,
-                           fname])
+        x.plot_spectrum2d([function,ticks, xlabel, ylabel, cmap,cmap_limits,
+                           cmap_rlimits, cmap_reverse, cmap_scale, lmax,
+                           errors, xscale, yscale, grid, axes_labelsize,
+                           tick_labelsize, show, ax, fname])
 
         Parameters
         ----------
@@ -2200,16 +2203,16 @@ class SHMagCoeffs(object):
             The type of power spectrum to calculate: 'potential' for the
             magnetic potential, 'radial' for the radial magnetic field, or
             'total' for the total magnetic field (Lowes-Mauersberger).
-        xscale : str, optional, default = 'lin'
-            Scale of the l axis: 'lin' for linear or 'log' for logarithmic.
-        yscale : str, optional, default = 'lin'
-            Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
-        grid : bool, optional, default = True
-            If True, plot grid lines.
-        axes_labelsize : int, optional, default = None
-            The font size for the x and y axes labels.
-        tick_labelsize : int, optional, default = None
-            The font size for the x and y tick labels.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot, respectively. Alternatively, use
+            'L', 'B', 'R', and 'T' for left, bottom, right, and top.
+        xlabel : str, optional, default = 'Spherical harmonic degree'
+            Label for the x axis.
+        ylabel : str, optional, default = 'Spherical harmonic order'
+            Label for the y axis.
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -2230,6 +2233,16 @@ class SHMagCoeffs(object):
             The maximum spherical harmonic degree to plot.
         errors : bool, optional, default = False
             If True, plot the spectrum of the errors.
+        xscale : str, optional, default = 'lin'
+            Scale of the l axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'lin'
+            Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
+        grid : bool, optional, default = True
+            If True, plot grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
         show : bool, optional, default = True
             If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
@@ -2364,6 +2377,32 @@ class SHMagCoeffs(object):
                 "cmap_scale must be 'lin' or 'log'. " +
                 "Input value is {:s}.".format(repr(cmap_scale)))
 
+        # determine which ticks to plot
+        if 'W' in ticks or 'L' in ticks:
+            left, labelleft = True, True
+        elif 'w' in ticks or 'l' in ticks:
+            left, labelleft = True, False
+        else:
+            left, labelleft = False, False
+        if 'S' in ticks or 'B' in ticks:
+            bottom, labelbottom = True, True
+        elif 's' in ticks or 'b' in ticks:
+            bottom, labelbottom = True, False
+        else:
+            bottom, labelbottom = False, False
+        if 'E' in ticks or 'R' in ticks:
+            right, labelright = True, True
+        elif 'e' in ticks or 'r' in ticks:
+            right, labelright = True, False
+        else:
+            right, labelright = False, False
+        if 'N' in ticks or 'T' in ticks:
+            top, labeltop = True, True
+        elif 'n' in ticks or 't' in ticks:
+            top, labeltop = True, False
+        else:
+            top, labeltop = False, False
+
         if (xscale == 'lin'):
             cmesh = axes.pcolormesh(lgrid, mgrid, spectrum_masked,
                                     norm=norm, cmap='viridis')
@@ -2386,6 +2425,15 @@ class SHMagCoeffs(object):
                 "yscale must be 'lin' or 'log'. " +
                 "Input value is {:s}.".format(repr(yscale)))
 
+        axes.tick_params(bottom=bottom, top=top, right=right, left=left,
+                         labelbottom=labelbottom, labeltop=labeltop,
+                         labelleft=labelleft, labelright=labelright,
+                         which='both')
+        axes.set_xlabel(xlabel, fontsize=axes_labelsize)
+        axes.set_ylabel(ylabel, fontsize=axes_labelsize)
+        axes.minorticks_on()
+        axes.grid(grid, which='major')
+
         cb = _plt.colorbar(cmesh, ax=ax)
 
         if function == 'potential':
@@ -2399,10 +2447,6 @@ class SHMagCoeffs(object):
                          fontsize=axes_labelsize)
 
         cb.ax.tick_params(labelsize=tick_labelsize)
-        axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
-        axes.set_ylabel('Spherical harmonic order', fontsize=axes_labelsize)
-        axes.minorticks_on()
-        axes.grid(grid, which='major')
 
         if ax is None:
             fig.tight_layout(pad=0.5)
