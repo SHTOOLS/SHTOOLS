@@ -1158,12 +1158,12 @@ class SHGrid(object):
             horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
-        titlesize : int, optional, default = None
-            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        titlesize : int, optional, default = None
+            The font size of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear. If the
             grid is complex, the real component of the grid will be plotted
@@ -1660,6 +1660,7 @@ class DHRealGrid(SHGrid):
             else:
                 axes = ax
 
+        # set tick intervals
         if tick_interval[0] is None:
             xticks = []
         else:
