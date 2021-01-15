@@ -2480,6 +2480,8 @@ class SHCoeffs(object):
             return fig, axes
 
     def plot_spectrum2d(self, convention='power', ticks='WSen',
+                        tick_interval=[None, None],
+                        minor_tick_interval=[None, None],
                         degree_label='Spherical harmonic degree',
                         order_label='Spherical harmonic order', title=None,
                         colorbar='right', origin='left', cmap='viridis',
@@ -2495,12 +2497,13 @@ class SHCoeffs(object):
 
         Usage
         -----
-        x.plot_spectrum2d([convention, ticks, title, degree_label, order_label,
-                           colorbar, origin, cmap, cmap_limits, cmap_rlimits,
-                           cmap_reverse, cmap_scale, cb_triangles, cb_label,
-                           cb_offset, cb_width, lmax, errors, xscale, yscale,
-                           grid, titlesize, axes_labelsize, tick_labelsize, ax,
-                           show, fname])
+        x.plot_spectrum2d([convention, ticks, tick_interval,
+                           minor_tick_interval, title, degree_label,
+                           order_label, colorbar, origin, cmap, cmap_limits,
+                           cmap_rlimits, cmap_reverse, cmap_scale,
+                           cb_triangles, cb_label, cb_offset, cb_width, lmax,
+                           errors, xscale, yscale, grid, titlesize,
+                           axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -2514,6 +2517,13 @@ class SHCoeffs(object):
             only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
             and north boundaries of the plot, respectively. Alternatively, use
             'L', 'B', 'R', and 'T' for left, bottom, right, and top.
+        tick_interval : list or tuple, optional, default = [None, None]
+            Intervals to use when plotting the degree and order ticks,
+            respectively. If set to None, ticks will be generated
+            automatically.
+        minor_tick_interval : list or tuple, optional, default = [None, None]
+            Intervals to use when plotting the minor degree and order ticks.
+            If set to None, minor ticks will be generated automatically.
         degree_label : str, optional, default = 'Spherical harmonic degree'
             Label for the spherical harmonic degree axis.
         order_label : str, optional, default = 'Spherical harmonic order'
@@ -2590,6 +2600,11 @@ class SHCoeffs(object):
         'ortho', or 'schmidt'), the l2-norm is the sum of the magnitude of the
         coefficients squared.
         """
+        if tick_interval is None:
+            tick_interval = [None, None]
+        if minor_tick_interval is None:
+            minor_tick_interval = [None, None]
+
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
             if type(axes_labelsize) == str:
@@ -2771,13 +2786,27 @@ class SHCoeffs(object):
         else:
             top, labeltop = False, False
 
+        # Set tick intervals. Used only for linear axis
+        if tick_interval[0] is not None:
+            degree_ticks = _np.linspace(0, lmax,
+                                        num=lmax//tick_interval[0]+1,
+                                        endpoint=True)
+        if tick_interval[1] is not None:
+            order_ticks = _np.linspace(-lmax, lmax,
+                                       num=2*lmax//tick_interval[1]+1,
+                                       endpoint=True)
+
         if (xscale == 'lin'):
             cmesh = axes.pcolormesh(xgrid, ygrid, spectrum_masked,
                                     norm=norm, cmap=cmap_scaled)
             if origin in ('left', 'right'):
                 axes.set(xlim=(-0.5, lmax + 0.5))
+                if tick_interval[0] is not None:
+                    axes.set(xticks=degree_ticks)
             else:
                 axes.set(xlim=(-lmax - 0.5, lmax + 0.5))
+                if tick_interval[1] is not None:
+                    axes.set(xticks=order_ticks)
         elif (xscale == 'log'):
             cmesh = axes.pcolormesh(xgrid[1:], ygrid[1:], spectrum_masked[1:],
                                     norm=norm, cmap=cmap_scaled)
@@ -2793,8 +2822,12 @@ class SHCoeffs(object):
         if (yscale == 'lin'):
             if origin in ('left', 'right'):
                 axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
+                if tick_interval[1] is not None:
+                    axes.set(yticks=order_ticks)
             else:
                 axes.set(ylim=(-0.5, lmax + 0.5))
+                if tick_interval[0] is not None:
+                    axes.set(yticks=degree_ticks)
         elif (yscale == 'log'):
             if origin in ('left', 'right'):
                 axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
