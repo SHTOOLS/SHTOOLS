@@ -7,6 +7,7 @@ import matplotlib.pyplot as _plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 import xarray as _xr
+import tempfile as _tempfile
 
 from .. import shtools as _shtools
 
@@ -1282,7 +1283,8 @@ class SHGrid(object):
                 cmap_reverse=False, cmap_continuous=False, colorbar=None,
                 cb_triangles='both', cb_label=None, cb_ylabel=None,
                 cb_tick_interval=None, cb_minor_tick_interval=None,
-                cb_offset=None, titlesize=None, axes_labelsize=None,
+                cb_offset=None, shading=None, shading_azimuth=-45.,
+                shading_amplitude=1.0, titlesize=None, axes_labelsize=None,
                 tick_labelsize=None, horizon=60, offset=[None, None],
                 fname=None):
         """
@@ -1301,8 +1303,9 @@ class SHGrid(object):
                          cmap, cmap_limits, cmap_limits_complex, cmap_reverse,
                          cmap_continuous, colorbar, cb_triangles, cb_label,
                          cb_ylabel, cb_tick_interval, cb_minor_tick_interval,
-                         cb_offset, titlesize, axes_labelssize, tick_labelsize,
-                         horizon, offset, fname])
+                         cb_offset, shading, shading_azimuth,
+                         shading_amplitude, titlesize, axes_labelsize,
+                         tick_labelsize, horizon, offset, fname])
 
         Returns
         -------
@@ -1377,6 +1380,24 @@ class SHGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        shading : bool, str, or SHGrid instance, optional, default = None
+            Apply intensity shading to the image. The shading (with values
+            from -1 to 1) can be derived from the data by setting to True,
+            from an external netcdf file by supplying a filename, or from an
+            SHGrid class instance by supplying the name of the SHGrid. When
+            intensity shading is applied, the default behavior is to create a
+            gradient of the shading data. If it is not necessary to create a
+            gradient, shading_azimuth should be set to None. If shading is
+            None, no intensity shading will be applied.
+        shading_azimuth : float, optional, default = -45.
+            When applying intensity shading to the image, a gradient of the
+            shading data is computed using the supplied azimuth direction (in
+            degrees). If it is not necessary to create a gradient from the
+            shading data, shading_azimuth should be set to None. When shading
+            is set to True, a shading azimuth must be provided.
+        shading_amplitude : float, optional, default = 1.
+            The maximum amplitude of the intensity used in the shading, from
+            0 to 1.
         titlesize : int, optional, default = None
             The font size of the title.
         axes_labelsize : int, optional, default = None
@@ -1467,7 +1488,9 @@ class SHGrid(object):
             cmap_continuous=cmap_continuous, colorbar=colorbar,
             cb_triangles=cb_triangles, cb_label=cb_label, cb_ylabel=cb_ylabel,
             cb_tick_interval=cb_tick_interval, cb_offset=cb_offset,
-            cb_minor_tick_interval=cb_minor_tick_interval, titlesize=titlesize,
+            cb_minor_tick_interval=cb_minor_tick_interval, shading=shading,
+            shading_azimuth=shading_azimuth,
+            shading_amplitude=shading_amplitude, titlesize=titlesize,
             axes_labelsize=axes_labelsize, tick_labelsize=tick_labelsize,
             horizon=horizon, offset=offset)
 
@@ -1904,9 +1927,10 @@ class DHRealGrid(SHGrid):
                     cmap_limits_complex=None, cmap_reverse=None,
                     cmap_continuous=None, colorbar=None, cb_triangles=None,
                     cb_label=None, cb_ylabel=None, cb_tick_interval=None,
-                    cb_minor_tick_interval=None, titlesize=None,
-                    axes_labelsize=None, tick_labelsize=None, horizon=None,
-                    offset=[None, None], cb_offset=None):
+                    cb_minor_tick_interval=None, shading=None,
+                    shading_azimuth=None, shading_amplitude=None,
+                    titlesize=None, axes_labelsize=None, tick_labelsize=None,
+                    horizon=None, offset=[None, None], cb_offset=None):
         """
         Plot projected data using pygmt.
         """
@@ -2029,15 +2053,50 @@ class DHRealGrid(SHGrid):
         if cmap_limits is None:
             cmap_limits = [self.min(), self.max()]
 
+        if shading is True:
+            shading_str = "+a{:}+nt{:}+m0".format(shading_azimuth,
+                                                  shading_amplitude)
+        elif type(shading) is str:
+            shading_str = shading
+            if shading_azimuth is not None:
+                shading_str += "+a{:}+nt{:}+m0".format(shading_azimuth,
+                                                       shading_amplitude)
+        elif isinstance(shading, SHGrid):
+            if self.data.shape != shading.data.shape:
+                raise ValueError('The input SHGrid used for shading '
+                                 'must have the same shape as the grid being '
+                                 'plotted. Shape of grid = {:}. '
+                                 .format(self.data.shape) +
+                                 'Shape of shading grid = {:}.'
+                                 .format(shading.data.shape)
+                                 )
+
+            f = _tempfile.NamedTemporaryFile(prefix='shtools_', suffix='.nc')
+            shading.to_netcdf(f.name)
+            shading_str = f.name
+            if shading_azimuth is not None:
+                shading_str += "+a{:}+nt{:}+m0".format(shading_azimuth,
+                                                       shading_amplitude)
+        else:
+            shading_str = None
+
         with _pygmt.config(FONT_TITLE=titlesize, FONT_LABEL=axes_labelsize,
                            FONT_ANNOT=tick_labelsize):
             _pygmt.makecpt(series=cmap_limits, cmap=cmap, reverse=cmap_reverse,
                            continuous=cmap_continuous)
             figure.shift_origin(xshift=xshift, yshift=yshift)
             figure.grdimage(self.to_xarray(), region=region,
-                            projection=proj_str, frame=frame)
+                            projection=proj_str, frame=frame,
+                            shading=shading_str)
             if colorbar is not None:
-                figure.colorbar(position=position, frame=cb_str)
+                if shading is not None:
+                    figure.colorbar(position=position, frame=cb_str,
+                                    I=shading_amplitude)
+                else:
+                    figure.colorbar(position=position, frame=cb_str)
+
+        if isinstance(shading, SHGrid):
+            f.close()
 
         return figure
 
