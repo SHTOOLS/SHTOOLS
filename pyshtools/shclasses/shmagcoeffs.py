@@ -2181,9 +2181,11 @@ class SHMagCoeffs(object):
             return fig, axes
 
     def plot_spectrum2d(self, function='total', ticks='WSen',
+                        tick_interval=[None, None],
+                        minor_tick_interval=[None, None],
                         degree_label='Spherical harmonic degree',
                         order_label='Spherical harmonic order', title=None,
-                        colorbar='right', origin='left', cmap='viridis',
+                        colorbar='right', origin='top', cmap='viridis',
                         cmap_limits=None, cmap_rlimits=None,
                         cmap_reverse=False, cmap_scale='log',
                         cb_triangles='neither', cb_label=None, cb_offset=None,
@@ -2215,6 +2217,14 @@ class SHMagCoeffs(object):
             only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
             and north boundaries of the plot, respectively. Alternatively, use
             'L', 'B', 'R', and 'T' for left, bottom, right, and top.
+        tick_interval : list or tuple, optional, default = [None, None]
+            Intervals to use when plotting the degree and order ticks,
+            respectively (used only when xscale and yscale are 'lin'). If set
+            to None, ticks will be generated automatically.
+        minor_tick_interval : list or tuple, optional, default = [None, None]
+            Intervals to use when plotting the minor degree and order ticks,
+            respectively (used only when xscale and yscale are 'lin'). If set
+            to None, minor ticks will be generated automatically.
         degree_label : str, optional, default = 'Spherical harmonic degree'
             Label for the spherical harmonic degree axis.
         order_label : str, optional, default = 'Spherical harmonic order'
@@ -2223,7 +2233,7 @@ class SHMagCoeffs(object):
             The title of the plot.
         colorbar : str, optional, default = 'right'
             Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
-        origin : str, optional, default = 'left'
+        origin : str, optional, default = 'top'
             Location where the degree 0 coefficient is plotted. Either 'left',
             'right', 'top', or 'bottom'.
         cmap : str, optional, default = 'viridis'
@@ -2291,6 +2301,11 @@ class SHMagCoeffs(object):
         space, divided by the area the function spans. If the mean of the
         function is zero, this is equivalent to the variance of the function.
         """
+        if tick_interval is None:
+            tick_interval = [None, None]
+        if minor_tick_interval is None:
+            minor_tick_interval = [None, None]
+
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
             if type(axes_labelsize) == str:
@@ -2467,13 +2482,36 @@ class SHMagCoeffs(object):
         else:
             top, labeltop = False, False
 
+        # Set tick intervals (used only for linear axis)
+        if tick_interval[0] is not None:
+            degree_ticks = _np.linspace(
+                0, lmax, num=lmax//tick_interval[0]+1, endpoint=True)
+        if tick_interval[1] is not None:
+            order_ticks = _np.linspace(
+                -lmax, lmax, num=2*lmax//tick_interval[1]+1, endpoint=True)
+        if minor_tick_interval[0] is not None:
+            degree_minor_ticks = _np.linspace(
+                0, lmax, num=lmax//minor_tick_interval[0]+1, endpoint=True)
+        if minor_tick_interval[1] is not None:
+            order_minor_ticks = _np.linspace(
+                -lmax, lmax, num=2*lmax//minor_tick_interval[1]+1,
+                endpoint=True)
+
         if (xscale == 'lin'):
             cmesh = axes.pcolormesh(xgrid, ygrid, spectrum_masked,
                                     norm=norm, cmap=cmap_scaled)
             if origin in ('left', 'right'):
                 axes.set(xlim=(-0.5, lmax + 0.5))
+                if tick_interval[0] is not None:
+                    axes.set(xticks=degree_ticks)
+                if minor_tick_interval[0] is not None:
+                    axes.set_xticks(degree_minor_ticks, minor=True)
             else:
                 axes.set(xlim=(-lmax - 0.5, lmax + 0.5))
+                if tick_interval[1] is not None:
+                    axes.set(xticks=order_ticks)
+                if minor_tick_interval[1] is not None:
+                    axes.set_xticks(order_minor_ticks, minor=True)
         elif (xscale == 'log'):
             cmesh = axes.pcolormesh(xgrid[1:], ygrid[1:], spectrum_masked[1:],
                                     norm=norm, cmap=cmap_scaled)
@@ -2489,8 +2527,16 @@ class SHMagCoeffs(object):
         if (yscale == 'lin'):
             if origin in ('left', 'right'):
                 axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
+                if tick_interval[1] is not None:
+                    axes.set(yticks=order_ticks)
+                if minor_tick_interval[1] is not None:
+                    axes.set_yticks(order_minor_ticks, minor=True)
             else:
                 axes.set(ylim=(-0.5, lmax + 0.5))
+                if tick_interval[0] is not None:
+                    axes.set(yticks=degree_ticks)
+                if minor_tick_interval[0] is not None:
+                    axes.set_yticks(degree_minor_ticks, minor=True)
         elif (yscale == 'log'):
             if origin in ('left', 'right'):
                 axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
@@ -2508,6 +2554,10 @@ class SHMagCoeffs(object):
         else:
             axes.set_xlabel(order_label, fontsize=axes_labelsize)
             axes.set_ylabel(degree_label, fontsize=axes_labelsize)
+        if labeltop:
+            axes.xaxis.set_label_position('top')
+        if labelright:
+            axes.yaxis.set_label_position('right')
         axes.tick_params(bottom=bottom, top=top, right=right, left=left,
                          labelbottom=labelbottom, labeltop=labeltop,
                          labelleft=labelleft, labelright=labelright,
@@ -2533,46 +2583,54 @@ class SHMagCoeffs(object):
                     cb_label = 'Power, ' + self.units + '$^2$'
 
             if cb_offset is None:
-                if colorbar in set(['left', 'right']):
-                    offset = 0.15
-                    if (colorbar == 'left' and
-                        ('W' in ticks or 'L' in ticks)) or \
-                            (colorbar == 'right' and
-                             ('E' in ticks or 'R' in ticks)):
-                        offset += 2 * tick_labelsize / 72.
-                    # add space for label on left of plot only
-                    if origin in ('left', 'right') and colorbar == 'left' and \
-                            order_label != '' and order_label is not None:
-                        offset += 1.9 * axes_labelsize / 72.
-                    elif origin in ('bottom', 'top') and colorbar == 'left' \
-                            and degree_label != '' \
-                            and degree_label is not None:
-                        offset += 1.9 * axes_labelsize / 72.
-                else:
-                    offset = 0.
-                    # add space for ticks
-                    if (colorbar == 'bottom' and bottom) or \
-                            (colorbar == 'top' and top):
-                        offset += _mpl.rcParams['xtick.major.size']
-                    # add space for labels
-                    if (colorbar == 'bottom' and labelbottom) or \
-                            (colorbar == 'top' and labeltop):
-                        offset += _mpl.rcParams['xtick.major.pad']
-                        offset += tick_labelsize
-                    # add space for label on bottom of plot only
-                    if origin in ('left', 'right') and colorbar == 'bottom' \
-                            and degree_label != '' \
-                            and degree_label is not None:
-                        offset += axes_labelsize
-                    elif origin in ('bottom', 'top') and colorbar == 'bottom' \
-                            and order_label != '' \
-                            and order_label is not None:
-                        offset += axes_labelsize
-                    offset += 1.3 * _mpl.rcParams['font.size']  # add extra
-                    offset /= 72.  # convert to inches
+                offset = 1.3 * _mpl.rcParams['font.size']
+                if (colorbar == 'left' and left) or \
+                        (colorbar == 'right' and right) or \
+                        (colorbar == 'bottom' and bottom) or \
+                        (colorbar == 'top' and top):
+                    offset += _mpl.rcParams['xtick.major.size']
+                if (colorbar == 'left' and labelleft) or \
+                        (colorbar == 'right' and labelright) or \
+                        (colorbar == 'bottom' and labelbottom) or \
+                        (colorbar == 'top' and labeltop):
+                    offset += _mpl.rcParams['xtick.major.pad']
+                    offset += tick_labelsize
+                if origin in ('left', 'right') and colorbar == 'left' and \
+                        order_label != '' and order_label is not None \
+                        and labelleft:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('left', 'right') and colorbar == 'right' \
+                        and order_label != '' and order_label is not None \
+                        and labelright:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'left' \
+                        and degree_label != '' \
+                        and degree_label is not None and labelleft:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'right' \
+                        and degree_label != '' \
+                        and degree_label is not None and labelright:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('left', 'right') and colorbar == 'bottom' \
+                        and degree_label != '' \
+                        and degree_label is not None and labelbottom:
+                    offset += axes_labelsize
+                if origin in ('left', 'right') and colorbar == 'top' \
+                        and degree_label != '' \
+                        and degree_label is not None and labeltop:
+                    offset += axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'bottom' \
+                        and order_label != '' \
+                        and order_label is not None and labelbottom:
+                    offset += axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'top' \
+                        and order_label != '' \
+                        and order_label is not None and labeltop:
+                    offset += axes_labelsize
             else:
-                offset = cb_offset / 72.0  # convert to inches
+                offset = cb_offset
 
+            offset /= 72.  # convert to inches
             divider = _make_axes_locatable(axes)
             if colorbar in set(['left', 'right']):
                 orientation = 'vertical'

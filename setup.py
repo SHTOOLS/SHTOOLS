@@ -47,8 +47,6 @@ except(IOError, ImportError):
     long_description = open('README.md').read()
 
 
-VERSION = versioneer.get_version()
-
 CLASSIFIERS = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
@@ -86,6 +84,7 @@ EXTRAS_REQUIRE = {
     'extras': ['cartopy>=0.18.0', 'pygmt>=0.2', 'palettable>=3.3']
 }
 
+VERSION = versioneer.get_version()
 print('INSTALLING SHTOOLS {}'.format(VERSION))
 
 
