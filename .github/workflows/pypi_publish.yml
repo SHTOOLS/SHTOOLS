@@ -13,8 +13,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Set env
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
     - name: Setup Miniconda
-      uses: conda-incubator/setup-miniconda@v1
+      uses: conda-incubator/setup-miniconda@v2
       with:
         python-version: 3.8
         channels: conda-forge
@@ -51,3 +54,16 @@ jobs:
         conda env list
         python setup.py sdist
         twine upload dist/*
+
+    - name: Download tarball archive
+      uses: carlosperate/download-file-action@v1.0.3
+      id: download-tarball
+      with:
+        file-url: 'https://github.com/SHTOOLS/SHTOOLS/archive/${{ env.RELEASE_VERSION }}.tar.gz'
+
+    - name: Upload tarball as release asset
+      uses: alexellis/upload-assets@0.2.2
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      with:
+        asset_paths: '["${{ steps.download-tarball.outputs.file-path }}"]'
