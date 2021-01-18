@@ -10,15 +10,15 @@ Compute the probability that two functions are correlated at a given spherical h
 
 # Returns
 
-`prob` : float
+`prob` : float, ndarray
 :   Probability that two functions expressed in spherical coefficients with spectral correlation `corr` are correlated at degree `l`.
 
 # Parameters
 
-`l` :  integer
+`l` :  integer, array_like
 :   The spherical harmonic degree.
 
-`corr` : float
+`corr` : float, array_like
 :   The correlation coefficient of the two data sets at degree `l`.
 
 # Description

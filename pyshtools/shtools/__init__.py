@@ -2,8 +2,9 @@
 pyshtools subpackage that includes all Python wrapped Fortran routines.
 """
 import os as _os
+import numpy as _np
 
-# ---- Import all wrapped SHTOOLS functions
+# Import all wrapped SHTOOLS functions
 
 # legendre
 from .._SHTOOLS import PlmBar
@@ -149,11 +150,13 @@ _fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'DownContFilterMA',
 _fortran_subroutines = list(set(__all__) - set(_fortran_functions))
 
 
-# ---------------------------------------------------------------------
-# ---- Fill the module doc strings with documentation from external
-# ---- files. The doc files are generated during intitial compilation of
-# ---- pyshtools from md formatted text files.
-# ---------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+#   Fill the module doc strings with documentation from external
+#   files. The doc files are generated during intitial compilation of
+#   pyshtools from md formatted text files.
+#
+# -----------------------------------------------------------------------------
 _pydocfolder = _os.path.abspath(_os.path.join(
                    _os.path.split(_os.path.dirname(__file__))[0], 'doc'))
 
@@ -170,15 +173,19 @@ for _name in __all__:
         print(msg)
 
 
-# ---- Check the exit status of Fortran routines, raise exceptions, and
-# ---- strip exitstatus from the Python return values.
+# -----------------------------------------------------------------------------
+#
+#   Check the exit status of Fortran routines, raise exceptions, and
+#   strip exitstatus from the Python return values.
+#
+# -----------------------------------------------------------------------------
 class SHToolsError(Exception):
     pass
 
 
 def _shtools_status_message(status):
     '''
-    Determine error message to print when a SHTOOLS Fortran 95 routine exits
+    Determine error message to print when an SHTOOLS Fortran 95 routine exits
     improperly.
     '''
     if (status == 1):
@@ -209,3 +216,16 @@ def _raise_errors(func):
 
 for _func in _fortran_subroutines:
     locals()[_func] = _raise_errors(locals()[_func])
+
+
+# -----------------------------------------------------------------------------
+#
+#   Vectorize some of the Fortran functions
+#
+# -----------------------------------------------------------------------------
+MakeGridPoint = _np.vectorize(MakeGridPoint, excluded=[0])
+MakeGridPointC = _np.vectorize(MakeGridPointC, excluded=[0])
+DownContFilterMA = _np.vectorize(DownContFilterMA)
+DownContFilterMC = _np.vectorize(DownContFilterMC)
+NormalGravity = _np.vectorize(NormalGravity, excluded=[1, 2, 3, 4])
+SHConfidence = _np.vectorize(SHConfidence)

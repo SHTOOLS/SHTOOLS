@@ -23,7 +23,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Function name | Description |
 | ------------- | ----------- |
 | [legendre](pylegendre.html) | Compute all the associated Legendre functions up to a maximum degree and order. |
-| [legendre_lm](pylegendre_lm.html) | Compute the associated Legendre function for a specific degree l and order m. |
+| [legendre_lm](pylegendre_lm.html) | Compute the associated Legendre function for specific degrees l and orders m. |
 
 ## 4&pi; normalized
 

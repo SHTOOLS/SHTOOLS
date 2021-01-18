@@ -3,8 +3,8 @@
 
     legendre      Compute all the associated Legendre functions up to a maximum
                   degree and order.
-    legendre_lm   Compute the associated Legendre function for a specific
-                  degree l and order m.
+    legendre_lm   Compute the associated Legendre function for specific
+                  degrees l and orders m.
 """
 import numpy as _np
 import warnings as _warnings
@@ -41,14 +41,14 @@ def legendre(lmax, z, normalization='4pi', csphase=1, cnorm=0, packed=False):
         '4pi', 'ortho', 'schmidt', or 'unnorm' for use with geodesy 4pi
         normalized, orthonormalized, Schmidt semi-normalized, or unnormalized
         spherical harmonic functions, respectively.
-    csphase : optional, integer, default = 1
+    csphase : integer, optional, default = 1
         If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
         Condon-Shortley phase of (-1)^m will be appended to the associated
         Legendre functions.
-    cnorm : optional, integer, default = 0
+    cnorm : integer, optional, default = 0
         If 1, the complex normalization of the associated Legendre functions
         will be used. The default is to use the real normalization.
-    packed : optional, bool, default = False
+    packed : bool, optional, default = False
         If True, return a 1-dimensional packed array with the index
         corresponding to l*(l+1)/2+m, where l and m are respectively the
         degree and order.
@@ -139,9 +139,10 @@ def legendre(lmax, z, normalization='4pi', csphase=1, cnorm=0, packed=False):
         return plm
 
 
+@_np.vectorize
 def legendre_lm(l, m, z, normalization='4pi', csphase=1, cnorm=0):
     """
-    Compute the associated Legendre function for a specific degree and order.
+    Compute the associated Legendre function for specific degrees and orders.
 
     Usage
     -----
@@ -149,33 +150,33 @@ def legendre_lm(l, m, z, normalization='4pi', csphase=1, cnorm=0):
 
     Returns
     -------
-    plm : float
+    plm : float, ndarray
         The associated Legendre functions for degree l and order m.
 
     Parameters
     ----------
-    l : integer
+    l : integer, array_like
         The spherical harmonic degree.
-    m : integer
+    m : integer, array_like
         The spherical harmonic order.
-    z : float
+    z : float, array_like
         The argument of the associated Legendre functions.
-    normalization : str, optional, default = '4pi'
+    normalization : str, array_like, optional, default = '4pi'
         '4pi', 'ortho', 'schmidt', or 'unnorm' for use with geodesy 4pi
         normalized, orthonormalized, Schmidt semi-normalized, or unnormalized
         spherical harmonic functions, respectively.
-    csphase : optional, integer, default = 1
+    csphase : integer, array_like, optional, default = 1
         If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
         Condon-Shortley phase of (-1)^m will be appended to the associated
         Legendre functions.
-    cnorm : optional, integer, default = 0
+    cnorm : integer, array_like, optional, default = 0
         If 1, the complex normalization of the associated Legendre functions
         will be used. The default is to use the real normalization.
 
     Notes
     -----
-    legendre_lm will calculate the associated Legendre function for a specific
-    degree l and order m. The Legendre functions are used typically as a part
+    legendre_lm will calculate the associated Legendre function for specific
+    degrees l and orders m. The Legendre functions are used typically as a part
     of the spherical harmonic functions, and three parameters determine how
     they are defined. normalization can be either '4pi' (default), 'ortho',
     'schmidt', or 'unnorm' for use with 4pi normalized, orthonormalized,

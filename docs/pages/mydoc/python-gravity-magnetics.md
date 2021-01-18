@@ -33,7 +33,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | [BAtoHilmDH](pybatohilmdh.html) | Calculate iteratively the relief along an interface with constant density contrast that corresponds to a given Bouguer anomaly using the algorithm of *Wieczorek and Phillips* (1998). |
 | [BAtoHilmRhoHDH](pybatohilmrhohdh.html) | Iteratively calculate the relief along an interface with laterally varying density contrast that corresponds to a given Bouguer anomaly using the algorithm of *Wieczorek and Phillips* (1998). |
 | [DownContFilterMA](pydowncontfilterma.html) | Compute the minimum-amplitude downward continuation filter of *Wieczorek and Phillips* (1998). |
-| [DownContFilterMC](pydowncontfiltermc.html) | Calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree. |
+| [DownContFilterMC](pydowncontfiltermc.html) | Compute the minimum-curvature downward continuation filter of *Wieczorek and Phillips* (1998). |
 | [NormalGravity](pynormalgravity.html) | Calculate the normal gravity on a flattened ellipsoid using the formula of Somigliana. |
 
 ## Magnetics routines
