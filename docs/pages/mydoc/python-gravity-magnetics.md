@@ -1,9 +1,9 @@
 ---
-title: "Gravity and magnetics routines"
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+title: pysh.gravmag
+keywords: spherical harmonics, gravity field, magnetic field, python, pyshtools
 sidebar: mydoc_sidebar
 permalink: python-gravity-magnetics.html
-summary: 
+summary: This module provides routines for working with gravity and magnetic field data expressed in spherical harmonics.
 toc: true
 folder: mydoc
 ---

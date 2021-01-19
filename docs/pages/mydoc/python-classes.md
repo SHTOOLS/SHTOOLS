@@ -1,9 +1,9 @@
 ---
-title: "Classes"
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+title: pysh.shclasses
+keywords: spherical harmonics, classes, python, pyshtools
 sidebar: mydoc_sidebar
 permalink: python-classes.html
-summary: 
+summary: This module provides classes for working with spherical harmonic coefficients, gridded data, Slepian functions, and localized multitaper spectral analyses.
 toc: true
 folder: mydoc
 ---

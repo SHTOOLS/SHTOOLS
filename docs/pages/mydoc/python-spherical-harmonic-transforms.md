@@ -1,9 +1,9 @@
 ---
-title: "Spherical harmonic transforms"
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+title: pysh.expand
+keywords: spherical harmonics, spherical harmonic transforms, spherical harmonic expansions, python, pyshtools
 sidebar: mydoc_sidebar
 permalink: python-spherical-harmonic-transforms.html
-summary: 
+summary: This module provides routines for performing spherical harmonic expansions and the construction of grids from spherical harmonic coefficients.
 toc: true
 folder: mydoc
 ---

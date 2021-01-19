@@ -1,9 +1,9 @@
 ---
-title: "Legendre functions"
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+title: pysh.legendre
+keywords: spherical harmonics, legendre functions, legendre polynomials, python, pyshtools
 sidebar: mydoc_sidebar
 permalink: python-legendre-functions.html
-summary: 
+summary: This module provides routines for computing Legendre functions and Legendre polynomials.
 toc: true
 folder: mydoc
 ---

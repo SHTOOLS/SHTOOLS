@@ -72,35 +72,35 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: Classes
+    - title: pysh.shclasses
       url: /python-classes.html
       output: web, pdf
 
-    - title: Legendre functions
+    - title: pysh.legendre
       url: /python-legendre-functions.html
       output: web, pdf
 
-    - title: Spherical harmonic transforms
+    - title: pysh.expand
       url: /python-spherical-harmonic-transforms.html
       output: web, pdf
 
-    - title: I/O, storage, conversions
+    - title: pysh.shio
       url: /python-io.html
       output: web, pdf
 
-    - title: Global and localized spectral analysis
+    - title: pysh.spectralanalysis
       url: /python-spectral-analysis.html
       output: web, pdf
 
-    - title: Spherical harmonic rotations
+    - title: pysh.rotate
       url: /python-spherical-harmonic-rotations.html
       output: web, pdf
 
-    - title: Gravity and magnetics
+    - title: pysh.gravmag
       url: /python-gravity-magnetics.html
       output: web, pdf
 
-    - title: Utilities
+    - title: pysh.utils
       url: /python-utilities.html
       output: web, pdf
 

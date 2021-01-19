@@ -1,9 +1,9 @@
 ---
-title: "Spherical harmonic rotations"
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+title: pysh.rotate
+keywords: spherical harmonics, spherical harmonic rotations, python, pyshtools
 sidebar: mydoc_sidebar
 permalink: python-spherical-harmonic-rotations.html
-summary: 
+summary: This module provides routines for rotating either the physical body or the coordinate system of a function expressed in spherical harmonics.
 toc: false
 folder: mydoc
 ---
