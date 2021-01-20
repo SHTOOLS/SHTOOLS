@@ -1166,6 +1166,17 @@ module SHTOOLS
             integer(int32), intent(out), optional :: exitstatus
         end subroutine SHSCouplingMatrixCap
 
+        subroutine MakeGradientDH(cilm, lmax, theta, phi, n, sampling, &
+                                  lmax_calc, extend, exitstatus)
+            use iso_fortran_env, only: int32, dp=>real64
+            real(dp), intent(in) :: cilm(:,:,:)
+            real(dp), intent(out) :: theta(:,:), phi(:,:)
+            integer(int32), intent(in) :: lmax
+            integer(int32), intent(out) :: n
+            integer(int32), intent(in), optional :: sampling, lmax_calc, extend
+            integer(int32), intent(out), optional :: exitstatus
+        end subroutine MakeGradientDH
+
     end interface
 
 end module SHTOOLS

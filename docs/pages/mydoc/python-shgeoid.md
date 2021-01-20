@@ -3,7 +3,7 @@ title: "SHGeoid class"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: python-shgeoid.html
-summary: 
+summary: A class for gridded data of the geoid.
 toc: true
 folder: mydoc
 ---

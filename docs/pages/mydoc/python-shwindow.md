@@ -3,7 +3,7 @@ title: "SHWindow class"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: python-shwindow.html
-summary: 
+summary: Classes for localized spectral analyses.
 toc: true
 folder: mydoc
 ---

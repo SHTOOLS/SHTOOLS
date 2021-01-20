@@ -103,6 +103,8 @@ class SHCoeffs(object):
     expand()              : Evaluate the coefficients either on a spherical
                             grid and return an SHGrid class instance, or for
                             a list of latitude and longitude coordinates.
+    gradient()            : Compute the horizontal gradient of the function and
+                            return an SHGradient class instance.
     plot_spectrum()       : Plot the spectrum as a function of spherical
                             harmonic degree.
     plot_cross_spectrum() : Plot the cross-spectrum of two functions.
@@ -2150,6 +2152,70 @@ class SHCoeffs(object):
 
             return gridout
 
+    # ---- Compute the horizontal gradient ----
+    def gradient(self, grid='DH2', lmax=None, lmax_calc=None, units=None,
+                 extend=True):
+        """
+        Compute the horizontal gradient of the function and return an
+        SHGradient class instance.
+
+        Usage
+        -----
+        g = x.gradient([grid, lmax, lmax_calc, units])
+
+        Returns
+        -------
+        g : SHGradient class instance
+
+        Parameters
+        ----------
+        grid : str, optional, default = 'DH2'
+            'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon, or
+            'DH2' for an equidistant lat/lon grid with nlon=2*nlat.
+        lmax : int, optional, default = x.lmax
+            The maximum spherical harmonic degree, which determines the grid
+            spacing of the output grid.
+        lmax_calc : int, optional, default = x.lmax
+            The maximum spherical harmonic degree to use when evaluating the
+            function.
+        units : str, optional, default = None
+            The units of the output gradients.
+        extend : bool, optional, default = True
+            If True, compute the longitudinal band for 360 E (DH and GLQ grids)
+            and the latitudinal band for 90 S (DH grids only).
+
+        Notes
+        -----
+        The gradient is evaluated using the radius given by the degree 0
+        coefficient of the function.
+        """
+        if lmax is None:
+            lmax = self.lmax
+        if lmax_calc is None:
+            lmax_calc = lmax
+
+        if type(grid) != str:
+            raise ValueError('grid must be a string. Input type is {:s}.'
+                             .format(str(type(grid))))
+
+        if grid.upper() in ('DH', 'DH1'):
+            gradientout = self._gradientDH(sampling=1, lmax=lmax,
+                                           lmax_calc=lmax_calc, units=units,
+                                           extend=extend)
+        elif grid.upper() == 'DH2':
+            gradientout = self._gradientDH(sampling=2, lmax=lmax,
+                                           lmax_calc=lmax_calc, units=units,
+                                           extend=extend)
+        elif grid.upper() == 'GLQ':
+            raise NotImplementedError('gradient() does not support the use '
+                                      'of GLQ grids.')
+        else:
+            raise ValueError(
+                    "grid must be 'DH', 'DH1', or 'DH2'. " +
+                    "Input value is {:s}.".format(repr(grid)))
+
+        return gradientout
+
     # ---- Plotting routines ----
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
@@ -3991,6 +4057,16 @@ class SHRealCoeffs(SHCoeffs):
                              'ndarray, or list. Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
+    def _gradientDH(self, sampling, lmax, lmax_calc, units, extend):
+        """Evaluate the gradient on a Driscoll and Healy (1994) grid."""
+        from .shgradient import SHGradient
+
+        theta, phi = _shtools.MakeGradientDH(
+            self.to_array(normalization='4pi', csphase=1, errors=False),
+            sampling=sampling, lmax=lmax, lmax_calc=lmax_calc, extend=extend)
+
+        return SHGradient(theta, phi, lmax, lmax_calc, units=units)
+
 
 # =============== COMPLEX SPHERICAL HARMONICS ================
 
@@ -4236,3 +4312,8 @@ class SHComplexCoeffs(SHCoeffs):
                              'ndarray, or list. ' +
                              'Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
+
+    def _gradientDH(self, sampling, lmax, lmax_calc, units, extend):
+        """Evaluate the gradient on a Driscoll and Healy (1994) grid."""
+        raise NotImplementedError('gradient() does not support the use '
+                                  'of complex DH grids.')

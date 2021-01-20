@@ -26,6 +26,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | [MakeGridDH](pymakegriddh.html) | Create a 2D map from a set of spherical harmonic coefficients that conforms with *Driscoll and Healy*'s (1994) sampling theorem. |
 | [SHExpandDHC](pyshexpanddhc.html) | Expand an equally sampled or equally spaced complex map into complex spherical harmonics using *Driscoll and Healy*'s (1994) sampling theorem. |
 | [MakeGridDHC](pymakegriddhc.html) | Create a 2D complex map from a set of complex spherical harmonic coefficients that conforms with *Driscoll and Healy*'s (1994) sampling theorem. |
+| [MakeGradientDH](pymakegradientdh.html) | Compute the gradient of a scalar function and return grids of the two horizontal components that conform with *Driscoll and Healy*'s (1994) sampling theorem. |
+
 
 ## Gauss-Legendre quadrature grids
 

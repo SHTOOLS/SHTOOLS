@@ -41,6 +41,7 @@ from .._SHTOOLS import MakeGrid2D
 from .._SHTOOLS import MakeGridPoint
 from .._SHTOOLS import MakeGridPointC
 from .._SHTOOLS import SHMultiply
+from .._SHTOOLS import MakeGradientDH
 
 # shio
 from .._SHTOOLS import SHRead2
@@ -140,7 +141,8 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'MakeMagGridDH', 'MakeCircleCoord', 'MakeEllipseCoord', 'Wigner3j',
            'DHaj', 'MakeMagGradGridDH', 'SHRotateTapers', 'SlepianCoeffs',
            'SlepianCoeffsToSH', 'SHSCouplingMatrix', 'SHMTVar', 'SHSlepianVar',
-           'SHSCouplingMatrixCap', 'MakeGravGridPoint', 'MakeMagGridPoint']
+           'SHSCouplingMatrixCap', 'MakeGravGridPoint', 'MakeMagGridPoint',
+           'MakeGradientDH']
 
 _fortran_functions = ['MakeGridPoint', 'MakeGridPointC', 'DownContFilterMA',
                       'DownContFilterMC', 'SHFindLWin', 'SHSjkPG',

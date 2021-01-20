@@ -2306,3 +2306,30 @@
         call SHSCouplingMatrixCap(kij,galpha,galpha_order,lmax,nmax,&
                                   exitstatus=exitstatus)
     end subroutine pySHSCouplingMatrixCap
+
+    subroutine pyMakeGradientDH(exitstatus,cilm,lmax,theta,phi,n,sampling,&
+                                lmax_calc,extend,phi_d0,phi_d1,cilm_d0,&
+                                cilm_d1,cilm_d2,theta_d0,theta_d1)
+        use shtools, only: MakeGradientDH
+        use ftypes
+        implicit none
+        integer(int32),intent(in) :: phi_d0
+        integer(int32),intent(in) :: phi_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: theta_d0
+        integer(int32),intent(in) :: theta_d1
+        integer(int32),intent(out) :: exitstatus
+        real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer(int32),intent(in) :: lmax
+        real(dp),dimension(theta_d0,theta_d1),intent(out) :: theta
+        real(dp),dimension(phi_d0,phi_d1),intent(out) :: phi
+        integer(int32),intent(out) :: n
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: lmax_calc
+        integer(int32),intent(in) :: extend
+        call MakeGradientDH(cilm,lmax,theta,phi,n,sampling=sampling,&
+                            lmax_calc=lmax_calc,extend=extend,&
+                            exitstatus=exitstatus)
+    end subroutine pyMakeGradientDH

@@ -3,7 +3,7 @@ title: "SHCoeffs class"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: python-shcoeffs.html
-summary: 
+summary: Classes for spherical harmonic coefficients.
 toc: true
 folder: mydoc
 ---
@@ -69,6 +69,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `convert()` | Return a new class instance using a different normalization convention. |
 | `pad()` | Return a new class instance that is zero padded or truncated to a different `lmax`. |
 | `expand()` | Evaluate the coefficients either on a spherical grid and return an SHGrid class instance, or for a list of latitude and longitude coordinates. |
+| `gradient()` | Compute the horizontal gradient of the function and return an SHGradient class instance. |
 | `plot_spectrum()` | Plot the spectrum as a function of spherical harmonic degree. |
 | `plot_cross_spectrum()` | Plot the cross-spectrum of two functions. |
 | `plot_spectrum2d()` | Plot the spectrum of all spherical-harmonic coefficients. |
