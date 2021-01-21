@@ -1,6 +1,7 @@
 """
     Spherical Harmonic Coefficients classes
 """
+import os as _os
 import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
@@ -1027,6 +1028,7 @@ class SHCoeffs(object):
             with open(filebase, 'rb') as f_in:
                 with _gzip.open(filename, 'wb') as f_out:
                     _shutil.copyfileobj(f_in, f_out)
+            _os.remove(filebase)
 
     def to_netcdf(self, filename, title='', description='', lmax=None):
         """
