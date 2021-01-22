@@ -38,16 +38,16 @@ plm = legendre (lmax, z, [normalization, csphase, cnorm, packed])
         normalized, orthonormalized, Schmidt semi-normalized, or unnormalized
         spherical harmonic functions, respectively.
 
-**csphase : optional, integer, default = 1**
+**csphase : integer, optional, default = 1**
 :   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
         Condon-Shortley phase of (-1)^m will be appended to the associated
         Legendre functions.
 
-**cnorm : optional, integer, default = 0**
+**cnorm : integer, optional, default = 0**
 :   If 1, the complex normalization of the associated Legendre functions
         will be used. The default is to use the real normalization.
 
-**packed : optional, bool, default = False**
+**packed : bool, optional, default = False**
 :   If True, return a 1-dimensional packed array with the index
         corresponding to l\*(l+1)/2+m, where l and m are respectively the
         degree and order.

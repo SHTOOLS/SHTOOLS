@@ -46,17 +46,17 @@ ylm = spharm (lmax, theta, phi, [normalization, kind, csphase, packed,
 **kind : str, optional, default = 'real'**
 :   'real' or 'complex' spherical harmonic coefficients.
 
-**csphase : optional, integer, default = 1**
+**csphase : integer, optional, default = 1**
 :   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
         Condon-Shortley phase of (-1)^m will be appended to the spherical
         harmonic functions.
 
-**packed : optional, bool, default = False**
+**packed : bool, optional, default = False**
 :   If True, return a 2-dimensional packed array where the index of the
         second column corresponds to l\*(l+1)/2+m, where l and m are
         respectively the degree and order.
 
-**degrees : optional, bool, default = True**
+**degrees : bool, optional, default = True**
 :   If True, `theta` and `phi` are expressed in degrees.
 
 ## Notes

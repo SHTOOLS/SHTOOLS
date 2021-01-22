@@ -104,9 +104,9 @@
 #       necessary to install "pandoc", "ghc" and "cabal-install" (all using
 #       brew on macOS), and then execute "cabal update" and
 #       "cabal install --lib pandoc-types". If errors are encountered,
-#       determine which version of pandoc-types was uses to compile pandoc
-#       using "pandoc --version". Delete ~/.cabal and reinstall a specific
-#       version using "cabal install --lib pandoc-types=1.21".
+#       determine which version of pandoc-types was used to compile pandoc
+#       using "pandoc --version", delete ~/.cabal, run cabal update, and
+#       then reinstall pandoc-types "cabal install --lib pandoc-types-1.22".
 #
 #   make remove-doc
 #       Remove the man and html-man pages.

@@ -73,7 +73,7 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
     integer(int32), intent(out), optional :: exitstatus
     real(dp), allocatable :: dij(:,:), dijex(:, :), evec(:, :)
     integer(int32) :: nlat, nlong, lmax_dh, astat(2), i, j, l, m, exclude, n, &
-               ind((lmax+1)**2), numk
+                      ind((lmax+1)**2), numk
 
     if (present(exitstatus)) exitstatus = 0
 
