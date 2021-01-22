@@ -31,7 +31,7 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
 !                           (2) Schmidt
 !                           (3) unnormalized
 !                           (4) orthonormalized
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           cnorm:      1: compute complex normalized Legendre functions.
 !                       0 (default): compute real normalized Legendre functions.
@@ -50,8 +50,7 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: PreGLQ, PlmBar, PlmSchmidt, PLegendreA, PlmON, &
-                       CSPHASE_DEFAULT, PlmIndex
+    use SHTOOLS, only: PreGLQ, PlmBar, PlmSchmidt, PLegendreA, PlmON, PlmIndex
     use ftypes
 
     implicit none
@@ -150,7 +149,7 @@ subroutine SHGLQ(lmax, zero, w, plx, norm, csphase, cnorm, exitstatus)
         end if
 
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 

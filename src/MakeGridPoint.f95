@@ -20,7 +20,7 @@ function MakeGridPoint(cilm, lmax, lat, lon, norm, csphase, dealloc)
 !                           (2) Schmidt
 !                           (3) unnormalized
 !                           (4) orthonormalized
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           dealloc     If (1) Deallocate saved memory in Legendre function
 !                       routines. Default (0) is not to deallocate memory.
@@ -29,7 +29,7 @@ function MakeGridPoint(cilm, lmax, lat, lon, norm, csphase, dealloc)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: PlmBar, PLegendreA, PlmSchmidt, PlmON, CSPHASE_DEFAULT
+    use SHTOOLS, only: PlmBar, PLegendreA, PlmSchmidt, PlmON
     use ftypes
 
     implicit none
@@ -73,7 +73,7 @@ function MakeGridPoint(cilm, lmax, lat, lon, norm, csphase, dealloc)
         end if
 
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 

@@ -43,7 +43,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !                       2. PlmSchmidt
 !                       3. PLegendreA (unnormalized)
 !                       4. PlmBar/sqrt(4 pi) (orthonormalized)
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           weights  The weights to be used when performing the weighted least
 !                    squares inversion.
@@ -64,7 +64,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: PlmBar, PLegendreA, PlmSchmidt, PlmON, CSPHASE_DEFAULT
+    use SHTOOLS, only: PlmBar, PLegendreA, PlmSchmidt, PlmON
     use ftypes
 
     implicit none
@@ -180,7 +180,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
         end if
 
     else
-            phase = CSPHASE_DEFAULT
+            phase = 1
 
     end if
 

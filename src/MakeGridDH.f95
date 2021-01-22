@@ -51,7 +51,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !                           (4) orthonormalized
 !           sampling    (1) The output grid is N by N (default).
 !                       (2) The output grid is N by 2N.
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           lmax_calc   The maximum spherical harmonic degree to evaluate
 !                       the coefficients up to.
@@ -80,7 +80,6 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !
 !------------------------------------------------------------------------------
     use FFTW3
-    use SHTOOLS, only: CSPHASE_DEFAULT
     use ftypes
     use, intrinsic :: iso_c_binding
 
@@ -220,7 +219,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 
         end if
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 

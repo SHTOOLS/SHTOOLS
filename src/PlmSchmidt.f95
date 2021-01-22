@@ -28,7 +28,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
 !           z           cos(colatitude) or sin(latitude).
 !
 !       OPTIONAL (IN)
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           cnorm       0: Use real normalization.
 !                       1: Use complex normalization.
@@ -64,7 +64,6 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: CSPHASE_DEFAULT
     use ftypes
 
     implicit none
@@ -148,7 +147,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
 
         end if
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 

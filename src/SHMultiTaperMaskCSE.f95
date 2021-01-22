@@ -32,7 +32,7 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, cilm1, lmax1, cilm2, lmax2, tapers, &
 !       OPTIONAL (IN)
 !           taper_wt    Weight to be applied to each direct spectral estimate.
 !                       This should sum to unity.
-!           csphase:    1: Do not include the phase factor of (-1)^m
+!           csphase:    1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           norm:       Normalization to be used when calculating Legendre
 !                       functions
@@ -56,7 +56,7 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, cilm1, lmax1, cilm2, lmax2, tapers, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only:  SHCrossPowerSpectrum, SHVectorToCilm, MakeGridGLQ, &
-                        SHGLQ, SHExpandGLQ, CSPHASE_DEFAULT
+                        SHGLQ, SHExpandGLQ
     use ftypes
 
     implicit none
@@ -214,7 +214,7 @@ subroutine SHMultiTaperMaskCSE(mtse, sd, cilm1, lmax1, cilm2, lmax2, tapers, &
 
         end if
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 

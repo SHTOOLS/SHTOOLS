@@ -57,8 +57,8 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 !                       from this oversampling are discarded, and hence not
 !                       aliased into lower frequencies.
 !           csphase     1: Do not include the condon-shortley phase factor of
-!                       (-1)^m. -1: Apply the condon-shortley phase factor of
-!                       (-1)^m.
+!                       (-1)^m (default). -1: Apply the condon-shortley phase
+!                       factor of (-1)^m.
 !           lmax_calc   The maximum spherical harmonic degree calculated in the
 !                       spherical harmonic expansion.
 !
@@ -87,7 +87,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 !
 !------------------------------------------------------------------------------
     use FFTW3
-    use SHTOOLS, only: dhaj, csphase_default
+    use SHTOOLS, only: DHaj
     use ftypes
     use, intrinsic :: iso_c_binding
 
@@ -252,7 +252,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
         end if
 
     else
-        phase = csphase_default
+        phase = 1
 
     end if
 
