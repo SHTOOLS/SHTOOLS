@@ -1,9 +1,9 @@
 ---
-title: "Spherical harmonic transforms"
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+title: pysh.expand
+keywords: spherical harmonics, spherical harmonic transforms, spherical harmonic expansions, python, pyshtools
 sidebar: mydoc_sidebar
 permalink: python-spherical-harmonic-transforms.html
-summary: 
+summary: This module provides routines for performing spherical harmonic expansions and the construction of grids from spherical harmonic coefficients.
 toc: true
 folder: mydoc
 ---
@@ -26,6 +26,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | [MakeGridDH](pymakegriddh.html) | Create a 2D map from a set of spherical harmonic coefficients that conforms with *Driscoll and Healy*'s (1994) sampling theorem. |
 | [SHExpandDHC](pyshexpanddhc.html) | Expand an equally sampled or equally spaced complex map into complex spherical harmonics using *Driscoll and Healy*'s (1994) sampling theorem. |
 | [MakeGridDHC](pymakegriddhc.html) | Create a 2D complex map from a set of complex spherical harmonic coefficients that conforms with *Driscoll and Healy*'s (1994) sampling theorem. |
+| [MakeGradientDH](pymakegradientdh.html) | Compute the gradient of a scalar function and return grids of the two horizontal components that conform with *Driscoll and Healy*'s (1994) sampling theorem. |
+
 
 ## Gauss-Legendre quadrature grids
 
@@ -45,8 +47,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | [SHExpandLSQ](pyshexpandlsq.html) | Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion. |
 | [SHExpandWLSQ](pyshexpandwlsq.html) | Expand a set of irregularly sampled data points into spherical harmonics using a weighted least squares inversion. |
 | [MakeGrid2D](pymakegrid2d.html) | Create a 2D cylindrical map with arbitrary grid spacing from a set of spherical harmonic coefficients. |
-| [MakeGridPoint](pymakegridpoint.html) | Evaluate a real function expressed in real spherical harmonics at a single point. |
-| [MakeGridPointC](pymakegridpointc.html) | Evaluate a complex function expressed in complex spherical harmonics at a single point. |
+| [MakeGridPoint](pymakegridpoint.html) | Evaluate a real function expressed in real spherical harmonics at a set of points. |
+| [MakeGridPointC](pymakegridpointc.html) | Evaluate a complex function expressed in complex spherical harmonics at a set of points. |
 | [SHMultiply](pyshmultiply.html) | Multiply two functions and determine the spherical harmonic coefficients of the resulting function. |
 | [spharm](pyspharm.html) | Compute all the spherical harmonic functions up to a maximum degree and order. |
-| [spharm_lm](pyspharm_lm.html) | Compute the spherical harmonic function for a specific degree l and order m. |
+| [spharm_lm](pyspharm_lm.html) | Compute the spherical harmonic function for specific degrees l and orders m. |

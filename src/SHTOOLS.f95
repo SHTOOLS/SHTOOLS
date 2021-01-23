@@ -9,14 +9,7 @@ module SHTOOLS
 !         a dependency problem when compiling pyshtools using pip.
 !
 !------------------------------------------------------------------------------
-    use iso_fortran_env, only: int32, dp=>real64
-
     implicit none
-
-    integer(int32), parameter :: CSPHASE_DEFAULT = 1
-                          ! The default for all routines is to EXCLUDE
-                          ! the Condon-Shortley phase of (-1)^m
-                          ! in front of the Legendre functions.
 
     interface
 
@@ -169,7 +162,8 @@ module SHTOOLS
             real(dp), intent(out) :: cilm(:,:,:)
             integer(int32), intent(in) :: n
             integer(int32), intent(out) :: lmax
-            integer(int32), intent(in), optional :: norm, sampling, csphase, lmax_calc
+            integer(int32), intent(in), optional :: norm, sampling, csphase, &
+                                                    lmax_calc
             integer(int32), intent(out), optional :: exitstatus
         end subroutine SHExpandDH
 
@@ -192,7 +186,8 @@ module SHTOOLS
             complex(dp), intent(out) :: cilm(:,:,:)
             integer(int32), intent(in) :: n
             integer(int32), intent(out) :: lmax
-            integer(int32), intent(in), optional :: norm, sampling, csphase, lmax_calc
+            integer(int32), intent(in), optional :: norm, sampling, csphase, &
+                                                    lmax_calc
             integer(int32), intent(out), optional :: exitstatus
         end subroutine SHExpandDHC
 
@@ -204,7 +199,7 @@ module SHTOOLS
             integer(int32), intent(in) :: lmax
             integer(int32), intent(out) :: n
             integer(int32), intent(in), optional :: norm, sampling, csphase, &
-                                             lmax_calc, extend
+                                                    lmax_calc, extend
             integer(int32), intent(out), optional :: exitstatus
         end subroutine MakeGridDHC
 
@@ -235,7 +230,8 @@ module SHTOOLS
             real(dp), intent(in), optional :: plx(:,:), zero(:)
             real(dp), intent(out) :: gridglq(:,:)
             integer(int32), intent(in) :: lmax
-            integer(int32), intent(in), optional :: norm, csphase, lmax_calc, extend
+            integer(int32), intent(in), optional :: norm, csphase, lmax_calc, &
+                                                    extend
             integer(int32), intent(out), optional :: exitstatus
         end subroutine MakeGridGLQ
 
@@ -258,7 +254,8 @@ module SHTOOLS
             real(dp), intent(in), optional :: plx(:,:), zero(:)
             complex(dp), intent(out) :: gridglq(:,:)
             integer(int32), intent(in) :: lmax
-            integer(int32), intent(in), optional :: norm, csphase, lmax_calc, extend
+            integer(int32), intent(in), optional :: norm, csphase, lmax_calc, &
+                                                    extend
             integer(int32), intent(out), optional :: exitstatus
         end subroutine MakeGridGLQC
 
@@ -1165,6 +1162,17 @@ module SHTOOLS
             integer(int32), intent(in) :: galpha_order(:), lmax, nmax
             integer(int32), intent(out), optional :: exitstatus
         end subroutine SHSCouplingMatrixCap
+
+        subroutine MakeGradientDH(cilm, lmax, theta, phi, n, sampling, &
+                                  lmax_calc, extend, exitstatus)
+            use iso_fortran_env, only: int32, dp=>real64
+            real(dp), intent(in) :: cilm(:,:,:)
+            real(dp), intent(out) :: theta(:,:), phi(:,:)
+            integer(int32), intent(in) :: lmax
+            integer(int32), intent(out) :: n
+            integer(int32), intent(in), optional :: sampling, lmax_calc, extend
+            integer(int32), intent(out), optional :: exitstatus
+        end subroutine MakeGradientDH
 
     end interface
 

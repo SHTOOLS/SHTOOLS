@@ -1,9 +1,9 @@
 ---
-title: "Global and localized spectral analysis"
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+title: pysh.spectralanalysis
+keywords: spherical harmonics, global spectral analysis, slepian functions, spatiospectral localization windows, localized multitaper spectral analysis, python, pyshtools
 sidebar: mydoc_sidebar
 permalink: python-spectral-analysis.html
-summary: 
+summary: This module provides routines for performing global spectral analyses, the construction of spatiospectral localization windows, and localized multitaper spectral analyses.
 toc: true
 folder: mydoc
 ---

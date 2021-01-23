@@ -1,9 +1,9 @@
 ---
-title: "Legendre functions"
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+title: pysh.legendre
+keywords: spherical harmonics, legendre functions, legendre polynomials, python, pyshtools
 sidebar: mydoc_sidebar
 permalink: python-legendre-functions.html
-summary: 
+summary: This module provides routines for computing Legendre functions and Legendre polynomials.
 toc: true
 folder: mydoc
 ---
@@ -23,7 +23,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Function name | Description |
 | ------------- | ----------- |
 | [legendre](pylegendre.html) | Compute all the associated Legendre functions up to a maximum degree and order. |
-| [legendre_lm](pylegendre_lm.html) | Compute the associated Legendre function for a specific degree l and order m. |
+| [legendre_lm](pylegendre_lm.html) | Compute the associated Legendre function for specific degrees l and orders m. |
 
 ## 4&pi; normalized
 

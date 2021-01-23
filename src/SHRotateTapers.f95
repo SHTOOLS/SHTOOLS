@@ -6,7 +6,9 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
 !   centered at the North pole) corresponding to the angles listed in the
 !   input array X. Only the first NROT tapers are rotated, each of which is
 !   returned in a column of the output matrix TAPERSROT with spherical harmonic
-!   coefficients ordered according to SHCilmToVector.
+!   coefficients ordered according to SHCilmToVector. The input coefficients
+!   must be 4pi normalized exlcuding the Condon-Shortley phase factor of
+!   (-1)^m.
 !
 !   The rotation of a coordinate system or body can be viewed in two
 !   complementary ways involving three successive rotations. Both methods have
@@ -77,7 +79,7 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
 !
 !-------------------------------------------------------------------------------
     use SHTOOLS, only: SHrtoc, SHctor, SHcilmtocindex, SHcindextocilm, &
-                       SHRotateCoef, SHCilmToVector, CSPHASE_DEFAULT
+                       SHRotateCoef, SHCilmToVector
     use ftypes
 
     implicit none
@@ -186,25 +188,13 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
             cilm(2, 1:lmax+1, abs(taper_order(i))+1) = tapers(1:lmax+1, i)
         end if
 
-        if (CSPHASE_DEFAULT == 1) then
-            ! Convert geodesy coefficients to Varshalovich et al. complex form
-            if (present(exitstatus)) then
-                call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, &
-                            switchcs=1, exitstatus=exitstatus)
-                if (exitstatus /= 0) return
-            else
-                call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=1)
-            end if
-
+        ! Convert geodesy coefficients to Varshalovich et al. complex form
+        if (present(exitstatus)) then
+            call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, &
+                        switchcs=1, exitstatus=exitstatus)
+            if (exitstatus /= 0) return
         else
-            if (present(exitstatus)) then
-                call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, &
-                            switchcs=0, exitstatus=exitstatus)
-                if (exitstatus /= 0) return
-            else
-                call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=0)
-            end if
-
+            call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=1)
         end if
 
         if (present(exitstatus)) then
@@ -232,28 +222,15 @@ subroutine SHRotateTapers(tapersrot, tapers, taper_order, lmax, nrot, x, dj, &
 
         end if
 
-        if (CSPHASE_DEFAULT == 1) then
-            ! Convert Varshalovich et al complex coefficients back to 4pi
-            ! geodesy form
-            if (present(exitstatus)) then
-                call SHctor(ccilm, cilm, degmax=lmax, convention=2, &
-                            switchcs=1, exitstatus=exitstatus)
-                if (exitstatus /= 0) return
-            else
-                call SHctor(ccilm, cilm, degmax=lmax, convention=2, &
-                            switchcs=1)
-
-            end if
-
+        ! Convert Varshalovich et al complex coefficients back to 4pi
+        ! geodesy form
+        if (present(exitstatus)) then
+            call SHctor(ccilm, cilm, degmax=lmax, convention=2, &
+                        switchcs=1, exitstatus=exitstatus)
+            if (exitstatus /= 0) return
         else
-            if (present(exitstatus)) then
-                call SHctor(ccilm, cilm, degmax=lmax, convention=2, &
-                            switchcs=0, exitstatus=exitstatus)
-                if (exitstatus /= 0) return
-            else
-                call SHctor(ccilm, cilm, degmax=lmax, convention=2, &
-                            switchcs=0)
-            end if
+            call SHctor(ccilm, cilm, degmax=lmax, convention=2, &
+                        switchcs=1)
 
         end if
 

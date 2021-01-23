@@ -13,16 +13,10 @@ main namespace:
     SHGrid            : Class for global grids.
     SHWindow          : Class for localized spectral analyses.
     Slepian           : Class for Slepian functions.
-    SlepianCoeffs     : Class for Slepian expansion coefficients.
     SHGravCoeffs      : Class for gravitational potential spherical harmonic
                         coefficients.
-    SHGravGrid        : Class for global gridded gravitational field data.
-    SHGravTensor      : Class for the gravity tensor and eigenvalues.
-    SHGeoid           : Class for the geoid.
     SHMagCoeffs       : Class for magnetic potential spherical harmonic
                         coefficients.
-    SHMagGrid         : Class for global gridded magnetic field data.
-    SHMagTensor       : Class for the magnetic field tensor and eigenvalues.
 
     shclasses         : All pyshtools classes and subclasses.
     shtools           : All Python-wrapped Fortran 95 routines.
@@ -64,14 +58,8 @@ from .shclasses import SHCoeffs
 from .shclasses import SHGrid
 from .shclasses import SHWindow
 from .shclasses import Slepian
-from .shclasses import SlepianCoeffs
 from .shclasses import SHGravCoeffs
-from .shclasses import SHGravGrid
-from .shclasses import SHGravTensor
-from .shclasses import SHGeoid
 from .shclasses import SHMagCoeffs
-from .shclasses import SHMagGrid
-from .shclasses import SHMagTensor
 
 __version__ = _get_versions()["version"]
 __commit__ = _get_versions()["full-revisionid"]
@@ -80,6 +68,5 @@ __author__ = 'SHTOOLS developers'
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constants', 'shclasses', 'legendre', 'expand', 'shio', 'shtools',
            'spectralanalysis', 'rotate', 'gravmag', 'utils', 'SHCoeffs',
-           'SHGrid', 'SHWindow', 'Slepian', 'SlepianCoeffs', 'SHGravCoeffs',
-           'SHGravGrid', 'SHGravTensor', 'SHGeoid', 'SHMagCoeffs', 'SHMagGrid',
-           'SHMagTensor', 'datasets']
+           'SHGrid', 'SHWindow', 'Slepian', 'SHGravCoeffs', 'SHMagCoeffs',
+           'datasets']

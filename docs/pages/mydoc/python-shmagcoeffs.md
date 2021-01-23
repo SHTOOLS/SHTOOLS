@@ -3,7 +3,7 @@ title: "SHMagCoeffs class"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: python-shmagcoeffs.html
-summary:
+summary: A class for magnetic potential spherical harmonic coefficients.
 toc: true
 folder: mydoc
 ---

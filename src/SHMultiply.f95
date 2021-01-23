@@ -26,7 +26,7 @@ subroutine SHMultiply(cilmout, cilm1, lmax1, cilm2, lmax2, precomp, norm, &
 !           precomp     If 1, the array plx will be precomputed when calling
 !                       the subroutine SHGLQ. If 0 (default), then this array
 !                       will not be precomputed.
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           norm:       Normalization to be used when calculating Legendre
 !                       functions
@@ -49,7 +49,7 @@ subroutine SHMultiply(cilmout, cilm1, lmax1, cilm2, lmax2, precomp, norm, &
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: SHGLQ, MakeGridGLQ, SHExpandGLQ, CSPHASE_DEFAULT
+    use SHTOOLS, only: SHGLQ, MakeGridGLQ, SHExpandGLQ
     use ftypes
 
     implicit none
@@ -131,7 +131,7 @@ subroutine SHMultiply(cilmout, cilm1, lmax1, cilm2, lmax2, precomp, norm, &
         end if
 
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 

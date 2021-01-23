@@ -1,9 +1,9 @@
 ---
-title: "Spherical harmonic I/O, storage, and conversions"
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+title: pysh.shio
+keywords: spherical harmonics, file io, python, pyshtools
 sidebar: mydoc_sidebar
 permalink: python-io.html
-summary: 
+summary: This module provides routines for reading and writing spherical harmonic coefficients to and from files, and for converting spherical harmonic coefficients to different normalization conventions.
 toc: true
 folder: mydoc
 ---

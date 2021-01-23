@@ -54,10 +54,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !           f           Flattening of the planet.
 !
 !       IN, OPTIONAL
-!           sampling    (1) Grid is N latitudes by N longitudes (default).
-!                       (2) Grid is N by 2N. The higher frequencies resulting
-!                       from this oversampling in longitude are discarded, and
-!                       hence not aliased into lower frequencies.
+!           sampling    (1) The output grids are N by N (default).
+!                       (2) The output grids are N by 2N.
 !           lmax_calc   The maximum spherical harmonic degree to evaluate
 !                       the coefficients up to.
 !           omega       Angular rotation rate of the planet.

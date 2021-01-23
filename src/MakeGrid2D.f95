@@ -32,7 +32,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 !                           (2) Schmidt
 !                           (3) unnormalized
 !                           (4) orthonormalized
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           f           Flattening of the reference ellipsoid (a-c)/a. If
 !                       included, this ellipsoid will be subtracted from
@@ -68,7 +68,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only:  PlmBar, PlBar, PlmSchmidt, PlSchmidt, PLegendreA, &
-                        PLegendre, PlmON, PlON, CSPHASE_DEFAULT
+                        PLegendre, PlmON, PlON
     use ftypes
 
     implicit none
@@ -94,7 +94,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
     if (present(south)) temp = temp + 1
     if (present(east)) temp = temp + 1
     if (present(west)) temp = temp + 1
-    
+
     if (temp /= 0 .and. temp /= 4) then
         print*, "Error --- MakeGrid2d"
         print*, "The optional parameters NORTH, SOUTH, EAST, and WEST " // &
@@ -193,7 +193,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 
             end if
         else
-            phase = CSPHASE_DEFAULT
+            phase = 1
 
         end if
 

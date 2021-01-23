@@ -32,7 +32,7 @@ subroutine SHMultiTaperSE(mtse, sd, cilm, lmax, tapers, taper_order, lmaxt, &
 !           lon         Longitude to perform localized analysis (degrees).
 !           taper_wt    Weight to be applied to each direct spectral estimate.
 !                       This should sum to unity.
-!           csphase:    1: Do not include the phase factor of (-1)^m
+!           csphase:    1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           norm:       Normalization to be used when calculating Legendre
 !                       functions
@@ -68,7 +68,7 @@ subroutine SHMultiTaperSE(mtse, sd, cilm, lmax, tapers, taper_order, lmaxt, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only:  SHPowerSpectrum, SHRotateRealCoef, djpi2, &
-                        CSPHASE_DEFAULT, SHGLQ, SHExpandGLQ, MakeGridGLQ
+                        SHGLQ, SHExpandGLQ, MakeGridGLQ
     use ftypes
 
     implicit none
@@ -221,7 +221,7 @@ subroutine SHMultiTaperSE(mtse, sd, cilm, lmax, tapers, taper_order, lmaxt, &
         end if
 
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 

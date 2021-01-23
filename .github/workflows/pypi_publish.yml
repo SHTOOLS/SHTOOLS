@@ -55,6 +55,14 @@ jobs:
         python setup.py sdist
         twine upload dist/*
 
+    - name: Trigger a build on the SHTOOLS/build-shtools repo
+      run: |
+        curl -X POST \
+        https://api.github.com/repos/SHTOOLS/build-shtools/dispatches \
+        -H 'Accept: application/vnd.github.everest-preview+json' \
+        -u ${{ secrets.ACCESS_TOKEN }} \
+        --data '{"event_type": "ping", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+
     - name: Download tarball archive
       uses: carlosperate/download-file-action@v1.0.3
       id: download-tarball

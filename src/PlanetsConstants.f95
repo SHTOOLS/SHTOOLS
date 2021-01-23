@@ -8,7 +8,7 @@ module PlanetsConstants
 !   All rights reserved.
 !
 !-------------------------------------------------------------------------------
-    use ftypes
+    use ftypes, only: dp
 
     implicit none
 

@@ -1,3 +1,7 @@
+import numpy as _np
+
+
+@_np.vectorize
 def PlmIndex(l, m):
     """
     Compute the index of a array of Legendre functions corresponding to degree
@@ -9,15 +13,15 @@ def PlmIndex(l, m):
 
     Returns
     -------
-    index : integer
+    index : integer, ndarray
         Index of an array of associated Legendre functions corresponding to
         degree l and angular order m.
 
     Parameters
     ----------
-    l : integer
+    l : integer, array_like
         The spherical harmonic degree.
-    m : integer
+    m : integer, array_like
         The angular order.
 
     Notes

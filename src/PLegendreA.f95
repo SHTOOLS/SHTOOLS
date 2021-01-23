@@ -11,7 +11,7 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
 !           z           [-1, 1], cos(colatitude) or sin(latitude).
 !
 !       OPTIONAL (IN)
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !
 !       OUT
@@ -39,7 +39,6 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: CSPHASE_DEFAULT
     use ftypes
 
     implicit none
@@ -112,7 +111,7 @@ subroutine PLegendreA(p, lmax, z, csphase, exitstatus)
         end if
 
     else
-            phase = CSPHASE_DEFAULT
+            phase = 1
 
     end if
 

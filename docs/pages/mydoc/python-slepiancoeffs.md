@@ -3,7 +3,7 @@ title: "SlepianCoeffs class"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: python-slepiancoeffs.html
-summary: 
+summary: A class for Slepian expansion coefficients. 
 toc: true
 folder: mydoc
 ---

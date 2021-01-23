@@ -3,7 +3,7 @@ title: "SHTensor class"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: python-shtensor.html
-summary: 
+summary: Classes for the gravity and magnetic field tensors and eigenvalues.
 toc: true
 folder: mydoc
 ---
