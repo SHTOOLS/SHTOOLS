@@ -14,7 +14,7 @@ Compute the gradient of a scalar function and return grids of the two horizontal
 ## Usage
 
 ```python
-`theta`, `phi` = MakeGravGridDH (`cilm`, [`lmax`, `sampling`, `lmax_calc`, `extend`])
+`theta`, `phi` = MakeGradientDH (`cilm`, [`lmax`, `sampling`, `lmax_calc`, `extend`])
 ```
 
 ## Returns
