@@ -11,7 +11,13 @@ FFTW = -lfftw3 -lm
 LAPACK = -llapack
 BLAS = -lblas
 
-LIB = -L $(LIBPATH) -l$(LIBNAME) -lgfortran -ldl $(FFTW) $(LAPACK) $(BLAS)
+ifeq ($(findstring g++,$(CXX)),g++)
+	LFORTRAN = -lgfortran
+else ifeq ($(findstring icpc,$(CXX)),icpc)
+	LFORTRAN = -lifcore
+endif
+
+LIB = -L $(LIBPATH) -l$(LIBNAME) $(LFORTRAN) -ldl $(FFTW) $(LAPACK) $(BLAS)
 
 all : test
 
