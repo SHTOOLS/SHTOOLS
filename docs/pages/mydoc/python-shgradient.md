@@ -3,7 +3,7 @@ title: "SHGradient class"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: python-shgradient.html
-summary: A class for the horizontal components of the gradient of a scalar.
+summary: A class for the horizontal components of the gradient of a scalar function.
 toc: true
 folder: mydoc
 ---
@@ -22,7 +22,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 | Initialization method | Description |
 | --------------------- | ----------- |
-| `x = SHGradient.gradient()` | Initialize using an SHCoeffs class instance. |
+| `x = SHCoeffs.gradient()` | Initialize using an SHCoeffs class instance. |
 
 ## Class attributes
 
