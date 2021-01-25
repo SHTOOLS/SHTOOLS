@@ -24,7 +24,7 @@ folder: mydoc
 * Added the  optional attribute `name` to the coefficient classes `SHGrid`, `SHGravCoeffs`, `SHMagCoeffs` and `SlepianCoeffs`. All datasets now explicity set `name` to the function call of the dataset.
 * Moved the file `shtools.h` from `src/` to `include/` and updated the Makefiles accordingly.
 
-M. A. Wieczorek, M. Meschede, E. Sales de Andrade, A. Corbin, I. Oshchepkov, B. Xu, and A. Walker, A. Hattori, S. Schröder, K. Leinweber, A. Vasishta (2020). SHTOOLS: Version 4.7.1, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, A. Corbin, I. Oshchepkov, B. Xu, and A. Walker, A. Hattori, S. Schröder, K. Leinweber, A. Vasishta (2021). SHTOOLS: Version 4.8, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
 
 ## Version 4.7.1
 
