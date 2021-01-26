@@ -2,7 +2,9 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will rotate a set of real spherical harmonic coefficients
-!   corresponding to the angles listed in the input array x.
+!   corresponding to the angles listed in the input array x. The coefficients
+!   must be 4pi normalized and exclude the Condon-Shortley phase factor of
+!   (-1)^m.
 !
 !   The rotation of a coordinate system or body can be viewed in two
 !   complementary ways involving three successive rotations. Both methods have
@@ -36,7 +38,8 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
 !
 !       IN
 !           cilm        Real "geodesy" normalized spherical harmonic
-!                       coefficients with dimension (2, lmax+1, lmax+1).
+!                       coefficients excluding the Condon-Shortley phase factor
+!                       with dimension (2, lmax+1, lmax+1).
 !           x           Array or rotation angles in radians.
 !           lmax        Maximum spherical harmonic degree.
 !           dj          Rotation matrix with dimension (lmax+1, lmax+1, lmax+1).
@@ -64,16 +67,16 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
 !
 !-------------------------------------------------------------------------------
     use SHTOOLS, only: SHrtoc, SHctor, SHcilmtocindex, SHcindextocilm, &
-                       SHRotateCoef, CSPHASE_DEFAULT
+                       SHRotateCoef
     use ftypes
 
     implicit none
 
     real(dp), intent(in) :: cilm(:,:,:), x(:), dj(:,:,:)
     real(dp), intent(out) :: cilmrot(:,:,:)
-    integer, intent(in) :: lmax
-    integer, intent(out), optional :: exitstatus
-    integer :: astat(3)
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: astat(3)
     real(dp), allocatable :: ccilm(:,:,:), cof(:,:), rcof(:,:)
 
     if (present(exitstatus)) exitstatus = 0
@@ -150,25 +153,13 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
 
     end if
 
-    if (CSPHASE_DEFAULT == 1) then
-        ! Convert geodesy coefficients to Varshalovich et al. complex form
-        if (present(exitstatus)) then
-            call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=1, &
-                        exitstatus=exitstatus)
-            if (exitstatus /= 0) return
-        else
-            call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=1)
-        end if
-
+    ! Convert geodesy coefficients to Varshalovich et al. complex form
+    if (present(exitstatus)) then
+        call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=1, &
+                    exitstatus=exitstatus)
+        if (exitstatus /= 0) return
     else
-        if (present(exitstatus)) then
-            call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=0, &
-                        exitstatus=exitstatus)
-            if (exitstatus /= 0) return
-        else
-            call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=0)
-        end if
-
+        call SHrtoc(cilm, ccilm, degmax=lmax, convention=2, switchcs=1)
     end if
 
     if (present(exitstatus)) then
@@ -196,25 +187,13 @@ subroutine SHRotateRealCoef(cilmrot, cilm, lmax, x, dj, exitstatus)
 
     end if
 
-    if (CSPHASE_DEFAULT == 1) then
-        ! Convert Varshalovich et al complex coefficients back to geodesy form
-        if (present(exitstatus)) then
-            call SHctor(ccilm, cilmrot, degmax=lmax, convention=2, switchcs=1, &
-                        exitstatus=exitstatus)
-            if (exitstatus /= 0) return
-        else
-            call SHctor(ccilm, cilmrot, degmax=lmax, convention=2, switchcs=1)
-
-        end if
-
+    ! Convert Varshalovich et al complex coefficients back to geodesy form
+    if (present(exitstatus)) then
+        call SHctor(ccilm, cilmrot, degmax=lmax, convention=2, switchcs=1, &
+                    exitstatus=exitstatus)
+        if (exitstatus /= 0) return
     else
-        if (present(exitstatus)) then
-            call SHctor(ccilm, cilmrot, degmax=lmax, convention=2, switchcs=0, &
-                        exitstatus=exitstatus)
-            if (exitstatus /= 0) return
-        else
-            call SHctor(ccilm, cilmrot, degmax=lmax, convention=2, switchcs=0)
-        end if
+        call SHctor(ccilm, cilmrot, degmax=lmax, convention=2, switchcs=1)
 
     end if
 

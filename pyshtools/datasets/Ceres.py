@@ -37,7 +37,8 @@ def CERES18D(lmax=18):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   r0_index=0, gm_index=1, errors=True)
+                                   r0_index=0, gm_index=1, errors=True,
+                                   name='CERES18D')
 
 
 __all__ = ['CERES18D']

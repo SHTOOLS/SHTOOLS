@@ -72,13 +72,13 @@ subroutine SHReturnTapersM(theta0, lmax, m, tapers, eigenvalues, shannon, &
     implicit none
 
     real(dp), intent(in) :: theta0
-    integer, intent(in) :: lmax, m
+    integer(int32), intent(in) :: lmax, m
     real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
     real(dp), intent(out), optional :: shannon
-    integer, intent(in), optional :: degrees(:)
-    integer, intent(out), optional :: ntapers
-    integer, intent(out), optional :: exitstatus
-    integer :: l, n, n_int, j, i, astat(3), ind(lmax+1), use_dg82
+    integer(int32), intent(in), optional :: degrees(:)
+    integer(int32), intent(out), optional :: ntapers
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: l, n, n_int, j, i, astat(3), ind(lmax+1), use_dg82
     real(dp) :: eval(lmax+1), pi, upper, lower, zero(lmax+1), w(lmax+1), h
     real(dp), allocatable :: evec(:,:), dllmtri(:,:), p(:), dllm(:,:)
 

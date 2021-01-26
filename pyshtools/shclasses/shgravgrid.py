@@ -138,7 +138,7 @@ class SHGravGrid(object):
                        self.extend, self.lmax, self.lmax_calc, self.gm,
                        self.a, self.f, repr(self.omega),
                        repr(self.normal_gravity), repr(self.units),
-                       repr(self.pot_units), repr(self.pot_epoch)))
+                       repr(self.pot_units), repr(self.epoch)))
         return str
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],
@@ -689,7 +689,7 @@ class SHGravGrid(object):
              ylabel='Latitude', colorbar='bottom', cmap='viridis',
              cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
              cb_tick_interval=None, grid=False, axes_labelsize=9,
-             tick_labelsize=8, show=True, ax=None, cb_offset=None,
+             tick_labelsize=8, show=True, cb_offset=None,
              cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
              cb_width=None, fname=None):
         """
@@ -702,7 +702,7 @@ class SHGravGrid(object):
                 ylabel, colorbar, cmap, cmap_limits, cmap_reverse,
                 cb_triangles, cb_ylabel, cb_tick_interval,
                 cb_minor_tick_interval, cb_offset, cb_width, grid,
-                axes_labelsize, tick_labelsize, ax, show, fname])
+                axes_labelsize, tick_labelsize, show, fname])
 
         Parameters
         ----------
@@ -758,8 +758,6 @@ class SHGravGrid(object):
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        ax : matplotlib axes object, optional, default = None
-            A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None

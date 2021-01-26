@@ -92,13 +92,13 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
     implicit none
 
-    integer, intent(in) :: j2, j3, m1, m2, m3
-    integer, intent(out) :: jmin, jmax
+    integer(int32), intent(in) :: j2, j3, m1, m2, m3
+    integer(int32), intent(out) :: jmin, jmax
     real(dp), intent(out) :: w3j(:)
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: wnmid, wpmid, scalef, denom, rs(j2+j3+1), &
                 wl(j2+j3+1), wu(j2+j3+1), xjmin, yjmin, yjmax, zjmax, xj, zj
-    integer :: j, jnum, jp, jn, k, flag1, flag2, jmid
+    integer(int32) :: j, jnum, jp, jn, k, flag1, flag2, jmid
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -420,15 +420,16 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
 
     CONTAINS
-    
-        integer function jindex(j)
-            integer :: j
+
+        function jindex(j)
+            integer(int32) :: jindex
+            integer(int32) :: j
             jindex = j - jmin + 1
         end function jindex
 
         function a(j)
             real(dp) :: a
-            integer :: j
+            integer(int32) :: j
             a = (dble(j)**2 - dble(j2 - j3)**2) * (dble(j2 + j3 + 1)**2 &
                             - dble(j)**2) * (dble(j)**2 - dble(m1)**2)
             a = sqrt(a)
@@ -436,7 +437,7 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
         function y(j)
             real(dp) :: y
-            integer :: j
+            integer(int32) :: j
             y = -dble(2 * j + 1) * &
                 (dble(m1) * (dble(j2) * dble(j2 + 1) &
                 - dble(j3) * dble(j3 + 1)) &
@@ -445,19 +446,19 @@ subroutine Wigner3j(w3j, jmin, jmax, j2, j3, m1, m2, m3, exitstatus)
 
         function x(j)
             real(dp) :: x
-            integer :: j
+            integer(int32) :: j
             x = dble(j) * a(j+1)
         end function x
 
         function z(j)
             real(dp) :: z
-            integer :: j
+            integer(int32) :: j
             z = dble(j+1) * a(j)
         end function z
 
         subroutine normw3j
             real(dp) :: norm
-            integer :: j
+            integer(int32) :: j
 
             norm = 0.0_dp
 

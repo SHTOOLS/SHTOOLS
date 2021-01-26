@@ -49,12 +49,12 @@ subroutine PlON_d1(p, dp1, lmax, z, exitstatus)
 
     implicit none
 
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) :: p(:), dp1(:)
     real(dp), intent(in) :: z
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: pm2, pm1, pl, sinsq, pi
-    integer :: l
+    integer(int32) :: l
 
     if (present(exitstatus)) exitstatus = 0
 

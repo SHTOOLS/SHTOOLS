@@ -3,7 +3,7 @@ title: "SHGrid class"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: python-shgrid.html
-summary: 
+summary: Classes for global gridded data.
 toc: true
 folder: mydoc
 ---

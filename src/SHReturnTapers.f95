@@ -68,15 +68,15 @@ subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order, &
     implicit none
 
     real(dp), intent(in) :: theta0
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
-    integer, intent(out) :: taper_order(:)
-    integer, intent(in), optional :: degrees(:)
-    integer, intent(out), optional :: exitstatus
-    integer :: m, nt, nt2, n, i, j, jj(1), astat(8)
+    integer(int32), intent(out) :: taper_order(:)
+    integer(int32), intent(in), optional :: degrees(:)
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: m, nt, nt2, n, i, j, jj(1), astat(8)
     real(dp), allocatable :: eval(:), evec(:, :), tapers_unordered(:,:), &
                              eval_unordered(:)
-    integer, allocatable :: m_unordered(:)
+    integer(int32), allocatable :: m_unordered(:)
 
     if (present(exitstatus)) exitstatus = 0
 

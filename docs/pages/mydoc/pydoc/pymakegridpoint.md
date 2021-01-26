@@ -9,7 +9,7 @@ toc: false
 editdoc: pydoc
 ---
 
-Evaluate a real function expressed in real spherical harmonics at a single point.
+Evaluate a real function expressed in real spherical harmonics at a set of points.
 
 ## Usage
 
@@ -19,7 +19,7 @@ Evaluate a real function expressed in real spherical harmonics at a single point
 
 ## Returns
 
-`value` : float
+`value` : float, ndarray
 :   Value of the function at (`lat`, `lon`).
 
 ## Parameters
@@ -27,24 +27,24 @@ Evaluate a real function expressed in real spherical harmonics at a single point
 `cilm` : float, dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The real spherical harmonic coefficients of the function. The coefficients `C0lm` and `C1lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm[0,1,m]` and `Slm=cilm[1,l,m]`.
 
-`lat` : float
-:   The latitude of the point in DEGREES.
+`lat` : float, array_like
+:   The geocentric latitude of the point in degrees.
 
-`lon` : float 
-:   The longitude of the point in DEGREES.
+`lon` : float, array_like
+:   The longitude of the point in degrees.
 
-`lmax` : optional, integer, default = `lmaxin`
+`lmax` : integer, array_like, optional, default = `lmaxin`
 :   The maximum spherical harmonic degree used in evaluating the function.
 
-`norm` : optional, integer, default = 1
+`norm` : integer, array_like, optional, default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : optional, integer, default = 1
+`csphase` : integer, array_like, optional, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`dealloc` : optional, integer, default = 0
+`dealloc` : integer, array_like, optional, default = 0
 :   0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.
 
 ## Description
 
-`MakeGridPoint` will expand a function expressed in spherical harmonics at a single point. The input latitude and longitude are in degrees, and the maximum degree used in evaluating the function is the smaller of `lmaxin` and `lmax`. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
+`MakeGridPoint` will expand a function expressed in spherical harmonics at a given set of points. The input latitudes and longitudes are in degrees, and the maximum degree used in evaluating the function is the smaller of `lmaxin` and `lmax`. The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.

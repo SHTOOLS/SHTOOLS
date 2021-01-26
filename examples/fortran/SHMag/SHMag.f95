@@ -23,7 +23,7 @@ program SHMag
     real(dp) :: header(4), interval, r0, a, f, mpr, z, timein, timeout, temp
     real(dp), allocatable :: glm(:,:,:), rad(:,:), phi(:,:), theta(:,:), &
                              total(:,:), pot(:,:)
-    integer :: lmax, lmaxp, n, n_out, nlong, nlat, i, j, astat(6), sampling
+    integer(int32) :: lmax, lmaxp, n, n_out, nlong, nlat, i, j, astat(6), sampling
 
     infile = "../../ExampleDataFiles/FSU_mars90.sh"
 

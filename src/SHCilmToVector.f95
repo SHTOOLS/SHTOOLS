@@ -36,9 +36,9 @@ subroutine SHCilmToVector(cilm, vector, lmax, exitstatus)
 
     real(dp), intent(in) :: cilm(:,:,:)
     real(dp), intent(out) :: vector(:)
-    integer, intent(in) :: lmax
-    integer, intent(out), optional :: exitstatus
-    integer :: i, l, m
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: i, l, m
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -142,9 +142,9 @@ subroutine SHVectorToCilm(vector, cilm, lmax, exitstatus)
 
     real(dp), intent(out) :: cilm(:,:,:)
     real(dp), intent(in) :: vector(:)
-    integer, intent(in) :: lmax
-    integer, intent(out), optional :: exitstatus
-    integer :: k, i, l, m
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: k, i, l, m
 
     if (present(exitstatus)) exitstatus = 0
 

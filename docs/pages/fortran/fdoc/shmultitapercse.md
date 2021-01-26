@@ -26,25 +26,25 @@ call SHMultiTaperCSE (`mtse`, `sd`, `cilm1`, `lmax1`, `cilm2`, `lmax2`, `tapers`
 `cilm1` : input, real(dp), dimension (2, `lmax1`+1, `lmax1`+1)
 :   The spherical harmonic coefficients of the first function.
 
-`lmax1` : input, integer
+`lmax1` : input, integer(int32)
 :   The spherical harmonic bandwidth of `cilm1`.
 
 `cilm2` : input, real(dp), dimension (2, `lmax2`+1, `lmax2`+1)
 :   The spherical harmonic coefficients of the second function.
 
-`lmax2` : input, integer
+`lmax2` : input, integer(int32)
 :   The spherical harmonic bandwidth of `cilm2`.
 
 `tapers` : input, real(dp), dimension (`lmaxt`+1, `k`)
 :   An array of the `k` windowing functions, arranged in columns, obtained from a call to `SHReturnTapers`. Each window has non-zero coefficients for a single angular order that is specified in the array `taper_order`.
 
-`taper_order` : input, integer, dimension (`k`)
+`taper_order` : input, integer(int32), dimension (`k`)
 :   An array containing the angular orders of the spherical harmonic coefficients in each column of the array `tapers`.
 
-`lmaxt` : input, integer
+`lmaxt` : input, integer(int32)
 :   The spherical harmonic bandwidth of the windowing functions in the array `tapers`.
 
-`k` : input, integer
+`k` : input, integer(int32)
 :   The number of tapers to be utilized in performing the multitaper spectral analysis.
 
 `alpha` : input, optional, real(dp), dimension (3)
@@ -59,13 +59,13 @@ call SHMultiTaperCSE (`mtse`, `sd`, `cilm1`, `lmax1`, `cilm2`, `lmax2`, `tapers`
 `taper_wt` : input, optional, real(dp), dimension (`k`)
 :   The weights used in calculating the multitaper spectral estimates and standard error. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
 	
-`norm` : input, optional, integer, default = 1
+`norm` : input, optional, integer(int32), default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : input, optional, integer, default = 1
+`csphase` : input, optional, integer(int32), default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description

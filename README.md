@@ -4,7 +4,7 @@
 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.592762.svg)](https://doi.org/10.5281/zenodo.592762)
 [![Paper](https://img.shields.io/badge/paper-10.1029/2018GC007529-orange.svg)](https://doi.org/10.1029/2018GC007529)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/SHTOOLS/SHTOOLS/master?filepath=examples%2Fnotebooks%2F)
-[![Chat on matrix](https://img.shields.io/badge/chat-on_[matrix]-4bb596.svg)](https://matrix.to/#/!SrkiFczPSWmYrlSNYF:matrix.org?via=matrix.org)
+[![Chat on matrix](https://img.shields.io/badge/chat-on_[matrix]-4bb596.svg)](https://matrix.to/#/#pyshtools:matrix.org?via=matrix.org&via=gitter.im)
 [![Chat at gitter](https://badges.gitter.im/SHTOOLS/SHTOOLS.svg)](https://gitter.im/SHTOOLS/SHTOOLS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Twitter](https://img.shields.io/twitter/follow/pyshtools.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=pyshtools)
 
@@ -34,32 +34,28 @@ spherical harmonic transforms, multitaper spectral analyses, expansions of funct
 ### INSTALLATION ###
 #### pyshtools (for Python) ####
 
-Binary install using `pip` or `conda`:
+Install using `conda`:
 ```bash
-pip install pyshtools
-pip install --upgrade pyshtools  # to upgrade a pre-existing installation
 conda install -c conda-forge pyshtools  # Linux and macOS only
 conda update -c conda-forge pyshtools  # to upgrade a pre-existing installation
 ```
 
-Build from source:
+Install using `pip`:
 ```bash
-pip install pyshtools --no-binary pyshtools
-```
-
-Install the develop branch from source:
-```bash
-pip install git+https://github.com/SHTOOLS/SHTOOLS@develop
+pip install pyshtools
+pip install --upgrade pyshtools  # to upgrade a pre-existing installation
+pip install pyshtools --no-binary pyshtools  # build from source
+pip install git+https://github.com/SHTOOLS/SHTOOLS@develop  # install the develop branch from source
 ```
 
 For developers, install the requirements
 ```bash
-# Linux
-sudo apt-get install libblas-dev liblapack-dev g++ gfortran libfftw3-dev tcsh
+# Linux: install gfortran, fftw3, blas, and lapack
+sudo apt-get install g++ gfortran libfftw3-dev libblas-dev liblapack-dev
 # macOS: install fftw using brew or macports
 brew install fftw
 sudo port install fftw-3
-# macOS: for LAPACK, link to the system '-framework Accelerate'
+# macOS: for LAPACK, link to the system '-framework Accelerate' or install openblas
 ```
 
 then clone the shtools repo and install manually:
@@ -71,20 +67,21 @@ pip install -e .  # install into the shtools folder and link to the active pytho
 ```
 
 #### SHTOOLS (for Fortran 95) ####
-Clone the shtools repo, and then execute one (or both) of the following commands in the shtools directory:
+
+Install using the [brew](http://brew.sh/) package manager (macOS, linux, windows):
+```bash
+brew install shtools
+```
+
+Install using the [macports](https://www.macports.org/) package manager (macOS)
+```bash
+sudo port install shtools
+```
+
+Install from source. Clone or download the shtools repo, and then execute one (or both) of the following commands in the shtools directory:
 ```bash
 make fortran
 make fortran-mp  # for OpenMP Fortran routines
-```
-Alternatively, use the [brew](http://brew.sh/) package manager (macOS)
-```bash
-brew tap shtools/shtools
-brew install shtools
-brew install shtools --with-openmp  # to install shtools with the OpenMP components.
-```
-or the [macports](https://www.macports.org/) package manager (macOS)
-```bash
-sudo port install shtools
 ```
 
 Further installation instructions and options can be found in the [web documentation](https://shtools.github.io/SHTOOLS/).
@@ -93,7 +90,7 @@ Further installation instructions and options can be found in the [web documenta
 
 SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is written in Fortran 95, and Python wrappers and dedicated classes allow simple access to the fortran-compiled routines. A variety of Python tutorials and guides are included that demonstrate the major features of the library.
 
-To get started, check out the following Python tutorials:
+To get started, click on the following Python tutorials and then run them interactively in Binder:
 
 * [Spherical harmonic coefficients and grids](https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/grids-and-coefficients.ipynb)
 * [Localization windows and spectral analysis](https://nbviewer.jupyter.org/github/SHTOOLS/SHTOOLS/blob/master/examples/notebooks/localized-spectral-analysis.ipynb)

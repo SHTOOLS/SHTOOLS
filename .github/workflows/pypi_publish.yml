@@ -13,27 +13,32 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Set env
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
     - name: Setup Miniconda
-      uses: conda-incubator/setup-miniconda@v1
+      uses: conda-incubator/setup-miniconda@v2
       with:
+        python-version: 3.8
         channels: conda-forge
         auto-update-conda: true
         miniconda-version: "latest"
+        activate-environment: pypi
 
     - name: Set up Conda environment
       shell: bash -l {0}
       run: |
         conda config --set always_yes yes --set changeps1 no
-        conda create -n pypi python=3.8 \
-                             fftw \
-                             liblapack \
-                             openblas \
-                             numpy \
-                             setuptools \
-                             pypandoc \
-                             versioneer \
-                             twine
-        conda activate pypi
+        conda install -q -n pypi python=3.8 \
+                                 fftw \
+                                 liblapack \
+                                 openblas \
+                                 numpy \
+                                 setuptools \
+                                 pypandoc \
+                                 versioneer \
+                                 twine
+        conda list -n pypi
 
     - name: Build and publish
       env:
@@ -44,6 +49,29 @@ jobs:
         TWINE_USERNAME: ${{ secrets.PYPITEST_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPITEST_PASSWORD }}
         TWINE_REPOSITORY_URL: 'https://test.pypi.org/legacy/'
+      shell: bash -l {0}
       run: |
+        conda env list
         python setup.py sdist
         twine upload dist/*
+
+    - name: Trigger a build on the SHTOOLS/build-shtools repo
+      run: |
+        curl -X POST \
+        https://api.github.com/repos/SHTOOLS/build-shtools/dispatches \
+        -H 'Accept: application/vnd.github.everest-preview+json' \
+        -u ${{ secrets.ACCESS_TOKEN }} \
+        --data '{"event_type": "ping", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+
+    - name: Download tarball archive
+      uses: carlosperate/download-file-action@v1.0.3
+      id: download-tarball
+      with:
+        file-url: 'https://github.com/SHTOOLS/SHTOOLS/archive/${{ env.RELEASE_VERSION }}.tar.gz'
+
+    - name: Upload tarball as release asset
+      uses: alexellis/upload-assets@0.2.2
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      with:
+        asset_paths: '["${{ steps.download-tarball.outputs.file-path }}"]'

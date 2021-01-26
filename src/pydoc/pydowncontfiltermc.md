@@ -1,6 +1,6 @@
 # DownContFilterMC()
 
-Calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree.
+Compute the minimum-curvature downward continuation filter of Wieczorek and Phillips (1998).
 
 # Usage
 
@@ -10,28 +10,28 @@ Calculate a minimum-curvature downward continuation filter for a given spherical
 
 # Returns
 
-`wl` : float
+`wl` : float, ndarray
 :   The amplitude of the downward continuation filter.
 
 # Parameters
 
-`l` : integer
+`l` : integer, array_like
 :   The spherical harmonic degree.
 
-`half` : integer
+`half` : integer, array_like
 :   The spherical harmonic degree where the filter is equal to 0.5.
 
-`r` : float
+`r` : float, array_like
 :   The reference radius of the gravitational field.
 
-`d` : float
+`d` : float, array_like
 :   The radius of the surface to downward continue to.
 
 # Description
 
-`DownContFilterMC` will calculate a minimum-curvature downward continuation filter for a given spherical harmonic degree `l`. The input parameters include `half`, which is the degree where the filter is equal to 0.5, and `r` and `d`, which are the reference radius of the gravitational field and the radius of the surface to downward continue to, respectively. 
+`DownContFilterMC` will calculate the minimum-curvature downward continuation filter of Wieczorek and Phillips (1998) as a function of spherical harmonic degree `l`. The input parameters include `half`, which is the degree where the filter is equal to 0.5, and `r` and `d`, which are the reference radius of the gravitational field and the radius of the surface to downward continue to, respectively.
 
-A simple analytic expression exists for the downward continuation filter, following the methodology of Wieczorek and Phillips (1998), only when taking the first, third, fifth, and so on, derivatives of their equation 17. For this minimum-curvature filter, which corresponds to the second derivative, the form has simply been generalized using the solutions of the odd derivatives. This may or may not turn out to be exact. In any case, the form of this filter is numerically very similar to the Cartesian minimum-curvature filter of Phipps Morgan and Blackman (1993).
+Following the methodology of Wieczorek and Phillips (1998), a simple analytic expression exists for the downward continuation filter only when taking the first, third, fifth, and so on, derivatives of their equation 17. For this minimum-curvature filter, which corresponds to the second derivative, the form has simply been generalized using the solutions of the odd derivatives. The form of this filter is numerically very similar to the Cartesian minimum-curvature filter of Phipps Morgan and Blackman (1993).
 
 # References
 

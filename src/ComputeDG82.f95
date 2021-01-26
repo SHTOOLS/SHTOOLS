@@ -41,10 +41,10 @@ subroutine ComputeDG82(DG82, lmax, m, theta0, exitstatus)
 
     real(dp), intent(out) :: DG82(:,:)
     real(dp), intent(in) :: theta0
-    integer, intent(in) :: lmax, m
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in) :: lmax, m
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: x
-    integer :: i, n
+    integer(int32) :: i, n
 
     if (present(exitstatus)) exitstatus = 0
 

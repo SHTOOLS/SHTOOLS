@@ -45,12 +45,12 @@ subroutine ComputeDm(dllm, lmax, m, theta0, degrees, exitstatus)
 
     real(dp), intent(out) :: dllm(:,:)
     real(dp), intent(in) :: theta0
-    integer, intent(in) :: lmax, m
-    integer, intent(in), optional :: degrees(:)
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in) :: lmax, m
+    integer(int32), intent(in), optional :: degrees(:)
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: upper, zero(2*lmax+1), w(2*lmax+1), x
     real(dp), allocatable :: plm(:)
-    integer :: l, lp, i, n, astat
+    integer(int32) :: l, lp, i, n, astat
 
     if (present(exitstatus)) exitstatus = 0
 

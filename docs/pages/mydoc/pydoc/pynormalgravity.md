@@ -19,12 +19,12 @@ Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates 
 
 ## Returns
 
-`value` : float
+`value` : float, ndarray
 :   The normal gravity in SI units.
 
 ## Parameters
 
-`geocentriclat`: float 
+`geocentriclat`: float, array_like
 :   Geocentric latitude in degrees.
 
 `gm` : float

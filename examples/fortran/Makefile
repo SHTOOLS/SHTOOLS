@@ -51,7 +51,7 @@ EXAMPLES = \
 
 all: $(EXAMPLES)
 
-%: %.f95 $(LIBPATH)/lib$(LIBNAME).a
+%: %.f95
 	$(F95) $(F95FLAGS) $< $(MODFLAG) -L$(LIBPATH) -l$(LIBNAME) $(FFTW) $(LAPACK) $(BLAS) -o $@
 
 run-fortran-tests: $(EXAMPLES)

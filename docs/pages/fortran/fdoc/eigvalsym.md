@@ -20,7 +20,7 @@ call EigValSym (`ain`, `n`, `eval`, `ul`)
 `ain` : input, real(dp), dimension (`n`, `n`)
 :   The input real symmetric matrix. By default, only the upper portion of the matrix is used.
 
-`n` : input, integer
+`n` : input, integer(int32)
 :   The rank of the matrix `ain`.
 
 `eval` : output, real(dp), dimension (`n`)

@@ -11,7 +11,7 @@ subroutine PLegendreA_d1(p, dp1, lmax, z, csphase, exitstatus)
 !           z           [-1, 1], cos(colatitude) or sin(latitude).
 !
 !       OPTIONAL (IN)
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !
 !       OUT
@@ -50,19 +50,18 @@ subroutine PLegendreA_d1(p, dp1, lmax, z, csphase, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: CSPHASE_DEFAULT
     use ftypes
 
     implicit none
 
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) :: p(:), dp1(:)
     real(dp), intent(in) :: z
-    integer, intent(in), optional :: csphase
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in), optional :: csphase
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: pm2, pm1, pmm, sinsq, sinsqr, fact, plm
-    integer :: k, kstart, m, l, sdim
-    integer(int1) :: phase
+    integer(int32) :: k, kstart, m, l, sdim
+    integer(int32) :: phase
 
     if (present(exitstatus)) exitstatus = 0
 
@@ -148,7 +147,7 @@ subroutine PLegendreA_d1(p, dp1, lmax, z, csphase, exitstatus)
         end if
 
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 

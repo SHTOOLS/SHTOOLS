@@ -61,14 +61,14 @@ subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, &
 
     real(dp), intent(in) :: tapers(:,:), Sff(:)
     real(dp), intent(out) :: var_opt(:), var_unit(:)
-    integer, intent(in) :: l, lwin, kmax, taper_order(:)
+    integer(int32), intent(in) :: l, lwin, kmax, taper_order(:)
     real(dp), intent(out), optional :: weight_opt(:,:), unweighted_covar(:,:)
-    integer, intent(in), optional :: nocross
-    integer, intent(out), optional :: exitstatus
-    integer, parameter :: nb = 64
+    integer(int32), intent(in), optional :: nocross
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32), parameter :: nb = 64
     real(dp) :: Fij(kmax, kmax), ww(kmax), bb(kmax+1), MM(kmax+1, kmax+1), &
                 work((kmax+1)*nb)
-    integer :: i,j, m, mp, k, ipiv(kmax+1), info, lwork
+    integer(int32) :: i,j, m, mp, k, ipiv(kmax+1), info, lwork
     complex(dp) :: temp1
 #ifdef LAPACK_UNDERSCORE
 #define DSYSV DSYSV_

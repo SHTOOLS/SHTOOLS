@@ -11,7 +11,7 @@ Return a pseudo-Gaussian deviate of zero mean and unit variance.
 `rg` : output, real(dp)
 :   The radom Gaussian deviate.
 
-`seed` : input/output, integer
+`seed` : input/output, integer(int32)
 :   Input a negative integer to (re-)initialize the random number generator. Afterwards, this argument should not be modified.
 
 # Description

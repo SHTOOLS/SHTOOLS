@@ -16,7 +16,7 @@ program TestSHRotate
     real(dp) :: x(3), pi, interval, alpha, beta, gamma
     real(dp), allocatable :: cilm1(:,:,:), cilm2(:,:,:), dj(:,:,:), grid(:,:)
     character(120) :: outsh, outgrid, infile
-    integer :: lmax, nlat, nlong, i, j, l, m, bodycoord, astat(4)
+    integer(int32) :: lmax, nlat, nlong, i, j, l, m, bodycoord, astat(4)
 
     pi = acos(-1.0_dp)
 

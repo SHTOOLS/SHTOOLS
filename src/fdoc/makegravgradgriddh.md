@@ -11,7 +11,7 @@ call MakeGravGradGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `vxx`, `vyy`, `vz
 `cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The real 4-pi normalized gravitational potential spherical harmonic coefficients. The coefficients `c1lm` and `c2lm` refer to the cosine and sine coefficients, respectively, with `c1lm=cilm(1,l+1,m+1)` and `c2lm=cilm(2,l+1,m+1)`.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The maximum spherical harmonic degree of the coefficients `cilm`. This determines the number of samples of the output grids, `n=2lmax+2`, and the latitudinal sampling interval, `90/(lmax+1)`.
 
 `gm` : input, real(dp)
@@ -44,19 +44,19 @@ call MakeGravGradGridDH (`cilm`, `lmax`, `gm`, `r0`, `a`, `f`, `vxx`, `vyy`, `vz
 `vyz` : output, real(dp), dimension (nlat, nlong)
 :   A 2D equally sampled or equally spaced grid of the YZ component of the gravity tensor.
 
-`n` : output, integer
+`n` : output, integer(int32)
 :   The number of samples in latitude of the output grids. This is equal to `2lmax+2`.
 
-`sampling` : optional, input, integer, default = 1
+`sampling` : optional, input, integer(int32), default = 1
 :   If 1 (default) the output grids are equally sampled (`n` by `n`). If 2, the grids are equally spaced (`n` by 2`n`).
 
-`lmax_calc` : optional, input, integer
+`lmax_calc` : optional, input, integer(int32)
 :   The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to `lmax`.
 
-`extend` : input, optional, integer, default = 0
+`extend` : input, optional, integer(int32), default = 0
 :   If 1, compute the longitudinal band for 360 E and the latitudinal band for 90 S. This increases each of the dimensions of `griddh` by 1.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description

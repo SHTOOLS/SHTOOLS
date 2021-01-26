@@ -7,6 +7,7 @@ import matplotlib.pyplot as _plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 import xarray as _xr
+import tempfile as _tempfile
 
 from .. import shtools as _shtools
 
@@ -267,19 +268,21 @@ class SHGrid(object):
             temp.data[:, :] = a
         elif c is not None and b is None:
             for ilat, lat in enumerate(temp.lats()):
-                temp.data[ilat, :] = _np.sqrt(
-                    a**2 * _np.cos(_np.deg2rad(lat))**2 +
-                    c**2 * _np.sin(_np.deg2rad(lat))**2)
+                temp.data[ilat, :] = 1. / _np.sqrt(
+                    _np.cos(_np.deg2rad(lat))**2 / a**2 +
+                    _np.sin(_np.deg2rad(lat))**2 / c**2
+                    )
         else:
             if c is None:
                 c = b
             cos2 = _np.cos(_np.deg2rad(temp.lons()))**2
             sin2 = _np.sin(_np.deg2rad(temp.lons()))**2
             for ilat, lat in enumerate(temp.lats()):
-                temp.data[ilat, :] = _np.sqrt(
-                    a**2 * _np.cos(_np.deg2rad(lat))**2 * cos2 +
-                    b**2 * _np.cos(_np.deg2rad(lat))**2 * sin2 +
-                    c**2 * _np.sin(_np.deg2rad(lat))**2)
+                temp.data[ilat, :] = 1. / _np.sqrt(
+                    _np.cos(_np.deg2rad(lat))**2 * cos2 / a**2 +
+                    _np.cos(_np.deg2rad(lat))**2 * sin2 / b**2 +
+                    _np.sin(_np.deg2rad(lat))**2 / c**2
+                    )
 
         return temp
 
@@ -1110,7 +1113,8 @@ class SHGrid(object):
             Specify which axes should have ticks drawn and annotated. Capital
             letters plot the ticks and annotations, whereas small letters plot
             only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
-            and north boundaries of the plot.
+            and north boundaries of the plot, respectively. Alternatively, use
+            'L', 'B', 'R', and 'T' for left, bottom, right, and top.
         xlabel : str, optional, default = 'Longitude' or 'GLQ longitude index'
             Label for the longitude axis.
         ylabel : str, optional, default = 'Latitude' or 'GLQ latitude index'
@@ -1155,12 +1159,12 @@ class SHGrid(object):
             horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
-        titlesize : int, optional, default = None
-            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        titlesize : int, optional, default = None
+            The font size of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear. If the
             grid is complex, the real component of the grid will be plotted
@@ -1263,7 +1267,7 @@ class SHGrid(object):
                        cmap_reverse=cmap_reverse)
 
         if ax is None:
-            # fig.tight_layout(pad=0.5)
+            fig.tight_layout(pad=0.5)
             if show:
                 fig.show()
 
@@ -1279,7 +1283,8 @@ class SHGrid(object):
                 cmap_reverse=False, cmap_continuous=False, colorbar=None,
                 cb_triangles='both', cb_label=None, cb_ylabel=None,
                 cb_tick_interval=None, cb_minor_tick_interval=None,
-                cb_offset=None, titlesize=None, axes_labelsize=None,
+                cb_offset=None, shading=None, shading_azimuth=-45.,
+                shading_amplitude=1.0, titlesize=None, axes_labelsize=None,
                 tick_labelsize=None, horizon=60, offset=[None, None],
                 fname=None):
         """
@@ -1298,8 +1303,9 @@ class SHGrid(object):
                          cmap, cmap_limits, cmap_limits_complex, cmap_reverse,
                          cmap_continuous, colorbar, cb_triangles, cb_label,
                          cb_ylabel, cb_tick_interval, cb_minor_tick_interval,
-                         cb_offset, titlesize, axes_labelssize, tick_labelsize,
-                         horizon, offset, fname])
+                         cb_offset, shading, shading_azimuth,
+                         shading_amplitude, titlesize, axes_labelsize,
+                         tick_labelsize, horizon, offset, fname])
 
         Returns
         -------
@@ -1374,6 +1380,24 @@ class SHGrid(object):
         cb_offset : float or int, optional, default = None
             Offset of the colorbar from the map edge in points. If None,
             the offset will be calculated automatically.
+        shading : bool, str, or SHGrid instance, optional, default = None
+            Apply intensity shading to the image. The shading (with values
+            from -1 to 1) can be derived from the data by setting to True,
+            from an external netcdf file by supplying a filename, or from an
+            SHGrid class instance by supplying the name of the SHGrid. When
+            intensity shading is applied, the default behavior is to create a
+            gradient of the shading data. If it is not necessary to create a
+            gradient, shading_azimuth should be set to None. If shading is
+            None, no intensity shading will be applied.
+        shading_azimuth : float, optional, default = -45.
+            When applying intensity shading to the image, a gradient of the
+            shading data is computed using the supplied azimuth direction (in
+            degrees). If it is not necessary to create a gradient from the
+            shading data, shading_azimuth should be set to None. When shading
+            is set to True, a shading azimuth must be provided.
+        shading_amplitude : float, optional, default = 1.
+            The maximum amplitude of the intensity used in the shading, from
+            0 to 1.
         titlesize : int, optional, default = None
             The font size of the title.
         axes_labelsize : int, optional, default = None
@@ -1464,7 +1488,9 @@ class SHGrid(object):
             cmap_continuous=cmap_continuous, colorbar=colorbar,
             cb_triangles=cb_triangles, cb_label=cb_label, cb_ylabel=cb_ylabel,
             cb_tick_interval=cb_tick_interval, cb_offset=cb_offset,
-            cb_minor_tick_interval=cb_minor_tick_interval, titlesize=titlesize,
+            cb_minor_tick_interval=cb_minor_tick_interval, shading=shading,
+            shading_azimuth=shading_azimuth,
+            shading_amplitude=shading_amplitude, titlesize=titlesize,
             axes_labelsize=axes_labelsize, tick_labelsize=tick_labelsize,
             horizon=horizon, offset=offset)
 
@@ -1657,6 +1683,7 @@ class DHRealGrid(SHGrid):
             else:
                 axes = ax
 
+        # set tick intervals
         if tick_interval[0] is None:
             xticks = []
         else:
@@ -1730,27 +1757,27 @@ class DHRealGrid(SHGrid):
                 endpoint=True)
 
         # determine which ticks to plot
-        if 'W' in ticks:
+        if 'W' in ticks or 'L' in ticks:
             left, labelleft = True, True
-        elif 'w' in ticks:
+        elif 'w' in ticks or 'l' in ticks:
             left, labelleft = True, False
         else:
             left, labelleft = False, False
-        if 'S' in ticks:
+        if 'S' in ticks or 'B' in ticks:
             bottom, labelbottom = True, True
-        elif 's' in ticks:
+        elif 's' in ticks or 'b' in ticks:
             bottom, labelbottom = True, False
         else:
             bottom, labelbottom = False, False
-        if 'E' in ticks:
+        if 'E' in ticks or 'R' in ticks:
             right, labelright = True, True
-        elif 'e' in ticks:
+        elif 'e' in ticks or 'r' in ticks:
             right, labelright = True, False
         else:
             right, labelright = False, False
-        if 'N' in ticks:
+        if 'N' in ticks or 'T' in ticks:
             top, labeltop = True, True
-        elif 'n' in ticks:
+        elif 'n' in ticks or 't' in ticks:
             top, labeltop = True, False
         else:
             top, labeltop = False, False
@@ -1816,8 +1843,10 @@ class DHRealGrid(SHGrid):
             if cb_offset is None:
                 if colorbar in set(['left', 'right']):
                     offset = 0.15
-                    if (colorbar == 'left' and 'W' in ticks) or \
-                            (colorbar == 'right' and 'E' in ticks):
+                    if (colorbar == 'left' and
+                        ('W' in ticks or 'L' in ticks)) or \
+                            (colorbar == 'right' and
+                             ('E' in ticks or 'R' in ticks)):
                         offset += 2 * tick_labelsize / 72.
                     # add space for ylabel on left of plot only
                     if ylabel != '' and ylabel is not None and \
@@ -1898,9 +1927,10 @@ class DHRealGrid(SHGrid):
                     cmap_limits_complex=None, cmap_reverse=None,
                     cmap_continuous=None, colorbar=None, cb_triangles=None,
                     cb_label=None, cb_ylabel=None, cb_tick_interval=None,
-                    cb_minor_tick_interval=None, titlesize=None,
-                    axes_labelsize=None, tick_labelsize=None, horizon=None,
-                    offset=[None, None], cb_offset=None):
+                    cb_minor_tick_interval=None, shading=None,
+                    shading_azimuth=None, shading_amplitude=None,
+                    titlesize=None, axes_labelsize=None, tick_labelsize=None,
+                    horizon=None, offset=[None, None], cb_offset=None):
         """
         Plot projected data using pygmt.
         """
@@ -2023,15 +2053,50 @@ class DHRealGrid(SHGrid):
         if cmap_limits is None:
             cmap_limits = [self.min(), self.max()]
 
+        if shading is True:
+            shading_str = "+a{:}+nt{:}+m0".format(shading_azimuth,
+                                                  shading_amplitude)
+        elif type(shading) is str:
+            shading_str = shading
+            if shading_azimuth is not None:
+                shading_str += "+a{:}+nt{:}+m0".format(shading_azimuth,
+                                                       shading_amplitude)
+        elif isinstance(shading, SHGrid):
+            if self.data.shape != shading.data.shape:
+                raise ValueError('The input SHGrid used for shading '
+                                 'must have the same shape as the grid being '
+                                 'plotted. Shape of grid = {:}. '
+                                 .format(self.data.shape) +
+                                 'Shape of shading grid = {:}.'
+                                 .format(shading.data.shape)
+                                 )
+
+            f = _tempfile.NamedTemporaryFile(prefix='shtools_', suffix='.nc')
+            shading.to_netcdf(f.name)
+            shading_str = f.name
+            if shading_azimuth is not None:
+                shading_str += "+a{:}+nt{:}+m0".format(shading_azimuth,
+                                                       shading_amplitude)
+        else:
+            shading_str = None
+
         with _pygmt.config(FONT_TITLE=titlesize, FONT_LABEL=axes_labelsize,
                            FONT_ANNOT=tick_labelsize):
             _pygmt.makecpt(series=cmap_limits, cmap=cmap, reverse=cmap_reverse,
                            continuous=cmap_continuous)
             figure.shift_origin(xshift=xshift, yshift=yshift)
             figure.grdimage(self.to_xarray(), region=region,
-                            projection=proj_str, frame=frame)
+                            projection=proj_str, frame=frame,
+                            shading=shading_str)
             if colorbar is not None:
-                figure.colorbar(position=position, frame=cb_str)
+                if shading is not None:
+                    figure.colorbar(position=position, frame=cb_str,
+                                    I=shading_amplitude)
+                else:
+                    figure.colorbar(position=position, frame=cb_str)
+
+        if isinstance(shading, SHGrid):
+            f.close()
 
         return figure
 

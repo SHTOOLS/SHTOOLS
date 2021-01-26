@@ -5,7 +5,7 @@ subroutine SHRead(filename, cilm, lmax, skip, header, error, exitstatus)
 !   spherical harmonic coefficients. If the option "header"
 !   is specified, then the first Length(header) records of the
 !   spherical harmonic file will be retuned in the array header.
-!   
+!
 !   The file will be read until the end of the file is encountered
 !   or until the maximum length of cilm (as dimensioned in the calling
 !   program) is reached.
@@ -45,12 +45,12 @@ subroutine SHRead(filename, cilm, lmax, skip, header, error, exitstatus)
     implicit none
 
     character(*), intent(in) :: filename
-    integer, intent(out) :: lmax
+    integer(int32), intent(out) :: lmax
     real(dp), intent(out) :: cilm(:,:,:)
     real(dp), intent(out), optional :: header(:), error(:,:,:)
-    integer, intent(in), optional :: skip
-    integer, intent(out), optional :: exitstatus
-    integer :: l, m, stat, ll, mm, lmax2, lstart, headlen, fu
+    integer(int32), intent(in), optional :: skip
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: l, m, stat, ll, mm, lmax2, lstart, headlen, fu
 
     if (present(exitstatus)) exitstatus = 0
 

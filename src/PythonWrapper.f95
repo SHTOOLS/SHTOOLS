@@ -2,13 +2,13 @@
         use shtools, only: PlmBar
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
-        integer,intent(in) :: csphase
-        integer,intent(in) :: cnorm
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: cnorm
         call PlmBar(p,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
     end subroutine pyPlmBar
 
@@ -16,15 +16,15 @@
         use shtools, only: PlmBar_d1
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(in) :: dp1_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(in) :: dp1_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
         real(dp),dimension(dp1_d0),intent(out) :: dp1
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
-        integer,intent(in) :: csphase
-        integer,intent(in) :: cnorm
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: cnorm
         call PlmBar_d1(p,dp1,lmax,z,csphase=csphase,cnorm=cnorm,&
                        exitstatus=exitstatus)
     end subroutine pyPlmBar_d1
@@ -33,10 +33,10 @@
         use shtools, only: PlBar
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
         call PlBar(p,lmax,z,exitstatus=exitstatus)
     end subroutine pyPlBar
@@ -45,12 +45,12 @@
         use shtools, only: PlBar_d1
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(in) :: dp1_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(in) :: dp1_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
         real(dp),dimension(dp1_d0),intent(out) :: dp1
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
         call PlBar_d1(p,dp1,lmax,z,exitstatus=exitstatus)
     end subroutine pyPlBar_d1
@@ -59,13 +59,13 @@
         use shtools, only: PlmON
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
-        integer,intent(in) :: csphase
-        integer,intent(in) :: cnorm
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: cnorm
         call PlmON(p,lmax,z,csphase=csphase,cnorm=cnorm,exitstatus=exitstatus)
     end subroutine pyPlmON
 
@@ -73,15 +73,15 @@
         use shtools, only: PlmON_d1
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(in) :: dp1_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(in) :: dp1_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
         real(dp),dimension(dp1_d0),intent(out) :: dp1
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
-        integer,intent(in) :: csphase
-        integer,intent(in) :: cnorm
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: cnorm
         call PlmON_d1(p,dp1,lmax,z,csphase=csphase,cnorm=cnorm,&
                       exitstatus=exitstatus)
     end subroutine pyPlmON_d1
@@ -90,10 +90,10 @@
         use shtools, only: PlON
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
         call PlON(p,lmax,z,exitstatus=exitstatus)
     end subroutine pyPlON
@@ -102,12 +102,12 @@
         use shtools, only: PlON_d1
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(in) :: dp1_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(in) :: dp1_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
         real(dp),dimension(dp1_d0),intent(out) :: dp1
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
         call PlON_d1(p,dp1,lmax,z,exitstatus=exitstatus)
     end subroutine pyPlON_d1
@@ -116,13 +116,13 @@
         use shtools, only: PlmSchmidt
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
-        integer,intent(in) :: csphase
-        integer,intent(in) :: cnorm
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: cnorm
         call PlmSchmidt(p,lmax,z,csphase=csphase,cnorm=cnorm,&
                         exitstatus=exitstatus)
     end subroutine pyPlmSchmidt
@@ -131,15 +131,15 @@
         use shtools, only: PlmSchmidt_d1
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(in) :: dp1_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(in) :: dp1_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
         real(dp),dimension(dp1_d0),intent(out) :: dp1
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
-        integer,intent(in) :: csphase
-        integer,intent(in) :: cnorm
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: cnorm
         call PlmSchmidt_d1(p,dp1,lmax,z,csphase=csphase,cnorm=cnorm,&
                            exitstatus=exitstatus)
     end subroutine pyPlmSchmidt_d1
@@ -148,10 +148,10 @@
         use shtools, only: PlSchmidt
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
         call PlSchmidt(p,lmax,z,exitstatus=exitstatus)
     end subroutine pyPlSchmidt
@@ -160,12 +160,12 @@
         use shtools, only: PlSchmidt_d1
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(in) :: dp1_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(in) :: dp1_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
         real(dp),dimension(dp1_d0),intent(out) :: dp1
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
         call PlSchmidt_d1(p,dp1,lmax,z,exitstatus=exitstatus)
     end subroutine pyPlSchmidt_d1
@@ -174,12 +174,12 @@
         use shtools, only: PLegendreA
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
-        integer,intent(in) :: csphase
+        integer(int32),intent(in) :: csphase
         call PLegendreA(p,lmax,z,csphase=csphase,exitstatus=exitstatus)
     end subroutine pyPLegendreA
 
@@ -187,14 +187,14 @@
         use shtools, only: PLegendreA_d1
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(in) :: dp1_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(in) :: dp1_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
         real(dp),dimension(dp1_d0),intent(out) :: dp1
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
-        integer,intent(in) :: csphase
+        integer(int32),intent(in) :: csphase
         call PLegendreA_d1(p,dp1,lmax,z,csphase=csphase,exitstatus=exitstatus)
     end subroutine pyPLegendreA_d1
 
@@ -202,10 +202,10 @@
         use shtools, only: PLegendre
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
         call PLegendre(p,lmax,z,exitstatus=exitstatus)
     end subroutine pyPLegendre
@@ -214,12 +214,12 @@
         use shtools, only: PLegendre_d1
         use ftypes
         implicit none
-        integer,intent(in) :: p_d0
-        integer,intent(in) :: dp1_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: p_d0
+        integer(int32),intent(in) :: dp1_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(p_d0),intent(out) :: p
         real(dp),dimension(dp1_d0),intent(out) :: dp1
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: z
         call PLegendre_d1(p,dp1,lmax,z,exitstatus=exitstatus)
     end subroutine pyPLegendre_d1
@@ -229,20 +229,20 @@
         use shtools, only: SHExpandDH
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: grid_d0
-        integer,intent(in) :: grid_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: grid_d0
+        integer(int32),intent(in) :: grid_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(grid_d0,grid_d1),intent(in) :: grid
-        integer,intent(in) :: n
+        integer(int32),intent(in) :: n
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer,intent(out) :: lmax
-        integer,intent(in) :: norm
-        integer,intent(in) :: sampling
-        integer,intent(in) :: csphase
-        integer,intent(in) :: lmax_calc
+        integer(int32),intent(out) :: lmax
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: lmax_calc
         call SHExpandDH(grid,n,cilm,lmax,norm=norm,sampling=sampling,&
                         csphase=csphase,lmax_calc=lmax_calc,&
                         exitstatus=exitstatus)
@@ -254,21 +254,21 @@
         use shtools, only: MakeGridDH
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: griddh_d0
-        integer,intent(in) :: griddh_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: griddh_d0
+        integer(int32),intent(in) :: griddh_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(griddh_d0,griddh_d1),intent(out) :: griddh
-        integer,intent(out) :: n
+        integer(int32),intent(out) :: n
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
-        integer,intent(in) :: norm
-        integer,intent(in) :: sampling
-        integer,intent(in) :: csphase
-        integer,intent(in) :: lmax_calc
-        integer,intent(in) :: extend
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: lmax_calc
+        integer(int32),intent(in) :: extend
         call MakeGridDH(griddh,n,cilm,lmax,norm=norm,sampling=sampling,&
                         csphase=csphase,lmax_calc=lmax_calc,extend=extend,&
                         exitstatus=exitstatus)
@@ -280,20 +280,20 @@
         use shtools, only: SHExpandDHC
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: grid_d0
-        integer,intent(in) :: grid_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: grid_d0
+        integer(int32),intent(in) :: grid_d1
+        integer(int32),intent(out) :: exitstatus
         complex(dp),dimension(grid_d0,grid_d1),intent(in) :: grid
-        integer,intent(in) :: n
+        integer(int32),intent(in) :: n
         complex(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer,intent(out) :: lmax
-        integer,intent(in) :: norm
-        integer,intent(in) :: sampling
-        integer,intent(in) :: csphase
-        integer,intent(in) :: lmax_calc
+        integer(int32),intent(out) :: lmax
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: lmax_calc
         call SHExpandDHC(grid,n,cilm,lmax,norm=norm,sampling=sampling,&
                          csphase=csphase,lmax_calc=lmax_calc,&
                          exitstatus=exitstatus)
@@ -305,21 +305,21 @@
         use shtools, only: MakeGridDHC
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: griddh_d0
-        integer,intent(in) :: griddh_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: griddh_d0
+        integer(int32),intent(in) :: griddh_d1
+        integer(int32),intent(out) :: exitstatus
         complex(dp),dimension(griddh_d0,griddh_d1),intent(out) :: griddh
-        integer,intent(out) :: n
+        integer(int32),intent(out) :: n
         complex(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
-        integer,intent(in) :: norm
-        integer,intent(in) :: sampling
-        integer,intent(in) :: csphase
-        integer,intent(in) :: lmax_calc
-        integer,intent(in) :: extend
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: lmax_calc
+        integer(int32),intent(in) :: extend
         call MakeGridDHC(griddh,n,cilm,lmax,norm=norm,sampling=sampling,&
                          csphase=csphase,lmax_calc=lmax_calc,extend=extend,&
                          exitstatus=exitstatus)
@@ -329,10 +329,10 @@
         use shtools, only: SHGLQ
         use ftypes
         implicit none
-        integer,intent(in) :: zero_d0
-        integer,intent(in) :: w_d0
-        integer,intent(out) :: exitstatus
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: zero_d0
+        integer(int32),intent(in) :: w_d0
+        integer(int32),intent(out) :: exitstatus
+        integer(int32),intent(in) :: lmax
         real(dp),dimension(zero_d0),intent(out) :: zero
         real(dp),dimension(w_d0),intent(out) :: w
         call SHGLQ(lmax,zero,w,exitstatus=exitstatus)
@@ -344,22 +344,22 @@
         use shtools, only: SHExpandGLQ
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: gridglq_d0
-        integer,intent(in) :: gridglq_d1
-        integer,intent(in) :: zero_d0
-        integer,intent(in) :: w_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: gridglq_d0
+        integer(int32),intent(in) :: gridglq_d1
+        integer(int32),intent(in) :: zero_d0
+        integer(int32),intent(in) :: w_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
         real(dp),dimension(w_d0),intent(in) :: w
         real(dp),dimension(zero_d0),intent(in) :: zero
-        integer,intent(in) :: norm
-        integer,intent(in) :: csphase
-        integer,intent(in) :: lmax_calc
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: lmax_calc
         call SHExpandGLQ(cilm,lmax,gridglq,w,zero=zero,norm=norm,&
                          csphase=csphase,lmax_calc=lmax_calc,&
                          exitstatus=exitstatus)
@@ -371,21 +371,21 @@
         use shtools, only: MakeGridGLQ
         use ftypes
         implicit none
-        integer,intent(in) :: gridglq_d0
-        integer,intent(in) :: gridglq_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: zero_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: gridglq_d0
+        integer(int32),intent(in) :: gridglq_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: zero_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),dimension(zero_d0),intent(in) :: zero
-        integer,intent(in) :: norm
-        integer,intent(in) :: csphase
-        integer,intent(in) :: lmax_calc
-        integer,intent(in) :: extend
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: lmax_calc
+        integer(int32),intent(in) :: extend
         call MakeGridGLQ(gridglq,cilm,lmax,zero=zero,norm=norm,&
                          csphase=csphase,lmax_calc=lmax_calc,extend=extend,&
                          exitstatus=exitstatus)
@@ -397,22 +397,22 @@
         use shtools, only: SHExpandGLQC
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: gridglq_d0
-        integer,intent(in) :: gridglq_d1
-        integer,intent(in) :: zero_d0
-        integer,intent(in) :: w_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: gridglq_d0
+        integer(int32),intent(in) :: gridglq_d1
+        integer(int32),intent(in) :: zero_d0
+        integer(int32),intent(in) :: w_d0
+        integer(int32),intent(out) :: exitstatus
         complex(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         complex(dp),dimension(gridglq_d0,gridglq_d1),intent(in) :: gridglq
         real(dp),dimension(w_d0),intent(in) :: w
         real(dp),dimension(zero_d0),intent(in) :: zero
-        integer,intent(in) :: norm
-        integer,intent(in) :: csphase
-        integer,intent(in) :: lmax_calc
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: lmax_calc
         call SHExpandGLQC(cilm,lmax,gridglq,w,zero=zero,norm=norm,&
                           csphase=csphase,lmax_calc=lmax_calc,&
                           exitstatus=exitstatus)
@@ -424,21 +424,21 @@
         use shtools, only: MakeGridGLQC
         use ftypes
         implicit none
-        integer,intent(in) :: gridglq_d0
-        integer,intent(in) :: gridglq_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: zero_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: gridglq_d0
+        integer(int32),intent(in) :: gridglq_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: zero_d0
+        integer(int32),intent(out) :: exitstatus
         complex(dp),dimension(gridglq_d0,gridglq_d1),intent(out) :: gridglq
         complex(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),dimension(zero_d0),intent(in) :: zero
-        integer,intent(in) :: norm
-        integer,intent(in) :: csphase
-        integer,intent(in) :: lmax_calc
-        integer,intent(in) :: extend
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: lmax_calc
+        integer(int32),intent(in) :: extend
         call MakeGridGLQC(gridglq,cilm,lmax,zero=zero,norm=norm,&
                           csphase=csphase,lmax_calc=lmax_calc,extend=extend,&
                           exitstatus=exitstatus)
@@ -449,15 +449,15 @@
         use shtools, only: GLQGridCoord
         use ftypes
         implicit none
-        integer,intent(in) :: latglq_d0
-        integer,intent(in) :: longlq_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: latglq_d0
+        integer(int32),intent(in) :: longlq_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(latglq_d0),intent(out) :: latglq
         real(dp),dimension(longlq_d0),intent(out) :: longlq
-        integer,intent(in) :: lmax
-        integer,intent(out) :: nlat
-        integer,intent(out) :: nlong
-        integer,intent(in) :: extend
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(out) :: nlat
+        integer(int32),intent(out) :: nlong
+        integer(int32),intent(in) :: extend
         call GLQGridCoord(latglq,longlq,lmax,nlat,nlong,extend=extend,&
                           exitstatus=exitstatus)
     end subroutine pyGLQGridCoord
@@ -468,22 +468,22 @@
         use shtools, only: SHExpandLSQ
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: d_d0
-        integer,intent(in) :: lat_d0
-        integer,intent(in) :: lon_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: d_d0
+        integer(int32),intent(in) :: lat_d0
+        integer(int32),intent(in) :: lon_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         real(dp),dimension(d_d0),intent(in) :: d
         real(dp),dimension(lat_d0),intent(in) :: lat
         real(dp),dimension(lon_d0),intent(in) :: lon
-        integer,intent(in) :: nmax
-        integer,intent(in) :: lmax
-        integer,intent(in) :: norm
+        integer(int32),intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: norm
         real(dp),intent(out) :: chi2
-        integer,intent(in) :: csphase
+        integer(int32),intent(in) :: csphase
         call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm=norm,chi2=chi2,&
                          csphase=csphase,exitstatus=exitstatus)
     end subroutine pySHExpandLSQ
@@ -494,24 +494,24 @@
         use shtools, only: SHExpandLSQ
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: d_d0
-        integer,intent(in) :: w_d0
-        integer,intent(in) :: lat_d0
-        integer,intent(in) :: lon_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: d_d0
+        integer(int32),intent(in) :: w_d0
+        integer(int32),intent(in) :: lat_d0
+        integer(int32),intent(in) :: lon_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         real(dp),dimension(d_d0),intent(in) :: d
         real(dp),dimension(w_d0),intent(in) :: w
         real(dp),dimension(lat_d0),intent(in) :: lat
         real(dp),dimension(lon_d0),intent(in) :: lon
-        integer,intent(in) :: nmax
-        integer,intent(in) :: lmax
-        integer,intent(in) :: norm
+        integer(int32),intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: norm
         real(dp),intent(out) :: chi2
-        integer,intent(in) :: csphase
+        integer(int32),intent(in) :: csphase
         call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm=norm,chi2=chi2,&
                          csphase=csphase,weights=w,exitstatus=exitstatus)
     end subroutine pySHExpandWLSQ
@@ -522,27 +522,27 @@
         use shtools, only: MakeGrid2d
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: grid_d0
-        integer,intent(in) :: grid_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: grid_d0
+        integer(int32),intent(in) :: grid_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(grid_d0,grid_d1),intent(out) :: grid
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: interval
-        integer,intent(out) :: nlat
-        integer,intent(out) :: nlong
-        integer,intent(in) :: norm
-        integer,intent(in) :: csphase
+        integer(int32),intent(out) :: nlat
+        integer(int32),intent(out) :: nlong
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
         real(dp),intent(in) :: f
         real(dp),intent(in) :: a
         real(dp),intent(in) :: north
         real(dp),intent(in) :: south
         real(dp),intent(in) :: east
         real(dp),intent(in) :: west
-        integer,intent(in) :: dealloc
+        integer(int32),intent(in) :: dealloc
         if (f<0.0_dp .and. a<0.0_dp) then
             call MakeGrid2d(grid,cilm,lmax,interval,nlat,nlong,norm=norm,&
                             csphase=csphase,north=north,south=south,east=east,&
@@ -560,16 +560,16 @@
         use shtools, only: MakeGridPoint
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: lat
         real(dp),intent(in) :: lon
-        integer,intent(in) :: norm
-        integer,intent(in) :: csphase
-        integer,intent(in) :: dealloc
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: dealloc
         real(dp) :: pyMakeGridPoint
         pyMakeGridPoint=MakeGridPoint(cilm,lmax,lat,lon,norm=norm,&
                                       csphase=csphase,dealloc=dealloc)
@@ -580,16 +580,16 @@
         use shtools, only: MakeGridPointC
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
         complex(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: lat
         real(dp),intent(in) :: lon
-        integer,intent(in) :: norm
-        integer,intent(in) :: csphase
-        integer,intent(in) :: dealloc
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
+        integer(int32),intent(in) :: dealloc
         complex(dp) :: pyMakeGridPointC
         pyMakeGridPointC=MakeGridPointC(cilm,lmax,lat,lon,norm=norm,&
                                         csphase=csphase,dealloc=dealloc)
@@ -601,24 +601,24 @@
         use shtools, only: SHMultiply
         use ftypes
         implicit none
-        integer,intent(in) :: sh1_d0
-        integer,intent(in) :: sh1_d1
-        integer,intent(in) :: sh1_d2
-        integer,intent(in) :: sh2_d0
-        integer,intent(in) :: sh2_d1
-        integer,intent(in) :: sh2_d2
-        integer,intent(in) :: shout_d0
-        integer,intent(in) :: shout_d1
-        integer,intent(in) :: shout_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: sh1_d0
+        integer(int32),intent(in) :: sh1_d1
+        integer(int32),intent(in) :: sh1_d2
+        integer(int32),intent(in) :: sh2_d0
+        integer(int32),intent(in) :: sh2_d1
+        integer(int32),intent(in) :: sh2_d2
+        integer(int32),intent(in) :: shout_d0
+        integer(int32),intent(in) :: shout_d1
+        integer(int32),intent(in) :: shout_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(shout_d0,shout_d1,shout_d2),intent(out) :: shout
         real(dp),dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
-        integer,intent(in) :: lmax1
+        integer(int32),intent(in) :: lmax1
         real(dp),dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
-        integer,intent(in) :: lmax2
-        integer,intent(in) :: precomp
-        integer,intent(in) :: norm
-        integer,intent(in) :: csphase
+        integer(int32),intent(in) :: lmax2
+        integer(int32),intent(in) :: precomp
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
         call SHMultiply(shout,sh1,lmax1,sh2,lmax2,precomp=precomp,&
                         norm=norm,csphase=csphase,exitstatus=exitstatus)
     end subroutine pySHMultiply
@@ -629,17 +629,17 @@
         use shtools, only: SHRead2
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: dot_d0
-        integer,intent(in) :: dot_d1
-        integer,intent(in) :: dot_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: dot_d0
+        integer(int32),intent(in) :: dot_d1
+        integer(int32),intent(in) :: dot_d2
+        integer(int32),intent(out) :: exitstatus
         character(*),intent(in) :: filename
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer,intent(out) :: lmax
-        integer,intent(in) :: lmax_in
+        integer(int32),intent(out) :: lmax
+        integer(int32),intent(in) :: lmax_in
         real(dp),intent(out) :: gm
         real(dp),intent(out) :: r0_pot
         real(dp),dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
@@ -657,22 +657,21 @@
         use shtools, only: SHRead2
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: error_d0
-        integer,intent(in) :: error_d1
-        integer,intent(in) :: error_d2
-        integer,intent(in) :: dot_d0
-        integer,intent(in) :: dot_d1
-        integer,intent(in) :: dot_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: error_d0
+        integer(int32),intent(in) :: error_d1
+        integer(int32),intent(in) :: error_d2
+        integer(int32),intent(in) :: dot_d0
+        integer(int32),intent(in) :: dot_d1
+        integer(int32),intent(in) :: dot_d2
+        integer(int32),intent(out) :: exitstatus
         character(*),intent(in) :: filename
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real(dp),dimension(error_d0,error_d1,error_d2),intent(out) ::&
-                                                                          error
-        integer,intent(out) :: lmax
-        integer,intent(in) :: lmax_in
+        real(dp),dimension(error_d0,error_d1,error_d2),intent(out) :: error
+        integer(int32),intent(out) :: lmax
+        integer(int32),intent(in) :: lmax_in
         real(dp),intent(out) :: gm
         real(dp),intent(out) :: r0_pot
         real(dp),dimension(dot_d0,dot_d1,dot_d2),intent(out) :: dot
@@ -689,14 +688,14 @@
         use shtools, only: SHReadJPL
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(out) :: exitstatus
         character(*),intent(in) :: filename
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer,intent(out) :: lmax
-        integer,intent(in) :: lmax_in
+        integer(int32),intent(out) :: lmax
+        integer(int32),intent(in) :: lmax_in
         real(dp),dimension(2),intent(out) :: gm
         character(6),intent(in) :: formatstring
         call SHReadJPL(filename,cilm,lmax,gm=gm,formatstring=formatstring,&
@@ -709,19 +708,18 @@
         use shtools, only: SHReadJPL
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: error_d0
-        integer,intent(in) :: error_d1
-        integer,intent(in) :: error_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: error_d0
+        integer(int32),intent(in) :: error_d1
+        integer(int32),intent(in) :: error_d2
+        integer(int32),intent(out) :: exitstatus
         character(*),intent(in) :: filename
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        real(dp),dimension(error_d0,error_d1,error_d2),intent(out) ::&
-                                                                          error
-        integer,intent(in) :: lmax
-        integer,intent(in) :: lmax_in
+        real(dp),dimension(error_d0,error_d1,error_d2),intent(out) :: error
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: lmax_in
         real(dp),dimension(2),intent(out) :: gm
         character(6),intent(in) :: formatstring
         call SHReadJPL(filename,cilm,lmax,error=error,gm=gm,&
@@ -733,14 +731,14 @@
         use shtools, only: SHCilmToVector
         use ftypes
         implicit none
-        integer,intent(in) :: vector_d0
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: vector_d0
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         real(dp),dimension(vector_d0),intent(out) :: vector
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         call SHCilmToVector(cilm,vector,lmax,exitstatus=exitstatus)
     end subroutine pySHCilmToVector
 
@@ -749,14 +747,14 @@
         use shtools, only: SHVectorToCilm
         use ftypes
         implicit none
-        integer,intent(in) :: vector_d0
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: vector_d0
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(vector_d0),intent(in) :: vector
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         call SHVectorToCilm(vector,cilm,lmax,exitstatus=exitstatus)
     end subroutine pySHVectorToCilm
 
@@ -765,15 +763,15 @@
         use shtools, only: SHCilmToCindex
         use ftypes
         implicit none
-        integer,intent(in) :: cindex_d0
-        integer,intent(in) :: cindex_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cindex_d0
+        integer(int32),intent(in) :: cindex_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
         real(dp),dimension(cindex_d0,cindex_d1),intent(out) :: cindex
-        integer,intent(in) :: degmax
+        integer(int32),intent(in) :: degmax
         call SHCilmToCindex(cilm,cindex,degmax=degmax,exitstatus=exitstatus)
     end subroutine pySHCilmToCindex
 
@@ -782,15 +780,15 @@
         use shtools, only: SHCindexToCilm
         use ftypes
         implicit none
-        integer,intent(in) :: cindex_d0
-        integer,intent(in) :: cindex_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cindex_d0
+        integer(int32),intent(in) :: cindex_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cindex_d0,cindex_d1),intent(in) :: cindex
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
-        integer,intent(in) :: degmax
+        integer(int32),intent(in) :: degmax
         call SHCindexToCilm(cindex,cilm,degmax=degmax,exitstatus=exitstatus)
     end subroutine pySHCindexToCilm
 
@@ -799,18 +797,18 @@
         use shtools, only: SHrtoc
         use ftypes
         implicit none
-        integer,intent(in) :: rcilm_d0
-        integer,intent(in) :: rcilm_d1
-        integer,intent(in) :: rcilm_d2
-        integer,intent(in) :: ccilm_d0
-        integer,intent(in) :: ccilm_d1
-        integer,intent(in) :: ccilm_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: rcilm_d0
+        integer(int32),intent(in) :: rcilm_d1
+        integer(int32),intent(in) :: rcilm_d2
+        integer(int32),intent(in) :: ccilm_d0
+        integer(int32),intent(in) :: ccilm_d1
+        integer(int32),intent(in) :: ccilm_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(in) :: rcilm
         real(dp),dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(out) :: ccilm
-        integer,intent(in) :: degmax
-        integer,intent(in) :: convention
-        integer,intent(in) :: switchcs
+        integer(int32),intent(in) :: degmax
+        integer(int32),intent(in) :: convention
+        integer(int32),intent(in) :: switchcs
         call SHrtoc(rcilm,ccilm,degmax=degmax,convention=convention,&
                     switchcs=switchcs,exitstatus=exitstatus)
     end subroutine pySHrtoc
@@ -820,18 +818,18 @@
         use shtools, only: SHctor
         use ftypes
         implicit none
-        integer,intent(in) :: rcilm_d0
-        integer,intent(in) :: rcilm_d1
-        integer,intent(in) :: rcilm_d2
-        integer,intent(in) :: ccilm_d0
-        integer,intent(in) :: ccilm_d1
-        integer,intent(in) :: ccilm_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: rcilm_d0
+        integer(int32),intent(in) :: rcilm_d1
+        integer(int32),intent(in) :: rcilm_d2
+        integer(int32),intent(in) :: ccilm_d0
+        integer(int32),intent(in) :: ccilm_d1
+        integer(int32),intent(in) :: ccilm_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(ccilm_d0,ccilm_d1,ccilm_d2),intent(in) :: ccilm
         real(dp),dimension(rcilm_d0,rcilm_d1,rcilm_d2),intent(out) :: rcilm
-        integer,intent(in) :: degmax
-        integer,intent(in) :: convention
-        integer,intent(in) :: switchcs
+        integer(int32),intent(in) :: degmax
+        integer(int32),intent(in) :: convention
+        integer(int32),intent(in) :: switchcs
         call SHctor(ccilm,rcilm,degmax=degmax,convention=convention,&
                     switchcs=switchcs,exitstatus=exitstatus)
     end subroutine pySHctor
@@ -840,12 +838,12 @@
         use shtools, only: djpi2
         use ftypes
         implicit none
-        integer,intent(in) :: dj_d0
-        integer,intent(in) :: dj_d1
-        integer,intent(in) :: dj_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: dj_d0
+        integer(int32),intent(in) :: dj_d1
+        integer(int32),intent(in) :: dj_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(dj_d0,dj_d1,dj_d2),intent(out) :: dj
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         call djpi2(dj,lmax,exitstatus=exitstatus)
     end subroutine pydjpi2
 
@@ -854,19 +852,19 @@
         use shtools, only: SHRotateCoef
         use ftypes
         implicit none
-        integer,intent(in) :: rcof_d0
-        integer,intent(in) :: rcof_d1
-        integer,intent(in) :: dj_d0
-        integer,intent(in) :: dj_d1
-        integer,intent(in) :: dj_d2
-        integer,intent(in) :: cof_d0
-        integer,intent(in) :: cof_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: rcof_d0
+        integer(int32),intent(in) :: rcof_d1
+        integer(int32),intent(in) :: dj_d0
+        integer(int32),intent(in) :: dj_d1
+        integer(int32),intent(in) :: dj_d2
+        integer(int32),intent(in) :: cof_d0
+        integer(int32),intent(in) :: cof_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(3),intent(in) :: x
         real(dp),dimension(cof_d0,cof_d1),intent(in) :: cof
         real(dp),dimension(rcof_d0,rcof_d1),intent(out) :: rcof
         real(dp),dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         call SHRotateCoef(x,cof,rcof,dj,lmax,exitstatus=exitstatus)
     end subroutine pySHRotateCoef
 
@@ -876,21 +874,21 @@
         use shtools, only: SHRotateRealCoef
         use ftypes
         implicit none
-        integer,intent(in) :: x_d0
-        integer,intent(in) :: dj_d0
-        integer,intent(in) :: dj_d1
-        integer,intent(in) :: dj_d2
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: cilmrot_d0
-        integer,intent(in) :: cilmrot_d1
-        integer,intent(in) :: cilmrot_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: x_d0
+        integer(int32),intent(in) :: dj_d0
+        integer(int32),intent(in) :: dj_d1
+        integer(int32),intent(in) :: dj_d2
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: cilmrot_d0
+        integer(int32),intent(in) :: cilmrot_d1
+        integer(int32),intent(in) :: cilmrot_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilmrot_d0,cilmrot_d1,cilmrot_d2),intent(out) ::&
                                                                         cilmrot
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),dimension(x_d0),intent(in) :: x
         real(dp),dimension(dj_d0,dj_d1,dj_d2),intent(in) :: dj
         call SHRotateRealCoef(cilmrot,cilm,lmax,x,dj,exitstatus=exitstatus)
@@ -902,19 +900,19 @@
         use shtools, only: SHAdmitCorr
         use ftypes
         implicit none
-        integer,intent(in) :: G_d0
-        integer,intent(in) :: G_d1
-        integer,intent(in) :: G_d2
-        integer,intent(in) :: admit_d0
-        integer,intent(in) :: admit_error_d0
-        integer,intent(in) :: T_d0
-        integer,intent(in) :: T_d1
-        integer,intent(in) :: T_d2
-        integer,intent(in) :: corr_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: G_d0
+        integer(int32),intent(in) :: G_d1
+        integer(int32),intent(in) :: G_d2
+        integer(int32),intent(in) :: admit_d0
+        integer(int32),intent(in) :: admit_error_d0
+        integer(int32),intent(in) :: T_d0
+        integer(int32),intent(in) :: T_d1
+        integer(int32),intent(in) :: T_d2
+        integer(int32),intent(in) :: corr_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(G_d0,G_d1,G_d2),intent(in) :: G
         real(dp),dimension(T_d0,T_d1,T_d2),intent(in) :: T
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),dimension(admit_d0),intent(out) :: admit
         real(dp),dimension(admit_error_d0),intent(out) :: admit_error
         real(dp),dimension(corr_d0),intent(out) :: corr
@@ -926,7 +924,7 @@
         use shtools, only: SHConfidence
         use ftypes
         implicit none
-        integer,intent(in) :: l_conf
+        integer(int32),intent(in) :: l_conf
         real(dp),intent(in) :: r
         real(dp) :: pySHConfidence
         pySHConfidence=SHConfidence(l_conf,r)
@@ -939,29 +937,29 @@
         use shtools, only: SHMultiTaperSE
         use ftypes
         implicit none
-        integer,intent(in) :: taper_order_d0
-        integer,intent(in) :: taper_wt_d0
-        integer,intent(in) :: sh_d0
-        integer,intent(in) :: sh_d1
-        integer,intent(in) :: sh_d2
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: mtse_d0
-        integer,intent(in) :: sd_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: taper_order_d0
+        integer(int32),intent(in) :: taper_wt_d0
+        integer(int32),intent(in) :: sh_d0
+        integer(int32),intent(in) :: sh_d1
+        integer(int32),intent(in) :: sh_d2
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: mtse_d0
+        integer(int32),intent(in) :: sd_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(mtse_d0),intent(out) :: mtse
         real(dp),dimension(sd_d0),intent(out) :: sd
         real(dp),dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer,dimension(taper_order_d0),intent(in) :: taper_order
-        integer,intent(in) :: lmaxt
-        integer,intent(in) :: k
+        integer(int32),dimension(taper_order_d0),intent(in) :: taper_order
+        integer(int32),intent(in) :: lmaxt
+        integer(int32),intent(in) :: k
         real(dp),intent(in) :: lat
         real(dp),intent(in) :: lon
         real(dp),dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,intent(in) :: norm
-        integer,intent(in) :: csphase
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
         if (taper_wt(1) < 0.0_dp) then
             call SHMultiTaperSE(mtse,sd,sh,lmax,tapers,taper_order,&
                                 lmaxt,k,lat=lat,lon=lon,norm=norm,&
@@ -981,34 +979,34 @@
         use shtools, only: SHMultiTaperCSE
         use ftypes
         implicit none
-        integer,intent(in) :: sh1_d0
-        integer,intent(in) :: sh1_d1
-        integer,intent(in) :: sh1_d2
-        integer,intent(in) :: sh2_d0
-        integer,intent(in) :: sh2_d1
-        integer,intent(in) :: sh2_d2
-        integer,intent(in) :: taper_order_d0
-        integer,intent(in) :: taper_wt_d0
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: sd_d0
-        integer,intent(in) :: mtse_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: sh1_d0
+        integer(int32),intent(in) :: sh1_d1
+        integer(int32),intent(in) :: sh1_d2
+        integer(int32),intent(in) :: sh2_d0
+        integer(int32),intent(in) :: sh2_d1
+        integer(int32),intent(in) :: sh2_d2
+        integer(int32),intent(in) :: taper_order_d0
+        integer(int32),intent(in) :: taper_wt_d0
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: sd_d0
+        integer(int32),intent(in) :: mtse_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(mtse_d0),intent(out) :: mtse
         real(dp),dimension(sd_d0),intent(out) :: sd
         real(dp),dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
-        integer,intent(in) :: lmax1
+        integer(int32),intent(in) :: lmax1
         real(dp),dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
-        integer,intent(in) :: lmax2
+        integer(int32),intent(in) :: lmax2
         real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer,dimension(taper_order_d0),intent(in) :: taper_order
-        integer,intent(in) :: lmaxt
-        integer,intent(in) :: k
+        integer(int32),dimension(taper_order_d0),intent(in) :: taper_order
+        integer(int32),intent(in) :: lmaxt
+        integer(int32),intent(in) :: k
         real(dp),intent(in) :: lat
         real(dp),intent(in) :: lon
         real(dp),dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,intent(in) :: norm
-        integer,intent(in) :: csphase
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
         if(taper_wt(1) < 0.0_dp) then
             call SHMultiTaperCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,&
                                  taper_order,lmaxt,k,lat=lat,lon=lon,&
@@ -1032,37 +1030,37 @@
         use shtools, only: SHLocalizedAdmitCorr
         use ftypes
         implicit none
-        integer,intent(in) :: taper_order_d0
-        integer,intent(in) :: g_d0
-        integer,intent(in) :: g_d1
-        integer,intent(in) :: g_d2
-        integer,intent(in) :: taper_wt_d0
-        integer,intent(in) :: corr_error_d0
-        integer,intent(in) :: admit_d0
-        integer,intent(in) :: admit_error_d0
-        integer,intent(in) :: corr_d0
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: t_d0
-        integer,intent(in) :: t_d1
-        integer,intent(in) :: t_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: taper_order_d0
+        integer(int32),intent(in) :: g_d0
+        integer(int32),intent(in) :: g_d1
+        integer(int32),intent(in) :: g_d2
+        integer(int32),intent(in) :: taper_wt_d0
+        integer(int32),intent(in) :: corr_error_d0
+        integer(int32),intent(in) :: admit_d0
+        integer(int32),intent(in) :: admit_error_d0
+        integer(int32),intent(in) :: corr_d0
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: t_d0
+        integer(int32),intent(in) :: t_d1
+        integer(int32),intent(in) :: t_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(g_d0,g_d1,g_d2),intent(in) :: g
         real(dp),dimension(t_d0,t_d1,t_d2),intent(in) :: t
         real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer,dimension(taper_order_d0),intent(in) :: taper_order
+        integer(int32),dimension(taper_order_d0),intent(in) :: taper_order
         real(dp),intent(in) :: lat
         real(dp),intent(in) :: lon
-        integer,intent(in) :: lwin
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lwin
+        integer(int32),intent(in) :: lmax
         real(dp),dimension(admit_d0),intent(out) :: admit
         real(dp),dimension(corr_d0),intent(out) :: corr
-        integer,intent(in) :: k
+        integer(int32),intent(in) :: k
         real(dp),dimension(admit_error_d0),intent(out) :: admit_error
         real(dp),dimension(corr_error_d0),intent(out) :: corr_error
         real(dp),dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,intent(in) :: mtdef
-        integer,intent(in) :: k1linsig
+        integer(int32),intent(in) :: mtdef
+        integer(int32),intent(in) :: k1linsig
         if(taper_wt(1) < 0.0_dp) then
             if (k1linsig<0) then
                 call SHLocalizedAdmitCorr(tapers,taper_order,lwin,lat,lon,g,t,&
@@ -1104,18 +1102,18 @@
         use shtools, only: SHReturnTapers
         use ftypes
         implicit none
-        integer,intent(in) :: eigenvalues_d0
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: taper_order_d0
-        integer,intent(in) :: degrees_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: eigenvalues_d0
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: taper_order_d0
+        integer(int32),intent(in) :: degrees_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),intent(in) :: theta0
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),dimension(tapers_d0,tapers_d1),intent(out) :: tapers
         real(dp),dimension(eigenvalues_d0),intent(out) :: eigenvalues
-        integer,dimension(taper_order_d0),intent(out) :: taper_order
-        integer,dimension(degrees_d0),intent(in) :: degrees
+        integer(int32),dimension(taper_order_d0),intent(out) :: taper_order
+        integer(int32),dimension(degrees_d0),intent(in) :: degrees
         call SHReturnTapers(theta0,lmax,tapers,eigenvalues,taper_order,&
                             degrees=degrees,exitstatus=exitstatus)
     end subroutine pySHReturnTapers
@@ -1126,17 +1124,17 @@
         use shtools, only: SHReturnTapersM
         use ftypes
         implicit none
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: eigenvalues_d0
-        integer,intent(in) :: degrees_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: eigenvalues_d0
+        integer(int32),intent(in) :: degrees_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),intent(in) :: theta0
-        integer,intent(in) :: lmax
-        integer,intent(in) :: m
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: m
         real(dp),dimension(tapers_d0,tapers_d1),intent(out) :: tapers
         real(dp),dimension(eigenvalues_d0),intent(out) :: eigenvalues
-        integer,dimension(degrees_d0),intent(in) :: degrees
+        integer(int32),dimension(degrees_d0),intent(in) :: degrees
         call SHReturnTapersM(theta0,lmax,m,tapers,eigenvalues,&
                              degrees=degrees,exitstatus=exitstatus)
     end subroutine pySHReturnTapersM
@@ -1145,15 +1143,15 @@
         use shtools, only: ComputeDm
         use ftypes
         implicit none
-        integer,intent(in) :: dllm_d0
-        integer,intent(in) :: dllm_d1
-        integer,intent(in) :: degrees_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: dllm_d0
+        integer(int32),intent(in) :: dllm_d1
+        integer(int32),intent(in) :: degrees_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(dllm_d0,dllm_d1),intent(out) :: dllm
-        integer,intent(in) :: lmax
-        integer,intent(in) :: m
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: m
         real(dp),intent(in) :: theta0
-        integer,dimension(degrees_d0),intent(in) :: degrees
+        integer(int32),dimension(degrees_d0),intent(in) :: degrees
         call ComputeDm(dllm,lmax,m,theta0,degrees=degrees,exitstatus=exitstatus)
     end subroutine pyComputeDm
 
@@ -1161,12 +1159,12 @@
         use shtools, only: ComputeDG82
         use ftypes
         implicit none
-        integer,intent(in) :: dG82_d0
-        integer,intent(in) :: dG82_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: dG82_d0
+        integer(int32),intent(in) :: dG82_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(dG82_d0,dG82_d1),intent(out) :: dG82
-        integer,intent(in) :: lmax
-        integer,intent(in) :: m
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: m
         real(dp),intent(in) :: theta0
         call ComputeDG82(dG82,lmax,m,theta0,exitstatus=exitstatus)
     end subroutine pyComputeDG82
@@ -1176,10 +1174,10 @@
         use ftypes
         implicit none
         real(dp),intent(in) :: theta0
-        integer,intent(in) :: m
+        integer(int32),intent(in) :: m
         real(dp),intent(in) :: alpha
-        integer,intent(in) :: taper_number
-        integer :: pySHFindLWin
+        integer(int32),intent(in) :: taper_number
+        integer(int32) :: pySHFindLWin
         pySHFindLWin=SHFindLWin(theta0,m,alpha,taper_number=taper_number)
     end function pySHFindLWin
 
@@ -1189,20 +1187,20 @@
         use shtools, only: SHBiasK
         use ftypes
         implicit none
-        integer,intent(in) :: taper_wt_d0
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: incspectra_d0
-        integer,intent(in) :: outcspectra_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: taper_wt_d0
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: incspectra_d0
+        integer(int32),intent(in) :: outcspectra_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer,intent(in) :: lwin
-        integer,intent(in) :: k
+        integer(int32),intent(in) :: lwin
+        integer(int32),intent(in) :: k
         real(dp),dimension(incspectra_d0),intent(in) :: incspectra
-        integer,intent(in) :: ldata
+        integer(int32),intent(in) :: ldata
         real(dp),dimension(outcspectra_d0),intent(out) :: outcspectra
         real(dp),dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,intent(in) :: save_cg
+        integer(int32),intent(in) :: save_cg
         if (taper_wt(1) < 0.0_dp) then
             call SHBiasK(tapers,lwin,k,incspectra,ldata,outcspectra,&
                          save_cg=save_cg,exitstatus=exitstatus)
@@ -1220,13 +1218,13 @@
         use shtools, only: SHMTCouplingMatrix
         use ftypes
         implicit none
-        integer,intent(in) :: Mmt_d0
-        integer,intent(in) :: Mmt_d1
-        integer,intent(in) :: tapers_power_d0
-        integer,intent(in) :: tapers_power_d1
-        integer,intent(in) :: taper_wt_d0
-        integer,intent(out) :: exitstatus
-        integer,intent(in) :: lmax,k,lwin
+        integer(int32),intent(in) :: Mmt_d0
+        integer(int32),intent(in) :: Mmt_d1
+        integer(int32),intent(in) :: tapers_power_d0
+        integer(int32),intent(in) :: tapers_power_d1
+        integer(int32),intent(in) :: taper_wt_d0
+        integer(int32),intent(out) :: exitstatus
+        integer(int32),intent(in) :: lmax,k,lwin
         real(dp),intent(out) :: Mmt(Mmt_d0,Mmt_d1)
         real(dp),intent(in) :: tapers_power(tapers_power_d0,tapers_power_d1)
         real(dp),dimension(taper_wt_d0),intent(in) :: taper_wt
@@ -1247,25 +1245,25 @@
         use shtools, only: SHBiasAdmitCorr
         use ftypes
         implicit none
-        integer,intent(in) :: taper_wt_d0
-        integer,intent(in) :: sgt_d0
-        integer,intent(in) :: stt_d0
-        integer,intent(in) :: admit_d0
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: corr_d0
-        integer,intent(in) :: sgg_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: taper_wt_d0
+        integer(int32),intent(in) :: sgt_d0
+        integer(int32),intent(in) :: stt_d0
+        integer(int32),intent(in) :: admit_d0
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: corr_d0
+        integer(int32),intent(in) :: sgg_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(sgt_d0),intent(in) :: sgt
         real(dp),dimension(sgg_d0),intent(in) :: sgg
         real(dp),dimension(stt_d0),intent(in) :: stt
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer,intent(in) :: lwin
-        integer,intent(in) :: k
+        integer(int32),intent(in) :: lwin
+        integer(int32),intent(in) :: k
         real(dp),dimension(admit_d0),intent(out) :: admit
         real(dp),dimension(corr_d0),intent(out) :: corr
-        integer,intent(in) :: mtdef
+        integer(int32),intent(in) :: mtdef
         real(dp),dimension(taper_wt_d0),intent(in) :: taper_wt
         if (taper_wt(1) < 0.0_dp) then
             call SHBiasAdmitCorr(sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr,&
@@ -1284,24 +1282,24 @@
         use shtools, only: SHMTDebias
         use ftypes
         implicit none
-        integer,intent(in) :: mtdebias_d0
-        integer,intent(in) :: mtdebias_d1
-        integer,intent(in) :: taper_wt_d0
-        integer,intent(in) :: mtspectra_d0
-        integer,intent(in) :: mtspectra_d1
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: lmid_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: mtdebias_d0
+        integer(int32),intent(in) :: mtdebias_d1
+        integer(int32),intent(in) :: taper_wt_d0
+        integer(int32),intent(in) :: mtspectra_d0
+        integer(int32),intent(in) :: mtspectra_d1
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: lmid_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(mtdebias_d0,mtdebias_d1),intent(out) :: mtdebias
         real(dp),dimension(mtspectra_d0,mtspectra_d1),intent(in) :: mtspectra
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer,intent(in) :: lwin
-        integer,intent(in) :: k
-        integer,intent(in) :: nl
+        integer(int32),intent(in) :: lwin
+        integer(int32),intent(in) :: k
+        integer(int32),intent(in) :: nl
         real(dp),dimension(lmid_d0),intent(out) :: lmid
-        integer,intent(out) :: n
+        integer(int32),intent(out) :: n
         real(dp),dimension(taper_wt_d0),intent(in) :: taper_wt
         if (taper_wt(1) < 0.0_dp) then
             call SHMTDebias(mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n,&
@@ -1319,26 +1317,26 @@
         use shtools, only: SHMTVarOpt
         use ftypes
         implicit none
-        integer,intent(in) :: taper_order_d0
-        integer,intent(in) :: weight_opt_d0
-        integer,intent(in) :: weight_opt_d1
-        integer,intent(in) :: var_unit_d0
-        integer,intent(in) :: var_opt_d0
-        integer,intent(in) :: Sff_d0
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(out) :: exitstatus
-        integer,intent(in) :: l
+        integer(int32),intent(in) :: taper_order_d0
+        integer(int32),intent(in) :: weight_opt_d0
+        integer(int32),intent(in) :: weight_opt_d1
+        integer(int32),intent(in) :: var_unit_d0
+        integer(int32),intent(in) :: var_opt_d0
+        integer(int32),intent(in) :: Sff_d0
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(out) :: exitstatus
+        integer(int32),intent(in) :: l
         real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer,dimension(taper_order_d0),intent(in) :: taper_order
-        integer,intent(in) :: lwin
-        integer,intent(in) :: kmax
+        integer(int32),dimension(taper_order_d0),intent(in) :: taper_order
+        integer(int32),intent(in) :: lwin
+        integer(int32),intent(in) :: kmax
         real(dp),dimension(Sff_d0),intent(in) :: Sff
         real(dp),dimension(var_opt_d0),intent(out) :: var_opt
         real(dp),dimension(var_unit_d0),intent(out) :: var_unit
         real(dp),dimension(weight_opt_d0,weight_opt_d1),intent(out) ::&
                                                                      weight_opt
-        integer,intent(in) :: nocross
+        integer(int32),intent(in) :: nocross
         call SHMTVarOpt(l,tapers,taper_order,lwin,kmax,Sff,var_opt,var_unit,&
                         weight_opt=weight_opt,nocross=nocross,&
                         exitstatus=exitstatus)
@@ -1350,21 +1348,21 @@
         use shtools, only: SHMTVar
         use ftypes
         implicit none
-        integer,intent(in) :: taper_order_d0
-        integer,intent(in) :: taper_wt_d0
-        integer,intent(in) :: Sff_d0
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(out) :: exitstatus
-        integer,intent(in) :: l
+        integer(int32),intent(in) :: taper_order_d0
+        integer(int32),intent(in) :: taper_wt_d0
+        integer(int32),intent(in) :: Sff_d0
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(out) :: exitstatus
+        integer(int32),intent(in) :: l
         real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer,dimension(taper_order_d0),intent(in) :: taper_order
+        integer(int32),dimension(taper_order_d0),intent(in) :: taper_order
         real(dp),dimension(Sff_d0),intent(in) :: Sff
-        integer,intent(in) :: kmax
-        integer,intent(in) :: lwin
+        integer(int32),intent(in) :: kmax
+        integer(int32),intent(in) :: lwin
         real(dp),intent(out) :: variance
         real(dp),dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,intent(in) :: nocross
+        integer(int32),intent(in) :: nocross
         if (taper_wt(1) < 0.0_dp) then
             call SHMTVar(l,tapers,taper_order,lwin,kmax,Sff,variance,&
                          nocross=nocross,exitstatus=exitstatus)
@@ -1380,19 +1378,19 @@
         use shtools, only: SHSjkPG
         use ftypes
         implicit none
-        integer,intent(in) :: hk_real_d0
-        integer,intent(in) :: incspectra_d0
-        integer,intent(in) :: hj_real_d0
+        integer(int32),intent(in) :: hk_real_d0
+        integer(int32),intent(in) :: incspectra_d0
+        integer(int32),intent(in) :: hj_real_d0
         real(dp),dimension(incspectra_d0),intent(in) :: incspectra
-        integer,intent(in) :: l
-        integer,intent(in) :: m
-        integer,intent(in) :: mprime
+        integer(int32),intent(in) :: l
+        integer(int32),intent(in) :: m
+        integer(int32),intent(in) :: mprime
         real(dp),dimension(hj_real_d0),intent(in) :: hj_real
         real(dp),dimension(hk_real_d0),intent(in) :: hk_real
-        integer,intent(in) :: mj
-        integer,intent(in) :: mk
-        integer,intent(in) :: lwin
-        integer,intent(in) :: hkcc
+        integer(int32),intent(in) :: mj
+        integer(int32),intent(in) :: mk
+        integer(int32),intent(in) :: lwin
+        integer(int32),intent(in) :: hkcc
         complex(dp) :: pySHSjkPG
         pySHSjkPG=SHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,&
                           hkcc)
@@ -1405,21 +1403,21 @@
         use shtools, only: SHReturnTapersMap
         use ftypes
         implicit none
-        integer,intent(in) :: dh_mask_d0
-        integer,intent(in) :: dh_mask_d1
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: eigenvalues_d0
-        integer,intent(in) :: degrees_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: dh_mask_d0
+        integer(int32),intent(in) :: dh_mask_d1
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: eigenvalues_d0
+        integer(int32),intent(in) :: degrees_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(tapers_d0,tapers_d1),intent(out) :: tapers
         real(dp),dimension(eigenvalues_d0),intent(out) :: eigenvalues
-        integer,dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
-        integer,intent(in) :: n_dh
-        integer,intent(in) :: sampling
-        integer,intent(in) :: lmax
-        integer,intent(in) :: ntapers
-        integer,dimension(degrees_d0),intent(in) :: degrees
+        integer(int32),dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
+        integer(int32),intent(in) :: n_dh
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: ntapers
+        integer(int32),dimension(degrees_d0),intent(in) :: degrees
         call SHReturnTapersMap(tapers,eigenvalues,dh_mask,n_dh,lmax,&
                                sampling=sampling,ntapers=ntapers,&
                                degrees=degrees,exitstatus=exitstatus)
@@ -1431,20 +1429,20 @@
         use shtools, only: SHBiasKMask
         use ftypes
         implicit none
-        integer,intent(in) :: taper_wt_d0
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: incspectra_d0
-        integer,intent(in) :: outcspectra_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: taper_wt_d0
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: incspectra_d0
+        integer(int32),intent(in) :: outcspectra_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer,intent(in) :: lwin
-        integer,intent(in) :: k
+        integer(int32),intent(in) :: lwin
+        integer(int32),intent(in) :: k
         real(dp),dimension(incspectra_d0),intent(in) :: incspectra
-        integer,intent(in) :: ldata
+        integer(int32),intent(in) :: ldata
         real(dp),dimension(outcspectra_d0),intent(out) :: outcspectra
         real(dp),dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,intent(in) :: save_cg
+        integer(int32),intent(in) :: save_cg
         if (taper_wt(1) < 0.0_dp) then
             call SHBiasKMask(tapers,lwin,k,incspectra,ldata,outcspectra,&
                              save_cg=save_cg,exitstatus=exitstatus)
@@ -1462,25 +1460,25 @@
         use shtools, only: SHMultiTaperMaskSE
         use ftypes
         implicit none
-        integer,intent(in) :: taper_wt_d0
-        integer,intent(in) :: sh_d0
-        integer,intent(in) :: sh_d1
-        integer,intent(in) :: sh_d2
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: mtse_d0
-        integer,intent(in) :: sd_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: taper_wt_d0
+        integer(int32),intent(in) :: sh_d0
+        integer(int32),intent(in) :: sh_d1
+        integer(int32),intent(in) :: sh_d2
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: mtse_d0
+        integer(int32),intent(in) :: sd_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(mtse_d0),intent(out) :: mtse
         real(dp),dimension(sd_d0),intent(out) :: sd
         real(dp),dimension(sh_d0,sh_d1,sh_d2),intent(in) :: sh
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer,intent(in) :: lmaxt
-        integer,intent(in) :: k
+        integer(int32),intent(in) :: lmaxt
+        integer(int32),intent(in) :: k
         real(dp),dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,intent(in) :: norm
-        integer,intent(in) :: csphase
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
         if (taper_wt(1) < 0.0_dp) then
             call SHMultiTaperMaskSE(mtse,sd,sh,lmax,tapers,lmaxt,k,norm=norm,&
                                     csphase=csphase,exitstatus=exitstatus)
@@ -1499,30 +1497,30 @@
         use shtools, only: SHMultiTaperMaskCSE
         use ftypes
         implicit none
-        integer,intent(in) :: sh1_d0
-        integer,intent(in) :: sh1_d1
-        integer,intent(in) :: sh1_d2
-        integer,intent(in) :: sh2_d0
-        integer,intent(in) :: sh2_d1
-        integer,intent(in) :: sh2_d2
-        integer,intent(in) :: taper_wt_d0
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: sd_d0
-        integer,intent(in) :: mtse_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: sh1_d0
+        integer(int32),intent(in) :: sh1_d1
+        integer(int32),intent(in) :: sh1_d2
+        integer(int32),intent(in) :: sh2_d0
+        integer(int32),intent(in) :: sh2_d1
+        integer(int32),intent(in) :: sh2_d2
+        integer(int32),intent(in) :: taper_wt_d0
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: sd_d0
+        integer(int32),intent(in) :: mtse_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(mtse_d0),intent(out) :: mtse
         real(dp),dimension(sd_d0),intent(out) :: sd
         real(dp),dimension(sh1_d0,sh1_d1,sh1_d2),intent(in) :: sh1
-        integer,intent(in) :: lmax1
+        integer(int32),intent(in) :: lmax1
         real(dp),dimension(sh2_d0,sh2_d1,sh2_d2),intent(in) :: sh2
-        integer,intent(in) :: lmax2
+        integer(int32),intent(in) :: lmax2
         real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer,intent(in) :: lmaxt
-        integer,intent(in) :: k
+        integer(int32),intent(in) :: lmaxt
+        integer(int32),intent(in) :: k
         real(dp),dimension(taper_wt_d0),intent(in) :: taper_wt
-        integer,intent(in) :: norm
-        integer,intent(in) :: csphase
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
         if(taper_wt(1) < 0.0_dp) then
             call SHMultiTaperMaskCSE(mtse,sd,sh1,lmax1,sh2,lmax2,tapers,&
                                      lmaxt,k,norm=norm,csphase=csphase,&
@@ -1540,18 +1538,18 @@
         use shtools, only: ComputeDMap
         use ftypes
         implicit none
-        integer,intent(in) :: dh_mask_d0
-        integer,intent(in) :: dh_mask_d1
-        integer,intent(in) :: Dij_d0
-        integer,intent(in) :: Dij_d1
-        integer,intent(in) :: degrees_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: dh_mask_d0
+        integer(int32),intent(in) :: dh_mask_d1
+        integer(int32),intent(in) :: Dij_d0
+        integer(int32),intent(in) :: Dij_d1
+        integer(int32),intent(in) :: degrees_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(Dij_d0,Dij_d1),intent(out) :: Dij
-        integer,dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
-        integer,intent(in) :: n_dh
-        integer,intent(in) :: lmax
-        integer,intent(in) :: sampling
-        integer,intent(in),dimension(degrees_d0) :: degrees
+        integer(int32),dimension(dh_mask_d0,dh_mask_d1),intent(in) :: dh_mask
+        integer(int32),intent(in) :: n_dh
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in),dimension(degrees_d0) :: degrees
         call ComputeDMap(Dij,dh_mask,n_dh,lmax,sampling=sampling,&
                          degrees=degrees,exitstatus=exitstatus)
     end subroutine pyComputeDMap
@@ -1561,18 +1559,18 @@
         use shtools, only: Curve2Mask
         use ftypes
         implicit none
-        integer,intent(in) :: profile_d0
-        integer,intent(in) :: profile_d1
-        integer,intent(in) :: dhgrid_d0
-        integer,intent(in) :: dhgrid_d1
-        integer,intent(out) :: exitstatus
-        integer,dimension(dhgrid_d0,dhgrid_d1),intent(out) :: dhgrid
-        integer,intent(in) :: n
-        integer,intent(in) :: sampling
+        integer(int32),intent(in) :: profile_d0
+        integer(int32),intent(in) :: profile_d1
+        integer(int32),intent(in) :: dhgrid_d0
+        integer(int32),intent(in) :: dhgrid_d1
+        integer(int32),intent(out) :: exitstatus
+        integer(int32),dimension(dhgrid_d0,dhgrid_d1),intent(out) :: dhgrid
+        integer(int32),intent(in) :: n
+        integer(int32),intent(in) :: sampling
         real(dp),dimension(profile_d0,profile_d1),intent(in) :: profile
-        integer,intent(in) :: nprofile
-        integer,intent(in) :: NP
-        integer,intent(in) :: extend
+        integer(int32),intent(in) :: nprofile
+        integer(int32),intent(in) :: NP
+        integer(int32),intent(in) :: extend
         call Curve2Mask(dhgrid,n,sampling,profile,nprofile,NP,extend=extend,&
                         exitstatus=exitstatus)
     end subroutine pyCurve2Mask
@@ -1582,16 +1580,16 @@
         use shtools, only: SHBias
         use ftypes
         implicit none
-        integer,intent(in) :: Shh_d0
-        integer,intent(in) :: incspectra_d0
-        integer,intent(in) :: outcspectra_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: Shh_d0
+        integer(int32),intent(in) :: incspectra_d0
+        integer(int32),intent(in) :: outcspectra_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(Shh_d0),intent(in) :: Shh
-        integer,intent(in) :: lwin
+        integer(int32),intent(in) :: lwin
         real(dp),dimension(incspectra_d0),intent(in) :: incspectra
-        integer,intent(in) :: ldata
+        integer(int32),intent(in) :: ldata
         real(dp),dimension(outcspectra_d0),intent(out) :: outcspectra
-        integer,intent(in) :: save_cg
+        integer(int32),intent(in) :: save_cg
         call SHBias(Shh,lwin,incspectra,ldata,outcspectra,save_cg=save_cg,&
                     exitstatus=exitstatus)
     end subroutine pySHBias
@@ -1600,11 +1598,11 @@
         use shtools, only: SphericalCapCoef
         use ftypes
         implicit none
-        integer,intent(in) :: coef_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: coef_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(coef_d0),intent(out) :: coef
         real(dp),intent(in) :: theta
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         call SphericalCapCoef(coef,theta,lmax=lmax,exitstatus=exitstatus)
     end subroutine pySphericalCapCoef
 
@@ -1616,22 +1614,22 @@
         use shtools, only: MakeGravGridDH
         use ftypes
         implicit none
-        integer,intent(in) :: phi_d0
-        integer,intent(in) :: phi_d1
-        integer,intent(in) :: total_d0
-        integer,intent(in) :: total_d1
-        integer,intent(in) :: rad_d0
-        integer,intent(in) :: rad_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: theta_d0
-        integer,intent(in) :: theta_d1
-        integer,intent(in) :: pot_d0
-        integer,intent(in) :: pot_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: phi_d0
+        integer(int32),intent(in) :: phi_d1
+        integer(int32),intent(in) :: total_d0
+        integer(int32),intent(in) :: total_d1
+        integer(int32),intent(in) :: rad_d0
+        integer(int32),intent(in) :: rad_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: theta_d0
+        integer(int32),intent(in) :: theta_d1
+        integer(int32),intent(in) :: pot_d0
+        integer(int32),intent(in) :: pot_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: gm
         real(dp),intent(in) :: r0
         real(dp),intent(in) :: a
@@ -1641,17 +1639,39 @@
         real(dp),dimension(phi_d0,phi_d1),intent(out) :: phi
         real(dp),dimension(total_d0,total_d1),intent(out) :: total
         real(dp),dimension(pot_d0,pot_d1),intent(out) :: pot
-        integer,intent(out) :: n
-        integer,intent(in) :: sampling
-        integer,intent(in) :: lmax_calc
+        integer(int32),intent(out) :: n
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: lmax_calc
         real(dp),intent(in) :: omega
-        integer,intent(in) :: normal_gravity
-        integer,intent(in) :: extend
+        integer(int32),intent(in) :: normal_gravity
+        integer(int32),intent(in) :: extend
         call MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,&
                             sampling=sampling,lmax_calc=lmax_calc,omega=omega,&
                             normal_gravity=normal_gravity,pot=pot,&
                             extend=extend,exitstatus=exitstatus)
     end subroutine pyMakeGravGridDH
+
+    subroutine pyMakeGravGridPoint(vec,cilm,lmax,gm,r0,r,lat,lon,omega,&
+                                   dealloc,cilm_d0,cilm_d1,cilm_d2)
+        use shtools, only: MakeGravGridPoint
+        use ftypes
+        implicit none
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer(int32),intent(in) :: lmax
+        real(dp),intent(in) :: gm
+        real(dp),intent(in) :: r0
+        real(dp),intent(in) :: r
+        real(dp),intent(in) :: lat
+        real(dp),intent(in) :: lon
+        real(dp),intent(in) :: omega
+        integer(int32),intent(in) :: dealloc
+        real(dp),dimension(3),intent(out) :: vec
+        vec=MakeGravGridPoint(cilm,lmax,gm,r0,r,lat,lon,omega=omega,&
+                              dealloc=dealloc)
+    end subroutine pyMakeGravGridPoint
 
     subroutine pyMakeGravGradGridDH(exitstatus,cilm,lmax,gm,r0,a,f,vxx,vyy,&
                                     vzz,vxy,vxz,vyz,n,sampling,lmax_calc,&
@@ -1661,24 +1681,24 @@
         use shtools, only: MakeGravGradGridDH
         use ftypes
         implicit none
-        integer,intent(in) :: vyz_d0
-        integer,intent(in) :: vyz_d1
-        integer,intent(in) :: vyy_d0
-        integer,intent(in) :: vyy_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: vzz_d0
-        integer,intent(in) :: vzz_d1
-        integer,intent(in) :: vxy_d0
-        integer,intent(in) :: vxy_d1
-        integer,intent(in) :: vxx_d0
-        integer,intent(in) :: vxx_d1
-        integer,intent(in) :: vxz_d0
-        integer,intent(in) :: vxz_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: vyz_d0
+        integer(int32),intent(in) :: vyz_d1
+        integer(int32),intent(in) :: vyy_d0
+        integer(int32),intent(in) :: vyy_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: vzz_d0
+        integer(int32),intent(in) :: vzz_d1
+        integer(int32),intent(in) :: vxy_d0
+        integer(int32),intent(in) :: vxy_d1
+        integer(int32),intent(in) :: vxx_d0
+        integer(int32),intent(in) :: vxx_d1
+        integer(int32),intent(in) :: vxz_d0
+        integer(int32),intent(in) :: vxz_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: gm
         real(dp),intent(in) :: r0
         real(dp),intent(in) :: a
@@ -1689,10 +1709,10 @@
         real(dp),dimension(vxy_d0,vxy_d1),intent(out) :: vxy
         real(dp),dimension(vxz_d0,vxz_d1),intent(out) :: vxz
         real(dp),dimension(vyz_d0,vyz_d1),intent(out) :: vyz
-        integer,intent(out) :: n
-        integer,intent(in) :: sampling
-        integer,intent(in) :: lmax_calc
-        integer,intent(in) :: extend
+        integer(int32),intent(out) :: n
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: lmax_calc
+        integer(int32),intent(in) :: extend
         call MakeGravGradGridDH(cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,&
                                 sampling=sampling,lmax_calc=lmax_calc,&
                                 extend=extend,exitstatus=exitstatus)
@@ -1706,24 +1726,24 @@
         use shtools, only: MakeMagGradGridDH
         use ftypes
         implicit none
-        integer,intent(in) :: vyz_d0
-        integer,intent(in) :: vyz_d1
-        integer,intent(in) :: vyy_d0
-        integer,intent(in) :: vyy_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: vzz_d0
-        integer,intent(in) :: vzz_d1
-        integer,intent(in) :: vxy_d0
-        integer,intent(in) :: vxy_d1
-        integer,intent(in) :: vxx_d0
-        integer,intent(in) :: vxx_d1
-        integer,intent(in) :: vxz_d0
-        integer,intent(in) :: vxz_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: vyz_d0
+        integer(int32),intent(in) :: vyz_d1
+        integer(int32),intent(in) :: vyy_d0
+        integer(int32),intent(in) :: vyy_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: vzz_d0
+        integer(int32),intent(in) :: vzz_d1
+        integer(int32),intent(in) :: vxy_d0
+        integer(int32),intent(in) :: vxy_d1
+        integer(int32),intent(in) :: vxx_d0
+        integer(int32),intent(in) :: vxx_d1
+        integer(int32),intent(in) :: vxz_d0
+        integer(int32),intent(in) :: vxz_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: r0
         real(dp),intent(in) :: a
         real(dp),intent(in) :: f
@@ -1733,14 +1753,33 @@
         real(dp),dimension(vxy_d0,vxy_d1),intent(out) :: vxy
         real(dp),dimension(vxz_d0,vxz_d1),intent(out) :: vxz
         real(dp),dimension(vyz_d0,vyz_d1),intent(out) :: vyz
-        integer,intent(out) :: n
-        integer,intent(in) :: sampling
-        integer,intent(in) :: lmax_calc
-        integer,intent(in) :: extend
+        integer(int32),intent(out) :: n
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: lmax_calc
+        integer(int32),intent(in) :: extend
         call MakeMagGradGridDH(cilm,lmax,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,&
                                 sampling=sampling,lmax_calc=lmax_calc,&
                                 extend=extend,exitstatus=exitstatus)
     end subroutine pyMakeMagGradGridDH
+
+    subroutine pyMakeMagGridPoint(vec,cilm,lmax,a,r,lat,lon,dealloc,cilm_d0,&
+                                  cilm_d1,cilm_d2)
+        use shtools, only: MakeMagGridPoint
+        use ftypes
+        implicit none
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer(int32),intent(in) :: lmax
+        real(dp),intent(in) :: a
+        real(dp),intent(in) :: r
+        real(dp),intent(in) :: lat
+        real(dp),intent(in) :: lon
+        integer(int32),intent(in) :: dealloc
+        real(dp),dimension(3),intent(out) :: vec
+        vec=MakeMagGridPoint(cilm,lmax,a,r,lat,lon,dealloc=dealloc)
+    end subroutine pyMakeMagGridPoint
 
     subroutine pyMakeGeoidGridDH(exitstatus,geoid,cilm,lmax,r0pot,GM,PotRef,&
                                  omega,r,sampling,order,nlat,nlong,lmax_calc,&
@@ -1749,28 +1788,28 @@
         use shtools, only: MakeGeoidGrid
         use ftypes
         implicit none
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: geoid_d0
-        integer,intent(in) :: geoid_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: geoid_d0
+        integer(int32),intent(in) :: geoid_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(geoid_d0,geoid_d1),intent(out) :: geoid
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: r0pot
         real(dp),intent(in) :: GM
         real(dp),intent(in) :: PotRef
         real(dp),intent(in) :: omega
         real(dp),intent(in) :: r
-        integer,intent(in) :: sampling
-        integer,intent(in) :: order
-        integer,intent(out) :: nlat
-        integer,intent(out) :: nlong
-        integer,intent(in) :: lmax_calc
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: order
+        integer(int32),intent(out) :: nlat
+        integer(int32),intent(out) :: nlong
+        integer(int32),intent(in) :: lmax_calc
         real(dp),intent(in) :: a
         real(dp),intent(in) :: f
-        integer,intent(in) :: extend
+        integer(int32),intent(in) :: extend
         if (sampling == 1) then
             call MakeGeoidGrid(geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,2,&
                                order,nlat,nlong,lmax_calc=lmax_calc,a=a,f=f,&
@@ -1788,21 +1827,21 @@
         use shtools, only: CilmPlus
         use ftypes
         implicit none
-        integer,intent(in) :: gridin_d0
-        integer,intent(in) :: gridin_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: gridin_d0
+        integer(int32),intent(in) :: gridin_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         real(dp),dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        integer,intent(in) :: lmax
-        integer,intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: nmax
         real(dp),intent(in) :: mass
         real(dp),intent(out) :: d
         real(dp),intent(in) :: rho
-        integer,intent(in) :: sampling
-        integer,intent(in) :: n
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: n
         if (sampling == 1) then
             call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n,&
                           exitstatus=exitstatus)
@@ -1818,21 +1857,21 @@
         use shtools, only: CilmMinus
         use ftypes
         implicit none
-        integer,intent(in) :: gridin_d0
-        integer,intent(in) :: gridin_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: gridin_d0
+        integer(int32),intent(in) :: gridin_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         real(dp),dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        integer,intent(in) :: lmax
-        integer,intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: nmax
         real(dp),intent(in) :: mass
         real(dp),intent(out) :: d
         real(dp),intent(in) :: rho
-        integer,intent(in) :: sampling
-        integer,intent(in) :: n
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: n
         if (sampling == 1) then
             call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n,&
                            exitstatus=exitstatus)
@@ -1848,23 +1887,23 @@
         use shtools, only: CilmPlusRhoH
         use ftypes
         implicit none
-        integer,intent(in) :: gridin_d0
-        integer,intent(in) :: gridin_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: rho_d0
-        integer,intent(in) :: rho_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: gridin_d0
+        integer(int32),intent(in) :: gridin_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: rho_d0
+        integer(int32),intent(in) :: rho_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         real(dp),dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        integer,intent(in) :: lmax
-        integer,intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: nmax
         real(dp),intent(in) :: mass
         real(dp),intent(out) :: d
         real(dp),dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer,intent(in) :: sampling
-        integer,intent(in) :: n
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: n
         if (sampling == 1) then
             call CilmPlusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n,&
                               exitstatus=exitstatus)
@@ -1880,23 +1919,23 @@
         use shtools, only: CilmMinusRhoH
         use ftypes
         implicit none
-        integer,intent(in) :: gridin_d0
-        integer,intent(in) :: gridin_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: rho_d0
-        integer,intent(in) :: rho_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: gridin_d0
+        integer(int32),intent(in) :: gridin_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: rho_d0
+        integer(int32),intent(in) :: rho_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         real(dp),dimension(gridin_d0,gridin_d1),intent(in) :: gridin
-        integer,intent(in) :: lmax
-        integer,intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: nmax
         real(dp),intent(in) :: mass
         real(dp),intent(out) :: d
         real(dp),dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer,intent(in) :: sampling
-        integer,intent(in) :: n
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: n
         if (sampling == 1) then
             call CilmMinusRhoH(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n,&
                                exitstatus=exitstatus)
@@ -1913,27 +1952,27 @@
         use shtools, only: BAtoHilm
         use ftypes
         implicit none
-        integer,intent(in) :: ba_d0
-        integer,intent(in) :: ba_d1
-        integer,intent(in) :: ba_d2
-        integer,intent(in) :: griddh_d0
-        integer,intent(in) :: griddh_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: ba_d0
+        integer(int32),intent(in) :: ba_d1
+        integer(int32),intent(in) :: ba_d2
+        integer(int32),intent(in) :: griddh_d0
+        integer(int32),intent(in) :: griddh_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         real(dp),dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
         real(dp),dimension(griddh_d0,griddh_d1),intent(in) :: griddh
-        integer,intent(in) :: lmax
-        integer,intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: nmax
         real(dp),intent(in) :: mass
         real(dp),intent(in) :: r0
         real(dp),intent(in) :: rho
-        integer,intent(in) :: sampling
-        integer,intent(in) :: filter_type
-        integer,intent(in) :: filter_deg
-        integer,intent(in) :: lmax_calc
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: filter_type
+        integer(int32),intent(in) :: filter_deg
+        integer(int32),intent(in) :: lmax_calc
         if (sampling == 1) then
             call BAtoHilm(cilm,ba,griddh,lmax,nmax,mass,r0,rho,2,&
                           filter_type=filter_type,filter_deg=filter_deg,&
@@ -1952,29 +1991,29 @@
         use shtools, only: BAtoHilmRhoH
         use ftypes
         implicit none
-        integer,intent(in) :: ba_d0
-        integer,intent(in) :: ba_d1
-        integer,intent(in) :: ba_d2
-        integer,intent(in) :: griddh_d0
-        integer,intent(in) :: griddh_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: rho_d0
-        integer,intent(in) :: rho_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: ba_d0
+        integer(int32),intent(in) :: ba_d1
+        integer(int32),intent(in) :: ba_d2
+        integer(int32),intent(in) :: griddh_d0
+        integer(int32),intent(in) :: griddh_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: rho_d0
+        integer(int32),intent(in) :: rho_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
         real(dp),dimension(ba_d0,ba_d1,ba_d2),intent(in) :: ba
         real(dp),dimension(griddh_d0,griddh_d1),intent(in) :: griddh
-        integer,intent(in) :: lmax
-        integer,intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: nmax
         real(dp),intent(in) :: mass
         real(dp),intent(in) :: r0
         real(dp),dimension(rho_d0,rho_d1),intent(in) :: rho
-        integer,intent(in) :: sampling
-        integer,intent(in) :: filter_type
-        integer,intent(in) :: filter_deg
-        integer,intent(in) :: lmax_calc
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: filter_type
+        integer(int32),intent(in) :: filter_deg
+        integer(int32),intent(in) :: lmax_calc
         if (sampling == 1) then
             call BAtoHilmRhoH(cilm,ba,griddh,lmax,nmax,mass,r0,rho,2,&
                               filter_type=filter_type,filter_deg=filter_deg,&
@@ -1990,8 +2029,8 @@
         use shtools, only: DownContFilterMA
         use ftypes
         implicit none
-        integer,intent(in) :: l
-        integer,intent(in) :: half
+        integer(int32),intent(in) :: l
+        integer(int32),intent(in) :: half
         real(dp),intent(in) :: r
         real(dp),intent(in) :: d
         real(dp) :: pyDownContFilterMA
@@ -2002,8 +2041,8 @@
         use shtools, only: DownContFilterMC
         use ftypes
         implicit none
-        integer,intent(in) :: l
-        integer,intent(in) :: half
+        integer(int32),intent(in) :: l
+        integer(int32),intent(in) :: half
         real(dp),intent(in) :: r
         real(dp),intent(in) :: d
         real(dp) :: pyDownContFilterMC
@@ -2033,22 +2072,22 @@
         use shtools, only: MakeMagGridDH
         use ftypes
         implicit none
-        integer,intent(in) :: total_grid_d0
-        integer,intent(in) :: total_grid_d1
-        integer,intent(in) :: cilm_d0
-        integer,intent(in) :: cilm_d1
-        integer,intent(in) :: cilm_d2
-        integer,intent(in) :: rad_grid_d0
-        integer,intent(in) :: rad_grid_d1
-        integer,intent(in) :: theta_grid_d0
-        integer,intent(in) :: theta_grid_d1
-        integer,intent(in) :: phi_grid_d0
-        integer,intent(in) :: phi_grid_d1
-        integer,intent(in) :: pot_grid_d0
-        integer,intent(in) :: pot_grid_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: total_grid_d0
+        integer(int32),intent(in) :: total_grid_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: rad_grid_d0
+        integer(int32),intent(in) :: rad_grid_d1
+        integer(int32),intent(in) :: theta_grid_d0
+        integer(int32),intent(in) :: theta_grid_d1
+        integer(int32),intent(in) :: phi_grid_d0
+        integer(int32),intent(in) :: phi_grid_d1
+        integer(int32),intent(in) :: pot_grid_d0
+        integer(int32),intent(in) :: pot_grid_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(in) :: r0
         real(dp),intent(in) :: a
         real(dp),intent(in) :: f
@@ -2059,10 +2098,10 @@
         real(dp),dimension(total_grid_d0,total_grid_d1),intent(out) :: &
                                                                      total_grid
         real(dp),dimension(pot_grid_d0,pot_grid_d1),intent(out) :: pot_grid
-        integer,intent(out) :: n
-        integer,intent(in) :: sampling
-        integer,intent(in) :: lmax_calc
-        integer,intent(in) :: extend
+        integer(int32),intent(out) :: n
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: lmax_calc
+        integer(int32),intent(in) :: extend
         call MakeMagGridDH(cilm,lmax,r0,a,f,rad_grid,theta_grid,phi_grid,&
                            total_grid,n,sampling=sampling,lmax_calc=lmax_calc,&
                            pot_grid=pot_grid,extend=extend,&
@@ -2074,15 +2113,15 @@
         use shtools, only: MakeCircleCoord
         use ftypes
         implicit none
-        integer,intent(in) :: coord_d0
-        integer,intent(in) :: coord_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: coord_d0
+        integer(int32),intent(in) :: coord_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(coord_d0,coord_d1),intent(out) :: coord
         real(dp),intent(in) :: lat
         real(dp),intent(in) :: lon
         real(dp),intent(in) :: theta0
         real(dp),intent(in) :: cinterval
-        integer,intent(out) :: cnum
+        integer(int32),intent(out) :: cnum
         call MakeCircleCoord(coord,lat,lon,theta0,cinterval=cinterval,&
                              cnum=cnum,exitstatus=exitstatus)
     end subroutine pyMakeCircleCoord
@@ -2092,9 +2131,9 @@
         use shtools, only: MakeEllipseCoord
         use ftypes
         implicit none
-        integer,intent(in) :: coord_d0
-        integer,intent(in) :: coord_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: coord_d0
+        integer(int32),intent(in) :: coord_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(coord_d0,coord_d1),intent(out) :: coord
         real(dp),intent(in) :: lat
         real(dp),intent(in) :: lon
@@ -2102,7 +2141,7 @@
         real(dp),intent(in) :: A_theta
         real(dp),intent(in) :: B_theta
         real(dp),intent(in) :: cinterval
-        integer,intent(out) :: cnum
+        integer(int32),intent(out) :: cnum
         call MakeEllipseCoord(coord,lat,lon,dec,A_theta,B_theta,&
                                 cinterval=cinterval,cnum=cnum,&
                                 exitstatus=exitstatus)
@@ -2112,16 +2151,16 @@
         use shtools, only: Wigner3j
         use ftypes
         implicit none
-        integer,intent(in) :: w3j_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: w3j_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(w3j_d0),intent(out) :: w3j
-        integer,intent(out) :: jmin
-        integer,intent(out) :: jmax
-        integer,intent(in) :: j2
-        integer,intent(in) :: j3
-        integer,intent(in) :: m1
-        integer,intent(in) :: m2
-        integer,intent(in) :: m3
+        integer(int32),intent(out) :: jmin
+        integer(int32),intent(out) :: jmax
+        integer(int32),intent(in) :: j2
+        integer(int32),intent(in) :: j3
+        integer(int32),intent(in) :: m1
+        integer(int32),intent(in) :: m2
+        integer(int32),intent(in) :: m3
         call Wigner3j(w3j,jmin,jmax,j2,j3,m1,m2,m3,exitstatus=exitstatus)
     end subroutine pyWigner3j
 
@@ -2129,11 +2168,11 @@
         use shtools, only: DHaj
         use ftypes
         implicit none
-        integer,intent(in) :: aj_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: aj_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(aj_d0),intent(out) :: aj
-        integer,intent(in) :: n
-        integer,intent(in) :: extend
+        integer(int32),intent(in) :: n
+        integer(int32),intent(in) :: extend
         call DHaj(n,aj,extend=extend,exitstatus=exitstatus)
     end subroutine pyDHaj
 
@@ -2144,20 +2183,20 @@
         use shtools, only: SHRotateTapers
         use ftypes
         implicit none
-        integer,intent(in) :: tapersrot_d0
-        integer,intent(in) :: tapersrot_d1
-        integer,intent(in) :: tapers_d0
-        integer,intent(in) :: tapers_d1
-        integer,intent(in) :: taper_order_d0
-        integer,intent(in) :: dj_d0
-        integer,intent(in) :: dj_d1
-        integer,intent(in) :: dj_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: tapersrot_d0
+        integer(int32),intent(in) :: tapersrot_d1
+        integer(int32),intent(in) :: tapers_d0
+        integer(int32),intent(in) :: tapers_d1
+        integer(int32),intent(in) :: taper_order_d0
+        integer(int32),intent(in) :: dj_d0
+        integer(int32),intent(in) :: dj_d1
+        integer(int32),intent(in) :: dj_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(tapersrot_d0,tapersrot_d1),intent(out) :: tapersrot
         real(dp),dimension(tapers_d0,tapers_d1),intent(in) :: tapers
-        integer,dimension(taper_order_d0),intent(in) :: taper_order
-        integer,intent(in) :: lmax
-        integer,intent(in) :: nrot
+        integer(int32),dimension(taper_order_d0),intent(in) :: taper_order
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: nrot
         real(dp),intent(in) :: x(3)
         real(dp),dimension(dj_d0,dj_d1,dj_d2),intent(in) ::dj
         call SHRotateTapers(tapersrot,tapers,taper_order,lmax,nrot,&
@@ -2170,18 +2209,18 @@
         use shtools, only: SlepianCoeffs
         use ftypes
         implicit none
-        integer,intent(in) :: falpha_d0
-        integer,intent(in) :: galpha_d0
-        integer,intent(in) :: galpha_d1
-        integer,intent(in) :: flm_d0
-        integer,intent(in) :: flm_d1
-        integer,intent(in) :: flm_d2
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: falpha_d0
+        integer(int32),intent(in) :: galpha_d0
+        integer(int32),intent(in) :: galpha_d1
+        integer(int32),intent(in) :: flm_d0
+        integer(int32),intent(in) :: flm_d1
+        integer(int32),intent(in) :: flm_d2
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(falpha_d0),intent(out) :: falpha
         real(dp),dimension(galpha_d0,galpha_d1),intent(in) :: galpha
         real(dp),dimension(flm_d0,flm_d1,flm_d2),intent(in) :: flm
-        integer,intent(in) :: lmax
-        integer,intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: nmax
         call SlepianCoeffs(falpha,galpha,flm,lmax,nmax,&
                            exitstatus=exitstatus)
     end subroutine pySlepianCoeffs
@@ -2192,18 +2231,18 @@
         use shtools, only: SlepianCoeffsToSH
         use ftypes
         implicit none
-        integer,intent(in) :: flm_d0
-        integer,intent(in) :: flm_d1
-        integer,intent(in) :: flm_d2
-        integer,intent(in) :: falpha_d0
-        integer,intent(in) :: galpha_d0
-        integer,intent(in) :: galpha_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: flm_d0
+        integer(int32),intent(in) :: flm_d1
+        integer(int32),intent(in) :: flm_d2
+        integer(int32),intent(in) :: falpha_d0
+        integer(int32),intent(in) :: galpha_d0
+        integer(int32),intent(in) :: galpha_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(flm_d0,flm_d1,flm_d2),intent(out) :: flm
         real(dp),dimension(galpha_d0,galpha_d1),intent(in) :: galpha
         real(dp),dimension(falpha_d0),intent(in) :: falpha
-        integer,intent(in) :: lmax
-        integer,intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: nmax
         call SlepianCoeffsToSH(flm,falpha,galpha,lmax,nmax,&
                                exitstatus=exitstatus)
     end subroutine pySlepianCoeffsToSH
@@ -2213,15 +2252,15 @@
         use shtools, only: SHSCouplingMatrix
         use ftypes
         implicit none
-        integer,intent(in) :: kij_d0
-        integer,intent(in) :: kij_d1
-        integer,intent(in) :: galpha_d0
-        integer,intent(in) :: galpha_d1
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: kij_d0
+        integer(int32),intent(in) :: kij_d1
+        integer(int32),intent(in) :: galpha_d0
+        integer(int32),intent(in) :: galpha_d1
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(kij_d0,kij_d1),intent(out) :: kij
         real(dp),dimension(galpha_d0,galpha_d1),intent(in) :: galpha
-        integer,intent(in) :: lmax
-        integer,intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: nmax
         call SHSCouplingMatrix(kij,galpha,lmax,nmax,exitstatus=exitstatus)
     end subroutine pySHSCouplingMatrix
 
@@ -2231,17 +2270,17 @@
         use shtools, only: SHSlepianVar
         use ftypes
         implicit none
-        integer,intent(in) :: galpha_order_d0
-        integer,intent(in) :: Sff_d0
-        integer,intent(in) :: galpha_d0
-        integer,intent(in) :: galpha_d1
-        integer,intent(out) :: exitstatus
-        integer,intent(in) :: l
+        integer(int32),intent(in) :: galpha_order_d0
+        integer(int32),intent(in) :: Sff_d0
+        integer(int32),intent(in) :: galpha_d0
+        integer(int32),intent(in) :: galpha_d1
+        integer(int32),intent(out) :: exitstatus
+        integer(int32),intent(in) :: l
         real(dp),dimension(galpha_d0,galpha_d1),intent(in) :: galpha
-        integer,dimension(galpha_order_d0),intent(in) :: galpha_order
+        integer(int32),dimension(galpha_order_d0),intent(in) :: galpha_order
         real(dp),dimension(Sff_d0),intent(in) :: Sff
-        integer,intent(in) :: kmax
-        integer,intent(in) :: lmax
+        integer(int32),intent(in) :: kmax
+        integer(int32),intent(in) :: lmax
         real(dp),intent(out) :: variance
         call SHSlepianVar(l,galpha,galpha_order,lmax,kmax,Sff,variance,&
                           exitstatus=exitstatus)
@@ -2253,17 +2292,44 @@
         use shtools, only: SHSCouplingMatrixCap
         use ftypes
         implicit none
-        integer,intent(in) :: kij_d0
-        integer,intent(in) :: kij_d1
-        integer,intent(in) :: galpha_d0
-        integer,intent(in) :: galpha_d1
-        integer,intent(in) :: galpha_order_d0
-        integer,intent(out) :: exitstatus
+        integer(int32),intent(in) :: kij_d0
+        integer(int32),intent(in) :: kij_d1
+        integer(int32),intent(in) :: galpha_d0
+        integer(int32),intent(in) :: galpha_d1
+        integer(int32),intent(in) :: galpha_order_d0
+        integer(int32),intent(out) :: exitstatus
         real(dp),dimension(kij_d0,kij_d1),intent(out) :: kij
         real(dp),dimension(galpha_d0,galpha_d1),intent(in) :: galpha
-        integer,dimension(galpha_order_d0),intent(in) :: galpha_order
-        integer,intent(in) :: lmax
-        integer,intent(in) :: nmax
+        integer(int32),dimension(galpha_order_d0),intent(in) :: galpha_order
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: nmax
         call SHSCouplingMatrixCap(kij,galpha,galpha_order,lmax,nmax,&
                                   exitstatus=exitstatus)
     end subroutine pySHSCouplingMatrixCap
+
+    subroutine pyMakeGradientDH(exitstatus,cilm,lmax,theta,phi,n,sampling,&
+                                lmax_calc,extend,phi_d0,phi_d1,cilm_d0,&
+                                cilm_d1,cilm_d2,theta_d0,theta_d1)
+        use shtools, only: MakeGradientDH
+        use ftypes
+        implicit none
+        integer(int32),intent(in) :: phi_d0
+        integer(int32),intent(in) :: phi_d1
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: theta_d0
+        integer(int32),intent(in) :: theta_d1
+        integer(int32),intent(out) :: exitstatus
+        real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
+        integer(int32),intent(in) :: lmax
+        real(dp),dimension(theta_d0,theta_d1),intent(out) :: theta
+        real(dp),dimension(phi_d0,phi_d1),intent(out) :: phi
+        integer(int32),intent(out) :: n
+        integer(int32),intent(in) :: sampling
+        integer(int32),intent(in) :: lmax_calc
+        integer(int32),intent(in) :: extend
+        call MakeGradientDH(cilm,lmax,theta,phi,n,sampling=sampling,&
+                            lmax_calc=lmax_calc,extend=extend,&
+                            exitstatus=exitstatus)
+    end subroutine pyMakeGradientDH

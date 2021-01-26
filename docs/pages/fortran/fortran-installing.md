@@ -8,28 +8,19 @@ toc: true
 folder: fortran
 ---
 
-## brew (macOS)
+## brew (macOS, Linux, Windows)
 
 If the [brew](https://brew.sh/) package manager is already installed, it is only necessary to enter the following commands in the terminal:
 ```bash
-brew tap shtools/shtools
 brew install shtools
 ```
-To install the OpenMP components along with the standard Fortran 95 library, add the option `--with-openmp` to the last command:
-```bash
-brew install shtools --with-openmp
-```
-The shtools library `libSHTOOLS.a` will be installed in the directory `/usr/local/lib`, and the compiled module files will be installed in `/usr/local/include`.
+The shtools libraries `libSHTOOLS.a` and `libSHTOOLS-mp.a` will be installed in the directory `/usr/local/lib`, and the compiled module files will be installed in `/usr/local/include`.
 
-To install the example data files and test programs in the directory `/usr/local/share/shtools/` use:
-```bash
-brew install shtools --with-examples
-```
 To run the test suite, use
 ```bash
 brew test shtools
 ```
-The output of the tests can be inspected in the user's `Library/Logs/Homebrew/shtools` directory.
+The output of the tests can be inspected in the user's logs directory (on macOS, this is `Library/Logs/Homebrew/shtools`).
 
 ## macports (macOS)
 
@@ -41,7 +32,7 @@ To install the OpenMP components along with the standard Fortran 95 library, add
 ```bash
 sudo port install shtools +openmp
 ```
-The shtools library `libSHTOOLS.a` will be installed in the directory `/opt/local/lib`, and the compiled module files will be installed in `/opt/local/include`. To run the test suite, which is located in `/opt/local/share/examples/shtools`, use the command
+The shtools library `libSHTOOLS.a` (and optionally `libSHTOOLS-mp.a`) will be installed in the directory `/opt/local/lib`, and the compiled module files will be installed in `/opt/local/include`. To run the test suite, which is located in `/opt/local/share/examples/shtools`, use the command
 ```bash
 sudo port test shtools
 ```
@@ -57,7 +48,7 @@ or on macOS using
 brew install fftw  # using brew
 sudo port install fftw-3  # using macports
 conda install fftw  # using conda
-# lapack and blas can be accessed by linking to the system '-framework Accelerate'
+# lapack and blas can be accessed by linking to the system '-framework Accelerate' or by installin openblas
 ```
 
 The Fortran 95 components of SHTOOLS can then be compiled in most cases by executing the following command in a unix shell in the main directory:
@@ -88,7 +79,7 @@ FFTW = Name and path of the FFTW3 library of the form "-Lpath -lfftw3"
 LAPACK = Name and path of the LAPACK library of the form "-Lpath -llapack"
 BLAS = Name and path of the BLAS library of the form "-Lpath -lblas"
 ```
-Successful compilation will create the library file `libSHTOOLS.a` (and `libSHTOOLS-mp.a` when compiling with OpenMP) in the directory `lib`, and will place a few compiled module files in the directory `modules`. If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by using `make clean`.
+Successful compilation will create the library file `libSHTOOLS.a` (and `libSHTOOLS-mp.a` when compiling with OpenMP) in the directory `lib`, and will place a few compiled module files in the directory `include`. If you need to recompile SHTOOLS a second time using a different set of compiler flags, it will be necessary to first remove all the previously compiled object files by using `make clean`.
 
 To make all files available at a system level, execute
 ```bash
@@ -97,17 +88,15 @@ make install
 This will move the compiled SHTOOLS files and documentation to
 ```bash
 SYSLIBPATH  # libSHTOOLS.a, libSHTOOLS-mp.a
-SYSMODPATH  # ftypes.mod fftw3.mod, planetsconstants.mod, shtools.mod
+SYSMODPATH  # ftypes.mod, fftw3.mod, planetsconstants.mod, shtools.mod
 SYSSHAREPATH/shtools/examples  # example files
 SYSSHAREPATH/man/man1  # man pages
-SYSDOCPATH/shtools  # index.html, web documentation 
 ```
 The locations of the above directories can be set as optional arguments passed to the `Makefile`, and the default locations are
 ```bash
 SYSLIBPATH = /usr/local/lib
 SYSMODPATH = /usr/local/include
 SYSSHAREPATH = /usr/local/share
-SYSDOCPATH = /usr/local/share/doc
 ```
 To remove all installed SHTOOLS files, use
 ```bash

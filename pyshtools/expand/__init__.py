@@ -15,6 +15,9 @@ SHExpandDHC    Expand an equally sampled or equally spaced complex map into
 MakeGridDHC    Create a 2D complex map from a set of complex spherical harmonic
                coefficients that conforms with Driscoll and Healy's (1994)
                sampling theorem.
+MakeGradientDH Compute the gradient of a scalar function and return grids of
+               the two horizontal components that conform with Driscoll and
+               Healy's (1994) sampling theorem.
 
 Gauss-Legendre quadrature grids
 -------------------------------
@@ -66,6 +69,7 @@ from ..shtools import MakeGrid2D
 from ..shtools import MakeGridPoint
 from ..shtools import MakeGridPointC
 from ..shtools import SHMultiply
+from ..shtools import MakeGradientDH
 
 from .spharm_functions import spharm
 from .spharm_functions import spharm_lm
@@ -78,4 +82,4 @@ __all__ = ['SHExpandDH', 'MakeGridDH', 'SHExpandDHC', 'MakeGridDHC',
            'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ', 'SHExpandGLQC',
            'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ', 'SHExpandWLSQ',
            'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC', 'SHMultiply',
-           'spharm', 'spharm_lm']
+           'MakeGradientDH', 'spharm', 'spharm_lm']

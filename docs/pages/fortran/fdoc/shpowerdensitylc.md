@@ -23,7 +23,7 @@ Compute the power spectral density of a complex function for a single spherical 
 `cilm` : input, complex(dp), dimension (2, `lmaxin`+1, `lmaxin`+1)
 :   The complex function expressed in complex spherical harmonics.
 
-`l` : input, integer
+`l` : input, integer(int32)
 :   The spherical harmonic degree. This must be less than or equal to `lmaxin`.
 
 ## Description

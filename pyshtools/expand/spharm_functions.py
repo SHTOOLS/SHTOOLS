@@ -3,8 +3,8 @@
 
     spharm        Compute all the spherical harmonic functions up to a maximum
                   degree and order.
-    spharm_lm     Compute the spherical harmonic function for a specific degree
-                  l and order m.
+    spharm_lm     Compute the spherical harmonic function for specific degrees
+                  l and orders m.
 """
 import numpy as _np
 import warnings as _warnings
@@ -46,15 +46,15 @@ def spharm(lmax, theta, phi, normalization='4pi', kind='real', csphase=1,
         harmonic functions, respectively.
     kind : str, optional, default = 'real'
         'real' or 'complex' spherical harmonic coefficients.
-    csphase : optional, integer, default = 1
+    csphase : integer, optional, default = 1
         If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
         Condon-Shortley phase of (-1)^m will be appended to the spherical
         harmonic functions.
-    packed : optional, bool, default = False
+    packed : bool, optional, default = False
         If True, return a 2-dimensional packed array where the index of the
         second column corresponds to l*(l+1)/2+m, where l and m are
         respectively the degree and order.
-    degrees : optional, bool, default = True
+    degrees : bool, optional, default = True
         If True, `theta` and `phi` are expressed in degrees.
 
     Notes
@@ -182,10 +182,11 @@ def spharm(lmax, theta, phi, normalization='4pi', kind='real', csphase=1,
     return ylm
 
 
+@_np.vectorize
 def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
               degrees=True):
     """
-    Compute the spherical harmonic function for a specific degree and order.
+    Compute the spherical harmonic function for specific degrees and orders.
 
     Usage
     -----
@@ -193,43 +194,43 @@ def spharm_lm(l, m, theta, phi, normalization='4pi', kind='real', csphase=1,
 
     Returns
     -------
-    ylm : float or complex
+    ylm : float or complex, ndarray
         The spherical harmonic function ylm, where l and m are the spherical
         harmonic degree and order, respectively.
 
     Parameters
     ----------
-    l : integer
+    l : integer, array_like
         The spherical harmonic degree.
-    m : integer
+    m : integer, array_like
         The spherical harmonic order.
-    theta : float
+    theta : float, array_like
         The colatitude in degrees. Use radians if 'degrees' is set to False.
-    phi : float
+    phi : float, array_like
         The longitude in degrees. Use radians if 'degrees' is set to False.
-    normalization : str, optional, default = '4pi'
+    normalization : str, array_like, optional, default = '4pi'
         '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
         orthonormalized, Schmidt semi-normalized, or unnormalized spherical
         harmonic functions, respectively.
-    kind : str, optional, default = 'real'
+    kind : str, array_like, optional, default = 'real'
         'real' or 'complex' spherical harmonic coefficients.
-    csphase : optional, integer, default = 1
+    csphase : integer, array_like, optional, default = 1
         If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
         Condon-Shortley phase of (-1)^m will be appended to the spherical
         harmonic functions.
-    degrees : optional, bool, default = True
+    degrees : bool, array_like, optional, default = True
         If True, `theta` and `phi` are expressed in degrees.
 
     Notes
     -----
-    spharm_lm will calculate the spherical harmonic function for a specific
-    degree l and order m, and for a given colatitude theta and longitude phi.
-    Three parameters determine how the spherical harmonic functions are
-    defined. normalization can be either '4pi' (default), 'ortho', 'schmidt',
-    or 'unnorm' for 4pi normalized, orthonormalized, Schmidt semi-normalized,
-    or unnormalized spherical harmonic functions, respectively. kind can be
-    either 'real' or 'complex', and csphase determines whether to include or
-    exclude (default) the Condon-Shortley phase factor.
+    spharm_lm will calculate the spherical harmonic function for specific
+    degrees l, orders m, colatitudes theta and longitudes phi. Three parameters
+    determine how the spherical harmonic functions are defined. normalization
+    can be either '4pi' (default), 'ortho', 'schmidt', or 'unnorm' for 4pi
+    normalized, orthonormalized, Schmidt semi-normalized, or unnormalized
+    spherical harmonic functions, respectively. kind can be either 'real' or
+    'complex', and csphase determines whether to include or exclude (default)
+    the Condon-Shortley phase factor.
 
     The spherical harmonic functions are calculated using the standard
     three-term recursion formula, and in order to prevent overflows, the

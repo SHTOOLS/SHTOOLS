@@ -68,12 +68,12 @@ subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, lmax, &
     implicit none
 
     real(dp), intent(out) :: tapers(:,:), eigenvalues(:)
-    integer, intent(in) :: dh_mask(:,:), n_dh, lmax, sampling
-    integer, intent(in), optional :: ntapers, degrees(:)
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in) :: dh_mask(:,:), n_dh, lmax, sampling
+    integer(int32), intent(in), optional :: ntapers, degrees(:)
+    integer(int32), intent(out), optional :: exitstatus
     real(dp), allocatable :: dij(:,:), dijex(:, :), evec(:, :)
-    integer :: nlat, nlong, lmax_dh, astat(2), i, j, l, m, exclude, n, &
-               ind((lmax+1)**2), numk
+    integer(int32) :: nlat, nlong, lmax_dh, astat(2), i, j, l, m, exclude, n, &
+                      ind((lmax+1)**2), numk
 
     if (present(exitstatus)) exitstatus = 0
 

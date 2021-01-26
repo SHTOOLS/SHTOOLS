@@ -1,10 +1,9 @@
-function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
-                        csphase, dealloc)
+function MakeGridPointC(cilm, lmax, lat, lon, norm, csphase, dealloc)
 !------------------------------------------------------------------------------
 !
 !   This function will determine the value at a given latitude and
 !   longitude corresponding to the given set of complex spherical harmonics.
-!   Latitude and Longitude are assumed to be in DEGREES!
+!   Latitude and Longitude must be in degrees
 !
 !   Calling Parameters
 !
@@ -12,8 +11,8 @@ function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
 !           cilm        Complex spherical harmonic coefficients, with
 !                       dimensions (2, lmax+1, lmax+1).
 !           lmax        Maximum degree used in the expansion.
-!           lat         latitude (degrees).
-!           long        longitude (degrees).
+!           lat         Latitude (degrees).
+!           lon         Longitude (degrees).
 !
 !       OPTIONAL (IN)
 !           norm        Spherical harmonic normalization:
@@ -21,33 +20,28 @@ function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
 !                           (2) Schmidt
 !                           (3) unnormalized
 !                           (4) orthonormalized
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           dealloc     If (1) Deallocate saved memory in Legendre function
 !                       routines. Default (0) is not to deallocate memory.
-!
-!   Notes:
-!       1.  If lmax is greater than the the maximum spherical harmonic
-!           degree of the input file, then this file will be ZERO PADDED!
-!           (i.e., those degrees after lmax are assumed to be zero).
 !
 !   Copyright (c) 2005-2019, SHTOOLS
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: PlmBar, PLegendreA, PlmSchmidt, PlmON, CSPHASE_DEFAULT
+    use SHTOOLS, only: PlmBar, PLegendreA, PlmSchmidt, PlmON
     use ftypes
 
     implicit none
 
     complex(dp) :: MakeGridPointC
     complex(dp), intent(in):: cilm(:,:,:)
-    real(dp), intent(in) :: lat, longitude
-    integer, intent(in) :: lmax
-    integer, intent(in), optional :: norm, csphase, dealloc
-    real(dp) :: pi, x, lon
+    real(dp), intent(in) :: lat, lon
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(in), optional :: norm, csphase, dealloc
+    real(dp) :: pi, x, lon_rad
     complex(dp) :: expand, i_imag
-    integer :: index, l, m, l1, m1, lmax_comp, phase, astat(4)
+    integer(int32) :: index, l, m, l1, m1, lmax_comp, phase, astat(4)
     real(dp), allocatable :: pl(:), cosm(:), sinm(:), onem(:)
 
     i_imag = cmplx(0.0_dp, 1.0_dp, dp)
@@ -83,7 +77,7 @@ function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
         end if
 
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 
@@ -101,7 +95,7 @@ function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
 
     pi = acos(-1.0_dp)
     x = sin(lat * pi / 180.0_dp)
-    lon = longitude * pi / 180.0_dp
+    lon_rad = lon * pi / 180.0_dp
 
     lmax_comp = min(lmax, size(cilm(1,1,:)) - 1)
 
@@ -132,8 +126,8 @@ function MakeGridPointC(cilm, lmax, lat, longitude, norm, &
     cosm(1) = 1.0_dp
 
     if (lmax_comp > 0) then
-        sinm(2) = sin(lon)
-        cosm(2) = cos(lon)
+        sinm(2) = sin(lon_rad)
+        cosm(2) = cos(lon_rad)
     end if
 
     do m = 2, lmax_comp, 1

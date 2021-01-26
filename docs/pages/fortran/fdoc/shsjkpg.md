@@ -23,13 +23,13 @@ Calculate the expectation of the product of two functions, each multiplied by a 
 `incspectra` : input, real(dp), dimension (`l`+`lwin`+1)
 :   The global cross-power spectrum of `f` and `g`.
 
-`l` : input, integer
+`l` : input, integer(int32)
 :   The spherical harmonic degree for which to calculate the expectation.
 
-`m` : input, integer
+`m` : input, integer(int32)
 :   The angular order of the first localized function, `Phi`.
 
-`mprime` : input, integer
+`mprime` : input, integer(int32)
 :   The angular order of the second localized function, `Gamma`.
 
 `hj_real` : input, real(dp), dimension (`lwin`+1)
@@ -38,16 +38,16 @@ Calculate the expectation of the product of two functions, each multiplied by a 
 `hk_real` : input, real(dp), dimension (`lwin`+1)
 :   The real spherical harmonic coefficients of angular order `mk` used to localize the second function `g`. These are obtained by a call to `SHReturnTapers`.
 
-`mj` : input, integer
+`mj` : input, integer(int32)
 :   The angular order of the window coefficients `hj_real`.
 
-`mk` : input, integer
+`mk` : input, integer(int32)
 :   The angular order of the window coefficients `hk_real`.
 
-`lwin` : input, integer
+`lwin` : input, integer(int32)
 :   the spherical harmonic bandwidth of the localizing windows `hj_real` and `hk_real`.
 
-`hkcc` : input, integer
+`hkcc` : input, integer(int32)
 :   If 1, the function described in the `description` will be calculated as is. If 2, the second localized function `Gamma` will not have its complex conjugate taken.
 
 ## Description

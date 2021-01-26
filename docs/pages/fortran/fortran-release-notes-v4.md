@@ -7,6 +7,25 @@ summary:
 toc: true
 folder: fortran
 ---
+## Version 4.8
+
+* Several functions have been vectorized using `numpy.vectorize()`. These include: `spharm_lm()`, `legendre_lm()`, `MakeGridPoint()`, `MakeGridPointC()`, `DownContFilterMA()`, `DownContFilterMC()`, `NormalGravity()`, `SHConfidence()`, and `PlmIndex()`.
+* A new Fortran routine `MakeGradientDH` was added to compute the horizontal gradient of a real scalar function. The method `.gradient()` was added to the `SHCoeffs` class, and a new class `SHGradient` was created to store and plot the two horizontal components of the gradient.
+* Added new Fortran functions `MakeGravGridPoint` and `MakeMagGridPoint` to compute the gravity and magnetic field vector at a single point.
+* Added the option to compute the gravity and magnetic field vectors at a single point using the python class methods `SHGravCoeffs.expand()` and `SHMagCoeffs.expand()`.
+* The `plot_spectrum2d()` routines have been updated to include more plotting options, including placement of the origin, tick intervals, and colormaps. Most optional parameters are the same as in the `SHGrid.plot()` method.
+* Added the option to including intensity shading in the `SHGrid.plotgmt()` routine. The shading can be derived from the gradient of the input grid (by setting `shading=True`) or from a different map by supplying an `SHGrid` class instance. Optional parameters include the azimuth of the shading (`shading_azimuth`), as well as the maximum amplitude of the intensity (`shading_amplitude`).
+* Modified all the Fortran routines to use a slightly more efficient way to compute the radius of an ellipsoid as a function of geocentric latitude.
+* Fixed a bug in `SHCoeffs.expand()` when `colat` was specified in radians.
+* All declarations of integers in the Fortran code are now made using the types defined in the module `iso_fortran_env`. Furthermore, the python wrapper and signature files have been updated to be explicit when defining the Fortran variables.
+* Fixed a bug where the old module name `constant` needed to be updated to `constants` in the method `SHCoeffs.centroid()`.
+* Corrected the parameterization used when generating ellipsoids in `SHGrid.from_ellipsoid()`. Though this method was introduced in v4.7, it was not mentioned in the release notes.
+* Changed the default behavior of `SHCoeffs.to_array()` so that the default value is not to return the errors by setting `errors=False`.
+* Added the  optional attribute `name` to the coefficient classes `SHGrid`, `SHGravCoeffs`, `SHMagCoeffs` and `SlepianCoeffs`. All datasets now explicity set `name` to the function call of the dataset.
+* Moved the file `shtools.h` from `src/` to `include/` and updated the Makefiles accordingly.
+
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, A. Corbin, I. Oshchepkov, B. Xu, and A. Walker, A. Hattori, S. Schröder, K. Leinweber, A. Vasishta (2021). SHTOOLS: Version 4.8, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+
 ## Version 4.7.1
 
 * Minor modifications were made to the Makefiles in order to submit shtools to the homebrew-core and macports package managers. Relative paths were removed in a few cases by explicitly passing variables such as `$(MODPATH)$` to all dependent sub-makefiles. Default variables are no longer set in the sub-makefiles, as these are not intended to be used independently: All variables are passed directly from the main Makefile. Renamed the directory `modules` to `include` to be consistent with macports and homebrew installations. The `F95FLAGS` are set by searching if the compiler name contains the "short" compiler name. This allows recognizing "gfortran-10" as being "gfortran".
@@ -15,7 +34,7 @@ folder: fortran
 * Minor changes to the Travis configuration file, the conda `environment.yml` file, and fortran documentation and man pages.
 * Added initial experimental support for C-binded SHTOOLS wrapper functions. This includes replacing assumed-size arrays with fixed-size arrays with additional arguments for each dimension. Though this is not yet documented, a working example can be found in the folder `examples/cpp`.
 
-M. A. Wieczorek, M. Meschede, E. Sales de Andrade, A. Corbin, I. Oshchepkov, B. Xu, and A. Walker, A. Hattori, S. Schröder, K. Leinweber, A. Vasishta (2020). SHTOOLS: Version 4.7.1, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, A. Corbin, I. Oshchepkov, B. Xu, and A. Walker, A. Hattori, S. Schröder, K. Leinweber, A. Vasishta (2020). SHTOOLS: Version 4.7.1, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.4048072)
 
 ## Version 4.7
 
@@ -95,7 +114,7 @@ In the current state of fpm (which is undergoing active development), it is not 
 * Fixed a bug in `Curve2Mask` python wrapper when using extended grids, and fixed a bug in the fortran code when the input file contained points at exactly 0 or 360 degree.
 * pyshtools versioning is now done using `versioneer`, instead of the homemade system that was in the setup.py (which was somewhat complicated and needed to set `ISREALESED` to True or False). Versioneer gets the version number automatically from git tags.
 
-M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker, A. Hattori, S. Schröder, K. Leinweber, A. Vasishta (2020). SHTOOLS: Version 4.7, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, I. Oshchepkov, B. Xu, and A. Walker, A. Hattori, S. Schröder, K. Leinweber, A. Vasishta (2020). SHTOOLS: Version 4.7, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.4028484)
 
 ## Version 4.6
 

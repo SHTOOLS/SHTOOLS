@@ -43,7 +43,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !                       2. PlmSchmidt
 !                       3. PLegendreA (unnormalized)
 !                       4. PlmBar/sqrt(4 pi) (orthonormalized)
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           weights  The weights to be used when performing the weighted least
 !                    squares inversion.
@@ -64,21 +64,21 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: PlmBar, PLegendreA, PlmSchmidt, PlmON, CSPHASE_DEFAULT
+    use SHTOOLS, only: PlmBar, PLegendreA, PlmSchmidt, PlmON
     use ftypes
 
     implicit none
 
     real(dp), intent(in) :: d(:), lat(:), lon(:)
     real(dp), intent(out) :: cilm(:,:,:)
-    integer, intent(in) :: nmax, lmax
-    integer, intent(in), optional :: norm, csphase
+    integer(int32), intent(in) :: nmax, lmax
+    integer(int32), intent(in), optional :: norm, csphase
     real(dp), intent(out), optional :: chi2
     real(dp), intent(in), optional :: weights(:)
-    integer, intent(out), optional :: exitstatus
-    integer, parameter :: opt = 80
-    integer :: ncoef, i, l, m, ind1, ind2, info, lwork, opt1, phase, &
-               astat(7), lnorm
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32), parameter :: opt = 80
+    integer(int32) :: ncoef, i, l, m, ind1, ind2, info, lwork, opt1, phase, &
+                      astat(7), lnorm
     real(dp) :: pi, lonr, small
     real(dp), allocatable :: mm(:), gg(:, :), p(:), work(:), b(:, :), y(:), &
                              din(:)
@@ -180,7 +180,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
         end if
 
     else
-            phase = CSPHASE_DEFAULT
+            phase = 1
 
     end if
 

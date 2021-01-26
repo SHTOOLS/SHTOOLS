@@ -57,8 +57,8 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 !                       from this oversampling are discarded, and hence not
 !                       aliased into lower frequencies.
 !           csphase     1: Do not include the condon-shortley phase factor of
-!                       (-1)^m. -1: Apply the condon-shortley phase factor of
-!                       (-1)^m.
+!                       (-1)^m (default). -1: Apply the condon-shortley phase
+!                       factor of (-1)^m.
 !           lmax_calc   The maximum spherical harmonic degree calculated in the
 !                       spherical harmonic expansion.
 !
@@ -87,7 +87,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 !
 !------------------------------------------------------------------------------
     use FFTW3
-    use SHTOOLS, only: dhaj, csphase_default
+    use SHTOOLS, only: DHaj
     use ftypes
     use, intrinsic :: iso_c_binding
 
@@ -95,20 +95,21 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
 
     real(dp), intent(in) :: grid(:,:)
     real(dp), intent(out) :: cilm(:,:,:)
-    integer, intent(in) :: n
-    integer, intent(out) :: lmax
-    integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in) :: n
+    integer(int32), intent(out) :: lmax
+    integer(int32), intent(in), optional :: norm, sampling, csphase, lmax_calc
+    integer(int32), intent(out), optional :: exitstatus
     complex(dp) :: cc(n+1), ccs(n+1)
-    integer :: l, m, i, l1, m1, i_eq, i_s, lnorm, astat(4), lmax_comp, nlong
+    integer(int32) :: l, m, i, l1, m1, i_eq, i_s, lnorm, astat(4), &
+                      lmax_comp, nlong
     type(C_PTR) :: plan, plans
     real(dp) :: pi, gridl(2*n), gridls(2*n), aj(n), fcoef1(2, n/2+1), &
                 fcoef2(2, n/2+1), theta, prod, scalef, rescalem, u, p, pmm, &
                 pm1, pm2, z, ffc(1:2,-1:1)
     real(dp), save, allocatable :: sqr(:), ff1(:,:), ff2(:,:)
-    integer(int1), save, allocatable :: fsymsign(:,:)
-    integer, save :: lmax_old = 0, norm_old = 0
-    integer :: phase
+    integer(int8), save, allocatable :: fsymsign(:,:)
+    integer(int32), save :: lmax_old = 0, norm_old = 0
+    integer(int32) :: phase
 
 !$OMP   threadprivate(sqr, ff1, ff2, fsymsign, lmax_old, norm_old)
 
@@ -251,7 +252,7 @@ subroutine SHExpandDH(grid, n, cilm, lmax, norm, sampling, csphase, &
         end if
 
     else
-        phase = csphase_default
+        phase = 1
 
     end if
 

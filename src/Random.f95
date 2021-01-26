@@ -23,12 +23,12 @@ function RandomN(idum)
     implicit none
 
     real(dp) :: RandomN
-    integer(int4), intent(inout) :: idum
-    integer(int4), parameter :: IA = 16807, IM = 2147483647, IQ = 127773, &
+    integer(int32), intent(inout) :: idum
+    integer(int32), parameter :: IA = 16807, IM = 2147483647, IQ = 127773, &
                                 IR = 2836, one = 1, param1 = 888889999, &
                                 param2 = 777755555
     real(dp), save :: am
-    integer(int4), save :: ix = -1, iy = -1, k
+    integer(int32), save :: ix = -1, iy = -1, k
 
 !$OMP   threadprivate(am, ix, iy, k)
 
@@ -81,7 +81,7 @@ function RandomGaussian(idum)
     implicit none
 
     real(dp) :: RandomGaussian
-    integer(int4), intent(inout) :: idum
+    integer(int32), intent(inout) :: idum
     real(dp) :: rsq, v1, v2
     real(dp), save :: gset
     logical, save :: gaus_stored = .false.

@@ -23,22 +23,22 @@ call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `c
 `cilm` : input, real(dp), dimension (2, `lmax`+1, `lmax`+1)
 :   The real spherical harmonic coefficients to be expanded in the space domain. The coefficients `C1lm` and `C2lm` refer to the cosine (`Clm`) and sine (`Slm`) coefficients, respectively, with `Clm=cilm(1,l+1,m+1)` and `Slm=cilm(2,l+1,m+1)`. 
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The maximum spherical harmonic degree of the coefficients `cilm` used when calculating the grid.
 
 `interval` : input, real(dp)
 :   The latitudinal and longitudinal spacing of `grid`.
 
-`nlat` : output, integer
+`nlat` : output, integer(int32)
 :   The number of latitudinal samples. Both 90 N and 90 S are included.
 
-`nlong` : output, integer
+`nlong` : output, integer(int32)
 :   The number of longitudinal samples. Both 0 and 360 E are included.
 
-`norm` : input, optional, integer, default = 1
+`norm` : input, optional, integer(int32), default = 1
 :   1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
-`csphase` : input, optional, integer, default = 1
+`csphase` : input, optional, integer(int32), default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
 `f` : input, optional, real(dp)
@@ -59,10 +59,10 @@ call MakeGrid2D (`grid`, `cilm`, `lmax`, `interval`, `nlat`, `nlong`, `norm`, `c
 `west` : input, optional, real(dp), default = 0
 :   The minimum longitude of the output raster grid, in degrees. The default is 0 degrees.
 
-`dealloc` : input, optional, integer, default = 0
+`dealloc` : input, optional, integer(int32), default = 0
 :   0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description

@@ -49,11 +49,9 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !                           (2) Schmidt
 !                           (3) unnormalized
 !                           (4) orthonormalized
-!           sampling    (1) Grid is N latitudes by N longitudes (default).
-!                       (2) Grid is N by 2N. The higher frequencies resulting
-!                       from this oversampling in longitude are discarded, and
-!                       hence not aliased into lower frequencies.
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           sampling    (1) The output grid is N by N (default).
+!                       (2) The output grid is N by 2N.
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           lmax_calc   The maximum spherical harmonic degree to evaluate
 !                       the coefficients up to.
@@ -82,7 +80,6 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 !
 !------------------------------------------------------------------------------
     use FFTW3
-    use SHTOOLS, only: CSPHASE_DEFAULT
     use ftypes
     use, intrinsic :: iso_c_binding
 
@@ -90,19 +87,20 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 
     real(dp), intent(in) :: cilm(:,:,:)
     real(dp), intent(out) :: griddh(:,:)
-    integer, intent(in) :: lmax
-    integer, intent(out) :: n
-    integer, intent(in), optional :: norm, sampling, csphase, lmax_calc, extend
-    integer, intent(out), optional :: exitstatus
-    integer :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), lnorm, nlong, &
-               nlong_out, nlat_out, phase, extend_grid
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(out) :: n
+    integer(int32), intent(in), optional :: norm, sampling, csphase, &
+                                            lmax_calc, extend
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), lnorm, &
+                      nlong, nlong_out, nlat_out, phase, extend_grid
     real(dp) :: grid(4*lmax+4), grids(4*lmax+4), pi, theta, coef0, scalef, &
                 rescalem, u, p, pmm, pm1, pm2, z, coef0s, tempr
     complex(dp) :: coef(2*lmax+3), coefs(2*lmax+3), tempc
     type(C_PTR) :: plan, plans
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer(int1), save, allocatable :: fsymsign(:,:)
-    integer, save :: lmax_old = 0, norm_old = 0
+    integer(int8), save, allocatable :: fsymsign(:,:)
+    integer(int32), save :: lmax_old = 0, norm_old = 0
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old, norm_old)
 
@@ -221,7 +219,7 @@ subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, &
 
         end if
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 

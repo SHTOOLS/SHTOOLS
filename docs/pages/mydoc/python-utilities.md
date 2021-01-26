@@ -1,9 +1,9 @@
 ---
-title: "Utilities"
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+title: pysh.utils
+keywords: spherical harmonics, utilities, wigner symbols, python, pyshtools
 sidebar: mydoc_sidebar
 permalink: python-utilities.html
-summary: 
+summary: This module provides miscellaneous routines that are useful when working with spherical harmonics and creating figures.
 toc: false
 folder: mydoc
 ---

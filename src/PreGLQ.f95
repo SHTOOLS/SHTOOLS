@@ -44,10 +44,10 @@ subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
 
     real(dp), intent(in) :: x1, x2
     real(dp), intent(out) :: zero(:), w(:)
-    integer, intent(in) :: n
-    integer, intent(out), optional :: exitstatus
-    integer :: i, j, m, iter
-    integer, parameter :: itermax = 1000
+    integer(int32), intent(in) :: n
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: i, j, m, iter
+    integer(int32), parameter :: itermax = 1000
     real(dp), parameter :: eps=1.0e-15_dp
     real(dp) :: p1, p2, p3, pp, z, z1, xm, xu, pi
 
@@ -151,7 +151,7 @@ subroutine PreGLQ(x1, x2, n, zero, w, exitstatus)
 end subroutine PreGLQ
 
 
-integer function NGLQ(degree)
+function NGLQ(degree)
 !------------------------------------------------------------------------------
 !
 !   For a polynomial of order degree, this simple function
@@ -163,7 +163,8 @@ integer function NGLQ(degree)
 
     implicit none
 
-    integer, intent(in) :: degree
+    integer(int32) :: NGLQ
+    integer(int32), intent(in) :: degree
 
     if (degree < 0) then
         print*, "Error --- NGLQ"
@@ -177,7 +178,7 @@ integer function NGLQ(degree)
 end function NGLQ
 
 
-integer function NGLQSH(degree)
+function NGLQSH(degree)
 !------------------------------------------------------------------------------
 !
 !   This function returns the number of gauss-legendre points that
@@ -185,9 +186,12 @@ integer function NGLQSH(degree)
 !   Lmax = degree.
 !
 !------------------------------------------------------------------------------
+    use ftypes
+
     implicit none
 
-    integer, intent(in) :: degree
+    integer(int32) :: NGLQSH
+    integer(int32), intent(in) :: degree
 
     if (degree < 0) then
         print*, "Error --- NGLQSH"
@@ -201,7 +205,7 @@ integer function NGLQSH(degree)
 end function NGLQSH
 
 
-integer function NGLQSHN(degree, n)
+function NGLQSHN(degree, n)
 !------------------------------------------------------------------------------
 !
 !   This function returns the number of gauss-legendre points that
@@ -214,7 +218,8 @@ integer function NGLQSHN(degree, n)
 
     implicit none
 
-    integer, intent(in) :: degree, n
+    integer(int32) :: NGLQSHN
+    integer(int32), intent(in) :: degree, n
 
     if (degree < 0) then
         print*, "Error --- NGLQSHN"

@@ -64,9 +64,9 @@ subroutine SHSCouplingMatrixCap(kij, galpha, galpha_order, lmax, nmax, &
 
     real(dp), intent(out) :: kij(:,:)
     real(dp), intent(in) :: galpha(:,:)
-    integer, intent(in) :: galpha_order(:), lmax, nmax
-    integer, intent(out), optional :: exitstatus
-    integer :: l, lp, m, alpha
+    integer(int32), intent(in) :: galpha_order(:), lmax, nmax
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: l, lp, m, alpha
     real(dp) :: temp
 
     if (present(exitstatus)) exitstatus = 0

@@ -26,7 +26,7 @@ subroutine SHMultiply(cilmout, cilm1, lmax1, cilm2, lmax2, precomp, norm, &
 !           precomp     If 1, the array plx will be precomputed when calling
 !                       the subroutine SHGLQ. If 0 (default), then this array
 !                       will not be precomputed.
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           norm:       Normalization to be used when calculating Legendre
 !                       functions
@@ -49,19 +49,19 @@ subroutine SHMultiply(cilmout, cilm1, lmax1, cilm2, lmax2, precomp, norm, &
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: SHGLQ, MakeGridGLQ, SHExpandGLQ, CSPHASE_DEFAULT
+    use SHTOOLS, only: SHGLQ, MakeGridGLQ, SHExpandGLQ
     use ftypes
 
     implicit none
 
     real(dp), intent(out) :: cilmout(:,:,:)
     real(dp), intent(in) :: cilm1(:,:,:), cilm2(:,:,:)
-    integer, intent(in) :: lmax1, lmax2
-    integer, intent(in), optional :: precomp, norm, csphase
-    integer, intent(out), optional :: exitstatus
-    integer :: lmaxout, phase, mnorm, astat(2), nlat, nlong
+    integer(int32), intent(in) :: lmax1, lmax2
+    integer(int32), intent(in), optional :: precomp, norm, csphase
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: lmaxout, phase, mnorm, astat(2), nlat, nlong
     real(dp), allocatable, save :: zero(:), w(:)
-    integer, save :: first = 1, lmaxout_last = -1
+    integer(int32), save :: first = 1, lmaxout_last = -1
     real(dp), allocatable :: grid1glq(:,:), grid2glq(:,:), plx(:,:)
 
 !$OMP   threadprivate(zero, w, first, lmaxout_last)
@@ -131,7 +131,7 @@ subroutine SHMultiply(cilmout, cilm1, lmax1, cilm2, lmax2, precomp, norm, &
         end if
 
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 

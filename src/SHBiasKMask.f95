@@ -61,11 +61,11 @@ subroutine SHBiasKMask(tapers, lwin, k, incspectra, ldata, outcspectra, &
 
     real(dp), intent(in) :: tapers(:,:), incspectra(:)
     real(dp), intent(out) :: outcspectra(:)
-    integer, intent(in) :: lwin, ldata, k
+    integer(int32), intent(in) :: lwin, ldata, k
     real(dp), intent(in), optional :: taper_wt(:)
-    integer, intent(in), optional :: save_cg
-    integer, intent(out), optional :: exitstatus
-    integer :: l, i, j, lmax, imin, imax, n, astat, cstart, cend
+    integer(int32), intent(in), optional :: save_cg
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: l, i, j, lmax, imin, imax, n, astat, cstart, cend
     real(dp) :: wig(2*lwin+ldata+1)
     real(dp), allocatable, save :: cg2(:,:,:)
     real(dp), allocatable :: shh(:,:)

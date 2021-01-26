@@ -32,11 +32,12 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 !                           (2) Schmidt
 !                           (3) unnormalized
 !                           (4) orthonormalized
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
-!           f           Flattening of the function. If included, an ellipsoid
-!                       with these parameters will be subtracted from the data.
-!           a           Semimajor axis of the function. If included,
+!           f           Flattening of the reference ellipsoid (a-c)/a. If
+!                       included, this ellipsoid will be subtracted from
+!                       the data.
+!           a           Semimajor axis of the reference ellipsoid. If included,
 !                       an ellipsoid with these parameters will be subtracted
 !                       from the data.
 !           north       Maximum latitude to compute, in degrees.
@@ -67,22 +68,22 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 !
 !------------------------------------------------------------------------------
     use SHTOOLS, only:  PlmBar, PlBar, PlmSchmidt, PlSchmidt, PLegendreA, &
-                        PLegendre, PlmON, PlON, CSPHASE_DEFAULT
+                        PLegendre, PlmON, PlON
     use ftypes
 
     implicit none
 
     real(dp), intent(in) :: cilm(:,:,:), interval
     real(dp), intent(out) :: grid(:,:)
-    integer, intent(in) :: lmax
-    integer, intent(out) :: nlat, nlong
-    integer, intent(in), optional :: norm, csphase, dealloc
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(out) :: nlat, nlong
+    integer(int32), intent(in), optional :: norm, csphase, dealloc
     real(dp), intent(in), optional :: f, a, north, south, east, west
-    integer, intent(out), optional :: exitstatus
-    integer :: l, m, j, k, index, l1, m1, lmax_comp, phase, lnorm, temp, &
-               astat(4)
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: l, m, j, k, index, l1, m1, lmax_comp, phase, lnorm, &
+                      temp, astat(4)
     real(dp) :: pi, latmax, latmin, longmin, longmax, lat, longitude, &
-              x, intervalrad, r_ref
+                x, intervalrad, r_ex
     real(dp), allocatable :: pl(:), cosm(:, :), sinm(:, :), cilm2(:,:, :)
 
     if (present(exitstatus)) exitstatus = 0
@@ -93,7 +94,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
     if (present(south)) temp = temp + 1
     if (present(east)) temp = temp + 1
     if (present(west)) temp = temp + 1
-    
+
     if (temp /= 0 .and. temp /= 4) then
         print*, "Error --- MakeGrid2d"
         print*, "The optional parameters NORTH, SOUTH, EAST, and WEST " // &
@@ -192,7 +193,7 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
 
             end if
         else
-            phase = CSPHASE_DEFAULT
+            phase = 1
 
         end if
 
@@ -385,10 +386,11 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, &
             end do
 
             if (present(f)) then
-                r_ref = a**2 * (1.0_dp + tan(lat * pi / 180.0_dp)**2) / &
-                    (1.0_dp + tan(lat * pi / 180.0_dp)**2 / (1.0_dp - f)**2)
-                r_ref = sqrt(r_ref)
-                grid(j,1:nlong) = grid(j,1:nlong) - r_ref
+                lat = lat * pi / 180.0_dp
+                r_ex = cos(lat)**2 + sin(lat)**2 / (1.0_dp - f)**2
+                r_ex = a * sqrt(1.0_dp / r_ex)
+
+                grid(j,1:nlong) = grid(j,1:nlong) - r_ex
             end if
 
         end if

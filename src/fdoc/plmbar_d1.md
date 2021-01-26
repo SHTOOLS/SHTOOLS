@@ -14,19 +14,19 @@ call PlmBar_d1 (`p`, `dp`, `lmax`, `z`, `csphase`, `cnorm`, `exitstatus`)
 `dp` :  output, real(dp), dimension ((`lmax`+1)\*(`lmax`+2)/2)
 :   An array of the first derivatives of the 4-pi (geodesy) normalized associated Legendre functions up to degree `lmax`. The index corresponds to `l*(l+1)/2+m+1`, which can be calculated by a call to `PlmIndex`.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The maximum degree of the associated Legendre functions to be computed. If `lmax` is -1, allocated memory will be deallocated.
 
 `z` : input, real(dp)
 :   The argument of the associated Legendre functions.
 
-`csphase` : input, optional, integer, default = 1
+`csphase` : input, optional, integer(int32), default = 1
 :   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the Condon-Shortley phase of (-1)^m will be appended to the associated Legendre functions.
 
-`cnorm` : input, optional, integer, default = 0
+`cnorm` : input, optional, integer(int32), default = 0
 :   If 1, the complex normalization of the associated Legendre functions will be used. The default is to use the real normalization.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description

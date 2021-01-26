@@ -48,7 +48,8 @@ def MarsTopo2600(lmax=2600):
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
-    return _SHCoeffs.from_file(fname, lmax=lmax, units='m')
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='MarsTopo2600',
+                               units='m')
 
 
 def GMM3(lmax=120):
@@ -77,7 +78,7 @@ def GMM3(lmax=120):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True,
-                                   omega=_omega.value)
+                                   omega=_omega.value, name='GMM3')
 
 
 def GMM3_RM1_1E0(lmax=150):
@@ -107,7 +108,7 @@ def GMM3_RM1_1E0(lmax=150):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
                                    r0_index=1, gm_index=0, errors=False,
-                                   omega=_omega.value)
+                                   omega=_omega.value, name='GMM3_RM1_1E0')
 
 
 def MRO120D(lmax=120):
@@ -135,7 +136,7 @@ def MRO120D(lmax=120):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True,
-                                   omega=_omega.value)
+                                   omega=_omega.value, name='MRO120D')
 
 
 def Langlais2019(lmax=134):
@@ -163,7 +164,8 @@ def Langlais2019(lmax=134):
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname, lmax=lmax, skip=4, r0=3393.5e3,
-                                  header=False, file_units='nT', units='nT')
+                                  header=False, file_units='nT',
+                                  name='Langlais2019', units='nT')
 
 
 def Morschhauser2014(lmax=110):
@@ -190,7 +192,8 @@ def Morschhauser2014(lmax=110):
         processor=_Decompress(),
     )
     return _SHMagCoeffs.from_file(fname, r0=3393.5e3, skip=3, header=False,
-                                  format='dov', file_units='nT', units='nT')
+                                  format='dov', file_units='nT',
+                                  name='Morschhauser2014', units='nT')
 
 
 __all__ = ['MarsTopo2600', 'GMM3', 'GMM3_RM1_1E0', 'MRO120D', 'Langlais2019',

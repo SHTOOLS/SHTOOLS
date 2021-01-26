@@ -51,7 +51,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 !                           (2) Schmidt
 !                           (3) unnormalized
 !                           (4) orthonormalized
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           lmax_calc   The maximum spherical harmonic degree calculated in the
 !                       spherical harmonic expansion.
@@ -71,7 +71,6 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
 !
 !------------------------------------------------------------------------------
     use FFTW3
-    use SHTOOLS, only: CSPHASE_DEFAULT
     use ftypes
     use, intrinsic :: iso_c_binding
 
@@ -81,19 +80,20 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
     complex(dp), intent(in) :: gridglq(:,:)
     real(dp), intent(in), optional :: plx(:,:), zero(:)
     complex(dp), intent(out) :: cilm(:,:,:)
-    integer, intent(in) :: lmax
-    integer, intent(in), optional :: norm, csphase, lmax_calc
-    integer, intent(out), optional :: exitstatus
-    integer :: nlong, nlat, i, l, m, k, l1, m1, i_s, astat(4), lnorm, lmax_comp
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(in), optional :: norm, csphase, lmax_calc
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: nlong, nlat, i, l, m, k, l1, m1, i_s, astat(4), lnorm, &
+                      lmax_comp
     real(dp) :: pi, prod, scalef, rescalem, u, p, pmm, pm1, pm2, z
     complex(dp) :: cc(2*lmax+1), ccs(2*lmax+1), gridl(2*lmax+1), &
                    gridls(2*lmax+1), fcoef1(2*lmax+1), fcoef2(2*lmax+1), &
                    ffc1(-1:1), ffc2(-1:1)
     type(C_PTR) :: plan, plans
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer(int1), save, allocatable :: fsymsign(:,:)
-    integer, save :: lmax_old = 0, norm_old = 0
-    integer :: phase
+    integer(int8), save, allocatable :: fsymsign(:,:)
+    integer(int32), save :: lmax_old = 0, norm_old = 0
+    integer(int32) :: phase
 
 !$OMP   threadprivate(sqr, ff1, ff2, fsymsign, lmax_old, norm_old)
 
@@ -247,7 +247,7 @@ subroutine SHExpandGLQC(cilm, lmax, gridglq, w, plx, zero, norm, csphase, &
         end if
 
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 

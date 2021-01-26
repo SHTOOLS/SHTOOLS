@@ -53,12 +53,12 @@ subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP, extend, &
 
     integer, intent(out) :: dhgrid(:,:)
     real(dp), intent(in) :: profile(:,:)
-    integer, intent(in) :: n, sampling, nprofile, np
-    integer, intent(in), optional :: extend
-    integer, intent(out), optional :: exitstatus
-    integer, parameter :: maxcross = 2000
-    integer :: i, j, k, k_loc, nlat, nlong, numcross, next, ind1, ind2, &
-               nlat_out, nlong_out, extend_grid
+    integer(int32), intent(in) :: n, sampling, nprofile, np
+    integer(int32), intent(in), optional :: extend
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32), parameter :: maxcross = 2000
+    integer(int32) :: i, j, k, k_loc, nlat, nlong, numcross, next, ind1, &
+                      ind2, nlat_out, nlong_out, extend_grid
     real(dp) :: lat_int, long_int, lon, cross(maxcross), &
                 cross_sort(maxcross), lat1, lat2, lon1, lon2
 

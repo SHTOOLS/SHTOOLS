@@ -29,7 +29,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
 !                       or equal to (lmax+1)*(lmax+2)/2.
 !
 !       OPTIONAL (IN)
-!           csphase     1: Do not include the phase factor of (-1)^m
+!           csphase     1: Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           cnorm       0: Use real normalization.
 !                       1: Use complex normalization.
@@ -64,21 +64,20 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
 !   All rights reserved.
 !
 !------------------------------------------------------------------------------
-    use SHTOOLS, only: CSPHASE_DEFAULT
     use ftypes
 
     implicit none
 
-    integer, intent(in) :: lmax
+    integer(int32), intent(in) :: lmax
     real(dp), intent(out) :: p(:)
     real(dp), intent(in) :: z
-    integer, intent(in), optional :: csphase, cnorm
-    integer, intent(out), optional :: exitstatus
+    integer(int32), intent(in), optional :: csphase, cnorm
+    integer(int32), intent(out), optional :: exitstatus
     real(dp) :: pm2, pm1, pmm, plm, rescalem, pi, u, scalef
     real(dp), save, allocatable :: f1(:), f2(:), sqr(:)
-    integer :: k, kstart, m, l, astat(3)
-    integer, save :: lmax_old = 0
-    integer(int1) :: phase
+    integer(int32) :: k, kstart, m, l, astat(3)
+    integer(int32), save :: lmax_old = 0
+    integer(int32) :: phase
 
 !$OMP    threadprivate(f1, f2, sqr, lmax_old)
 
@@ -151,7 +150,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm, exitstatus)
         end if
 
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 

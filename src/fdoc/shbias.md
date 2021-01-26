@@ -11,22 +11,22 @@ call SHBias (`shh`, `lwin`, `incspectra`, `ldata`, `outcspectra`, `save_cg`, `ex
 `shh` : input, real(dp), dimension (`lwin`+1)
 :   The power spectrum of the localizing window.
 
-`lwin` : input, integer
+`lwin` : input, integer(int32)
 :   The spherical harmonic bandwidth of the localizing window.
 
 `incspectra` : input, real(dp), dimension (`ldata`+1)
 :   The global unwindowed (cross-)power spectrum.
 
-`ldata` : input, integer
+`ldata` : input, integer(int32)
 :   The maximum degree of the global unwindowed power spectrum.
 
 `outcspectra` : output, real(dp), dimension (`ldata`+`lwin`+1)
 :   The expectation of the localized (cross-)power spectrum.
 
-`save_cg` : optional, input, integer, default = 0
+`save_cg` : optional, input, integer(int32), default = 0
 :   If set equal to 1, the Clebsch-Gordon coefficients will be precomputed and saved for future use (if `lwin` or `ldata` change, this will be recomputed). To deallocate the saved memory, set this parameter equal to -1. If set equal to 0 (default), the Clebsch-Gordon coefficients will be recomputed for each call.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional(int32), integer
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 # Description

@@ -20,22 +20,22 @@ call SHMTCouplingMatrix (`mmt`, `lmax`,`tapers_power`, `lwin`, `k`, `taper_wt`, 
 `mmt` : output, real(dp), dimension (`lmax`+`lwin`+1, `lmax`+1)
 :   The full multitaper coupling matrix that relates the expectation of the localized multitaper spectrum to the global power spectrum of the function.
 
-`lmax` : input, integer
+`lmax` : input, integer(int32)
 :   The spherical harmonic bandwidth of the global power spectrum.
 
 `tapers_power` : input, real(dp), dimension (`lwin`+1, `k`)
 :   An array of power spectra of the k windowing functions, arranged in columns.
 
-`lwin` : input, integer
+`lwin` : input, integer(int32)
 :   The spherical harmonic bandwidth of the windowing functions in the array `tapers`.
 
-`k` : input, integer
+`k` : input, integer(int32)
 :   The number of tapers utilized in the multitaper spectral analysis.
 
 `taper_wt` : input, optional, real(dp), dimension (`k`)
 :   The weights used in calculating the multitaper spectral estimates. Optimal values of the weights (for a known global power spectrum) can be obtained from the routine `SHMTVarOpt`.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
 ## Description

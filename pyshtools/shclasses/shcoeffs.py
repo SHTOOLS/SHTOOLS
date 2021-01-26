@@ -1,9 +1,11 @@
 """
     Spherical Harmonic Coefficients classes
 """
+import os as _os
 import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 import gzip as _gzip
 import shutil as _shutil
@@ -67,6 +69,7 @@ class SHCoeffs(object):
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
     kind          : The coefficient data type: either 'complex' or 'real'.
+    name          : The name of the dataset.
     units         : The units of the spherical harmonic coefficients.
     header        : A list of values (of type str) from the header line of the
                     input file used to initialize the class (for 'shtools'
@@ -101,6 +104,8 @@ class SHCoeffs(object):
     expand()              : Evaluate the coefficients either on a spherical
                             grid and return an SHGrid class instance, or for
                             a list of latitude and longitude coordinates.
+    gradient()            : Compute the horizontal gradient of the function and
+                            return an SHGradient class instance.
     plot_spectrum()       : Plot the spectrum as a function of spherical
                             harmonic degree.
     plot_cross_spectrum() : Plot the cross-spectrum of two functions.
@@ -137,8 +142,8 @@ class SHCoeffs(object):
     # ---- Factory methods ----
     @classmethod
     def from_array(self, coeffs, errors=None, error_kind=None,
-                   normalization='4pi', csphase=1, lmax=None, units=None,
-                   copy=True):
+                   normalization='4pi', csphase=1, lmax=None, name=None,
+                   units=None, copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
         array.
@@ -146,7 +151,7 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_array(array, [errors, error_kind, normalization,
-                                        csphase, lmax, units, copy])
+                                        csphase, lmax, name, units, copy])
 
         Returns
         -------
@@ -171,6 +176,8 @@ class SHCoeffs(object):
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to include in the returned
             class instance. This must be less than or equal to lmaxin.
+        name : str, optional, default = None
+            The name of the dataset.
         units : str, optional, default = None
             The units of the spherical harmonic coefficients.
         copy : bool, optional, default = True
@@ -232,15 +239,17 @@ class SHCoeffs(object):
                                errors=errors[:, 0:lmax+1, 0:lmax+1],
                                error_kind=error_kind,
                                normalization=normalization.lower(),
-                               csphase=csphase, units=units, copy=copy)
+                               csphase=csphase, name=name, units=units,
+                               copy=copy)
                 else:
                     return cls(coeffs[:, 0:lmax+1, 0:lmax+1],
                                normalization=normalization.lower(),
-                               csphase=csphase, units=units, copy=copy)
+                               csphase=csphase, name=name, units=units,
+                               copy=copy)
 
     @classmethod
     def from_zeros(self, lmax, errors=None, error_kind=None, kind='real',
-                   normalization='4pi', csphase=1, units=None):
+                   normalization='4pi', csphase=1, name=None, units=None):
         """
         Initialize class with spherical harmonic coefficients set to zero from
         degree 0 to lmax.
@@ -248,7 +257,7 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_zeros(lmax, [errors, error_kind, normalization,
-                                       csphase, kind, units])
+                                       csphase, kind, name, units])
 
         Returns
         -------
@@ -272,6 +281,8 @@ class SHCoeffs(object):
             or -1 to include it.
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
+        name : str, optional, default = None
+            The name of the dataset.
         units : str, optional, default = None
             The units of the spherical harmonic coefficients.
         """
@@ -319,13 +330,13 @@ class SHCoeffs(object):
             if cls.istype(kind):
                 return cls(coeffs, errors=error_coeffs, error_kind=error_kind,
                            normalization=normalization.lower(),
-                           csphase=csphase, units=units)
+                           csphase=csphase, name=name, units=units)
 
     @classmethod
     def from_file(self, fname, lmax=None, format='shtools', kind='real',
                   errors=None, error_kind=None, normalization='4pi', skip=0,
-                  header=False, header2=False, csphase=1, units=None,
-                  **kwargs):
+                  header=False, header2=False, csphase=1, name=None,
+                  units=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -333,11 +344,11 @@ class SHCoeffs(object):
         -----
         x = SHCoeffs.from_file(filename, [format='shtools' or 'dov', lmax,
                                errors, error_kind, normalization, csphase,
-                               skip, header, header2, units])
+                               skip, header, header2, name, units])
         x = SHCoeffs.from_file(filename, format='bshc', [lmax, normalization,
-                               csphase, units])
+                               csphase, name, units])
         x = SHCoeffs.from_file(filename, format='npy', [lmax, normalization,
-                               csphase, units, **kwargs])
+                               csphase, name, units, **kwargs])
 
         Returns
         -------
@@ -381,6 +392,8 @@ class SHCoeffs(object):
         header2 : bool, optional, default = False
             If True, read a list of values from a second header line of an
             'shtools' or 'dov' formatted file.
+        name : str, optional, default = None
+            The name of the dataset.
         units : str, optional, default = None
             The units of the spherical harmonic coefficients.
         **kwargs : keyword argument list, optional for format = 'npy'
@@ -500,11 +513,12 @@ class SHCoeffs(object):
                 return cls(coeffs, errors=error_coeffs, error_kind=error_kind,
                            normalization=normalization.lower(),
                            csphase=csphase, header=header_list,
-                           header2=header2_list, units=units)
+                           header2=header2_list, name=name, units=units)
 
     @classmethod
     def from_random(self, power, lmax=None, kind='real', normalization='4pi',
-                    csphase=1, units=None, exact_power=False, seed=None):
+                    csphase=1, name=None, units=None, exact_power=False,
+                    seed=None):
         """
         Initialize the class with spherical harmonic coefficients as random
         variables with a given spectrum.
@@ -512,7 +526,7 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_random(power, [lmax, kind, normalization, csphase,
-                                         units, exact_power, seed])
+                                         name, units, exact_power, seed])
 
         Returns
         -------
@@ -536,6 +550,8 @@ class SHCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
+        name : str, optional, default = None
+            The name of the dataset.
         units : str, optional, default = None
             The units of the spherical harmonic coefficients.
         exact_power : bool, optional, default = False
@@ -641,11 +657,11 @@ class SHCoeffs(object):
             if cls.istype(kind):
                 return cls(coeffs, errors=None,
                            normalization=normalization.lower(),
-                           csphase=csphase, units=units)
+                           csphase=csphase, name=name, units=units)
 
     @classmethod
     def from_netcdf(self, filename, lmax=None, normalization='4pi', csphase=1,
-                    units=None):
+                    name=None, units=None):
         """
         Initialize the class with spherical harmonic coefficients from a
         netcdf file.
@@ -653,7 +669,7 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_netcdf(filename, [lmax, normalization, csphase,
-                                            units])
+                                            name, units])
 
         Returns
         -------
@@ -673,6 +689,8 @@ class SHCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention if not specified in the netcdf
             file: 1 to exclude the phase factor, or -1 to include it.
+        name : str, optional, default = None
+            The name of the dataset.
         units : str, optional, default = None
             The units of the spherical harmonic coefficients.
 
@@ -756,11 +774,12 @@ class SHCoeffs(object):
             if cls.istype(kind):
                 return cls(coeffs, errors=errors, error_kind=error_kind,
                            normalization=normalization.lower(),
-                           csphase=csphase, units=units)
+                           csphase=csphase, name=name, units=units)
 
     @classmethod
     def from_cap(self, theta, lmax, clat=None, clon=None, normalization='4pi',
-                 csphase=1, kind='real', units=None, degrees=True, copy=True):
+                 csphase=1, kind='real', name=None, units=None, degrees=True,
+                 copy=True):
         """
         Initialize the class with spherical harmonic coefficients of a
         spherical cap centered at the north pole.
@@ -768,7 +787,7 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_cap(theta, lmax, [clat, clon, normalization, csphase,
-                                            kind, units, degrees, copy])
+                                            kind, name, units, degrees, copy])
 
         Returns
         -------
@@ -792,6 +811,8 @@ class SHCoeffs(object):
             or -1 to include it.
         kind : str, optional, default = 'real'
             'real' or 'complex' spherical harmonic coefficients.
+        name : str, optional, default = None
+            The name of the dataset.
         units : str, optional, default = None
             The units of the spherical harmonic coefficients.
         degrees : bool, optional = True
@@ -854,7 +875,7 @@ class SHCoeffs(object):
             if cls.istype(kind):
                 temp = cls(coeffs[:, 0:lmax+1, 0:lmax+1],
                            normalization=normalization.lower(),
-                           csphase=csphase, units=units, copy=copy)
+                           csphase=csphase, name=name, units=units, copy=copy)
 
         if clat is not None and clon is not None:
             if degrees is True:
@@ -1007,6 +1028,7 @@ class SHCoeffs(object):
             with open(filebase, 'rb') as f_in:
                 with _gzip.open(filename, 'wb') as f_out:
                     _shutil.copyfileobj(f_in, f_out)
+            _os.remove(filebase)
 
     def to_netcdf(self, filename, title='', description='', lmax=None):
         """
@@ -1061,9 +1083,10 @@ class SHCoeffs(object):
         ds.to_netcdf(filename)
 
     def to_array(self, normalization=None, csphase=None, lmax=None,
-                 errors=True):
+                 errors=False):
         """
-        Return spherical harmonic coefficients (and errors) as a numpy array.
+        Return spherical harmonic coefficients (and optionally errors) as a
+        numpy array.
 
         Usage
         -----
@@ -1090,7 +1113,7 @@ class SHCoeffs(object):
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output. If lmax is greater
             than x.lmax, the array will be zero padded.
-        errors : bool, optional, default = True
+        errors : bool, optional, default = False
             If True, return separate arrays of the coefficients and errors. If
             False, return only the coefficients.
 
@@ -1102,8 +1125,9 @@ class SHCoeffs(object):
         degree is smaller than the maximum degree of the class instance, the
         coefficients will be truncated. Conversely, if this degree is larger
         than the maximum degree of the class instance, the output array will be
-        zero padded. If the errors of the coefficients are set, they will be
-        output as a separate array.
+        zero padded. If the errors of the coefficients are set, and the
+        optional parameter errors is set to True, the errors will be output as
+        a separate array.
         """
         if normalization is None:
             normalization = self.normalization
@@ -1351,11 +1375,12 @@ class SHCoeffs(object):
                 'error_kind = {:s}\n'
                 'header = {:s}\n'
                 'header2 = {:s}\n'
+                'name = {:s}\n'
                 'units = {:s}'
                 .format(
                     repr(self.kind), repr(self.normalization), self.csphase,
                     self.lmax, repr(self.error_kind), repr(self.header),
-                    repr(self.header2), repr(self.units)))
+                    repr(self.header2), repr(self.name), repr(self.units)))
 
     # ---- Extract data ----
     def degrees(self):
@@ -1510,7 +1535,7 @@ class SHCoeffs(object):
         return _cross_spectrum(self.coeffs,
                                clm.to_array(normalization=self.normalization,
                                             csphase=self.csphase,
-                                            lmax=lmax),
+                                            lmax=lmax, errors=False),
                                normalization=self.normalization,
                                convention=convention, unit=unit, base=base,
                                lmax=lmax)
@@ -1767,7 +1792,7 @@ class SHCoeffs(object):
         The units of the input function must be in meters.
         """
         from .shgravcoeffs import SHGravCoeffs as _SHGravCoeffs
-        from ..constant import G as _G
+        from ..constants import G as _G
 
         density = 1.
         gm = density * _G.value * self.volume()
@@ -1960,7 +1985,7 @@ class SHCoeffs(object):
             if self.errors is not None:
                 coeffs, error_coeffs = temp.to_array(
                     normalization=normalization.lower(), csphase=csphase,
-                    lmax=lmax)
+                    lmax=lmax, errors=True)
             else:
                 coeffs = temp.to_array(normalization=normalization.lower(),
                                        csphase=csphase, lmax=lmax)
@@ -1968,7 +1993,7 @@ class SHCoeffs(object):
             if self.errors is not None:
                 coeffs, error_coeffs = temp.to_array(
                     normalization=normalization.lower(), csphase=csphase,
-                    lmax=lmax)
+                    lmax=lmax, errors=True)
             else:
                 coeffs = self.to_array(normalization=normalization.lower(),
                                        csphase=csphase, lmax=lmax)
@@ -2084,22 +2109,20 @@ class SHCoeffs(object):
         if lat is not None and colat is not None:
             raise ValueError('lat and colat can not both be specified.')
 
-        if lat is not None and lon is not None:
+        if (lat is not None or colat is not None) and lon is not None:
             if lmax_calc is None:
                 lmax_calc = self.lmax
 
-            values = self._expand_coord(lat=lat, lon=lon, degrees=degrees,
-                                        lmax_calc=lmax_calc)
-            return values
+            if colat is not None:
+                if degrees:
+                    temp = 90.
+                else:
+                    temp = _np.pi/2.
 
-        if colat is not None and lon is not None:
-            if lmax_calc is None:
-                lmax_calc = self.lmax
-
-            if type(colat) is list:
-                lat = list(map(lambda x: 90 - x, colat))
-            else:
-                lat = 90 - colat
+                if type(colat) is list:
+                    lat = list(map(lambda x: temp - x, colat))
+                else:
+                    lat = temp - colat
 
             values = self._expand_coord(lat=lat, lon=lon, degrees=degrees,
                                         lmax_calc=lmax_calc)
@@ -2131,12 +2154,76 @@ class SHCoeffs(object):
 
             return gridout
 
+    # ---- Compute the horizontal gradient ----
+    def gradient(self, grid='DH2', lmax=None, lmax_calc=None, units=None,
+                 extend=True):
+        """
+        Compute the horizontal gradient of the function and return an
+        SHGradient class instance.
+
+        Usage
+        -----
+        g = x.gradient([grid, lmax, lmax_calc, units])
+
+        Returns
+        -------
+        g : SHGradient class instance
+
+        Parameters
+        ----------
+        grid : str, optional, default = 'DH2'
+            'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon, or
+            'DH2' for an equidistant lat/lon grid with nlon=2*nlat.
+        lmax : int, optional, default = x.lmax
+            The maximum spherical harmonic degree, which determines the grid
+            spacing of the output grid.
+        lmax_calc : int, optional, default = x.lmax
+            The maximum spherical harmonic degree to use when evaluating the
+            function.
+        units : str, optional, default = None
+            The units of the output gradients.
+        extend : bool, optional, default = True
+            If True, compute the longitudinal band for 360 E (DH and GLQ grids)
+            and the latitudinal band for 90 S (DH grids only).
+
+        Notes
+        -----
+        The gradient is evaluated using the radius given by the degree 0
+        coefficient of the function.
+        """
+        if lmax is None:
+            lmax = self.lmax
+        if lmax_calc is None:
+            lmax_calc = lmax
+
+        if type(grid) != str:
+            raise ValueError('grid must be a string. Input type is {:s}.'
+                             .format(str(type(grid))))
+
+        if grid.upper() in ('DH', 'DH1'):
+            gradientout = self._gradientDH(sampling=1, lmax=lmax,
+                                           lmax_calc=lmax_calc, units=units,
+                                           extend=extend)
+        elif grid.upper() == 'DH2':
+            gradientout = self._gradientDH(sampling=2, lmax=lmax,
+                                           lmax_calc=lmax_calc, units=units,
+                                           extend=extend)
+        elif grid.upper() == 'GLQ':
+            raise NotImplementedError('gradient() does not support the use '
+                                      'of GLQ grids.')
+        else:
+            raise ValueError(
+                    "grid must be 'DH', 'DH1', or 'DH2'. " +
+                    "Input value is {:s}.".format(repr(grid)))
+
+        return gradientout
+
     # ---- Plotting routines ----
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
                       legend=None, legend_error='error', legend_loc='best',
-                      axes_labelsize=None, tick_labelsize=None, show=True,
-                      ax=None, fname=None, **kwargs):
+                      axes_labelsize=None, tick_labelsize=None, ax=None,
+                      show=True, fname=None, **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
@@ -2144,7 +2231,7 @@ class SHCoeffs(object):
         -----
         x.plot_spectrum([convention, unit, base, lmax, xscale, yscale, grid,
                          axes_labelsize, tick_labelsize, legend, legend_error,
-                         legend_loc, show, ax, fname, **kwargs])
+                         legend_loc, ax, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2180,10 +2267,10 @@ class SHCoeffs(object):
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        show : bool, optional, default = True
-            If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
+        show : bool, optional, default = True
+            If True, plot to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
@@ -2302,7 +2389,7 @@ class SHCoeffs(object):
                             base=10., lmax=None, xscale='lin', yscale='log',
                             grid=True, legend=None, legend_loc='best',
                             axes_labelsize=None, tick_labelsize=None,
-                            show=True, ax=None, fname=None, **kwargs):
+                            ax=None, show=True, fname=None, **kwargs):
         """
         Plot the cross-spectrum of two functions.
 
@@ -2310,8 +2397,8 @@ class SHCoeffs(object):
         -----
         x.plot_cross_spectrum(clm, [convention, unit, base, lmax, xscale,
                                     yscale, grid, axes_labelsize,
-                                    tick_labelsize, legend, legend_loc, show,
-                                    ax, fname, **kwargs])
+                                    tick_labelsize, legend, legend_loc, ax,
+                                    show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2347,10 +2434,10 @@ class SHCoeffs(object):
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        show : bool, optional, default = True
-            If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
+        show : bool, optional, default = True
+            If True, plot to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
@@ -2460,19 +2547,31 @@ class SHCoeffs(object):
                 fig.savefig(fname)
             return fig, axes
 
-    def plot_spectrum2d(self, convention='power', xscale='lin', yscale='lin',
-                        grid=True, axes_labelsize=None, tick_labelsize=None,
-                        vscale='log', vrange=None, vmin=None, vmax=None,
-                        lmax=None, errors=False, show=True, ax=None,
-                        fname=None):
+    def plot_spectrum2d(self, convention='power', ticks='WSen',
+                        tick_interval=[None, None],
+                        minor_tick_interval=[None, None],
+                        degree_label='Spherical harmonic degree',
+                        order_label='Spherical harmonic order', title=None,
+                        colorbar='right', origin='top', cmap='viridis',
+                        cmap_limits=None, cmap_rlimits=None,
+                        cmap_reverse=False, cmap_scale='log',
+                        cb_triangles='neither', cb_label=None, cb_offset=None,
+                        cb_width=None, lmax=None, errors=False, xscale='lin',
+                        yscale='lin', grid=False, titlesize=None,
+                        axes_labelsize=None, tick_labelsize=None, ax=None,
+                        show=True, fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree and order.
 
         Usage
         -----
-        x.plot_spectrum2d([convention, xscale, yscale, grid, axes_labelsize,
-                           tick_labelsize, vscale, vrange, vmin, vmax, lmax,
-                           errors, show, ax, fname])
+        x.plot_spectrum2d([convention, ticks, tick_interval,
+                           minor_tick_interval, title, degree_label,
+                           order_label, colorbar, origin, cmap, cmap_limits,
+                           cmap_rlimits, cmap_reverse, cmap_scale,
+                           cb_triangles, cb_label, cb_offset, cb_width, lmax,
+                           errors, xscale, yscale, grid, titlesize,
+                           axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -2480,35 +2579,80 @@ class SHCoeffs(object):
             The type of spectrum to plot: 'power' for power spectrum,
             'energy' for energy spectrum, and 'l2norm' for the l2 norm
             spectrum.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot, respectively. Alternatively, use
+            'L', 'B', 'R', and 'T' for left, bottom, right, and top.
+        tick_interval : list or tuple, optional, default = [None, None]
+            Intervals to use when plotting the degree and order ticks,
+            respectively (used only when xscale and yscale are 'lin'). If set
+            to None, ticks will be generated automatically.
+        minor_tick_interval : list or tuple, optional, default = [None, None]
+            Intervals to use when plotting the minor degree and order ticks,
+            respectively (used only when xscale and yscale are 'lin'). If set
+            to None, minor ticks will be generated automatically.
+        degree_label : str, optional, default = 'Spherical harmonic degree'
+            Label for the spherical harmonic degree axis.
+        order_label : str, optional, default = 'Spherical harmonic order'
+            Label for the spherical harmonic order axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
+        origin : str, optional, default = 'top'
+            Location where the degree 0 coefficient is plotted. Either 'left',
+            'right', 'top', or 'bottom'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2] for linear scales
+            and log10(cmap_limits[1]/cmap_limits[0])*cmap_limits[2] for
+            logarithmic scales.
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cmap_scale : str, optional, default = 'log'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
+        cb_label : str, optional, default = None
+            Text label for the colorbar.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        errors : bool, optional, default = False
+            If True, plot the spectrum of the errors.
         xscale : str, optional, default = 'lin'
             Scale of the l axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'lin'
             Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
-        grid : bool, optional, default = True
+        grid : bool, optional, default = False
             If True, plot grid lines.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        vscale : str, optional, default = 'log'
-            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
-        vrange : (float, float), optional, default = None
-            Colormap range (min, max) relative to the maximum value. If None,
-            scale the image to the maximum and minimum values.
-        vmin : float, optional, default=None
-            The minmum range of the colormap. If None, the minimum value of the
-            spectrum will be used.
-        vmax : float, optional, default=None
-            The maximum range of the colormap. If None, the maximum value of
-            the spectrum will be used.
-        lmax : int, optional, default = self.lmax
-            The maximum spherical harmonic degree to plot.
-        errors : bool, optional, default = False
-            If True, plot the spectrum of the errors.
-        show : bool, optional, default = True
-            If True, plot to the screen.
+        titlesize : int, optional, default = None
+            The font size of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
+        show : bool, optional, default = True
+            If True, plot to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
@@ -2525,10 +2669,29 @@ class SHCoeffs(object):
         'ortho', or 'schmidt'), the l2-norm is the sum of the magnitude of the
         coefficients squared.
         """
+        if tick_interval is None:
+            tick_interval = [None, None]
+        if minor_tick_interval is None:
+            minor_tick_interval = [None, None]
+
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
+        if titlesize is None:
+            titlesize = _mpl.rcParams['axes.titlesize']
+            if type(titlesize) == str:
+                titlesize = _mpl.font_manager \
+                                 .FontProperties(size=titlesize) \
+                                 .get_size_in_points()
 
         if lmax is None:
             lmax = self.lmax
@@ -2550,13 +2713,12 @@ class SHCoeffs(object):
         mnegative = coeffs[1, :lmax + 1, :lmax + 1] * \
             coeffs[1, :lmax + 1, :lmax + 1].conj()
         mnegative[~self.mask[1, :lmax + 1, :lmax + 1]] = _np.nan
-
         spectrum[:, :lmax] = _np.fliplr(mnegative)[:, :lmax]
         spectrum[:, lmax:] = mpositive
 
         if (convention.lower() == 'l2norm'):
             if self.normalization == 'unnorm':
-                raise ValueError("convention can not be set to 'l2norm' " +
+                raise ValueError("convention can not be set to 'l2norm' "
                                  "when using unnormalized harmonics.")
             else:
                 pass
@@ -2579,16 +2741,19 @@ class SHCoeffs(object):
                     spectrum[l, lmax:lmax+l+1] *= conv[0:l+1]
             else:
                 raise ValueError(
-                    "normalization must be '4pi', 'ortho', 'schmidt', " +
+                    "normalization must be '4pi', 'ortho', 'schmidt', "
                     "or 'unnorm'. Input value is {:s}."
                     .format(repr(self.normalization)))
         else:
             raise ValueError(
-                "convention must be 'power', 'energy', or 'l2norm'. " +
+                "convention must be 'power', 'energy', or 'l2norm'. "
                 "Input value is {:s}.".format(repr(convention)))
 
         if convention == 'energy':
             spectrum *= 4.0 * _np.pi
+
+        if origin in ('top', 'bottom'):
+            spectrum = _np.rot90(spectrum, axes=(1, 0))
 
         spectrum_masked = _np.ma.masked_invalid(spectrum)
 
@@ -2596,74 +2761,275 @@ class SHCoeffs(object):
         # to plot the last row and column.
         ls = _np.arange(lmax+2).astype(_np.float)
         ms = _np.arange(-lmax, lmax + 2, dtype=_np.float)
-        lgrid, mgrid = _np.meshgrid(ls, ms, indexing='ij')
-        lgrid -= 0.5
-        mgrid -= 0.5
+        if origin in ('left', 'right'):
+            xgrid, ygrid = _np.meshgrid(ls, ms, indexing='ij')
+        elif origin in ('top', 'bottom'):
+            xgrid, ygrid = _np.meshgrid(ms, ls[::-1], indexing='ij')
+        else:
+            raise ValueError(
+                "origin must be 'left', 'right', 'top', or 'bottom'. "
+                "Input value is {:s}.".format(repr(origin)))
+        xgrid -= 0.5
+        ygrid -= 0.5
 
         if ax is None:
-            fig, axes = _plt.subplots()
+            if colorbar is not None:
+                if colorbar in set(['top', 'bottom']):
+                    scale = 1.2
+                else:
+                    scale = 0.9
+            else:
+                scale = 1.025
+            figsize = (_mpl.rcParams['figure.figsize'][0],
+                       _mpl.rcParams['figure.figsize'][0] * scale)
+            fig = _plt.figure(figsize=figsize)
+            axes = fig.add_subplot(111)
         else:
             axes = ax
 
-        if vrange is not None:
-            vmin = _np.nanmax(spectrum) * vrange[0]
-            vmax = _np.nanmax(spectrum) * vrange[1]
-        else:
-            if vmin is None:
+        # make colormap
+        if cmap_limits is None and cmap_rlimits is None:
+            if cmap_scale.lower() == 'log':
                 _temp = spectrum
                 _temp[_temp == 0] = _np.NaN
                 vmin = _np.nanmin(_temp)
-            if vmax is None:
-                vmax = _np.nanmax(spectrum)
+            else:
+                vmin = _np.nanmin(spectrum)
+            vmax = _np.nanmax(spectrum)
+            cmap_limits = [vmin, vmax]
+        elif cmap_rlimits is not None:
+            vmin = _np.nanmax(spectrum) * cmap_rlimits[0]
+            vmax = _np.nanmax(spectrum) * cmap_rlimits[1]
+            cmap_limits = [vmin, vmax]
+            if len(cmap_rlimits) == 3:
+                cmap_limits.append(cmap_rlimits[2])
+        if len(cmap_limits) == 3:
+            if cmap_scale.lower() == 'log':
+                num = int(_np.log10(cmap_limits[1]/cmap_limits[0])
+                          * cmap_limits[2])
+            else:
+                num = int((cmap_limits[1] - cmap_limits[0]) / cmap_limits[2])
+            if isinstance(cmap, _mpl.colors.Colormap):
+                cmap_scaled = cmap._resample(num)
+            else:
+                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+        else:
+            cmap_scaled = _mpl.cm.get_cmap(cmap)
+        if cmap_reverse:
+            cmap_scaled = cmap_scaled.reversed()
 
-        if vscale.lower() == 'log':
-            norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)
+        if cmap_scale.lower() == 'log':
+            norm = _mpl.colors.LogNorm(cmap_limits[0], cmap_limits[1],
+                                       clip=True)
             # Clipping is required to avoid an invalid value error
-        elif vscale.lower() == 'lin':
-            norm = _plt.Normalize(vmin, vmax)
+        elif cmap_scale.lower() == 'lin':
+            norm = _plt.Normalize(cmap_limits[0], cmap_limits[1])
         else:
             raise ValueError(
-                "vscale must be 'lin' or 'log'. " +
-                "Input value is {:s}.".format(repr(vscale)))
+                "cmap_scale must be 'lin' or 'log'. "
+                "Input value is {:s}.".format(repr(cmap_scale)))
+
+        # determine which ticks to plot
+        if 'W' in ticks or 'L' in ticks:
+            left, labelleft = True, True
+        elif 'w' in ticks or 'l' in ticks:
+            left, labelleft = True, False
+        else:
+            left, labelleft = False, False
+        if 'S' in ticks or 'B' in ticks:
+            bottom, labelbottom = True, True
+        elif 's' in ticks or 'b' in ticks:
+            bottom, labelbottom = True, False
+        else:
+            bottom, labelbottom = False, False
+        if 'E' in ticks or 'R' in ticks:
+            right, labelright = True, True
+        elif 'e' in ticks or 'r' in ticks:
+            right, labelright = True, False
+        else:
+            right, labelright = False, False
+        if 'N' in ticks or 'T' in ticks:
+            top, labeltop = True, True
+        elif 'n' in ticks or 't' in ticks:
+            top, labeltop = True, False
+        else:
+            top, labeltop = False, False
+
+        # Set tick intervals (used only for linear axis)
+        if tick_interval[0] is not None:
+            degree_ticks = _np.linspace(
+                0, lmax, num=lmax//tick_interval[0]+1, endpoint=True)
+        if tick_interval[1] is not None:
+            order_ticks = _np.linspace(
+                -lmax, lmax, num=2*lmax//tick_interval[1]+1, endpoint=True)
+        if minor_tick_interval[0] is not None:
+            degree_minor_ticks = _np.linspace(
+                0, lmax, num=lmax//minor_tick_interval[0]+1, endpoint=True)
+        if minor_tick_interval[1] is not None:
+            order_minor_ticks = _np.linspace(
+                -lmax, lmax, num=2*lmax//minor_tick_interval[1]+1,
+                endpoint=True)
 
         if (xscale == 'lin'):
-            cmesh = axes.pcolormesh(lgrid, mgrid, spectrum_masked,
-                                    norm=norm, cmap='viridis')
-            axes.set(xlim=(-0.5, lmax + 0.5))
+            cmesh = axes.pcolormesh(xgrid, ygrid, spectrum_masked,
+                                    norm=norm, cmap=cmap_scaled)
+            if origin in ('left', 'right'):
+                axes.set(xlim=(-0.5, lmax + 0.5))
+                if tick_interval[0] is not None:
+                    axes.set(xticks=degree_ticks)
+                if minor_tick_interval[0] is not None:
+                    axes.set_xticks(degree_minor_ticks, minor=True)
+            else:
+                axes.set(xlim=(-lmax - 0.5, lmax + 0.5))
+                if tick_interval[1] is not None:
+                    axes.set(xticks=order_ticks)
+                if minor_tick_interval[1] is not None:
+                    axes.set_xticks(order_minor_ticks, minor=True)
         elif (xscale == 'log'):
-            cmesh = axes.pcolormesh(lgrid[1:], mgrid[1:], spectrum_masked[1:],
-                                    norm=norm, cmap='viridis')
-            axes.set(xscale='log', xlim=(1., lmax + 0.5))
+            cmesh = axes.pcolormesh(xgrid[1:], ygrid[1:], spectrum_masked[1:],
+                                    norm=norm, cmap=cmap_scaled)
+            if origin in ('left', 'right'):
+                axes.set(xscale='log', xlim=(1., lmax + 0.5))
+            else:
+                axes.set(xscale='symlog', xlim=(-lmax - 0.5, lmax + 0.5))
         else:
             raise ValueError(
-                "xscale must be 'lin' or 'log'. " +
+                "xscale must be 'lin' or 'log'. "
                 "Input value is {:s}.".format(repr(xscale)))
 
         if (yscale == 'lin'):
-            axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
+            if origin in ('left', 'right'):
+                axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
+                if tick_interval[1] is not None:
+                    axes.set(yticks=order_ticks)
+                if minor_tick_interval[1] is not None:
+                    axes.set_yticks(order_minor_ticks, minor=True)
+            else:
+                axes.set(ylim=(-0.5, lmax + 0.5))
+                if tick_interval[0] is not None:
+                    axes.set(yticks=degree_ticks)
+                if minor_tick_interval[0] is not None:
+                    axes.set_yticks(degree_minor_ticks, minor=True)
         elif (yscale == 'log'):
-            axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
+            if origin in ('left', 'right'):
+                axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
+            else:
+                axes.set(yscale='log', ylim=(1., lmax + 0.5))
         else:
             raise ValueError(
-                "yscale must be 'lin' or 'log'. " +
+                "yscale must be 'lin' or 'log'. "
                 "Input value is {:s}.".format(repr(yscale)))
 
-        cb = _plt.colorbar(cmesh, ax=ax)
-
-        if (convention == 'energy'):
-            cb.set_label('Energy per coefficient', fontsize=axes_labelsize)
-        elif (convention == 'power'):
-            cb.set_label('Power per coefficient', fontsize=axes_labelsize)
+        axes.set_aspect('auto')
+        if origin in ('left', 'right'):
+            axes.set_xlabel(degree_label, fontsize=axes_labelsize)
+            axes.set_ylabel(order_label, fontsize=axes_labelsize)
         else:
-            cb.set_label('Magnitude-squared coefficient',
-                         fontsize=axes_labelsize)
-
-        cb.ax.tick_params(labelsize=tick_labelsize)
-        axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
-        axes.set_ylabel('Spherical harmonic order', fontsize=axes_labelsize)
+            axes.set_xlabel(order_label, fontsize=axes_labelsize)
+            axes.set_ylabel(degree_label, fontsize=axes_labelsize)
+        if labeltop:
+            axes.xaxis.set_label_position('top')
+        if labelright:
+            axes.yaxis.set_label_position('right')
+        axes.tick_params(bottom=bottom, top=top, right=right, left=left,
+                         labelbottom=labelbottom, labeltop=labeltop,
+                         labelleft=labelleft, labelright=labelright,
+                         which='both')
         axes.tick_params(labelsize=tick_labelsize)
         axes.minorticks_on()
         axes.grid(grid, which='major')
+        if title is not None:
+            axes.set_title(title, fontsize=titlesize)
+        if origin == 'right':
+            axes.invert_xaxis()
+        if origin == 'top':
+            axes.invert_yaxis()
+
+        # plot colorbar
+        if colorbar is not None:
+            if cb_label is None:
+                if (convention == 'energy'):
+                    cb_label = 'Energy per coefficient'
+                elif (convention == 'power'):
+                    cb_label = 'Power per coefficient'
+                else:
+                    cb_label = 'Magnitude-squared coefficient'
+
+            if cb_offset is None:
+                offset = 1.3 * _mpl.rcParams['font.size']
+                if (colorbar == 'left' and left) or \
+                        (colorbar == 'right' and right) or \
+                        (colorbar == 'bottom' and bottom) or \
+                        (colorbar == 'top' and top):
+                    offset += _mpl.rcParams['xtick.major.size']
+                if (colorbar == 'left' and labelleft) or \
+                        (colorbar == 'right' and labelright) or \
+                        (colorbar == 'bottom' and labelbottom) or \
+                        (colorbar == 'top' and labeltop):
+                    offset += _mpl.rcParams['xtick.major.pad']
+                    offset += tick_labelsize
+                if origin in ('left', 'right') and colorbar == 'left' and \
+                        order_label != '' and order_label is not None \
+                        and labelleft:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('left', 'right') and colorbar == 'right' \
+                        and order_label != '' and order_label is not None \
+                        and labelright:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'left' \
+                        and degree_label != '' \
+                        and degree_label is not None and labelleft:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'right' \
+                        and degree_label != '' \
+                        and degree_label is not None and labelright:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('left', 'right') and colorbar == 'bottom' \
+                        and degree_label != '' \
+                        and degree_label is not None and labelbottom:
+                    offset += axes_labelsize
+                if origin in ('left', 'right') and colorbar == 'top' \
+                        and degree_label != '' \
+                        and degree_label is not None and labeltop:
+                    offset += axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'bottom' \
+                        and order_label != '' \
+                        and order_label is not None and labelbottom:
+                    offset += axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'top' \
+                        and order_label != '' \
+                        and order_label is not None and labeltop:
+                    offset += axes_labelsize
+            else:
+                offset = cb_offset
+
+            offset /= 72.  # convert to inches
+            divider = _make_axes_locatable(axes)
+            if colorbar in set(['left', 'right']):
+                orientation = 'vertical'
+                extendfrac = 0.025
+                if cb_width is None:
+                    size = '5%'
+                else:
+                    size = '{:f}%'.format(cb_width)
+            else:
+                orientation = 'horizontal'
+                extendfrac = 0.025
+                if cb_width is None:
+                    size = '5%'
+                else:
+                    size = '{:f}%'.format(cb_width)
+            cax = divider.append_axes(colorbar, size=size, pad=offset)
+            cbar = _plt.colorbar(cmesh, cax=cax, orientation=orientation,
+                                 extend=cb_triangles, extendfrac=extendfrac)
+            if colorbar == 'left':
+                cbar.ax.yaxis.set_ticks_position('left')
+                cbar.ax.yaxis.set_label_position('left')
+            if colorbar == 'top':
+                cbar.ax.xaxis.set_ticks_position('top')
+                cbar.ax.xaxis.set_label_position('top')
+            cbar.set_label(cb_label, fontsize=axes_labelsize)
+            cbar.ax.tick_params(labelsize=tick_labelsize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2673,21 +3039,35 @@ class SHCoeffs(object):
                 fig.savefig(fname)
             return fig, axes
 
-    def plot_cross_spectrum2d(self, clm, convention='power', xscale='lin',
-                              yscale='lin', grid=True, axes_labelsize=None,
-                              tick_labelsize=None, vscale='log', vrange=None,
-                              vmin=None, vmax=None, lmax=None, show=True,
-                              ax=None, fname=None):
+    def plot_cross_spectrum2d(self, clm, convention='power', ticks='WSen',
+                              tick_interval=[None, None],
+                              minor_tick_interval=[None, None],
+                              degree_label='Spherical harmonic degree',
+                              order_label='Spherical harmonic order',
+                              title=None, colorbar='right', origin='top',
+                              cmap='viridis', cmap_limits=None,
+                              cmap_rlimits=None, cmap_reverse=False,
+                              cmap_scale='log', cb_triangles='neither',
+                              cb_label=None, cb_offset=None, cb_width=None,
+                              lmax=None, xscale='lin', yscale='lin',
+                              grid=False, titlesize=None, axes_labelsize=None,
+                              tick_labelsize=None, ax=None, show=True,
+                              fname=None):
         """
         Plot the cross-spectrum of two functions as a function of spherical
         harmonic degree and order.
 
         Usage
         -----
-        x.plot_cross_spectrum2d(clm, [convention, xscale, yscale, grid,
-                                      axes_labelsize, tick_labelsize, vscale,
-                                      vrange, vmin, vmax, lmax, show, ax,
-                                      fname])
+        x.plot_cross_spectrum2d(clm, [convention, ticks, tick_interval,
+                                      minor_tick_interval, degree_label,
+                                      order_label, title, colorbar, origin,
+                                      cmap, cmap_limits, cmap_rlimits,
+                                      cmap_reverse, cmap_scale, cb_triangles,
+                                      cb_label, cb_offset, cb_width, lmax,
+                                      xscale, yscale, grid, titlesize,
+                                      axes_labelsize, tick_labelsize, ax,
+                                      show, fname])
 
         Parameters
         ----------
@@ -2697,33 +3077,78 @@ class SHCoeffs(object):
             The type of spectrum to plot: 'power' for power spectrum,
             'energy' for energy spectrum, and 'l2norm' for the l2 norm
             spectrum.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot, respectively. Alternatively, use
+            'L', 'B', 'R', and 'T' for left, bottom, right, and top.
+        tick_interval : list or tuple, optional, default = [None, None]
+            Intervals to use when plotting the degree and order ticks,
+            respectively (used only when xscale and yscale are 'lin'). If set
+            to None, ticks will be generated automatically.
+        minor_tick_interval : list or tuple, optional, default = [None, None]
+            Intervals to use when plotting the minor degree and order ticks,
+            respectively (used only when xscale and yscale are 'lin'). If set
+            to None, minor ticks will be generated automatically.
+        degree_label : str, optional, default = 'Spherical harmonic degree'
+            Label for the spherical harmonic degree axis.
+        order_label : str, optional, default = 'Spherical harmonic order'
+            Label for the spherical harmonic order axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
+        origin : str, optional, default = 'top'
+            Location where the degree 0 coefficient is plotted. Either 'left',
+            'right', 'top', or 'bottom'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2] for linear scales
+            and log10(cmap_limits[1]/cmap_limits[0])*cmap_limits[2] for
+            logarithmic scales.
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cmap_scale : str, optional, default = 'log'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
+        cb_label : str, optional, default = None
+            Text label for the colorbar.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
         xscale : str, optional, default = 'lin'
             Scale of the l axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'lin'
             Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
-        grid : bool, optional, default = True
+        grid : bool, optional, default = False
             If True, plot grid lines.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        vscale : str, optional, default = 'log'
-            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
-        vrange : (float, float), optional, default = None
-            Colormap range (min, max) relative to the maximum value. If None,
-            scale the image to the maximum and minimum values.
-        vmin : float, optional, default=None
-            The minmum range of the colormap. If None, the minimum value of the
-            spectrum will be used.
-        vmax : float, optional, default=None
-            The maximum range of the colormap. If None, the maximum value of
-            the spectrum will be used.
-        lmax : int, optional, default = self.lmax
-            The maximum spherical harmonic degree to plot.
-        show : bool, optional, default = True
-            If True, plot to the screen.
+        titlesize : int, optional, default = None
+            The font size of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
+        show : bool, optional, default = True
+            If True, plot to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
@@ -2745,10 +3170,29 @@ class SHCoeffs(object):
             raise ValueError('clm must be an SHCoeffs class instance. Input '
                              'type is {:s}.'.format(repr(type(clm))))
 
+        if tick_interval is None:
+            tick_interval = [None, None]
+        if minor_tick_interval is None:
+            minor_tick_interval = [None, None]
+
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
+        if titlesize is None:
+            titlesize = _mpl.rcParams['axes.titlesize']
+            if type(titlesize) == str:
+                titlesize = _mpl.font_manager \
+                                 .FontProperties(size=titlesize) \
+                                 .get_size_in_points()
 
         if lmax is None:
             lmax = min(self.lmax, clm.lmax)
@@ -2757,7 +3201,7 @@ class SHCoeffs(object):
 
         coeffs = clm.to_array(normalization=self.normalization,
                               csphase=self.csphase,
-                              lmax=self.lmax)
+                              lmax=self.lmax, errors=False)
 
         # Create the matrix of the spectrum for each coefficient
         spectrum = _np.empty((lmax + 1, 2 * lmax + 1))
@@ -2807,80 +3251,284 @@ class SHCoeffs(object):
         if convention == 'energy':
             spectrum *= 4.0 * _np.pi
 
+        if origin in ('top', 'bottom'):
+            spectrum = _np.rot90(spectrum, axes=(1, 0))
+
         spectrum_masked = _np.ma.masked_invalid(spectrum)
 
         # need to add one extra value to each in order for pcolormesh
         # to plot the last row and column.
         ls = _np.arange(lmax+2).astype(_np.float)
         ms = _np.arange(-lmax, lmax + 2, dtype=_np.float)
-        lgrid, mgrid = _np.meshgrid(ls, ms, indexing='ij')
-        lgrid -= 0.5
-        mgrid -= 0.5
+        if origin in ('left', 'right'):
+            xgrid, ygrid = _np.meshgrid(ls, ms, indexing='ij')
+        elif origin in ('top', 'bottom'):
+            xgrid, ygrid = _np.meshgrid(ms, ls[::-1], indexing='ij')
+        else:
+            raise ValueError(
+                "origin must be 'left', 'right', 'top', or 'bottom'. "
+                "Input value is {:s}.".format(repr(origin)))
+        xgrid -= 0.5
+        ygrid -= 0.5
 
         if ax is None:
-            fig, axes = _plt.subplots()
+            if colorbar is not None:
+                if colorbar in set(['top', 'bottom']):
+                    scale = 1.2
+                else:
+                    scale = 0.9
+            else:
+                scale = 1.025
+            figsize = (_mpl.rcParams['figure.figsize'][0],
+                       _mpl.rcParams['figure.figsize'][0] * scale)
+            fig = _plt.figure(figsize=figsize)
+            axes = fig.add_subplot(111)
         else:
             axes = ax
 
-        if vrange is not None:
-            vmin = _np.nanmax(spectrum) * vrange[0]
-            vmax = _np.nanmax(spectrum) * vrange[1]
-        else:
-            if vmin is None:
+        # make colormap
+        if cmap_limits is None and cmap_rlimits is None:
+            if cmap_scale.lower() == 'log':
                 _temp = spectrum
                 _temp[_temp == 0] = _np.NaN
                 vmin = _np.nanmin(_temp)
-            if vmax is None:
-                vmax = _np.nanmax(spectrum)
+            else:
+                vmin = _np.nanmin(spectrum)
+            vmax = _np.nanmax(spectrum)
+            cmap_limits = [vmin, vmax]
+        elif cmap_rlimits is not None:
+            vmin = _np.nanmax(spectrum) * cmap_rlimits[0]
+            vmax = _np.nanmax(spectrum) * cmap_rlimits[1]
+            cmap_limits = [vmin, vmax]
+            if len(cmap_rlimits) == 3:
+                cmap_limits.append(cmap_rlimits[2])
+        if len(cmap_limits) == 3:
+            if cmap_scale.lower() == 'log':
+                num = int(_np.log10(cmap_limits[1]/cmap_limits[0])
+                          * cmap_limits[2])
+            else:
+                num = int((cmap_limits[1] - cmap_limits[0]) / cmap_limits[2])
+            if isinstance(cmap, _mpl.colors.Colormap):
+                cmap_scaled = cmap._resample(num)
+            else:
+                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+        else:
+            cmap_scaled = _mpl.cm.get_cmap(cmap)
+        if cmap_reverse:
+            cmap_scaled = cmap_scaled.reversed()
 
-        if vscale.lower() == 'log':
-            norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)
+        if cmap_scale.lower() == 'log':
+            norm = _mpl.colors.LogNorm(cmap_limits[0], cmap_limits[1],
+                                       clip=True)
             # Clipping is required to avoid an invalid value error
-        elif vscale.lower() == 'lin':
-            norm = _plt.Normalize(vmin, vmax)
+        elif cmap_scale.lower() == 'lin':
+            norm = _plt.Normalize(cmap_limits[0], cmap_limits[1])
         else:
             raise ValueError(
-                "vscale must be 'lin' or 'log'. " +
-                "Input value is {:s}.".format(repr(vscale)))
+                "cmap_scale must be 'lin' or 'log'. " +
+                "Input value is {:s}.".format(repr(cmap_scale)))
+
+        # determine which ticks to plot
+        if 'W' in ticks or 'L' in ticks:
+            left, labelleft = True, True
+        elif 'w' in ticks or 'l' in ticks:
+            left, labelleft = True, False
+        else:
+            left, labelleft = False, False
+        if 'S' in ticks or 'B' in ticks:
+            bottom, labelbottom = True, True
+        elif 's' in ticks or 'b' in ticks:
+            bottom, labelbottom = True, False
+        else:
+            bottom, labelbottom = False, False
+        if 'E' in ticks or 'R' in ticks:
+            right, labelright = True, True
+        elif 'e' in ticks or 'r' in ticks:
+            right, labelright = True, False
+        else:
+            right, labelright = False, False
+        if 'N' in ticks or 'T' in ticks:
+            top, labeltop = True, True
+        elif 'n' in ticks or 't' in ticks:
+            top, labeltop = True, False
+        else:
+            top, labeltop = False, False
+
+        # Set tick intervals (used only for linear axis)
+        if tick_interval[0] is not None:
+            degree_ticks = _np.linspace(
+                0, lmax, num=lmax//tick_interval[0]+1, endpoint=True)
+        if tick_interval[1] is not None:
+            order_ticks = _np.linspace(
+                -lmax, lmax, num=2*lmax//tick_interval[1]+1, endpoint=True)
+        if minor_tick_interval[0] is not None:
+            degree_minor_ticks = _np.linspace(
+                0, lmax, num=lmax//minor_tick_interval[0]+1, endpoint=True)
+        if minor_tick_interval[1] is not None:
+            order_minor_ticks = _np.linspace(
+                -lmax, lmax, num=2*lmax//minor_tick_interval[1]+1,
+                endpoint=True)
 
         if (xscale == 'lin'):
-            cmesh = axes.pcolormesh(lgrid, mgrid, spectrum_masked,
-                                    norm=norm, cmap='viridis')
-            axes.set(xlim=(-0.5, lmax + 0.5))
+            cmesh = axes.pcolormesh(xgrid, ygrid, spectrum_masked,
+                                    norm=norm, cmap=cmap_scaled)
+            if origin in ('left', 'right'):
+                axes.set(xlim=(-0.5, lmax + 0.5))
+                if tick_interval[0] is not None:
+                    axes.set(xticks=degree_ticks)
+                if minor_tick_interval[0] is not None:
+                    axes.set_xticks(degree_minor_ticks, minor=True)
+            else:
+                axes.set(xlim=(-lmax - 0.5, lmax + 0.5))
+                if tick_interval[1] is not None:
+                    axes.set(xticks=order_ticks)
+                if minor_tick_interval[1] is not None:
+                    axes.set_xticks(order_minor_ticks, minor=True)
         elif (xscale == 'log'):
-            cmesh = axes.pcolormesh(lgrid[1:], mgrid[1:], spectrum_masked[1:],
-                                    norm=norm, cmap='viridis')
-            axes.set(xscale='log', xlim=(1., lmax + 0.5))
+            cmesh = axes.pcolormesh(xgrid[1:], ygrid[1:], spectrum_masked[1:],
+                                    norm=norm, cmap=cmap_scaled)
+            if origin in ('left', 'right'):
+                axes.set(xscale='log', xlim=(1., lmax + 0.5))
+            else:
+                axes.set(xscale='symlog', xlim=(-lmax - 0.5, lmax + 0.5))
         else:
             raise ValueError(
-                "xscale must be 'lin' or 'log'. " +
+                "xscale must be 'lin' or 'log'. "
                 "Input value is {:s}.".format(repr(xscale)))
 
         if (yscale == 'lin'):
-            axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
+            if origin in ('left', 'right'):
+                axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
+                if tick_interval[1] is not None:
+                    axes.set(yticks=order_ticks)
+                if minor_tick_interval[1] is not None:
+                    axes.set_yticks(order_minor_ticks, minor=True)
+            else:
+                axes.set(ylim=(-0.5, lmax + 0.5))
+                if tick_interval[0] is not None:
+                    axes.set(yticks=degree_ticks)
+                if minor_tick_interval[0] is not None:
+                    axes.set_yticks(degree_minor_ticks, minor=True)
         elif (yscale == 'log'):
-            axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
+            if origin in ('left', 'right'):
+                axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
+            else:
+                axes.set(yscale='log', ylim=(1., lmax + 0.5))
         else:
             raise ValueError(
-                "yscale must be 'lin' or 'log'. " +
+                "yscale must be 'lin' or 'log'. "
                 "Input value is {:s}.".format(repr(yscale)))
 
-        cb = _plt.colorbar(cmesh, ax=ax)
-
-        if (convention == 'energy'):
-            cb.set_label('Energy per coefficient', fontsize=axes_labelsize)
-        elif (convention == 'power'):
-            cb.set_label('Power per coefficient', fontsize=axes_labelsize)
+        axes.set_aspect('auto')
+        if origin in ('left', 'right'):
+            axes.set_xlabel(degree_label, fontsize=axes_labelsize)
+            axes.set_ylabel(order_label, fontsize=axes_labelsize)
         else:
-            cb.set_label('Magnitude-squared coefficient',
-                         fontsize=axes_labelsize)
-
-        cb.ax.tick_params(labelsize=tick_labelsize)
-        axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
-        axes.set_ylabel('Spherical harmonic order', fontsize=axes_labelsize)
+            axes.set_xlabel(order_label, fontsize=axes_labelsize)
+            axes.set_ylabel(degree_label, fontsize=axes_labelsize)
+        if labeltop:
+            axes.xaxis.set_label_position('top')
+        if labelright:
+            axes.yaxis.set_label_position('right')
+        axes.tick_params(bottom=bottom, top=top, right=right, left=left,
+                         labelbottom=labelbottom, labeltop=labeltop,
+                         labelleft=labelleft, labelright=labelright,
+                         which='both')
         axes.tick_params(labelsize=tick_labelsize)
         axes.minorticks_on()
         axes.grid(grid, which='major')
+        if title is not None:
+            axes.set_title(title, fontsize=titlesize)
+        if origin == 'right':
+            axes.invert_xaxis()
+        if origin == 'top':
+            axes.invert_yaxis()
+
+        # plot colorbar
+        if colorbar is not None:
+            if cb_label is None:
+                if (convention == 'energy'):
+                    cb_label = 'Energy per coefficient'
+                elif (convention == 'power'):
+                    cb_label = 'Power per coefficient'
+                else:
+                    cb_label = 'Magnitude-squared coefficient'
+
+            if cb_offset is None:
+                offset = 1.3 * _mpl.rcParams['font.size']
+                if (colorbar == 'left' and left) or \
+                        (colorbar == 'right' and right) or \
+                        (colorbar == 'bottom' and bottom) or \
+                        (colorbar == 'top' and top):
+                    offset += _mpl.rcParams['xtick.major.size']
+                if (colorbar == 'left' and labelleft) or \
+                        (colorbar == 'right' and labelright) or \
+                        (colorbar == 'bottom' and labelbottom) or \
+                        (colorbar == 'top' and labeltop):
+                    offset += _mpl.rcParams['xtick.major.pad']
+                    offset += tick_labelsize
+                if origin in ('left', 'right') and colorbar == 'left' and \
+                        order_label != '' and order_label is not None \
+                        and labelleft:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('left', 'right') and colorbar == 'right' \
+                        and order_label != '' and order_label is not None \
+                        and labelright:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'left' \
+                        and degree_label != '' \
+                        and degree_label is not None and labelleft:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'right' \
+                        and degree_label != '' \
+                        and degree_label is not None and labelright:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('left', 'right') and colorbar == 'bottom' \
+                        and degree_label != '' \
+                        and degree_label is not None and labelbottom:
+                    offset += axes_labelsize
+                if origin in ('left', 'right') and colorbar == 'top' \
+                        and degree_label != '' \
+                        and degree_label is not None and labeltop:
+                    offset += axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'bottom' \
+                        and order_label != '' \
+                        and order_label is not None and labelbottom:
+                    offset += axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'top' \
+                        and order_label != '' \
+                        and order_label is not None and labeltop:
+                    offset += axes_labelsize
+            else:
+                offset = cb_offset
+
+            offset /= 72.  # convert to inches
+            divider = _make_axes_locatable(axes)
+            if colorbar in set(['left', 'right']):
+                orientation = 'vertical'
+                extendfrac = 0.025
+                if cb_width is None:
+                    size = '5%'
+                else:
+                    size = '{:f}%'.format(cb_width)
+            else:
+                orientation = 'horizontal'
+                extendfrac = 0.025
+                if cb_width is None:
+                    size = '5%'
+                else:
+                    size = '{:f}%'.format(cb_width)
+            cax = divider.append_axes(colorbar, size=size, pad=offset)
+            cbar = _plt.colorbar(cmesh, cax=cax, orientation=orientation,
+                                 extend=cb_triangles, extendfrac=extendfrac)
+            if colorbar == 'left':
+                cbar.ax.yaxis.set_ticks_position('left')
+                cbar.ax.yaxis.set_label_position('left')
+            if colorbar == 'top':
+                cbar.ax.xaxis.set_ticks_position('top')
+                cbar.ax.xaxis.set_label_position('top')
+            cbar.set_label(cb_label, fontsize=axes_labelsize)
+            cbar.ax.tick_params(labelsize=tick_labelsize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2893,7 +3541,7 @@ class SHCoeffs(object):
     def plot_admitcorr(self, hlm, errors=True, style='separate', lmax=None,
                        grid=True, legend=None, legend_loc='best',
                        axes_labelsize=None, tick_labelsize=None,
-                       elinewidth=0.75, show=True, ax=None, ax2=None,
+                       elinewidth=0.75, ax=None, ax2=None, show=True,
                        fname=None, **kwargs):
         """
         Plot the admittance and/or correlation with another function.
@@ -2902,7 +3550,7 @@ class SHCoeffs(object):
         -----
         x.plot_admitcorr(hlm, [errors, style, lmax, grid, legend, legend_loc,
                                axes_labelsize, tick_labelsize, elinewidth,
-                               show, ax, ax2, fname, **kwargs])
+                               ax, ax2, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2936,13 +3584,13 @@ class SHCoeffs(object):
             The font size for the x and y tick labels.
         elinewidth : float, optional, default = 0.75
             Line width of the error bars when errors is True.
-        show : bool, optional, default = True
-            If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         ax2 : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the second plot will appear
             when style is 'separate'.
+        show : bool, optional, default = True
+            If True, plot to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
@@ -3090,8 +3738,8 @@ class SHCoeffs(object):
 
     def plot_admittance(self, hlm, errors=True, lmax=None, grid=True,
                         legend=None, legend_loc='best', axes_labelsize=None,
-                        tick_labelsize=None, elinewidth=0.75, show=True,
-                        ax=None, fname=None, **kwargs):
+                        tick_labelsize=None, elinewidth=0.75, ax=None,
+                        show=True, fname=None, **kwargs):
         """
         Plot the admittance with another function.
 
@@ -3099,7 +3747,7 @@ class SHCoeffs(object):
         -----
         x.plot_admittance(hlm, [errors, lmax, grid, legend, legend_loc,
                                 axes_labelsize, tick_labelsize, elinewidth,
-                                show, ax, fname, **kwargs])
+                                ax, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -3122,10 +3770,10 @@ class SHCoeffs(object):
             The font size for the x and y tick labels.
         elinewidth : float, optional, default = 0.75
             Line width of the error bars when errors is True.
-        show : bool, optional, default = True
-            If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
+        show : bool, optional, default = True
+            If True, plot to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
@@ -3156,8 +3804,8 @@ class SHCoeffs(object):
 
     def plot_correlation(self, hlm, lmax=None, grid=True, legend=None,
                          legend_loc='best', axes_labelsize=None,
-                         tick_labelsize=None, elinewidth=0.75, show=True,
-                         ax=None, fname=None, **kwargs):
+                         tick_labelsize=None, elinewidth=0.75, ax=None,
+                         show=True, fname=None, **kwargs):
         """
         Plot the correlation with another function.
 
@@ -3165,7 +3813,7 @@ class SHCoeffs(object):
         -----
         x.plot_correlation(hlm, [lmax, grid, legend, legend_loc,
                                  axes_labelsize, tick_labelsize, elinewidth,
-                                 show, ax, fname, **kwargs])
+                                 ax, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -3186,10 +3834,10 @@ class SHCoeffs(object):
             The font size for the x and y tick labels.
         elinewidth : float, optional, default = 0.75
             Line width of the error bars when errors is True.
-        show : bool, optional, default = True
-            If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
+        show : bool, optional, default = True
+            If True, plot to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
@@ -3223,8 +3871,8 @@ class SHRealCoeffs(SHCoeffs):
         return kind == 'real'
 
     def __init__(self, coeffs, errors=None, error_kind=None,
-                 normalization='4pi', csphase=1, units=None, copy=True,
-                 header=None, header2=None):
+                 normalization='4pi', csphase=1, name=None, units=None,
+                 copy=True, header=None, header2=None):
         """Initialize Real SH Coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -3240,6 +3888,7 @@ class SHRealCoeffs(SHCoeffs):
         self.csphase = csphase
         self.header = header
         self.header2 = header2
+        self.name = name
         self.units = units
         self.error_kind = error_kind
 
@@ -3288,7 +3937,8 @@ class SHRealCoeffs(SHCoeffs):
 
         # The coefficients need to be 4pi normalized with csphase = 1
         coeffs = _shtools.SHRotateRealCoef(
-            self.to_array(normalization='4pi', csphase=1), angles, dj_matrix)
+            self.to_array(normalization='4pi', csphase=1, errors=False),
+            angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.
@@ -3297,10 +3947,11 @@ class SHRealCoeffs(SHCoeffs):
                             normalization_out=self.normalization,
                             csphase_out=self.csphase)
             return SHCoeffs.from_array(
-                temp, normalization=self.normalization,
+                temp, errors=self.errors, normalization=self.normalization,
                 csphase=self.csphase, units=self.units, copy=False)
         else:
-            return SHCoeffs.from_array(coeffs, units=self.units, copy=False)
+            return SHCoeffs.from_array(coeffs, errors=self.errors,
+                                       units=self.units, copy=False)
 
     def _expandDH(self, sampling, lmax, lmax_calc, extend):
         """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
@@ -3408,6 +4059,16 @@ class SHRealCoeffs(SHCoeffs):
                              'ndarray, or list. Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
+    def _gradientDH(self, sampling, lmax, lmax_calc, units, extend):
+        """Evaluate the gradient on a Driscoll and Healy (1994) grid."""
+        from .shgradient import SHGradient
+
+        theta, phi = _shtools.MakeGradientDH(
+            self.to_array(normalization='4pi', csphase=1, errors=False),
+            sampling=sampling, lmax=lmax, lmax_calc=lmax_calc, extend=extend)
+
+        return SHGradient(theta, phi, lmax, lmax_calc, units=units)
+
 
 # =============== COMPLEX SPHERICAL HARMONICS ================
 
@@ -3420,8 +4081,8 @@ class SHComplexCoeffs(SHCoeffs):
         return kind == 'complex'
 
     def __init__(self, coeffs, errors=None, error_kind=None,
-                 normalization='4pi', csphase=1, units=None, copy=True,
-                 header=None, header2=None):
+                 normalization='4pi', csphase=1, name=None, units=None,
+                 copy=True, header=None, header2=None):
         """Initialize Complex coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -3438,6 +4099,7 @@ class SHComplexCoeffs(SHCoeffs):
         self.csphase = csphase
         self.header = header
         self.header2 = header2
+        self.name = name
         self.units = units
         self.error_kind = error_kind
 
@@ -3541,7 +4203,7 @@ class SHComplexCoeffs(SHCoeffs):
         coeffs_rot = _shtools.SHExpandDHC(grid_rot, norm=norm,
                                           csphase=self.csphase)
 
-        return SHCoeffs.from_array(coeffs_rot,
+        return SHCoeffs.from_array(coeffs_rot, errros=self.errors,
                                    normalization=self.normalization,
                                    csphase=self.csphase, units=self.units,
                                    copy=False)
@@ -3652,3 +4314,8 @@ class SHComplexCoeffs(SHCoeffs):
                              'ndarray, or list. ' +
                              'Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
+
+    def _gradientDH(self, sampling, lmax, lmax_calc, units, extend):
+        """Evaluate the gradient on a Driscoll and Healy (1994) grid."""
+        raise NotImplementedError('gradient() does not support the use '
+                                  'of complex DH grids.')

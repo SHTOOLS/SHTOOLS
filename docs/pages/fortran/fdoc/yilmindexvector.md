@@ -17,16 +17,16 @@ Compute the index of an 1D array of spherical harmonic coefficients correspondin
 
 ## Parameters
 
-`index` : output, integer 
+`index` : output, integer(int32)
 :   Index of an 1D array of spherical harmonic coefficients corresponding to `i`, `l`, and `m`.
 
-`i` : input, integer
+`i` : input, integer(int32)
 :   1 corresponds to the cosine coefficient `cilm(1,:,:)`, and 2 corresponds to the sine coefficient `cilm(2,:,:)`.
 
-`l` : input, integer
+`l` : input, integer(int32)
 :   The spherical harmonic degree.
 
-`m` : input, integer
+`m` : input, integer(int32)
 :   The angular order.
 
 ## Description

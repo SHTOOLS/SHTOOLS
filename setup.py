@@ -12,7 +12,7 @@ if sys.version_info < min_version:
             '*** is required. This error may be a result of using a \n' \
             '*** python-2.7 version of pip. \n' \
             '*** {:}'.format(('.'.join(str(n) for n in min_version)),
-                                 sys.version_info)
+                             sys.version_info)
     raise SystemError(error)
 
 import os  # noqa: E402
@@ -21,10 +21,10 @@ import setuptools  # noqa: E402
 import numpy  # noqa: E402
 import versioneer  # noqa: E402
 from numpy.distutils.core import setup  # noqa: E402
+from numpy.distutils.core import numpy_cmdclass  # noqa: E402
 from numpy.distutils.command.build import build as _build  # noqa: E402
 from numpy.distutils.command.install import install as _install  # noqa: E402
 from numpy.distutils.command.develop import develop as _develop  # noqa: E402
-from numpy.distutils.command.sdist import sdist  # noqa: E402
 from numpy.distutils.fcompiler import FCompiler  # noqa: E402
 from numpy.distutils.fcompiler import get_default_fcompiler  # noqa: E402
 from numpy.distutils.misc_util import Configuration  # noqa: E402
@@ -46,8 +46,6 @@ except(IOError, ImportError):
           'formatted correctly. ***')
     long_description = open('README.md').read()
 
-
-VERSION = versioneer.get_version()
 
 CLASSIFIERS = [
     'Development Status :: 5 - Production/Stable',
@@ -86,6 +84,7 @@ EXTRAS_REQUIRE = {
     'extras': ['cartopy>=0.18.0', 'pygmt>=0.2', 'palettable>=3.3']
 }
 
+VERSION = versioneer.get_version()
 print('INSTALLING SHTOOLS {}'.format(VERSION))
 
 
@@ -212,8 +211,8 @@ def configuration(parent_package='', top_path=None):
     return config
 
 
-CMDCLASS = {'sdist': sdist, 'build': build, 'install': install,
-            'develop': develop}
+CMDCLASS = numpy_cmdclass
+CMDCLASS.update({'build': build, 'install': install, 'develop': develop})
 CMDCLASS.update(versioneer.get_cmdclass())
 
 metadata = dict(

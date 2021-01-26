@@ -4,6 +4,7 @@
 import numpy as _np
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 import warnings as _warnings
 import xarray as _xr
@@ -37,6 +38,7 @@ from ..shtools import MakeGravGradGridDH as _MakeGravGradGridDH
 from ..shtools import MakeGeoidGridDH as _MakeGeoidGridDH
 from ..shtools import djpi2 as _djpi2
 from ..shtools import SHRotateRealCoef as _SHRotateRealCoef
+from ..shtools import MakeGravGridPoint as _MakeGravGridPoint
 
 
 class SHGravCoeffs(object):
@@ -88,6 +90,7 @@ class SHGravCoeffs(object):
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
     kind          : The coefficient data type (only 'real' is permissible).
+    name          : The name of the dataset.
     epoch         : The epoch time of the spherical harmonic coefficients.
     header        : A list of values (of type str) from the header line of the
                     input file used to initialize the class (for 'shtools'
@@ -165,7 +168,7 @@ class SHGravCoeffs(object):
     @classmethod
     def from_array(self, coeffs, gm, r0, omega=None, errors=None,
                    error_kind=None, normalization='4pi', csphase=1, lmax=None,
-                   set_degree0=True, epoch=None, copy=True):
+                   set_degree0=True, name=None, epoch=None, copy=True):
         """
         Initialize the class with spherical harmonic coefficients from an input
         array.
@@ -174,8 +177,8 @@ class SHGravCoeffs(object):
         -----
         x = SHGravCoeffs.from_array(array, gm, r0, [omega, errors, error_kind,
                                                     normalization, csphase,
-                                                    lmax, set_degree0, epoch,
-                                                    copy])
+                                                    lmax, set_degree0, name,
+                                                    epoch, copy])
 
         Returns
         -------
@@ -211,6 +214,8 @@ class SHGravCoeffs(object):
             class instance. This must be less than or equal to lmaxin.
         set_degree0 : bool, optional, default = True
             If the degree-0 coefficient is zero, set this to 1.
+        name : str, optional, default = None
+            The name of the dataset.
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD.
@@ -278,18 +283,20 @@ class SHGravCoeffs(object):
                                                               0:lmax+1],
                                    error_kind=error_kind,
                                    normalization=normalization.lower(),
-                                   csphase=csphase, epoch=epoch, copy=copy)
+                                   csphase=csphase, name=name, epoch=epoch,
+                                   copy=copy)
         else:
             clm = SHGravRealCoeffs(coeffs[:, 0:lmax+1, 0:lmax+1], gm=gm, r0=r0,
                                    omega=omega,
                                    normalization=normalization.lower(),
-                                   csphase=csphase, epoch=epoch, copy=copy)
+                                   csphase=csphase, name=name, epoch=epoch,
+                                   copy=copy)
         return clm
 
     @classmethod
     def from_zeros(self, lmax, gm, r0, omega=None, errors=None,
                    error_kind=None, normalization='4pi', csphase=1,
-                   epoch=None):
+                   name=None, epoch=None):
         """
         Initialize the class with spherical harmonic coefficients set to zero
         from degree 1 to lmax, and set the degree 0 term to 1.
@@ -298,7 +305,7 @@ class SHGravCoeffs(object):
         -----
         x = SHGravCoeffs.from_zeros(lmax, gm, r0, [omega, errors, error_kind,
                                                    normalization, csphase,
-                                                   epoch])
+                                                   name, epoch])
 
         Returns
         -------
@@ -327,6 +334,8 @@ class SHGravCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
+        name : str, optional, default = None
+            The name of the dataset.
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD.
@@ -364,7 +373,7 @@ class SHGravCoeffs(object):
         clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
                                errors=error_coeffs, error_kind=error_kind,
                                normalization=normalization.lower(),
-                               csphase=csphase, epoch=epoch)
+                               csphase=csphase, name=name, epoch=epoch)
         return clm
 
     @classmethod
@@ -372,7 +381,7 @@ class SHGravCoeffs(object):
                   omega=None, lmax=None, normalization='4pi', skip=0,
                   header=True, header2=False, errors=None, error_kind=None,
                   csphase=1, r0_index=0, gm_index=1, omega_index=None,
-                  header_units='m', set_degree0=True, epoch=None,
+                  header_units='m', set_degree0=True, name=None, epoch=None,
                   encoding=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
@@ -383,15 +392,16 @@ class SHGravCoeffs(object):
                                    r0, omega, lmax, normalization, csphase,
                                    skip, header, header2, errors, error_kind,
                                    gm_index, r0_index, omega_index,
-                                   header_units, set_degree0])
+                                   header_units, set_degree0, name])
         x = SHGravCoeffs.from_file(filename, format='icgem', [lmax, omega,
                                    normalization, csphase, errors, set_degree0,
-                                   epoch, encoding])
+                                   name, name, epoch, encoding])
         x = SHGravCoeffs.from_file(filename, format='bshc', gm, r0, [lmax,
-                                   omega, normalization, csphase, set_degree0])
+                                   omega, normalization, csphase, set_degree0,
+                                   name])
         x = SHGravCoeffs.from_file(filename, format='npy', gm, r0, [lmax,
                                    omega, normalization, csphase, set_degree0,
-                                   **kwargs])
+                                   name, **kwargs])
 
         Returns
         -------
@@ -463,6 +473,8 @@ class SHGravCoeffs(object):
         skip : int, optional, default = 0
             Number of lines to skip at the beginning of the file for 'shtools'
             formatted files.
+        name : str, optional, default = None
+            The name of the dataset.
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD. If format is 'icgem' and epoch is None,
@@ -656,13 +668,13 @@ class SHGravCoeffs(object):
                                errors=error_coeffs, error_kind=error_kind,
                                normalization=normalization.lower(),
                                csphase=csphase, header=header_list,
-                               header2=header2_list, epoch=epoch)
+                               header2=header2_list, name=name, epoch=epoch)
         return clm
 
     @classmethod
     def from_random(self, power, gm, r0, omega=None, function='geoid',
                     lmax=None, normalization='4pi', csphase=1,
-                    exact_power=False, epoch=None):
+                    exact_power=False, name=None, epoch=None):
         """
         Initialize the class of gravitational potential spherical harmonic
         coefficients as random variables with a given spectrum.
@@ -672,7 +684,7 @@ class SHGravCoeffs(object):
         x = SHGravCoeffs.from_random(power, gm, r0, [omega, function, lmax,
                                                      normalization,
                                                      csphase, exact_power,
-                                                     epoch])
+                                                     name, epoch])
 
         Returns
         -------
@@ -708,6 +720,8 @@ class SHGravCoeffs(object):
             The total variance of the coefficients is set exactly to the input
             power. The distribution of power at degree l amongst the angular
             orders is random, but the total power is fixed.
+        name : str, optional, default = None
+            The name of the dataset.
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD.
@@ -820,12 +834,12 @@ class SHGravCoeffs(object):
         clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
                                errors=None,
                                normalization=normalization.lower(),
-                               csphase=csphase, epoch=epoch)
+                               csphase=csphase, name=name, epoch=epoch)
         return clm
 
     @classmethod
     def from_netcdf(self, filename, lmax=None, normalization='4pi', csphase=1,
-                    epoch=None):
+                    name=None, epoch=None):
         """
         Initialize the class with spherical harmonic coefficients from a
         netcdf file.
@@ -833,7 +847,7 @@ class SHGravCoeffs(object):
         Usage
         -----
         x = SHGravCoeffs.from_netcdf(filename, [lmax, normalization, csphase,
-                                                epoch])
+                                                name, epoch])
 
         Returns
         -------
@@ -853,6 +867,8 @@ class SHGravCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention if not specified in the netcdf
             file: 1 to exclude the phase factor, or -1 to include it.
+        name : str, optional, default = None
+            The name of the dataset.
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD.
@@ -947,12 +963,12 @@ class SHGravCoeffs(object):
         clm = SHGravRealCoeffs(coeffs, gm=gm, r0=r0, omega=omega,
                                errors=errors, error_kind=error_kind,
                                normalization=normalization.lower(),
-                               csphase=csphase, epoch=epoch)
+                               csphase=csphase, name=name, epoch=epoch)
         return clm
 
     @classmethod
     def from_shape(self, shape, rho, gm, nmax=7, lmax=None, lmax_grid=None,
-                   lmax_calc=None, omega=None, epoch=None):
+                   lmax_calc=None, omega=None, name=None, epoch=None):
         """
         Initialize a class of gravitational potential spherical harmonic
         coefficients by calculuting the gravitational potential associatiated
@@ -961,7 +977,8 @@ class SHGravCoeffs(object):
         Usage
         -----
         x = SHGravCoeffs.from_shape(shape, rho, gm, [nmax, lmax, lmax_grid,
-                                                     lmax_calc, omega, epoch])
+                                                     lmax_calc, omega, name,
+                                                     epoch])
 
         Returns
         -------
@@ -998,6 +1015,8 @@ class SHGravCoeffs(object):
             onto a grid.
         omega : float, optional, default = None
             The angular rotation rate of the body.
+        name : str, optional, default = None
+            The name of the dataset.
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD.
@@ -1077,7 +1096,8 @@ class SHGravCoeffs(object):
                                   nmax, mass, rho, lmax=lmax)
 
         clm = SHGravRealCoeffs(cilm, gm=gm, r0=d, omega=omega,
-                               normalization='4pi', csphase=1, epoch=epoch)
+                               normalization='4pi', csphase=1, name=name,
+                               epoch=epoch)
         return clm
 
     @property
@@ -1428,7 +1448,7 @@ class SHGravCoeffs(object):
         ds.to_netcdf(filename)
 
     def to_array(self, normalization=None, csphase=None, lmax=None,
-                 errors=True):
+                 errors=False):
         """
         Return spherical harmonic coefficients (and errors) as a numpy array.
 
@@ -1457,7 +1477,7 @@ class SHGravCoeffs(object):
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output. If lmax is greater
             than x.lmax, the array will be zero padded.
-        errors : bool, optional, default = True
+        errors : bool, optional, default = False
             If True, return separate arrays of the coefficients and errors. If
             False, return only the coefficients.
 
@@ -1469,8 +1489,9 @@ class SHGravCoeffs(object):
         degree is smaller than the maximum degree of the class instance, the
         coefficients will be truncated. Conversely, if this degree is larger
         than the maximum degree of the class instance, the output array will be
-        zero padded. If the errors of the coefficients are set, they will be
-        output as a separate array.
+        zero padded. If the errors of the coefficients are set, and the
+        optional parameter errors is set to True, the errors will be output as
+        a separate array.
         """
         if normalization is None:
             normalization = self.normalization
@@ -2180,7 +2201,8 @@ class SHGravCoeffs(object):
 
         if self.errors is not None:
             coeffs, errors = self.to_array(normalization=normalization.lower(),
-                                           csphase=csphase, lmax=lmax)
+                                           csphase=csphase, lmax=lmax,
+                                           errors=True)
             return SHGravCoeffs.from_array(
                 coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
                 errors=errors, error_kind=self.error_kind,
@@ -2293,21 +2315,27 @@ class SHGravCoeffs(object):
         return clm
 
     # ---- Routines that return different gravity-related class instances ----
-    def expand(self, a=None, f=None, lmax=None, lmax_calc=None,
-               normal_gravity=True, sampling=2, extend=True):
+    def expand(self, a=None, f=None, colat=None, lat=None, lon=None,
+               degrees=True, lmax=None, lmax_calc=None, normal_gravity=True,
+               sampling=2, extend=True):
         """
-        Create 2D cylindrical maps on a flattened and rotating ellipsoid of all
-        three components of the gravity field, the gravity disturbance, and the
-        gravitational potential, and return as a SHGravGrid class instance.
+        Create 2D cylindrical maps on a flattened and rotating ellipsoid of the
+        three components of the gravity vector, the gravity disturbance, and
+        the gravity potential. Alternatively, compute the gravity vector at
+        specified coordinates.
 
         Usage
         -----
-        grav = x.expand([a, f, lmax, lmax_calc, normal_gravity, sampling,
-                         extend])
+        grids = x.expand([a, f, lmax, lmax_calc, normal_gravity, sampling,
+                          extend])
+        g = x.expand(lat, lon, [a, f, lmax, lmax_calc, degrees])
+        g = x.expand(colat, lon, [a, f, lmax, lmax_calc, degrees])
 
         Returns
         -------
-        grav : SHGravGrid class instance.
+        grids : SHGravGrid class instance.
+        g     : (r, theta, phi) components of the gravity vector at the
+                specified points.
 
         Parameters
         ----------
@@ -2316,6 +2344,14 @@ class SHGravCoeffs(object):
             is computed.
         f : optional, float, default = 0
             The flattening of the reference ellipsoid: f=(a-b)/a.
+        lat : int, float, ndarray, or list, optional, default = None
+            Latitude coordinates where the gravity is to be evaluated.
+        colat : int, float, ndarray, or list, optional, default = None
+            Colatitude coordinates where the gravity is to be evaluated.
+        lon : int, float, ndarray, or list, optional, default = None
+            Longitude coordinates where the gravity is to be evaluated.
+        degrees : bool, optional, default = True
+            True if lat, colat and lon are in degrees, False if in radians.
         lmax : optional, integer, default = self.lmax
             The maximum spherical harmonic degree, which determines the number
             of samples of the output grids, n=2lmax+2, and the latitudinal
@@ -2324,10 +2360,11 @@ class SHGravCoeffs(object):
             The maximum spherical harmonic degree used in evaluating the
             functions. This must be less than or equal to lmax.
         normal_gravity : optional, bool, default = True
-            If True, the normal gravity (the gravitational acceleration on the
-            ellipsoid) will be subtracted from the total gravity, yielding the
-            "gravity disturbance." This is done using Somigliana's formula
-            (after converting geocentric to geodetic coordinates).
+            If True (and if a, f and x.omega are set explicitly), the normal
+            gravity (the gravitational acceleration on the rotating ellipsoid)
+            will be subtracted from the total gravitational acceleration,
+            yielding the "gravity disturbance." This is done using Somigliana's
+            formula (after converting geocentric to geodetic coordinates).
         sampling : optional, integer, default = 2
             If 1 the output grids are equally sampled (n by n). If 2 (default),
             the grids are equally spaced in degrees.
@@ -2338,18 +2375,23 @@ class SHGravCoeffs(object):
         Notes
         -----
         This method will create 2-dimensional cylindrical maps of the three
-        components of the gravity field, the total field, and the gravitational
-        potential, and return these as an SHGravGrid class instance. Each
-        map is stored as an SHGrid class instance using Driscoll and Healy
-        grids that are either equally sampled (n by n) or equally spaced
-        in degrees latitude and longitude. All grids use geocentric
-        coordinates, the output is in SI units, and the sign of the radial
-        components is positive when directed upwards. If the optional angular
-        rotation rate omega is specified in the SHGravCoeffs instance, the
-        potential and radial gravitational acceleration will be calculated in a
-        body-fixed rotating reference frame. If normal_gravity is set to True,
-        the normal gravity will be removed from the total field, yielding the
-        gravity disturbance.
+        components of the gravity vector (gravitational force + centrifugal
+        force), the magnitude of the gravity vector, and the gravity
+        potential, and return these as an SHGravGrid class instance. Each map
+        is stored as an SHGrid class instance using Driscoll and Healy grids
+        that are either equally sampled (n by n) or equally spaced in degrees
+        latitude and longitude. All grids use geocentric coordinates, the
+        output is in SI units, and the sign of the radial components is
+        positive when directed upwards. If latitude and longitude coordinates
+        are specified, this method will instead return the gravity vector.
+
+        If the angular rotation rate omega is specified in the SHGravCoeffs
+        instance, both the potential and gravity vectors will be calculated in
+        a body-fixed rotating reference frame and will include the contribution
+        from the centrifugal force. If normal_gravity is set to True, and a, f,
+        and omega are all set explicitly, the normal gravity will be removed
+        from the magnitude of the gravity vector, yielding the gravity
+        disturbance.
 
         The gravitational potential is given by
 
@@ -2364,32 +2406,56 @@ class SHGravCoeffs(object):
         mean equatorial radius) and flattening f. To convert m/s^2 to mGals,
         multiply the gravity grids by 10^5.
         """
+        if lat is not None and colat is not None:
+            raise ValueError('lat and colat can not both be specified.')
+
+        if a is not None and f is not None and self.omega is not None \
+                and normal_gravity is True:
+            ng = 1
+        else:
+            ng = 0
         if a is None:
             a = self.r0
         if f is None:
             f = 0.
-        if normal_gravity is True:
-            ng = 1
+
+        if (lat is not None or colat is not None) and lon is not None:
+            if lmax_calc is None:
+                lmax_calc = self.lmax
+
+            if colat is not None:
+                if degrees:
+                    temp = 90.
+                else:
+                    temp = _np.pi/2.
+
+                if type(colat) is list:
+                    lat = list(map(lambda x: temp - x, colat))
+                else:
+                    lat = temp - colat
+
+            values = self._expand_coord(a=a, f=f, lat=lat, lon=lon,
+                                        degrees=degrees, lmax_calc=lmax_calc,
+                                        omega=self.omega)
+            return values
+
         else:
-            ng = 0
-        if lmax is None:
-            lmax = self.lmax
-        if lmax_calc is None:
-            lmax_calc = lmax
+            if lmax is None:
+                lmax = self.lmax
+            if lmax_calc is None:
+                lmax_calc = lmax
 
-        if self.errors is not None:
-            coeffs, errors = self.to_array(normalization='4pi', csphase=1)
-        else:
-            coeffs = self.to_array(normalization='4pi', csphase=1)
+            coeffs = self.to_array(normalization='4pi', csphase=1,
+                                   errors=False)
+            rad, theta, phi, total, pot = _MakeGravGridDH(
+                coeffs, self.gm, self.r0, a=a, f=f, lmax=lmax,
+                lmax_calc=lmax_calc, sampling=sampling, omega=self.omega,
+                normal_gravity=ng, extend=extend)
 
-        rad, theta, phi, total, pot = _MakeGravGridDH(
-            coeffs, self.gm, self.r0, a=a, f=f, lmax=lmax,
-            lmax_calc=lmax_calc, sampling=sampling, omega=self.omega,
-            normal_gravity=ng, extend=extend)
-
-        return _SHGravGrid(rad, theta, phi, total, pot, self.gm, a, f,
-                           self.omega, normal_gravity, lmax, lmax_calc,
-                           units='m/s2', pot_units='m2/s2', epoch=self.epoch)
+            return _SHGravGrid(rad, theta, phi, total, pot, self.gm, a, f,
+                               self.omega, normal_gravity, lmax, lmax_calc,
+                               units='m/s2', pot_units='m2/s2',
+                               epoch=self.epoch)
 
     def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, degree0=False,
                sampling=2, extend=True):
@@ -2488,10 +2554,7 @@ class SHGravCoeffs(object):
         if lmax_calc is None:
             lmax_calc = lmax
 
-        if self.errors is not None:
-            coeffs, errors = self.to_array(normalization='4pi', csphase=1)
-        else:
-            coeffs = self.to_array(normalization='4pi', csphase=1)
+        coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
 
         if degree0 is False:
             coeffs[0, 0, 0] = 0.
@@ -2590,10 +2653,7 @@ class SHGravCoeffs(object):
                     "grid must be 'DH', 'DH1', or 'DH2'. "
                     "Input value is {:s}.".format(repr(grid)))
 
-        if self.errors is not None:
-            coeffs, errors = self.to_array(normalization='4pi', csphase=1)
-        else:
-            coeffs = self.to_array(normalization='4pi', csphase=1)
+        coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
 
         if omega is None:
             omega = self.omega
@@ -2610,8 +2670,8 @@ class SHGravCoeffs(object):
     def plot_spectrum(self, function='geoid', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
                       legend=None, legend_error='error', legend_loc='best',
-                      axes_labelsize=None, tick_labelsize=None, show=True,
-                      ax=None, fname=None, **kwargs):
+                      axes_labelsize=None, tick_labelsize=None, ax=None,
+                      show=True, fname=None, **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
@@ -2619,7 +2679,7 @@ class SHGravCoeffs(object):
         -----
         x.plot_spectrum([function, unit, base, lmax, xscale, yscale, grid,
                          legend, legend_loc, axes_labelsize, tick_labelsize,
-                         show, ax, fname, **kwargs])
+                         ax, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2655,10 +2715,10 @@ class SHGravCoeffs(object):
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        show : bool, optional, default = True
-            If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
+        show : bool, optional, default = True
+            If True, plot to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
@@ -2768,19 +2828,31 @@ class SHGravCoeffs(object):
                 fig.savefig(fname)
             return fig, axes
 
-    def plot_spectrum2d(self, function='geoid', xscale='lin', yscale='lin',
-                        grid=True, axes_labelsize=None, tick_labelsize=None,
-                        vscale='log', vrange=None, vmin=None, vmax=None,
-                        lmax=None, errors=False, show=True, ax=None,
-                        fname=None):
+    def plot_spectrum2d(self, function='geoid', ticks='WSen',
+                        tick_interval=[None, None],
+                        minor_tick_interval=[None, None],
+                        degree_label='Spherical harmonic degree',
+                        order_label='Spherical harmonic order', title=None,
+                        colorbar='right', origin='top', cmap='viridis',
+                        cmap_limits=None, cmap_rlimits=None,
+                        cmap_reverse=False, cmap_scale='log',
+                        cb_triangles='neither', cb_label=None, cb_offset=None,
+                        cb_width=None, lmax=None, errors=False, xscale='lin',
+                        yscale='lin', grid=False, titlesize=None,
+                        axes_labelsize=None, tick_labelsize=None, ax=None,
+                        show=True, fname=None):
         """
         Plot the spectrum as a function of spherical harmonic degree and order.
 
         Usage
         -----
-        x.plot_spectrum2d([function, xscale, yscale, grid, axes_labelsize,
-                           tick_labelsize, vscale, vrange, vmin, vmax, lmax,
-                           errors, show, ax, fname])
+        x.plot_spectrum2d([function, ticks, tick_interval, minor_tick_interval,
+                           degree_label, order_label, title, colorbar, origin,
+                           cmap, cmap_limits, cmap_rlimits, cmap_reverse,
+                           cmap_scale, cb_triangles, cb_label, cb_offset,
+                           cb_width, lmax, errors, xscale, yscale, grid,
+                           titlesize, axes_labelsize, tick_labelsize, ax,
+                           show, fname])
 
         Parameters
         ----------
@@ -2788,35 +2860,80 @@ class SHGravCoeffs(object):
             The type of power spectrum to calculate: 'potential' for the
             gravitational potential, 'geoid' for the geoid, 'radial' for
             the radial gravity, or 'total' for the total gravitational field.
+        ticks : str, optional, default = 'WSen'
+            Specify which axes should have ticks drawn and annotated. Capital
+            letters plot the ticks and annotations, whereas small letters plot
+            only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
+            and north boundaries of the plot, respectively. Alternatively, use
+            'L', 'B', 'R', and 'T' for left, bottom, right, and top.
+        tick_interval : list or tuple, optional, default = [None, None]
+            Intervals to use when plotting the degree and order ticks,
+            respectively (used only when xscale and yscale are 'lin'). If set
+            to None, ticks will be generated automatically.
+        minor_tick_interval : list or tuple, optional, default = [None, None]
+            Intervals to use when plotting the minor degree and order ticks,
+            respectively (used only when xscale and yscale are 'lin'). If set
+            to None, minor ticks will be generated automatically.
+        degree_label : str, optional, default = 'Spherical harmonic degree'
+            Label for the spherical harmonic degree axis.
+        order_label : str, optional, default = 'Spherical harmonic order'
+            Label for the spherical harmonic order axis.
+        title : str or list, optional, default = None
+            The title of the plot.
+        colorbar : str, optional, default = 'right'
+            Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
+        origin : str, optional, default = 'top'
+            Location where the degree 0 coefficient is plotted. Either 'left',
+            'right', 'top', or 'bottom'.
+        cmap : str, optional, default = 'viridis'
+            The color map to use when plotting the data and colorbar.
+        cmap_limits : list, optional, default = [self.min(), self.max()]
+            Set the lower and upper limits of the data used by the colormap,
+            and optionally an interval for each color band. If interval is
+            specified, the number of discrete colors will be
+            (cmap_limits[1]-cmap_limits[0])/cmap_limits[2] for linear scales
+            and log10(cmap_limits[1]/cmap_limits[0])*cmap_limits[2] for
+            logarithmic scales.
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
+        cmap_reverse : bool, optional, default = False
+            Set to True to reverse the sense of the color progression in the
+            color table.
+        cmap_scale : str, optional, default = 'log'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
+        cb_triangles : str, optional, default = 'neither'
+            Add triangles to the edges of the colorbar for minimum and maximum
+            values. Can be 'neither', 'both', 'min', or 'max'.
+        cb_label : str, optional, default = None
+            Text label for the colorbar.
+        cb_offset : float or int, optional, default = None
+            Offset of the colorbar from the map edge in points. If None,
+            the offset will be calculated automatically.
+        cb_width : float, optional, default = None
+            Width of the colorbar in percent with respect to the width of the
+            respective image axis. Defaults are 2.5 and 5 for vertical and
+            horizontal colorbars, respectively.
+        lmax : int, optional, default = self.lmax
+            The maximum spherical harmonic degree to plot.
+        errors : bool, optional, default = False
+            If True, plot the spectrum of the errors.
         xscale : str, optional, default = 'lin'
             Scale of the l axis: 'lin' for linear or 'log' for logarithmic.
         yscale : str, optional, default = 'lin'
             Scale of the m axis: 'lin' for linear or 'log' for logarithmic.
-        grid : bool, optional, default = True
+        grid : bool, optional, default = False
             If True, plot grid lines.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        vscale : str, optional, default = 'log'
-            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
-        vrange : (float, float), optional, default = None
-            Colormap range (min, max), relative to the maximum value. If None,
-            scale the image to the maximum and minimum values.
-        vmin : float, optional, default=None
-            The minmum range of the colormap. If None, the minimum value of the
-            spectrum will be used.
-        vmax : float, optional, default=None
-            The maximum range of the colormap. If None, the maximum value of
-            the spectrum will be used.
-        lmax : int, optional, default = self.lmax
-            The maximum spherical harmonic degree to plot.
-        errors : bool, optional, default = False
-            If True, plot the spectrum of the errors.
-        show : bool, optional, default = True
-            If True, plot to the screen.
+        titlesize : int, optional, default = None
+            The font size of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
+        show : bool, optional, default = True
+            If True, plot to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
@@ -2832,10 +2949,29 @@ class SHGravCoeffs(object):
         space, divided by the area the function spans. If the mean of the
         function is zero, this is equivalent to the variance of the function.
         """
+        if tick_interval is None:
+            tick_interval = [None, None]
+        if minor_tick_interval is None:
+            minor_tick_interval = [None, None]
+
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
+        if titlesize is None:
+            titlesize = _mpl.rcParams['axes.titlesize']
+            if type(titlesize) == str:
+                titlesize = _mpl.font_manager \
+                                 .FontProperties(size=titlesize) \
+                                 .get_size_in_points()
 
         if lmax is None:
             lmax = self.lmax
@@ -2895,80 +3031,286 @@ class SHGravCoeffs(object):
                 spectrum[l, :] *= 1.e10 * (self.gm / self.r0**2)**2 * \
                     (l + 1) * (2 * l + 1)
 
+        if origin in ('top', 'bottom'):
+            spectrum = _np.rot90(spectrum, axes=(1, 0))
+
         spectrum_masked = _np.ma.masked_invalid(spectrum)
 
         # need to add one extra value to each in order for pcolormesh
         # to plot the last row and column.
         ls = _np.arange(lmax+2).astype(_np.float)
         ms = _np.arange(-lmax, lmax + 2, dtype=_np.float)
-        lgrid, mgrid = _np.meshgrid(ls, ms, indexing='ij')
-        lgrid -= 0.5
-        mgrid -= 0.5
+        if origin in ('left', 'right'):
+            xgrid, ygrid = _np.meshgrid(ls, ms, indexing='ij')
+        elif origin in ('top', 'bottom'):
+            xgrid, ygrid = _np.meshgrid(ms, ls[::-1], indexing='ij')
+        else:
+            raise ValueError(
+                "origin must be 'left', 'right', 'top', or 'bottom'. "
+                "Input value is {:s}.".format(repr(origin)))
+        xgrid -= 0.5
+        ygrid -= 0.5
 
         if ax is None:
-            fig, axes = _plt.subplots()
+            if colorbar is not None:
+                if colorbar in set(['top', 'bottom']):
+                    scale = 1.2
+                else:
+                    scale = 0.9
+            else:
+                scale = 1.025
+            figsize = (_mpl.rcParams['figure.figsize'][0],
+                       _mpl.rcParams['figure.figsize'][0] * scale)
+            fig = _plt.figure(figsize=figsize)
+            axes = fig.add_subplot(111)
         else:
             axes = ax
 
-        if vrange is not None:
-            vmin = _np.nanmax(spectrum) * vrange[0]
-            vmax = _np.nanmax(spectrum) * vrange[1]
-        else:
-            if vmin is None:
+        # make colormap
+        if cmap_limits is None and cmap_rlimits is None:
+            if cmap_scale.lower() == 'log':
                 _temp = spectrum
                 _temp[_temp == 0] = _np.NaN
                 vmin = _np.nanmin(_temp)
-            if vmax is None:
-                vmax = _np.nanmax(spectrum)
+            else:
+                vmin = _np.nanmin(spectrum)
+            vmax = _np.nanmax(spectrum)
+            cmap_limits = [vmin, vmax]
+        elif cmap_rlimits is not None:
+            vmin = _np.nanmax(spectrum) * cmap_rlimits[0]
+            vmax = _np.nanmax(spectrum) * cmap_rlimits[1]
+            cmap_limits = [vmin, vmax]
+            if len(cmap_rlimits) == 3:
+                cmap_limits.append(cmap_rlimits[2])
+        if len(cmap_limits) == 3:
+            if cmap_scale.lower() == 'log':
+                num = int(_np.log10(cmap_limits[1]/cmap_limits[0])
+                          * cmap_limits[2])
+            else:
+                num = int((cmap_limits[1] - cmap_limits[0]) / cmap_limits[2])
+            if isinstance(cmap, _mpl.colors.Colormap):
+                cmap_scaled = cmap._resample(num)
+            else:
+                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+        else:
+            cmap_scaled = _mpl.cm.get_cmap(cmap)
+        if cmap_reverse:
+            cmap_scaled = cmap_scaled.reversed()
 
-        if vscale.lower() == 'log':
-            norm = _mpl.colors.LogNorm(vmin, vmax, clip=True)
+        if cmap_scale.lower() == 'log':
+            norm = _mpl.colors.LogNorm(cmap_limits[0], cmap_limits[1],
+                                       clip=True)
             # Clipping is required to avoid an invalid value error
-        elif vscale.lower() == 'lin':
-            norm = _plt.Normalize(vmin, vmax)
+        elif cmap_scale.lower() == 'lin':
+            norm = _plt.Normalize(cmap_limits[0], cmap_limits[1])
         else:
             raise ValueError(
-                "vscale must be 'lin' or 'log'. " +
-                "Input value is {:s}.".format(repr(vscale)))
+                "cmap_scale must be 'lin' or 'log'. " +
+                "Input value is {:s}.".format(repr(cmap_scale)))
+
+        # determine which ticks to plot
+        if 'W' in ticks or 'L' in ticks:
+            left, labelleft = True, True
+        elif 'w' in ticks or 'l' in ticks:
+            left, labelleft = True, False
+        else:
+            left, labelleft = False, False
+        if 'S' in ticks or 'B' in ticks:
+            bottom, labelbottom = True, True
+        elif 's' in ticks or 'b' in ticks:
+            bottom, labelbottom = True, False
+        else:
+            bottom, labelbottom = False, False
+        if 'E' in ticks or 'R' in ticks:
+            right, labelright = True, True
+        elif 'e' in ticks or 'r' in ticks:
+            right, labelright = True, False
+        else:
+            right, labelright = False, False
+        if 'N' in ticks or 'T' in ticks:
+            top, labeltop = True, True
+        elif 'n' in ticks or 't' in ticks:
+            top, labeltop = True, False
+        else:
+            top, labeltop = False, False
+
+        # Set tick intervals (used only for linear axis)
+        if tick_interval[0] is not None:
+            degree_ticks = _np.linspace(
+                0, lmax, num=lmax//tick_interval[0]+1, endpoint=True)
+        if tick_interval[1] is not None:
+            order_ticks = _np.linspace(
+                -lmax, lmax, num=2*lmax//tick_interval[1]+1, endpoint=True)
+        if minor_tick_interval[0] is not None:
+            degree_minor_ticks = _np.linspace(
+                0, lmax, num=lmax//minor_tick_interval[0]+1, endpoint=True)
+        if minor_tick_interval[1] is not None:
+            order_minor_ticks = _np.linspace(
+                -lmax, lmax, num=2*lmax//minor_tick_interval[1]+1,
+                endpoint=True)
 
         if (xscale == 'lin'):
-            cmesh = axes.pcolormesh(lgrid, mgrid, spectrum_masked,
-                                    norm=norm, cmap='viridis')
-            axes.set(xlim=(-0.5, lmax + 0.5))
+            cmesh = axes.pcolormesh(xgrid, ygrid, spectrum_masked,
+                                    norm=norm, cmap=cmap_scaled)
+            if origin in ('left', 'right'):
+                axes.set(xlim=(-0.5, lmax + 0.5))
+                if tick_interval[0] is not None:
+                    axes.set(xticks=degree_ticks)
+                if minor_tick_interval[0] is not None:
+                    axes.set_xticks(degree_minor_ticks, minor=True)
+            else:
+                axes.set(xlim=(-lmax - 0.5, lmax + 0.5))
+                if tick_interval[1] is not None:
+                    axes.set(xticks=order_ticks)
+                if minor_tick_interval[1] is not None:
+                    axes.set_xticks(order_minor_ticks, minor=True)
         elif (xscale == 'log'):
-            cmesh = axes.pcolormesh(lgrid[1:], mgrid[1:], spectrum_masked[1:],
-                                    norm=norm, cmap='viridis')
-            axes.set(xscale='log', xlim=(1., lmax + 0.5))
+            cmesh = axes.pcolormesh(xgrid[1:], ygrid[1:], spectrum_masked[1:],
+                                    norm=norm, cmap=cmap_scaled)
+            if origin in ('left', 'right'):
+                axes.set(xscale='log', xlim=(1., lmax + 0.5))
+            else:
+                axes.set(xscale='symlog', xlim=(-lmax - 0.5, lmax + 0.5))
         else:
             raise ValueError(
-                "xscale must be 'lin' or 'log'. " +
+                "xscale must be 'lin' or 'log'. "
                 "Input value is {:s}.".format(repr(xscale)))
 
         if (yscale == 'lin'):
-            axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
+            if origin in ('left', 'right'):
+                axes.set(ylim=(-lmax - 0.5, lmax + 0.5))
+                if tick_interval[1] is not None:
+                    axes.set(yticks=order_ticks)
+                if minor_tick_interval[1] is not None:
+                    axes.set_yticks(order_minor_ticks, minor=True)
+            else:
+                axes.set(ylim=(-0.5, lmax + 0.5))
+                if tick_interval[0] is not None:
+                    axes.set(yticks=degree_ticks)
+                if minor_tick_interval[0] is not None:
+                    axes.set_yticks(degree_minor_ticks, minor=True)
         elif (yscale == 'log'):
-            axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
+            if origin in ('left', 'right'):
+                axes.set(yscale='symlog', ylim=(-lmax - 0.5, lmax + 0.5))
+            else:
+                axes.set(yscale='log', ylim=(1., lmax + 0.5))
         else:
             raise ValueError(
-                "yscale must be 'lin' or 'log'. " +
+                "yscale must be 'lin' or 'log'. "
                 "Input value is {:s}.".format(repr(yscale)))
 
-        cb = _plt.colorbar(cmesh, ax=ax)
-
-        if function == 'geoid':
-            cb.set_label('Power, m$^2$', fontsize=axes_labelsize)
-        elif function == 'potential':
-            cb.set_label('Power, m$^4$ s$^{-4}$', fontsize=axes_labelsize)
-        elif function == 'radial':
-            cb.set_label('Power, mGal$^2$', fontsize=axes_labelsize)
-        elif function == 'total':
-            cb.set_label('Power, mGal$^2$', fontsize=axes_labelsize)
-
-        cb.ax.tick_params(labelsize=tick_labelsize)
-        axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
-        axes.set_ylabel('Spherical harmonic order', fontsize=axes_labelsize)
+        axes.set_aspect('auto')
+        if origin in ('left', 'right'):
+            axes.set_xlabel(degree_label, fontsize=axes_labelsize)
+            axes.set_ylabel(order_label, fontsize=axes_labelsize)
+        else:
+            axes.set_xlabel(order_label, fontsize=axes_labelsize)
+            axes.set_ylabel(degree_label, fontsize=axes_labelsize)
+        if labeltop:
+            axes.xaxis.set_label_position('top')
+        if labelright:
+            axes.yaxis.set_label_position('right')
+        axes.tick_params(bottom=bottom, top=top, right=right, left=left,
+                         labelbottom=labelbottom, labeltop=labeltop,
+                         labelleft=labelleft, labelright=labelright,
+                         which='both')
+        axes.tick_params(labelsize=tick_labelsize)
         axes.minorticks_on()
         axes.grid(grid, which='major')
+        if title is not None:
+            axes.set_title(title, fontsize=titlesize)
+        if origin == 'right':
+            axes.invert_xaxis()
+        if origin == 'top':
+            axes.invert_yaxis()
+
+        # plot colorbar
+        if colorbar is not None:
+            if cb_label is None:
+                if function == 'geoid':
+                    cb_label = 'Power, m$^2$'
+                elif function == 'potential':
+                    cb_label = 'Power, m$^4$ s$^{-4}$'
+                elif function == 'radial':
+                    cb_label = 'Power, mGal$^2$'
+                elif function == 'total':
+                    cb_label = 'Power, mGal$^2$'
+
+            if cb_offset is None:
+                offset = 1.3 * _mpl.rcParams['font.size']
+                if (colorbar == 'left' and left) or \
+                        (colorbar == 'right' and right) or \
+                        (colorbar == 'bottom' and bottom) or \
+                        (colorbar == 'top' and top):
+                    offset += _mpl.rcParams['xtick.major.size']
+                if (colorbar == 'left' and labelleft) or \
+                        (colorbar == 'right' and labelright) or \
+                        (colorbar == 'bottom' and labelbottom) or \
+                        (colorbar == 'top' and labeltop):
+                    offset += _mpl.rcParams['xtick.major.pad']
+                    offset += tick_labelsize
+                if origin in ('left', 'right') and colorbar == 'left' and \
+                        order_label != '' and order_label is not None \
+                        and labelleft:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('left', 'right') and colorbar == 'right' \
+                        and order_label != '' and order_label is not None \
+                        and labelright:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'left' \
+                        and degree_label != '' \
+                        and degree_label is not None and labelleft:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'right' \
+                        and degree_label != '' \
+                        and degree_label is not None and labelright:
+                    offset += 1.9 * axes_labelsize
+                if origin in ('left', 'right') and colorbar == 'bottom' \
+                        and degree_label != '' \
+                        and degree_label is not None and labelbottom:
+                    offset += axes_labelsize
+                if origin in ('left', 'right') and colorbar == 'top' \
+                        and degree_label != '' \
+                        and degree_label is not None and labeltop:
+                    offset += axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'bottom' \
+                        and order_label != '' \
+                        and order_label is not None and labelbottom:
+                    offset += axes_labelsize
+                if origin in ('bottom', 'top') and colorbar == 'top' \
+                        and order_label != '' \
+                        and order_label is not None and labeltop:
+                    offset += axes_labelsize
+            else:
+                offset = cb_offset
+
+            offset /= 72.  # convert to inches
+            divider = _make_axes_locatable(axes)
+            if colorbar in set(['left', 'right']):
+                orientation = 'vertical'
+                extendfrac = 0.025
+                if cb_width is None:
+                    size = '5%'
+                else:
+                    size = '{:f}%'.format(cb_width)
+            else:
+                orientation = 'horizontal'
+                extendfrac = 0.025
+                if cb_width is None:
+                    size = '5%'
+                else:
+                    size = '{:f}%'.format(cb_width)
+            cax = divider.append_axes(colorbar, size=size, pad=offset)
+            cbar = _plt.colorbar(cmesh, cax=cax, orientation=orientation,
+                                 extend=cb_triangles, extendfrac=extendfrac)
+            if colorbar == 'left':
+                cbar.ax.yaxis.set_ticks_position('left')
+                cbar.ax.yaxis.set_label_position('left')
+            if colorbar == 'top':
+                cbar.ax.xaxis.set_ticks_position('top')
+                cbar.ax.xaxis.set_label_position('top')
+            cbar.set_label(cb_label, fontsize=axes_labelsize)
+            cbar.ax.tick_params(labelsize=tick_labelsize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2981,8 +3323,8 @@ class SHGravCoeffs(object):
     def plot_admitcorr(self, hlm, errors=True, function='radial',
                        style='separate', lmax=None, grid=True, legend=None,
                        legend_loc='best', axes_labelsize=None,
-                       tick_labelsize=None, elinewidth=0.75, show=True,
-                       ax=None, ax2=None, fname=None, **kwargs):
+                       tick_labelsize=None, elinewidth=0.75, ax=None, ax2=None,
+                       show=True, fname=None, **kwargs):
         """
         Plot the admittance and/or correlation with another function.
 
@@ -2990,7 +3332,7 @@ class SHGravCoeffs(object):
         -----
         x.plot_admitcorr(hlm, [errors, function, style, lmax, grid, legend,
                                legend_loc, axes_labelsize, tick_labelsize,
-                               elinewidth, show, ax, ax2, fname, **kwargs])
+                               elinewidth, ax, ax2, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -3028,13 +3370,13 @@ class SHGravCoeffs(object):
             The font size for the x and y tick labels.
         elinewidth : float, optional, default = 0.75
             Line width of the error bars when errors is True.
-        show : bool, optional, default = True
-            If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         ax2 : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the second plot will appear
             when style is 'separate'.
+        show : bool, optional, default = True
+            If True, plot to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
@@ -3190,8 +3532,8 @@ class SHGravCoeffs(object):
     def plot_admittance(self, hlm, errors=True, function='radial',
                         lmax=None, grid=True, legend=None,
                         legend_loc='best', axes_labelsize=None,
-                        tick_labelsize=None, elinewidth=0.75, show=True,
-                        ax=None, fname=None, **kwargs):
+                        tick_labelsize=None, elinewidth=0.75, ax=None,
+                        show=True, fname=None, **kwargs):
         """
         Plot the admittance with another function.
 
@@ -3199,7 +3541,7 @@ class SHGravCoeffs(object):
         -----
         x.plot_admittance(hlm, [errors, function, lmax, grid, legend,
                                 legend_loc, axes_labelsize, tick_labelsize,
-                                elinewidth, show, ax, fname, **kwargs])
+                                elinewidth, ax, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -3226,10 +3568,10 @@ class SHGravCoeffs(object):
             The font size for the x and y tick labels.
         elinewidth : float, optional, default = 0.75
             Line width of the error bars when errors is True.
-        show : bool, optional, default = True
-            If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
+        show : bool, optional, default = True
+            If True, plot to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
@@ -3260,8 +3602,8 @@ class SHGravCoeffs(object):
 
     def plot_correlation(self, hlm, lmax=None, grid=True, legend=None,
                          legend_loc='best', axes_labelsize=None,
-                         tick_labelsize=None, elinewidth=0.75, show=True,
-                         ax=None, fname=None, **kwargs):
+                         tick_labelsize=None, elinewidth=0.75, ax=None,
+                         show=True, fname=None, **kwargs):
         """
         Plot the correlation with another function.
 
@@ -3269,7 +3611,7 @@ class SHGravCoeffs(object):
         -----
         x.plot_correlation(hlm, [lmax, grid, legend, legend_loc,
                                  axes_labelsize, tick_labelsize, elinewidth,
-                                 show, ax, fname, **kwargs])
+                                 ax, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -3290,10 +3632,10 @@ class SHGravCoeffs(object):
             The font size for the x and y tick labels.
         elinewidth : float, optional, default = 0.75
             Line width of the error bars when errors is True.
-        show : bool, optional, default = True
-            If True, plot to the screen.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
+        show : bool, optional, default = True
+            If True, plot to the screen.
         fname : str, optional, default = None
             If present, and if axes is not specified, save the image to the
             specified file.
@@ -3323,7 +3665,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
 
     def __init__(self, coeffs, gm=None, r0=None, omega=None, errors=None,
                  error_kind=None, normalization='4pi', csphase=1, copy=True,
-                 header=None, header2=None, epoch=None):
+                 header=None, header2=None, name=None, epoch=None):
         """Initialize real gravitational potential coefficients class."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -3342,6 +3684,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
         self.gm = gm
         self.r0 = r0
         self.omega = omega
+        self.name = name
         self.epoch = epoch
         self.error_kind = error_kind
 
@@ -3371,12 +3714,13 @@ class SHGravRealCoeffs(SHGravCoeffs):
                 'error_kind = {:s}\n'
                 'header = {:s}\n'
                 'header2 = {:s}\n'
+                'name = {:s}\n'
                 'epoch = {:s}'
                 .format(repr(self.kind), repr(self.normalization),
                         self.csphase, self.lmax, repr(self.gm), repr(self.r0),
                         repr(self.omega), repr(self.error_kind),
                         repr(self.header), repr(self.header2),
-                        repr(self.epoch)))
+                        repr(self.name), repr(self.epoch)))
 
     def _rotate(self, angles, dj_matrix, gm=None, r0=None, omega=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
@@ -3385,7 +3729,8 @@ class SHGravRealCoeffs(SHGravCoeffs):
 
         # The coefficients need to be 4pi normalized with csphase = 1
         coeffs = _SHRotateRealCoef(
-            self.to_array(normalization='4pi', csphase=1), angles, dj_matrix)
+            self.to_array(normalization='4pi', csphase=1, errors=False),
+            angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.
@@ -3394,9 +3739,72 @@ class SHGravRealCoeffs(SHGravCoeffs):
                             normalization_out=self.normalization,
                             csphase_out=self.csphase)
             return SHGravCoeffs.from_array(
-                temp, normalization=self.normalization,
+                temp, errors=self.errors, normalization=self.normalization,
                 csphase=self.csphase, copy=False, gm=gm, r0=r0, omega=omega,
                 epoch=self.epoch)
         else:
-            return SHGravCoeffs.from_array(coeffs, gm=gm, r0=r0, omega=omega,
+            return SHGravCoeffs.from_array(coeffs, errors=self.errors,
+                                           gm=gm, r0=r0, omega=omega,
                                            epoch=self.epoch, copy=False)
+
+    def _expand_coord(self, a, f, lat, lon, degrees, lmax_calc, omega):
+        """Evaluate the gravity at the coordinates lat and lon."""
+        coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
+
+        if degrees is True:
+            latin = lat
+            lonin = lon
+        else:
+            latin = _np.rad2deg(lat)
+            lonin = _np.rad2deg(lon)
+
+        if type(lat) is not type(lon):
+            raise ValueError('lat and lon must be of the same type. ' +
+                             'Input types are {:s} and {:s}.'
+                             .format(repr(type(lat)), repr(type(lon))))
+
+        if type(lat) is int or type(lat) is float or type(lat) is _np.float_:
+            if f == 0.:
+                r = a
+            else:
+                r = _np.cos(_np.deg2rad(latin))**2 + \
+                    _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                r = a * _np.sqrt(1. / r)
+
+            return _MakeGravGridPoint(coeffs, gm=self.gm, r0=self.r0,
+                                      r=r, lat=latin, lon=lonin,
+                                      lmax=lmax_calc, omega=self.omega)
+        elif type(lat) is _np.ndarray:
+            values = _np.empty((len(lat), 3), dtype=float)
+            for i, (latitude, longitude) in enumerate(zip(latin, lonin)):
+                if f == 0.:
+                    r = a
+                else:
+                    r = _np.cos(_np.deg2rad(latin))**2 + \
+                        _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                    r = a * _np.sqrt(1. / r)
+
+                values[i, :] = _MakeGravGridPoint(coeffs, gm=self.gm,
+                                                  r0=self.r0, r=r,
+                                                  lat=latitude, lon=longitude,
+                                                  lmax=lmax_calc,
+                                                  omega=self.omega)
+            return values
+        elif type(lat) is list:
+            values = []
+            for latitude, longitude in zip(latin, lonin):
+                if f == 0.:
+                    r = a
+                else:
+                    r = _np.cos(_np.deg2rad(latin))**2 + \
+                        _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                    r = a * _np.sqrt(1. / r)
+                values.append(
+                    _MakeGravGridPoint(coeffs, gm=self.gm, r0=self.r0,
+                                       r=r, lat=latitude, lon=longitude,
+                                       lmax=lmax_calc, omega=self.omega))
+            return values
+        else:
+            raise ValueError('lat and lon must be either an int, float, '
+                             'ndarray, or list. Input types are {:s} and {:s}.'
+                             .format(repr(type(lat)), repr(type(lon))))

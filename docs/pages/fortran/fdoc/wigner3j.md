@@ -20,28 +20,28 @@ call Wigner3j (`w3j`, `jmin`, `jmax`, `j2`, `j3`, `m1`, `m2`, `m3`, `exitstatus`
 `w3j` : output, real(dp), dimension (`j2`+`j3`+1)
 :   An array of the Wigner-3j symbols evaluated for all allowable values of `j`. The minimum and maximum values of `j` are given by `jmin` and `jmax`.
 
-`jmin` : output, integer
+`jmin` : output, integer(int32)
 :   The minimum value of `j` in the array `w3j`. This corresponds to the first element of `w3j`.
 
-`jmax` : output, integer
+`jmax` : output, integer(int32)
 :   The maximum value of `j` in the array `w3j`. This corresponds to the last non-zero element of `w3j`.
 
-`j2` : input, integer
+`j2` : input, integer(int32)
 :   A positive integer.
 
-`j3` : input, integer
+`j3` : input, integer(int32)
 :   A positive integer.
 
-`m1` : input, integer
+`m1` : input, integer(int32)
 :   An integer.
 
-`m2` : input, integer
+`m2` : input, integer(int32)
 :   An integer.
 
-`m3` : input, integer
+`m3` : input, integer(int32)
 :   An integer.
 
-`exitstatus` : output, optional, integer
+`exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 ## Description
 

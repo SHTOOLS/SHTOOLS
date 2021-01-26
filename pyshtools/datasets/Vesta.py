@@ -37,7 +37,8 @@ def VESTA20H(lmax=20):
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
-                                   r0_index=0, gm_index=1, errors=True)
+                                   r0_index=0, gm_index=1, errors=True,
+                                   name='VESTA20H')
 
 
 __all__ = ['VESTA20H']

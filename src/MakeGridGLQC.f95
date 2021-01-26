@@ -51,7 +51,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 !                           (2) Schmidt
 !                           (3) unnormalized
 !                           (4) orthonormalized
-!           csphase 1   Do not include the phase factor of (-1)^m
+!           csphase 1   Do not include the phase factor of (-1)^m (default).
 !                       -1: Apply the phase factor of (-1)^m.
 !           lmax_calc   The maximum spherical harmonic degree to evaluate the
 !                       coefficients up to.
@@ -82,7 +82,6 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
 !
 !------------------------------------------------------------------------------
     use FFTW3
-    use SHTOOLS, only: CSPHASE_DEFAULT
     use ftypes
     use, intrinsic :: iso_c_binding
 
@@ -91,18 +90,18 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
     complex(dp), intent(in) :: cilm(:,:,:)
     real(dp), intent(in), optional :: plx(:,:), zero(:)
     complex(dp), intent(out) :: gridglq(:,:)
-    integer, intent(in) :: lmax
-    integer, intent(in), optional :: norm, csphase, lmax_calc, extend
-    integer, intent(out), optional :: exitstatus
-    integer :: l, m, i, nlat, nlong, l1, m1, lmax_comp, i_s, astat(4), lnorm, &
-               k, nlong_out, phase, extend_grid
+    integer(int32), intent(in) :: lmax
+    integer(int32), intent(in), optional :: norm, csphase, lmax_calc, extend
+    integer(int32), intent(out), optional :: exitstatus
+    integer(int32) :: l, m, i, nlat, nlong, l1, m1, lmax_comp, i_s, astat(4), &
+                      lnorm, k, nlong_out, phase, extend_grid
     real(dp) :: pi, scalef, rescalem, u, p, pmm, pm1, pm2, z
     complex(dp) :: coef(2*lmax+1), coefs(2*lmax+1), grid(2*lmax+1), &
                    grids(2*lmax+1)
     type(C_PTR) :: plan, plans
     real(dp), save, allocatable :: ff1(:,:), ff2(:,:), sqr(:)
-    integer(int1), save, allocatable :: fsymsign(:,:)
-    integer, save :: lmax_old = 0, norm_old = 0
+    integer(int8), save, allocatable :: fsymsign(:,:)
+    integer(int32), save :: lmax_old = 0, norm_old = 0
 
 !$OMP   threadprivate(ff1, ff2, sqr, fsymsign, lmax_old, norm_old)
 
@@ -242,7 +241,7 @@ subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, &
         end if
 
     else
-        phase = CSPHASE_DEFAULT
+        phase = 1
 
     end if
 
