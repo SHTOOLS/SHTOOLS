@@ -3,7 +3,6 @@ channels:
 dependencies:
     - fftw>=3.3.8
     - liblapack>=3.8
-    - openblas
     - numpy
     - scipy>=0.14.0
     - matplotlib-base>=3.3
