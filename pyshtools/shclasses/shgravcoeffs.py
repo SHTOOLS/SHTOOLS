@@ -482,7 +482,7 @@ class SHGravCoeffs(object):
             for 'icgem' v2.0 formatted files.
         encoding : str, optional, default = None
             Encoding of the input file for 'icgem' files. Try to use
-            'iso-8859-1' if the default (UTF-8) fails.
+            'iso-8859-1' if UTF-8 fails.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 

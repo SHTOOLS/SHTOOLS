@@ -53,8 +53,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
         If the format of the file is 'icgem2.0' then the epoch must be
         specified.
     encoding : str, optional
-        Encoding of the input file. Try to use 'iso-8859-1' if the default
-        (UTF-8) fails.
+        Encoding of the input file. Try to use 'iso-8859-1' if UTF-8 fails.
     """
     header = {}
     header_keys = ['modelname', 'product_type', 'earth_gravity_constant',

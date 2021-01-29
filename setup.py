@@ -73,7 +73,7 @@ INSTALL_REQUIRES = [
     'numpy>=' + str(numpy.__version__),
     'scipy>=0.14.0',
     'matplotlib>=3.3',
-    'astropy',
+    'astropy>=4.0',
     'xarray',
     'requests',
     'pooch>=1.1',
