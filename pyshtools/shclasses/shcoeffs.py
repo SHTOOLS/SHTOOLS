@@ -336,7 +336,7 @@ class SHCoeffs(object):
     def from_file(self, fname, lmax=None, format='shtools', kind='real',
                   errors=None, error_kind=None, normalization='4pi', skip=0,
                   header=False, header2=False, csphase=1, name=None,
-                  units=None, **kwargs):
+                  units=None, encoding=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -344,7 +344,7 @@ class SHCoeffs(object):
         -----
         x = SHCoeffs.from_file(filename, [format='shtools' or 'dov', lmax,
                                errors, error_kind, normalization, csphase,
-                               skip, header, header2, name, units])
+                               skip, header, header2, name, units, encoding])
         x = SHCoeffs.from_file(filename, format='bshc', [lmax, normalization,
                                csphase, name, units])
         x = SHCoeffs.from_file(filename, format='npy', [lmax, normalization,
@@ -396,6 +396,9 @@ class SHCoeffs(object):
             The name of the dataset.
         units : str, optional, default = None
             The units of the spherical harmonic coefficients.
+        encoding : str, optional, default = None
+            Encoding of the input file when format is 'shtools' or 'dov'. The
+            default is to use the system default.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 
@@ -455,26 +458,29 @@ class SHCoeffs(object):
                         coeffs, error_coeffs, lmaxout, header_list, \
                             header2_list = read_func(fname, lmax=lmax,
                                                      skip=skip, header=True,
-                                                     header2=True, error=True)
+                                                     header2=True, error=True,
+                                                     encoding=encoding)
                     else:
                         coeffs, error_coeffs, lmaxout, header_list = read_func(
                             fname, lmax=lmax, skip=skip, header=True,
-                            error=True)
+                            error=True, encoding=encoding)
                 else:
                     if header2:
                         coeffs, lmaxout, header_list, header2_list = read_func(
                             fname, lmax=lmax, skip=skip, header=True,
-                            header2=True)
+                            header2=True, encoding=encoding)
                     else:
                         coeffs, lmaxout, header_list = read_func(
-                            fname, lmax=lmax, skip=skip, header=True)
+                            fname, lmax=lmax, skip=skip, header=True,
+                            encoding=encoding)
             else:
                 if errors:
-                    coeffs, error_coeffs, lmaxout = read_func(fname, lmax=lmax,
-                                                              skip=skip,
-                                                              error=True)
+                    coeffs, error_coeffs, lmaxout = read_func(
+                        fname, lmax=lmax, skip=skip, error=True,
+                        encoding=encoding)
                 else:
-                    coeffs, lmaxout = read_func(fname, lmax=lmax, skip=skip)
+                    coeffs, lmaxout = read_func(fname, lmax=lmax, skip=skip,
+                                                encoding=encoding)
 
             if errors is True and error_kind is None:
                 error_kind = 'unspecified'
@@ -923,14 +929,16 @@ class SHCoeffs(object):
 
     # ---- IO Routines
     def to_file(self, filename, format='shtools', header=None, header2=None,
-                errors=True, lmax=None, **kwargs):
+                errors=True, lmax=None, encoding=None, **kwargs):
         """
         Save raw spherical harmonic coefficients to a file.
 
         Usage
         -----
-        x.to_file(filename, [format='shtools', header, header2, errors, lmax])
-        x.to_file(filename, format='dov', [header, header2, errors, lmax])
+        x.to_file(filename, [format='shtools', header, header2, errors, lmax,
+                             encoding])
+        x.to_file(filename, format='dov', [header, header2, errors, lmax,
+                                           encoding])
         x.to_file(filename, format='bshc', [lmax])
         x.to_file(filename, format='npy', [**kwargs])
 
@@ -952,6 +960,9 @@ class SHCoeffs(object):
             files only).
         lmax : int, optional, default = self.lmax
             The maximum spherical harmonic degree to write to the file.
+        encoding : str, optional, default = None
+            Encoding of the output file when format is 'shtools' or 'dov'. The
+            default is to use the system default.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
 
@@ -1001,18 +1012,22 @@ class SHCoeffs(object):
         if format.lower() == 'shtools':
             if errors:
                 _shwrite(filebase, self.coeffs, errors=self.errors,
-                         header=header, header2=header2, lmax=lmax)
+                         header=header, header2=header2, lmax=lmax,
+                         encoding=encoding)
             else:
                 _shwrite(filebase, self.coeffs, errors=None,
-                         header=header, header2=header2, lmax=lmax)
+                         header=header, header2=header2, lmax=lmax,
+                         encoding=encoding)
 
         elif format.lower() == 'dov':
             if errors:
                 _write_dov(filebase, self.coeffs, errors=self.errors,
-                           header=header, header2=header2, lmax=lmax)
+                           header=header, header2=header2, lmax=lmax,
+                           encoding=encoding)
             else:
                 _write_dov(filebase, self.coeffs, errors=None,
-                           header=header, header2=header2, lmax=lmax)
+                           header=header, header2=header2, lmax=lmax,
+                           encoding=encoding)
 
         elif format.lower() == 'bshc':
             _write_bshc(filebase, self.coeffs, lmax=lmax)

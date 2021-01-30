@@ -38,7 +38,7 @@ def VESTA20H(lmax=20):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True,
-                                   name='VESTA20H')
+                                   name='VESTA20H', encoding='utf-8')
 
 
 __all__ = ['VESTA20H']

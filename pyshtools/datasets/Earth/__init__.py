@@ -62,7 +62,8 @@ def EGM2008(lmax=2190):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
                                    errors='calibrated',
-                                   omega=_egm2008.omega.value, name='EGM2008')
+                                   omega=_egm2008.omega.value, name='EGM2008',
+                                   encoding='utf-8')
 
 
 def EIGEN_6C4(lmax=2190):
@@ -123,7 +124,8 @@ def GGM05C(lmax=360):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
                                    errors='calibrated',
-                                   omega=_egm2008.omega.value, name='GGM05C')
+                                   omega=_egm2008.omega.value, name='GGM05C',
+                                   encoding='utf-8')
 
 
 def GOCO06S(lmax=300):
@@ -152,7 +154,7 @@ def GOCO06S(lmax=300):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
                                    errors='formal', omega=_egm2008.omega.value,
-                                   name='GOCO06S')
+                                   name='GOCO06S', encoding='utf-8')
 
 
 def EIGEN_GRGS_RL04_MEAN_FIELD(epoch=None, lmax=300):
@@ -185,7 +187,8 @@ def EIGEN_GRGS_RL04_MEAN_FIELD(epoch=None, lmax=300):
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
                                    errors='formal', omega=_egm2008.omega.value,
                                    epoch=epoch,
-                                   name='EIGEN_GRGS_RL04_MEAN_FIELD')
+                                   name='EIGEN_GRGS_RL04_MEAN_FIELD',
+                                   encoding='utf-8')
 
 
 def XGM2019E(lmax=2190):
@@ -214,7 +217,7 @@ def XGM2019E(lmax=2190):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
                                    errors='formal', omega=_egm2008.omega.value,
-                                   name='XGM2019E')
+                                   name='XGM2019E', encoding='utf-8')
 
 
 def IGRF_13(lmax=13, year=2020.):
@@ -247,7 +250,7 @@ def IGRF_13(lmax=13, year=2020.):
     )
     return _SHMagCoeffs.from_file(fname, format='igrf', r0=6371.2e3,
                                   lmax=lmax, year=year, file_units='nT',
-                                  name='IGRF_13', units='nT')
+                                  name='IGRF_13', units='nT', encoding='utf-8')
 
 
 def NGDC_720_V3(lmax=740):
@@ -278,7 +281,8 @@ def NGDC_720_V3(lmax=740):
     )
     return _SHMagCoeffs.from_file(fname, r0=6371.2e3, lmax=lmax, skip=14,
                                   header=False, file_units='nT',
-                                  name='NGDC_720_V3', units='nT')
+                                  name='NGDC_720_V3', units='nT',
+                                  encoding='utf-8')
 
 
 def WDMAM2_800(lmax=800):
@@ -307,7 +311,7 @@ def WDMAM2_800(lmax=800):
     )
     return _SHMagCoeffs.from_file(fname, r0=6371.2e3, lmax=lmax, header=False,
                                   file_units='nT', name='WDMAM2_800',
-                                  units='nT')
+                                  units='nT', encoding='utf-8')
 
 
 def SWARM_MLI_2D_0501(lmax=133):
@@ -338,7 +342,8 @@ def SWARM_MLI_2D_0501(lmax=133):
     return _SHMagCoeffs.from_file(fname[0], format='dov', r0=6371.2e3,
                                   r0_index=None, lmax=lmax, header=True,
                                   header2=True, skip=3, file_units='nT',
-                                  name='SWARM_MLI_2D_0501', units='nT')
+                                  name='SWARM_MLI_2D_0501', units='nT',
+                                  encoding='utf-8')
 
 
 __all__ = ['Earth2012', 'Earth2014', 'EGM2008', 'EIGEN_6C4',
