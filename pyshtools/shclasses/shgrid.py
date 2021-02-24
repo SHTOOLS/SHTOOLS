@@ -1191,6 +1191,8 @@ class SHGrid(object):
                 raise ValueError('Map projections are supported only for '
                                  'DH grid types.')
 
+        if ticks is None:
+            ticks = ''
         if tick_interval is None:
             tick_interval = [None, None]
         if minor_tick_interval is None:
