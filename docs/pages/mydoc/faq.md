@@ -36,11 +36,15 @@ It is pronounced S-H-Tools.
 
 Please see [this page](how-to-contribute.html).
 
-## Can I use the SHTOOLS library with C, F77, and Matlab?
+## Can I use the SHTOOLS library with C, Python, Julia, F77 or Matlab?
 
-A C-interface to the Fortran-95 SHTOOLS library does exist. However, it is currently a work in progress and is not well documented. A working C example program can be found in the directory `examples/cpp`, and the required header file can be found at `includes/shtools.h`.
+A C-interface to the Fortran-95 SHTOOLS library is distributed with this archive. However, it is currently a work in progress and is not documented in the current version. A working C example program can be found in the directory `examples/cpp`, and the required header file can be found at `includes/shtools.h`.
 
-As for Fortran 77 and Matlab, we would be happy to add instructions on how to interface with these (or other) languages if anyone provides them to us.
+A Python interface to the SHTOOLS functions is provided in the [pyshtools](https://shtools.github.io/SHTOOLS/index.html) package. In addition to wrapping the Fortran-95 functions, this package provides a high-level interface for interacting with spherical harmonic coefficients and plotting global gridded data.
+
+A basic Julia package that wraps the SHTOOLS functions can be found [here](https://github.com/eschnett/SHTOOLS.jl).
+
+As for Fortran 77 and Matlab, please let us know if you get this to work!
 
 ## Which FFT libraries work with SHTOOLS?
 
@@ -61,7 +65,7 @@ pip install git+https://github.com/SHTOOLS/SHTOOLS.git@python2.7
 
 No.
 
-## I don't understand Fortran and Python. Will you explain how to modify the example codes?
+## I don't understand spherical harmonics or programming. Will you explain how to modify the example codes?
 
 No.
 
@@ -69,7 +73,7 @@ No.
 
 If you are using the Fortran version of SHTOOLS, the output is typically in the form of an ASCII or binary raster file. These can be read by any standard graphics package, such as the free unix-based command line software [GMT](https://www.generic-mapping-tools.org/).
 
-If you are using the Python version of SHTOOLS, the classes for working with spherical harmonic coefficients and grids contain methods for making publication quality graphics that make use of the `matplotlib` and `pygmt` packages.
+If you are using the Python version of SHTOOLS, the classes for working with spherical harmonic coefficients and grids contain methods for making publication quality graphics that make use of the `matplotlib`, `pygmt`, and `Cartopy` packages.
 
 ## Who maintains SHTOOLS?
 
