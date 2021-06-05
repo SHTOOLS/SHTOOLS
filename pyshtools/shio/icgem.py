@@ -12,7 +12,7 @@ from pyshtools.utils.datetime import _yyyymmdd_to_year_fraction
 
 
 def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
-                   encoding=None):
+                   encoding=None, quiet=False):
     """
     Read real spherical harmonic gravity coefficients from an ICGEM formatted
     file.
@@ -20,7 +20,8 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
     Usage
     -----
     cilm, gm, r0, [errors] = read_icgem_gfc(filename,
-                                            [errors, lmax, epoch, encoding)
+                                            [errors, lmax, epoch, encoding,
+                                             quiet)
 
     Returns
     -------
@@ -54,6 +55,39 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
         specified.
     encoding : str, optional, default = None
         Encoding of the input file. The default is to use the system default.
+        If the default encoding doesn't work, try 'iso-8859-1'.
+    quiet : bool, default = False
+        If True, suppress warnings about undefined keywords when reading the
+        file.
+
+    Notes
+    -----
+    This routine reads ICGEM formatted files of gravitational potential models
+    and outputs arrays of the gravitational potential coefficients, errors, GM,
+    and the reference radius. If epoch is specified, the coefficients will make
+    use of the time variable terms in order to compute and return the potential
+    coefficients for the specified epoch. Otherwise, the coefficients will be
+    returned for the the reference epoch of the model.
+
+    Valid keys in the header section include:
+        modelname (not used)
+        product_type (only 'gravity_field' is allowed)
+        earth_gravity_constant or gravity_constant
+        radius
+        max_degree
+        errors ('unknown', 'formal', 'calibrated' or 'calibrated_and_formal')
+        tide_system (not used)
+        norm (not used)
+        format (either None or 'icgem2.0')
+
+    Valid keys in the data section include:
+        gfc
+        gfct
+        trnd or dot
+        asin
+        acos
+
+    Data lines starting with an unknown key are ignored.
     """
     header = {}
     header_keys = ['modelname', 'product_type', 'earth_gravity_constant',
@@ -148,7 +182,9 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
 
         # read coefficients
         for line in f:
-            line = line.lower().replace('d', 'e').strip().split()
+            line = line.lower().strip().split()
+            for i in range(3, len(line)):
+                line[i] = line[i].replace('d', 'e')
 
             l, m = int(line[1]), int(line[2])
             if m > lmax:
@@ -170,25 +206,28 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                     t0i = _yyyymmdd_to_year_fraction(line[-2])
                     t1i = _yyyymmdd_to_year_fraction(line[-1])
                     if not t0i <= epoch < t1i:
-                        continue
+                        raise ValueError('Warning: epoch is not in the valid '
+                                         'time interval of the model.')
                 else:
                     t0i = _yyyymmdd_to_year_fraction(line[-1])
 
                 cilm[:, l, m] = value_cs
                 ref_epoch[l, m] = t0i
-            elif key == 'trnd':
+            elif key in ('trnd', 'dot'):
                 if is_v2:
                     t0i = _yyyymmdd_to_year_fraction(line[-2])
                     t1i = _yyyymmdd_to_year_fraction(line[-1])
                     if not t0i <= epoch < t1i:
-                        continue
+                        raise ValueError('Warning: epoch is not in the valid '
+                                         'time interval of the model.')
                 trnd[:, l, m] = value_cs
             elif key in ('acos', 'asin'):
                 if is_v2:
                     t0i = _yyyymmdd_to_year_fraction(line[-3])
                     t1i = _yyyymmdd_to_year_fraction(line[-2])
                     if not t0i <= epoch < t1i:
-                        continue
+                        raise ValueError('Warning: epoch is not in the valid '
+                                         'time interval of the model.')
 
                 period = float(line[-1])
                 if period not in periodic:
@@ -197,6 +236,10 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                                         'asin': arr.copy()}
 
                 periodic[period][key][:, l, m] = value_cs
+            else:
+                if not quiet:
+                    print('Unrecognized keyword in data section of ICGEM '
+                          'file will be ignored : {:}'.format(key))
 
     if epoch is None:
         epoch = ref_epoch
