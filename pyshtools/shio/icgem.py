@@ -52,9 +52,8 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
         format. If None then the reference epoch t0 of the model will be used.
         If the format of the file is 'icgem2.0' then the epoch must be
         specified.
-    encoding : str, optional
-        Encoding of the input file. Try to use 'iso-8859-1' if the default
-        (UTF-8) fails.
+    encoding : str, optional, default = None
+        Encoding of the input file. The default is to use the system default.
     """
     header = {}
     header_keys = ['modelname', 'product_type', 'earth_gravity_constant',
@@ -71,18 +70,20 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                 raise Exception('read_icgem_gfc can only process zip archives '
                                 'that contain a single file. Archive '
                                 'contents:\n{}'.format(zf.namelist()))
-            f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
+            f = _io.TextIOWrapper(zf.open(zf.namelist()[0]), encoding=encoding)
         else:
+            if encoding is not None:
+                _response.encoding = encoding
             f = _io.StringIO(_response.text)
     elif filename[-3:] == '.gz':
-        f = _gzip.open(filename, mode='rt')
+        f = _gzip.open(filename, mode='rt', encoding=encoding)
     elif filename[-4:] == '.zip':
         zf = _zipfile.ZipFile(filename, 'r')
         if len(zf.namelist()) > 1:
             raise Exception('read_icgem_gfc can only process zip archives '
                             'that contain a single file. Archive contents: \n'
                             '{}'.format(zf.namelist()))
-        f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
+        f = _io.TextIOWrapper(zf.open(zf.namelist()[0]), encoding=encoding)
     else:
         f = open(filename, 'r', encoding=encoding)
 
@@ -211,7 +212,8 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
 def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
                     modelname=None, product_type='gravity_field',
                     earth_gm=None, gm=None, r0=None, error_kind=None,
-                    tide_system='unknown', normalization='4pi', format=None):
+                    tide_system='unknown', normalization='4pi', format=None,
+                    encoding=None):
     """
     Write real spherical harmonic gravity coefficients to an ICGEM formatted
     file.
@@ -219,7 +221,8 @@ def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
     Usage
     -----
     write_icgem_gfc(filename, coeffs, [errors, header, lmax, modelname, gm, r0,
-        product_type, earth_gm, error_kind, tide_system, normalization, format)
+        product_type, earth_gm, error_kind, tide_system, normalization, format,
+        encoding)
 
     Parameters
     ----------
@@ -247,7 +250,7 @@ def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
     r0 : float
         Reference radius of the model, in meters.
     error_kind : str, optional, default = None
-        Which errors to read. Can be either 'unknown', 'calibrated', or
+        Which errors to write. Can be either 'unknown', 'calibrated', or
         'formal'.
     tide_system : str, optional, default = 'unknown'
         The tide system: 'zero_tide', 'tide_free', or 'unknown'.
@@ -256,6 +259,8 @@ def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
         or 'unnorm'.
     format : str, optional, default = None
         The format of the ICGEM spherical harmonic coefficients.
+    encoding : str, optional, default = None
+        Encoding of the output file. The default is to use the system default.
     """
     valid_err = ('unknown', 'calibrated', 'formal', 'calibrated_and_formal')
     valid_tide = ('zero_tide', 'tide_free', 'unknown')
@@ -284,7 +289,7 @@ def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
     else:
         filebase = filename
 
-    with open(filebase, mode='w') as file:
+    with open(filebase, mode='w', encoding=encoding) as file:
         if header is not None:
             file.write(header + '\n')
 

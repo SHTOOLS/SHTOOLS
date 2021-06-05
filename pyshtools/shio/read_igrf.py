@@ -9,7 +9,7 @@ import numpy as _np
 import requests as _requests
 
 
-def read_igrf(filename, year=2020.):
+def read_igrf(filename, year=2020., encoding=None):
     """
     Read IGRF real spherical harmonic coefficients, and return the magnetic
     potential coefficients for the specified year.
@@ -32,6 +32,8 @@ def read_igrf(filename, year=2020.):
         '.zip', the file will be uncompressed before parsing.
     year : float, optional, default = 2020.
         The year to compute the coefficients.
+    encoding : str, optional, default = None
+        Encoding of the input file. The default is to use the system default.
 
     Notes
     -----
@@ -57,20 +59,22 @@ def read_igrf(filename, year=2020.):
                 raise Exception('read_igrf can only process zip archives '
                                 'that contain a single file. Archive '
                                 'contents:\n{}'.format(zf.namelist()))
-            f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
+            f = io.TextIOWrapper(zf.open(zf.namelist()[0]), encoding=encoding)
         else:
+            if encoding is not None:
+                _response.encoding = encoding
             f = io.StringIO(_response.text)
     elif filename[-3:] == '.gz':
-        f = gzip.open(filename, mode='rt')
+        f = gzip.open(filename, mode='rt', encoding=encoding)
     elif filename[-4:] == '.zip':
         zf = zipfile.ZipFile(filename, 'r')
         if len(zf.namelist()) > 1:
             raise Exception('read_igrf can only process zip archives '
                             'that contain a single file. Archive contents: \n'
                             '{}'.format(zf.namelist()))
-        f = io.TextIOWrapper(zf.open(zf.namelist()[0]))
+        f = io.TextIOWrapper(zf.open(zf.namelist()[0]), encoding=encoding)
     else:
-        f = open(filename, 'r')
+        f = open(filename, 'r', encoding=encoding)
 
     with f:
         lines = f.readlines()

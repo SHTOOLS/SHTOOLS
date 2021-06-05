@@ -336,7 +336,7 @@ class SHMagCoeffs(object):
                   normalization='schmidt', skip=0, header=True, header2=False,
                   errors=None, error_kind=None, csphase=1, r0_index=0,
                   header_units='m', file_units='nT', name=None, units='nT',
-                  year=None, **kwargs):
+                  year=None, encoding=None, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -345,10 +345,11 @@ class SHMagCoeffs(object):
         x = SHMagCoeffs.from_file(filename, [format='shtools' or 'dov', r0,
                                   lmax, normalization, csphase, skip, header,
                                   header2, errors, error_kind, r0_index,
-                                  header_units, file_units, name, units, year])
+                                  header_units, file_units, name, units, year,
+                                  encoding])
         x = SHMagCoeffs.from_file(filename, format='igrf', r0, year, [lmax,
                                   normalization, csphase, file_units, name,
-                                  units])
+                                  units, encoding])
         x = SHMagCoeffs.from_file(filename, format='bshc', r0, [lmax,
                                   normalization, csphase, file_units, name,
                                   units, year])
@@ -419,6 +420,9 @@ class SHMagCoeffs(object):
             formatted files.
         year : float, default = None.
             The year to compute the coefficients for 'igrf' formatted files.
+        encoding : str, optional, default = None
+            Encoding of the input file when format is 'shtools', 'dov' or
+            'igrf'. The default is to use the system default.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 
@@ -507,19 +511,21 @@ class SHMagCoeffs(object):
                         coeffs, error_coeffs, lmaxout, header_list, \
                             header2_list = read_func(fname, lmax=lmax,
                                                      skip=skip, header=True,
-                                                     header2=True, error=True)
+                                                     header2=True, error=True,
+                                                     encoding=encoding)
                     else:
                         coeffs, error_coeffs, lmaxout, header_list = read_func(
                             fname, lmax=lmax, skip=skip, header=True,
-                            error=True)
+                            error=True, encoding=encoding)
                 else:
                     if header2:
                         coeffs, lmaxout, header_list, header2_list = read_func(
                             fname, lmax=lmax, skip=skip, header=True,
-                            header2=True)
+                            header2=True, encoding=encoding)
                     else:
                         coeffs, lmaxout, header_list = read_func(
-                            fname, lmax=lmax, skip=skip, header=True)
+                            fname, lmax=lmax, skip=skip, header=True,
+                            encoding=encoding)
 
                 if r0_index is not None:
                     if header2:
@@ -532,9 +538,11 @@ class SHMagCoeffs(object):
             else:
                 if errors is True:
                     coeffs, error_coeffs, lmaxout = read_func(
-                        fname, lmax=lmax, error=True, skip=skip)
+                        fname, lmax=lmax, error=True, skip=skip,
+                        encoding=encoding)
                 else:
-                    coeffs, lmaxout = read_func(fname, lmax=lmax, skip=skip)
+                    coeffs, lmaxout = read_func(fname, lmax=lmax, skip=skip,
+                                                encoding=encoding)
 
             if errors is True and error_kind is None:
                 error_kind = 'unspecified'
@@ -550,7 +558,7 @@ class SHMagCoeffs(object):
                 raise ValueError('For igrf files, r0 must be specified.')
             if year is None:
                 raise ValueError('For igrf files, year must be specified.')
-            coeffs = _read_igrf(fname, year=year)
+            coeffs = _read_igrf(fname, year=year, encoding=encoding)
             lmaxout = coeffs.shape[1] - 1
             if lmax is not None:
                 if lmax < lmaxout:
@@ -929,14 +937,14 @@ class SHMagCoeffs(object):
 
     # ---- IO routines ----
     def to_file(self, filename, format='shtools', header=None, errors=True,
-                lmax=None, **kwargs):
+                lmax=None, encoding=None, **kwargs):
         """
         Save spherical harmonic coefficients to a file.
 
         Usage
         -----
-        x.to_file(filename, [format='shtools', header, errors])
-        x.to_file(filename, format='dov', [header, errors])
+        x.to_file(filename, [format='shtools', header, errors, encoding])
+        x.to_file(filename, format='dov', [header, errors, encoding])
         x.to_file(filename, format='bshc', [lmax])
         x.to_file(filename, format='npy', [**kwargs])
 
@@ -955,6 +963,9 @@ class SHMagCoeffs(object):
             formatted files only).
         lmax : int, optional, default = self.lmax
             The maximum spherical harmonic degree to write to the file.
+        encoding : str, optional, default = None
+            Encoding of the output file when format is 'shtools' or 'dov'. The
+            default is to use the system default.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.save().
 
@@ -1025,10 +1036,12 @@ class SHMagCoeffs(object):
 
             if errors:
                 write_func(filebase, self.coeffs, errors=self.errors,
-                           header=header, header2=header2, lmax=lmax)
+                           header=header, header2=header2, lmax=lmax,
+                           encoding=encoding)
             else:
                 write_func(filebase, self.coeffs, errors=None,
-                           header=header, header2=header2, lmax=lmax)
+                           header=header, header2=header2, lmax=lmax,
+                           encoding=encoding)
 
         elif format.lower() == 'bshc':
             _write_bshc(filebase, self.coeffs, lmax=lmax)

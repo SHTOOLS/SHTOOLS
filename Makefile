@@ -284,7 +284,8 @@ install:
 	mkdir -pv $(DESTDIR)$(SYSINCPATH)
 	cp $(INCPATH)/*.h $(DESTDIR)$(SYSINCPATH)/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/examples/shtools
-	cp -R examples/fortran/ $(DESTDIR)$(SYSSHAREPATH)/examples/shtools/
+	cp -R examples/fortran $(DESTDIR)$(SYSSHAREPATH)/examples/shtools/
+	cp -R examples/ExampleDataFiles $(DESTDIR)$(SYSSHAREPATH)/examples/shtools/
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
 	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
 	@echo

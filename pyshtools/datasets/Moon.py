@@ -51,7 +51,7 @@ def MoonTopo2600p(lmax=2600):
         path=_os_cache('pyshtools'),
     )
     return _SHCoeffs.from_file(fname, lmax=lmax, name='MoonTopo2600p',
-                               units='m')
+                               units='m', encoding='utf-8')
 
 
 def T2015_449(lmax=449):
@@ -84,7 +84,8 @@ def T2015_449(lmax=449):
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname, lmax=lmax, header=True,
-                                  file_units='T', name='T2015_449', units='nT')
+                                  file_units='T', name='T2015_449', units='nT',
+                                  encoding='utf-8')
 
 
 def Ravat2020(lmax=450):
@@ -113,7 +114,8 @@ def Ravat2020(lmax=450):
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname, lmax=lmax, header=True, skip=8,
-                                  header_units='km', name='Ravat2020')
+                                  header_units='km', name='Ravat2020',
+                                  encoding='utf-8')
 
 
 def GRGM900C(lmax=900):
@@ -143,7 +145,7 @@ def GRGM900C(lmax=900):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    errors=True, omega=_omega.value,
-                                   name='GRGM900C')
+                                   name='GRGM900C', encoding='utf-8')
 
 
 def GRGM1200B(lmax=1200):
@@ -174,7 +176,8 @@ def GRGM1200B(lmax=1200):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
                                    r0_index=1, gm_index=0, errors=True,
-                                   omega=_omega.value, name='GRGM1200B')
+                                   omega=_omega.value, name='GRGM1200B',
+                                   encoding='utf-8')
 
 
 def GRGM1200B_RM1_1E0(lmax=1200):
@@ -207,7 +210,7 @@ def GRGM1200B_RM1_1E0(lmax=1200):
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
                                    r0_index=1, gm_index=0, errors=True,
                                    omega=_omega.value,
-                                   name='GRGM1200B_RM1_1E0')
+                                   name='GRGM1200B_RM1_1E0', encoding='utf-8')
 
 
 def GL0900D(lmax=900):
@@ -237,7 +240,7 @@ def GL0900D(lmax=900):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    errors=True, omega=_omega.value,
-                                   name='GL0900D')
+                                   name='GL0900D', encoding='utf-8')
 
 
 def GL1500E(lmax=1500):
@@ -267,7 +270,7 @@ def GL1500E(lmax=1500):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    errors=True, omega=_omega.value,
-                                   name='GL1500E')
+                                   name='GL1500E', encoding='utf-8')
 
 
 __all__ = ['MoonTopo2600p', 'T2015_449', 'Ravat2020', 'GRGM900C', 'GRGM1200B',

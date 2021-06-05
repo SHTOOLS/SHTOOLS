@@ -67,11 +67,12 @@ g0 = _Constant(
 omega = _Constant(
     abbrev='omega_venus',
     name='Angular spin rate of Venus',
-    value=-2 * _np.pi / (243.0200 * 24 * 60 * 60),
+    value=-2 * _np.pi / (243.0226 * 24 * 60 * 60),
     unit='rad / s',
-    uncertainty=0.0002 * 2 * _np.pi / (243.0200**2 * 24 * 60 * 60),
-    reference='MGNP180U: Konopliv A. S., W. B. Banerdt, and W. L. Sjogren '
-    '(1999) Venus gravity: 180th degree and order model. Icarus 139: 3-18.'
-    'doi:10.1006/icar.1999.6086.')
+    uncertainty=0.0013 * 2 * _np.pi / (243.0226**2 * 24 * 60 * 60),
+    reference='Margot, J.-L., D. B. Campbell, J. D. Giorgini, J. S. Jao, '
+    'L. G. Snedeker, F. D. Ghigo and A. Bonsall, Spin state and moment of '
+    'inertia of Venus (2021), Nature Astronomy, '
+    'doi:10.1038/s41550-021-01339-7.')
 
 __all__ = ['gm', 'mass', 'r', 'gm', 'density', 'omega']

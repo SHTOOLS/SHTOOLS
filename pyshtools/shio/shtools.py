@@ -12,14 +12,15 @@ import shutil as _shutil
 
 
 def shread(filename, lmax=None, error=False, header=False, header2=False,
-           skip=0):
+           skip=0, encoding=None):
     """
     Read shtools-formatted spherical harmonic coefficients from a text file.
 
     Usage
     -----
     coeffs, [errors], lmaxout, [header], [header2] = shread(
-        filename, [error=True, header=True, header2=True, lmax, skip])
+        filename, [error=True, header=True, header2=True, lmax, skip,
+        encoding])
 
     Returns
     -------
@@ -57,6 +58,8 @@ def shread(filename, lmax=None, error=False, header=False, header2=False,
         the start of the spherical harmonic coefficients.
     skip : int, optional, default = 0
         The number of lines to skip before parsing the file.
+    encoding : str, optional, default = None
+        Encoding of the input file. The default is to use the system default.
 
     Notes
     -----
@@ -170,15 +173,17 @@ def shread(filename, lmax=None, error=False, header=False, header2=False,
     # open file, skip lines, read header, determine lstart, and then read
     # coefficients one line at a time
     if _isurl(filename):
+        if encoding is not None:
+            _response.encoding = encoding
         f = _io.StringIO(_response.text)
         if filename[-4:] == '.zip':
-            f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
+            f = _io.TextIOWrapper(zf.open(zf.namelist()[0]), encoding=encoding)
     elif filename[-3:] == '.gz':
-        f = _gzip.open(filename, mode='rt')
+        f = _gzip.open(filename, mode='rt', encoding=encoding)
     elif filename[-4:] == '.zip':
-        f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
+        f = _io.TextIOWrapper(zf.open(zf.namelist()[0]), encoding=encoding)
     else:
-        f = open(filename, 'r')
+        f = open(filename, 'r', encoding=encoding)
 
     with f:
         if skip != 0:
@@ -317,13 +322,13 @@ def shread(filename, lmax=None, error=False, header=False, header2=False,
 
 
 def shwrite(filename, coeffs, errors=None, header=None, header2=None,
-            lmax=None):
+            lmax=None, encoding=None):
     """
     Write shtools-formatted spherical harmonic coefficients to a text file.
 
     Usage
     -----
-    shwrite(filename, coeffs, [errors, header, header2, lmax])
+    shwrite(filename, coeffs, [errors, header, header2, lmax, encoding])
 
     Parameters
     ----------
@@ -343,6 +348,8 @@ def shwrite(filename, coeffs, errors=None, header=None, header2=None,
         coefficients.
     lmax : int, optional, default = None
         The maximum spherical harmonic degree to write to the file.
+    encoding : str, optional, default = None
+        Encoding of the output file. The default is to use the system default.
 
     Notes
     -----
@@ -380,7 +387,7 @@ def shwrite(filename, coeffs, errors=None, header=None, header2=None,
     else:
         filebase = filename
 
-    with open(filebase, mode='w') as file:
+    with open(filebase, mode='w', encoding=encoding) as file:
         if header is not None:
             file.write(header + '\n')
         if header2 is not None:
