@@ -67,7 +67,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
     and the reference radius. If epoch is specified, the coefficients will make
     use of the time variable terms in order to compute and return the potential
     coefficients for the specified epoch. Otherwise, the coefficients will be
-    returned for the the reference epoch of the model.
+    returned for the reference epoch of the model.
 
     Valid keys in the header section include:
         modelname (not used)
@@ -131,7 +131,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
 
         if header['product_type'] != 'gravity_field':
             raise ValueError(
-                'This function reads only gravity_field data product.')
+                'This routine reads only gravity_field data products.')
 
         is_v2 = False
         if 'format' in header and header['format'] == 'icgem2.0':
@@ -139,7 +139,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
 
         if epoch is None and is_v2:
             raise ValueError(
-                'Epoch must be specified for the "icgem2.0" format.')
+                'epoch must be specified for the "icgem2.0" format.')
         elif epoch is not None:
             epoch = _yyyymmdd_to_year_fraction(epoch)
 
@@ -164,7 +164,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                 raise ValueError('This model has no errors.')
             elif errors not in valid_err[:-1]:
                 raise ValueError(
-                    'Errors can be either "unknown", "formal", "calibrated" '
+                    'errors can be either "unknown", "formal", "calibrated" '
                     'or None.')
             elif header['errors'] in valid_err and errors in valid_err[:-1]:
                 if (errors, header['errors']) == valid_err[2:]:
@@ -183,7 +183,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
         # read coefficients
         for line in f:
             line = line.lower().strip().split()
-            for i in range(3, len(line)):
+            for i in range(1, len(line)):
                 line[i] = line[i].replace('d', 'e')
 
             l, m = int(line[1]), int(line[2])
@@ -206,7 +206,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                     t0i = _yyyymmdd_to_year_fraction(line[-2])
                     t1i = _yyyymmdd_to_year_fraction(line[-1])
                     if not t0i <= epoch < t1i:
-                        raise ValueError('Warning: epoch is not in the valid '
+                        raise ValueError('epoch is not in the valid '
                                          'time interval of the model.')
                 else:
                     t0i = _yyyymmdd_to_year_fraction(line[-1])
@@ -218,7 +218,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                     t0i = _yyyymmdd_to_year_fraction(line[-2])
                     t1i = _yyyymmdd_to_year_fraction(line[-1])
                     if not t0i <= epoch < t1i:
-                        raise ValueError('Warning: epoch is not in the valid '
+                        raise ValueError('epoch is not in the valid '
                                          'time interval of the model.')
                 trnd[:, l, m] = value_cs
             elif key in ('acos', 'asin'):
@@ -226,7 +226,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                     t0i = _yyyymmdd_to_year_fraction(line[-3])
                     t1i = _yyyymmdd_to_year_fraction(line[-2])
                     if not t0i <= epoch < t1i:
-                        raise ValueError('Warning: epoch is not in the valid '
+                        raise ValueError('epoch is not in the valid '
                                          'time interval of the model.')
 
                 period = float(line[-1])
