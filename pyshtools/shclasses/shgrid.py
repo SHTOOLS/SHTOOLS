@@ -2189,7 +2189,8 @@ class DHComplexGrid(SHGrid):
 
         cilm = _shtools.SHExpandDHC(self.data[:self.nlat-self.extend,
                                               :self.nlon-self.extend],
-                                    norm=norm, csphase=csphase, **kwargs)
+                                    norm=norm, csphase=csphase,
+                                    sampling=self.sampling, **kwargs)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
                                      copy=False)
