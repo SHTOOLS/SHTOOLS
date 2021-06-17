@@ -52,6 +52,7 @@ from . import spectralanalysis
 from . import rotate
 from . import gravmag
 from . import utils
+from . import backends
 
 # ---- Import principal classes into pyshtools namespace
 from .shclasses import SHCoeffs

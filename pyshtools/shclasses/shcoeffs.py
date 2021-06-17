@@ -23,6 +23,8 @@ from ..shio import read_dov as _read_dov
 from ..shio import write_dov as _write_dov
 from ..shio import read_bshc as _read_bshc
 from ..shio import write_bshc as _write_bshc
+from ..backends import preferred_backend
+from ..wrappers import ducc0_wrapper
 
 
 class SHCoeffs(object):
@@ -1914,7 +1916,7 @@ class SHCoeffs(object):
         if degrees:
             angles = _np.radians(angles)
 
-        if self.lmax > 1200:
+        if self.lmax > 1200 and preferred_backend() != "DUCC":
             _warnings.warn("The rotate() method is accurate only to about" +
                            " spherical harmonic degree 1200. " +
                            "lmax = {:d}".format(self.lmax),
@@ -3947,13 +3949,18 @@ class SHRealCoeffs(SHCoeffs):
 
     def _rotate(self, angles, dj_matrix):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
-        if dj_matrix is None:
-            dj_matrix = _shtools.djpi2(self.lmax + 1)
 
         # The coefficients need to be 4pi normalized with csphase = 1
-        coeffs = _shtools.SHRotateRealCoef(
-            self.to_array(normalization='4pi', csphase=1, errors=False),
-            angles, dj_matrix)
+        if preferred_backend() == "DUCC":
+            coeffs = ducc0_wrapper.SHRotateRealCoef(
+                self.to_array(normalization='4pi', csphase=1, errors=False),
+                angles)
+        else:  # SHTOOLS
+            if dj_matrix is None:
+                dj_matrix = _shtools.djpi2(self.lmax + 1)
+            coeffs = _shtools.SHRotateRealCoef(
+                self.to_array(normalization='4pi', csphase=1, errors=False),
+                angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.
@@ -3985,9 +3992,14 @@ class SHRealCoeffs(SHCoeffs):
                 "'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
-        data = _shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
-                                   csphase=self.csphase, lmax=lmax,
-                                   lmax_calc=lmax_calc, extend=extend)
+        if preferred_backend() == "DUCC":
+            data = ducc0_wrapper.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
+                                       csphase=self.csphase, lmax=lmax,
+                                       lmax_calc=lmax_calc, extend=extend)
+        else:  # SHTOOLS
+            data = _shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
+                                       csphase=self.csphase, lmax=lmax,
+                                       lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='DH', units=self.units,
                                     copy=False)
         return gridout
@@ -4012,9 +4024,14 @@ class SHRealCoeffs(SHCoeffs):
         if zeros is None:
             zeros, weights = _shtools.SHGLQ(self.lmax)
 
-        data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
-                                    csphase=self.csphase, lmax=lmax,
-                                    lmax_calc=lmax_calc, extend=extend)
+        if preferred_backend() == "DUCC":
+            data = ducc0_wrapper.MakeGridGLQ(self.coeffs, zeros, norm=norm,
+                                        csphase=self.csphase, lmax=lmax,
+                                        lmax_calc=lmax_calc, extend=extend)
+        else:  # SHTOOLS
+            data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
+                                        csphase=self.csphase, lmax=lmax,
+                                        lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='GLQ', units=self.units,
                                     copy=False)
         return gridout
@@ -4078,9 +4095,14 @@ class SHRealCoeffs(SHCoeffs):
         """Evaluate the gradient on a Driscoll and Healy (1994) grid."""
         from .shgradient import SHGradient
 
-        theta, phi = _shtools.MakeGradientDH(
-            self.to_array(normalization='4pi', csphase=1, errors=False),
-            sampling=sampling, lmax=lmax, lmax_calc=lmax_calc, extend=extend)
+        if preferred_backend() == "DUCC":
+            theta, phi = ducc0_wrapper.MakeGradientDH(
+                self.to_array(normalization='4pi', csphase=1, errors=False),
+                sampling=sampling, lmax=lmax, lmax_calc=lmax_calc, extend=extend)
+        else:  # SHTOOLS
+            theta, phi = _shtools.MakeGradientDH(
+                self.to_array(normalization='4pi', csphase=1, errors=False),
+                sampling=sampling, lmax=lmax, lmax_calc=lmax_calc, extend=extend)
 
         return SHGradient(theta, phi, lmax, lmax_calc, units=units)
 
@@ -4176,6 +4198,24 @@ class SHComplexCoeffs(SHCoeffs):
 
     def _rotate(self, angles, dj_matrix):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
+
+        if preferred_backend() == 'DUCC':
+            coeffs = ducc0_wrapper.SHRotateComplexCoef(
+                self.to_array(normalization='4pi', csphase=1, errors=False),
+                angles)
+            # Convert 4pi normalized coefficients to the same normalization
+            # as the unrotated coefficients.
+            if self.normalization != '4pi' or self.csphase != 1:
+                temp = _convert(coeffs, normalization_in='4pi', csphase_in=1,
+                                normalization_out=self.normalization,
+                                csphase_out=self.csphase)
+                return SHCoeffs.from_array(
+                    temp, errors=self.errors, normalization=self.normalization,
+                    csphase=self.csphase, units=self.units, copy=False)
+            else:
+                return SHCoeffs.from_array(coeffs, errors=self.errors,
+                                           units=self.units, copy=False)
+
         # Note that the current method is EXTREMELY inefficient. The complex
         # coefficients are expanded onto real and imaginary grids, each of
         # the two components are rotated separately as real data, the rotated
@@ -4185,7 +4225,7 @@ class SHComplexCoeffs(SHCoeffs):
         if dj_matrix is None:
             dj_matrix = _shtools.djpi2(self.lmax + 1)
 
-        cgrid = self.expand(grid='DH')
+        cgrid = self.expand(grid='DH',extend=False)
         rgrid, igrid = cgrid.data.real, cgrid.data.imag
         rgridcoeffs = _shtools.SHExpandDH(rgrid, norm=1, sampling=1, csphase=1)
         igridcoeffs = _shtools.SHExpandDH(igrid, norm=1, sampling=1, csphase=1)
@@ -4218,7 +4258,7 @@ class SHComplexCoeffs(SHCoeffs):
         coeffs_rot = _shtools.SHExpandDHC(grid_rot, norm=norm,
                                           csphase=self.csphase)
 
-        return SHCoeffs.from_array(coeffs_rot, errros=self.errors,
+        return SHCoeffs.from_array(coeffs_rot, errors=self.errors,
                                    normalization=self.normalization,
                                    csphase=self.csphase, units=self.units,
                                    copy=False)
@@ -4240,9 +4280,14 @@ class SHComplexCoeffs(SHCoeffs):
                 "'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
-        data = _shtools.MakeGridDHC(self.coeffs, sampling=sampling,
-                                    norm=norm, csphase=self.csphase, lmax=lmax,
-                                    lmax_calc=lmax_calc, extend=extend)
+        if preferred_backend() == "DUCC":
+            data = ducc0_wrapper.MakeGridDHC(self.coeffs, sampling=sampling, norm=norm,
+                                       csphase=self.csphase, lmax=lmax,
+                                       lmax_calc=lmax_calc, extend=extend)
+        else:  # SHTOOLS
+            data = _shtools.MakeGridDHC(self.coeffs, sampling=sampling,
+                                        norm=norm, csphase=self.csphase, lmax=lmax,
+                                        lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='DH', units=self.units,
                                     copy=False)
         return gridout
@@ -4267,9 +4312,14 @@ class SHComplexCoeffs(SHCoeffs):
         if zeros is None:
             zeros, weights = _shtools.SHGLQ(self.lmax)
 
-        data = _shtools.MakeGridGLQC(self.coeffs, zeros, norm=norm,
-                                     csphase=self.csphase, lmax=lmax,
-                                     lmax_calc=lmax_calc, extend=extend)
+        if preferred_backend() == "DUCC":
+            data = ducc0_wrapper.MakeGridGLQC(self.coeffs, zeros, norm=norm,
+                                         csphase=self.csphase, lmax=lmax,
+                                         lmax_calc=lmax_calc, extend=extend)
+        else:  # SHTOOLS
+            data = _shtools.MakeGridGLQC(self.coeffs, zeros, norm=norm,
+                                         csphase=self.csphase, lmax=lmax,
+                                         lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='GLQ', units=self.units,
                                     copy=False)
         return gridout

@@ -8,6 +8,8 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 import xarray as _xr
 import tempfile as _tempfile
+from ..backends import preferred_backend
+from ..wrappers import ducc0_wrapper
 
 from .. import shtools as _shtools
 
@@ -1642,10 +1644,16 @@ class DHRealGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandDH(self.data[:self.nlat-self.extend,
-                                             :self.nlon-self.extend],
-                                   norm=norm, csphase=csphase,
-                                   sampling=self.sampling, **kwargs)
+        if preferred_backend() == "DUCC":
+            cilm = ducc0_wrapper.SHExpandDH(self.data[:self.nlat-self.extend,
+                                                      :self.nlon-self.extend],
+                                            norm=norm, csphase=csphase,
+                                            sampling=self.sampling, **kwargs)
+        else:  # SHTOOLS
+            cilm = _shtools.SHExpandDH(self.data[:self.nlat-self.extend,
+                                                 :self.nlon-self.extend],
+                                       norm=norm, csphase=csphase,
+                                       sampling=self.sampling, **kwargs)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
@@ -2187,10 +2195,16 @@ class DHComplexGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandDHC(self.data[:self.nlat-self.extend,
-                                              :self.nlon-self.extend],
-                                    norm=norm, csphase=csphase,
-                                    sampling=self.sampling, **kwargs)
+        if preferred_backend() == "DUCC":
+            cilm = ducc0_wrapper.SHExpandDHC(self.data[:self.nlat-self.extend,
+                                                  :self.nlon-self.extend],
+                                        norm=norm, csphase=csphase,
+                                        sampling=self.sampling, **kwargs)
+        else:  # SHTOOLS
+            cilm = _shtools.SHExpandDHC(self.data[:self.nlat-self.extend,
+                                                  :self.nlon-self.extend],
+                                        norm=norm, csphase=csphase,
+                                        sampling=self.sampling, **kwargs)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
                                      copy=False)
@@ -2401,9 +2415,14 @@ class GLQRealGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandGLQ(self.data[:, :self.nlon-self.extend],
-                                    self.weights, self.zeros, norm=norm,
-                                    csphase=csphase, **kwargs)
+        if preferred_backend() == "DUCC":
+            cilm = ducc0_wrapper.SHExpandGLQ(self.data[:, :self.nlon-self.extend],
+                                             self.weights, self.zeros, norm=norm,
+                                             csphase=csphase, **kwargs)
+        else:  # SHTOOLS
+            cilm = _shtools.SHExpandGLQ(self.data[:, :self.nlon-self.extend],
+                                        self.weights, self.zeros, norm=norm,
+                                        csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
                                      copy=False)
@@ -2708,9 +2727,14 @@ class GLQComplexGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandGLQC(self.data[:, :self.nlon-self.extend],
-                                     self.weights, self.zeros, norm=norm,
-                                     csphase=csphase, **kwargs)
+        if preferred_backend() == "DUCC":
+            cilm = ducc0_wrapper.SHExpandGLQC(self.data[:, :self.nlon-self.extend],
+                                         self.weights, self.zeros, norm=norm,
+                                         csphase=csphase, **kwargs)
+        else:  # SHTOOLS
+            cilm = _shtools.SHExpandGLQC(self.data[:, :self.nlon-self.extend],
+                                         self.weights, self.zeros, norm=norm,
+                                         csphase=csphase, **kwargs)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
                                      copy=False)
