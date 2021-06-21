@@ -3,6 +3,8 @@ import pyshtools as pysh
 from time import time
 
 
+nthreads=1
+
 def _l2error(a, b):
     return np.sqrt(np.sum(np.abs(a - b) ** 2) / np.sum(np.abs(a) ** 2))
 
@@ -31,7 +33,7 @@ def test_SHT(lmax, grd, csphase, normalization, extend):
 
     clm = clm.convert(normalization=normalization, csphase=csphase, lmax=lmax)
 
-    pysh.backends.select_ducc_backend()
+    pysh.backends.select_ducc_backend(nthreads=nthreads)
     t0 = time()
     grid = clm.expand(grid=grd, extend=extend)
     cilm = grid.expand()
@@ -51,7 +53,7 @@ def test_SHT(lmax, grd, csphase, normalization, extend):
     )
 
 
-def test_SHTducc(lmax):
+def test_SHTducc(lmax, grd, nthreads):
     degrees = np.arange(2 * lmax + 1, dtype=float)
     degrees[0] = np.inf
     power = degrees ** (-2)
@@ -60,9 +62,9 @@ def test_SHTducc(lmax):
 
     clm = clm.convert(normalization="ortho", csphase=1, lmax=lmax)
 
-    pysh.backends.select_ducc_backend()
+    pysh.backends.select_ducc_backend(nthreads=nthreads)
     t0 = time()
-    grid = clm.expand(grid="GLQ", extend=False)
+    grid = clm.expand(grid=grd, extend=False)
     cilm = grid.expand(normalization="ortho", csphase=1)
     tducc = time() - t0
 
@@ -78,7 +80,7 @@ def test_SHTC(lmax, grd, csphase, normalization, extend):
 
     clm = clm.convert(normalization=normalization, csphase=csphase, lmax=lmax)
 
-    pysh.backends.select_ducc_backend()
+    pysh.backends.select_ducc_backend(nthreads=nthreads)
     t0 = time()
     grid = clm.expand(grid=grd, extend=extend)
     cilm = grid.expand(normalization=normalization, csphase=csphase)
@@ -107,7 +109,7 @@ def test_SHT_deriv(lmax, grd, csphase, extend):
 
     clm = clm.convert(csphase=csphase, lmax=lmax)
 
-    pysh.backends.select_ducc_backend()
+    pysh.backends.select_ducc_backend(nthreads=nthreads)
     t0 = time()
     grad = clm.gradient(extend=extend)
     tducc = time() - t0
@@ -132,7 +134,7 @@ def test_rot(lmax, alpha, beta, gamma):
 
     clm = pysh.SHCoeffs.from_random(power, seed=12345)
 
-    pysh.backends.select_ducc_backend()
+    pysh.backends.select_ducc_backend(nthreads=nthreads)
     t0 = time()
     clm_rotated = clm.rotate(alpha, beta, gamma, degrees=True)
     tducc = time() - t0
@@ -151,7 +153,7 @@ def test_rotc(lmax, alpha, beta, gamma):
 
     clm = pysh.SHCoeffs.from_random(power, seed=12345, kind="complex")
 
-    pysh.backends.select_ducc_backend()
+    pysh.backends.select_ducc_backend(nthreads=nthreads)
     t0 = time()
     clm_rotated = clm.rotate(alpha, beta, gamma, degrees=True)
     tducc = time() - t0
@@ -170,7 +172,7 @@ def test_rot2(lmax, alpha, beta, gamma):
 
     clm = pysh.SHCoeffs.from_random(power, seed=12345)
 
-    pysh.backends.select_ducc_backend()
+    pysh.backends.select_ducc_backend(nthreads=nthreads)
     t0 = time()
     clm_rotated = clm.rotate(alpha, beta, gamma, degrees=True)
     clm_rotated = clm_rotated.rotate(-gamma, -beta, -alpha, degrees=True)
@@ -196,6 +198,8 @@ for lmax in lmax_list:
         print(
             "lmax={:4}: L2 error={:e}, speedup factor={:f}".format(lmax, res[0], res[1])
         )
+
+lmax_list = [127, 255, 511, 1023, 2047]
 
 print("SHT tests:")
 for grid in ["GLQ", "DH", "DH2"]:
@@ -241,5 +245,5 @@ for lmax in [4095]:
 
 print("DUCC: forward/backward SHT with high band limits:")
 for lmax in [8191]:
-    res = test_SHTducc(lmax)
+    res = test_SHTducc(lmax, "GLQ", nthreads=nthreads)
     print("lmax={:4}: L2 error={:e}, time={:f}".format(lmax, res[0], res[1]))

@@ -2,6 +2,9 @@ import numpy as np
 
 try:
     import ducc0
+    major, minor, patch = ducc0.__version__.split('.')
+    if int(major) < 1 and int(minor) < 15:
+        raise RuntimeError
 except:
     ducc0 = None
 
@@ -162,29 +165,23 @@ def _synthesize_GLQ(alm, lmax, shp, extend):
 
 
 def _analyze_DH(map, lmax):
-    ntheta, nphi = map.shape
-    alm = np.empty(_nalm(lmax,lmax), dtype=np.complex128)
-    ducc0.sht.experimental.analysis_2d(
-        alm=alm.reshape((1,-1)),
-        map=map.reshape((1,ntheta,nphi)),
+    alm = ducc0.sht.experimental.analysis_2d(
+        map=map.reshape((1,map.shape[0],map.shape[1])),
         spin=0,
         lmax=lmax,
         geometry = "DH",
         nthreads=nthreads)
-    return alm
+    return alm[0]
 
 
 def _analyze_GLQ(map, lmax):
-    ntheta, nphi = map.shape
-    alm = np.empty(_nalm(lmax,lmax), dtype=np.complex128)
-    ducc0.sht.experimental.analysis_2d(
-        alm=alm.reshape((1,-1)),
-        map=map.reshape((1,ntheta,nphi)),
+    alm = ducc0.sht.experimental.analysis_2d(
+        map=map.reshape((1,map.shape[0],map.shape[1])),
         spin=0,
         lmax=lmax,
         geometry = "GL",
         nthreads=nthreads)
-    return alm
+    return alm[0]
 
 
 def _extractRealPart(ccoeffs):
