@@ -118,50 +118,44 @@ def _extract_alm(alm, lmax, norm, csphase):
     return cilm
 
 
-def _synthesize_DH(alm, lmax, shp, extend):
-    ntheta, nphi = shp
-    map_out = np.empty((ntheta + extend, nphi + extend), dtype=np.float64)
+def _synthesize_DH(alm, lmax, extend, out):
     ducc0.sht.experimental.synthesis_2d(
         alm=alm.reshape((1,-1)),
-        map=map_out[:,:nphi].reshape((1,ntheta+extend,nphi)),
+        map=out[:,:out.shape[1]-extend].reshape((1,out.shape[0],out.shape[1]-extend)),
         spin=0,
         lmax=lmax,
         geometry = "CC" if extend else "DH",
         nthreads=nthreads)
     if extend:
-        map_out[:, -1] = map_out[:, 0]
-    return map_out
+        out[:, -1] = out[:, 0]
+    return out
 
 
-def _synthesize_DH_deriv1(alm, lmax, shp, extend):
-    ntheta, nphi = shp
-    map_out = np.empty((2, ntheta + extend, nphi + extend), dtype=np.float64)
+def _synthesize_DH_deriv1(alm, lmax, extend, out):
     ducc0.sht.experimental.synthesis_2d_deriv1(
         alm=alm.reshape((1,-1)),
-        map=map_out[:,:,:nphi],
+        map=out[:,:,:out.shape[2]-extend],
         lmax=lmax,
         geometry = "CC" if extend else "DH",
         nthreads=nthreads)
-    map_out[:, 0, :] = 0.0
+    out[:, 0, :] = 0.0
     if extend:
-        map_out[:, -1, :] = 0.0
-        map_out[:, :, -1] = map_out[:, :, 0]
-    return map_out
+        out[:, -1, :] = 0.0
+        out[:, :, -1] = out[:, :, 0]
+    return out
 
 
-def _synthesize_GLQ(alm, lmax, shp, extend):
-    ntheta, nphi = shp
-    map_out = np.empty((ntheta, nphi + extend), dtype=np.float64)
+def _synthesize_GLQ(alm, lmax, extend, out):
     ducc0.sht.experimental.synthesis_2d(
         alm=alm.reshape((1,-1)),
-        map=map_out[:,:nphi].reshape((1,ntheta,nphi)),
+        map=out[:,:out.shape[1]-extend].reshape((1,out.shape[0],out.shape[1]-extend)),
         spin=0,
         lmax=lmax,
         geometry = "GL",
         nthreads=nthreads)
     if extend:
-        map_out[:, -1] = map_out[:, 0]
-    return map_out
+        out[:, -1] = out[:, 0]
+    return out
 
 
 def _analyze_DH(map, lmax):
@@ -262,9 +256,8 @@ def MakeGridDH(
     if lmax_calc is None:
         lmax_calc = cilm.shape[1] - 1
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
-    return _synthesize_DH(
-        alm, lmax_calc, [2 * lmax + 2, sampling * (2 * lmax + 2)], extend
-    )
+    out = np.empty([2*lmax+2+extend, sampling*(2*lmax+2)+extend])
+    return _synthesize_DH(alm, lmax_calc, extend, out)
 
 
 def MakeGridDHC(
@@ -278,15 +271,12 @@ def MakeGridDHC(
     cilmx = _extractImagPart(cilm)
     alm = _make_alm(cilmx, lmax_calc, norm, csphase)
     del cilmx
-    res = 1j * _synthesize_DH(
-        alm, lmax_calc, [2 * lmax + 2, sampling * (2 * lmax + 2)], extend
-    )
+    res = np.empty([2*lmax+2+extend, sampling*(2*lmax+2)+extend], dtype=np.complex128)
+    _synthesize_DH(alm, lmax_calc, extend, res.imag)
     cilmx = _extractRealPart(cilm)
     alm = _make_alm(cilmx, lmax_calc, norm, csphase)
     del cilmx
-    res += _synthesize_DH(
-        alm, lmax_calc, [2 * lmax + 2, sampling * (2 * lmax + 2)], extend
-    )
+    _synthesize_DH(alm, lmax_calc, extend, res.real)
     return res
 
 
@@ -327,7 +317,8 @@ def MakeGridGLQ(
     if lmax_calc is None:
         lmax_calc = cilm.shape[1] - 1
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
-    return _synthesize_GLQ(alm, lmax_calc, [lmax + 1, 2 * lmax + 1], extend)
+    out = np.empty([lmax+1, (2*lmax+1)+extend])
+    return _synthesize_GLQ(alm, lmax_calc, extend, out)
 
 
 def MakeGridGLQC(
@@ -341,11 +332,12 @@ def MakeGridGLQC(
     cilmx = _extractImagPart(cilm)
     alm = _make_alm(cilmx, lmax_calc, norm, csphase)
     del cilmx
-    res = 1j * _synthesize_GLQ(alm, lmax_calc, [lmax + 1, 2 * lmax + 1], extend)
+    res = np.empty([lmax+1, 2*lmax+1+extend], dtype=np.complex128)
+    _synthesize_GLQ(alm, lmax_calc, extend, res.imag)
     cilmx = _extractRealPart(cilm)
     alm = _make_alm(cilmx, lmax_calc, norm, csphase)
     del cilmx
-    res += _synthesize_GLQ(alm, lmax_calc, [lmax + 1, 2 * lmax + 1], extend)
+    _synthesize_GLQ(alm, lmax_calc, extend, res.real)
     return res
 
 
@@ -378,6 +370,7 @@ def MakeGradientDH(cilm, lmax=None, sampling=1, lmax_calc=None, extend=False):
     if lmax_calc is None:
         lmax_calc = cilm.shape[1] - 1
     alm = _make_alm(cilm, lmax_calc, norm=1, csphase=1)
-    return (1.0 / cilm[0, 0, 0]) * _synthesize_DH_deriv1(
-        alm, lmax_calc, [2 * lmax + 2, sampling * (2 * lmax + 2)], extend
-    )
+    res = np.empty((2, 2*lmax+2+extend, sampling*(2*lmax+2)+extend))
+    res = _synthesize_DH_deriv1(alm, lmax_calc, extend, res)
+    res *= 1.0 / cilm[0, 0, 0]
+    return res
