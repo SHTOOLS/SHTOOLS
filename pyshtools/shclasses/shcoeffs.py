@@ -4021,14 +4021,13 @@ class SHRealCoeffs(SHCoeffs):
                 "'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
-        if zeros is None:
-            zeros, weights = _shtools.SHGLQ(self.lmax)
-
         if preferred_backend() == "DUCC":
-            data = ducc0_wrapper.MakeGridGLQ(self.coeffs, zeros, norm=norm,
+            data = ducc0_wrapper.MakeGridGLQ(self.coeffs, norm=norm,
                                         csphase=self.csphase, lmax=lmax,
                                         lmax_calc=lmax_calc, extend=extend)
         else:  # SHTOOLS
+            if zeros is None:
+                zeros, weights = _shtools.SHGLQ(self.lmax)
             data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
                                         csphase=self.csphase, lmax=lmax,
                                         lmax_calc=lmax_calc, extend=extend)
@@ -4309,14 +4308,13 @@ class SHComplexCoeffs(SHCoeffs):
                 "'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
-        if zeros is None:
-            zeros, weights = _shtools.SHGLQ(self.lmax)
-
         if preferred_backend() == "DUCC":
-            data = ducc0_wrapper.MakeGridGLQC(self.coeffs, zeros, norm=norm,
+            data = ducc0_wrapper.MakeGridGLQC(self.coeffs, norm=norm,
                                          csphase=self.csphase, lmax=lmax,
                                          lmax_calc=lmax_calc, extend=extend)
         else:  # SHTOOLS
+            if zeros is None:
+                zeros, weights = _shtools.SHGLQ(self.lmax)
             data = _shtools.MakeGridGLQC(self.coeffs, zeros, norm=norm,
                                          csphase=self.csphase, lmax=lmax,
                                          lmax_calc=lmax_calc, extend=extend)

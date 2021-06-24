@@ -207,12 +207,22 @@ def _extractImagPart(ccoeffs):
 
 
 def _combineComplexCoef(rpart, ipart):
-    fct = (-1) ** np.arange(rpart.shape[2]).reshape((1, 1, -1))
+    fct = (-1) ** np.arange(rpart.shape[2]).reshape((1, -1))
     res = np.empty(rpart.shape, dtype=np.complex128)
-    res[0].real = rpart[0] + ipart[1]
-    res[0].imag = -rpart[1] + ipart[0]
-    res[1].real = fct * (rpart[0] - ipart[1])
-    res[1].imag = fct * (rpart[1] + ipart[0])
+    tmp = rpart[0].copy()
+    tmp += ipart[1]
+    res[0].real = tmp
+    tmp[()] = ipart[0]
+    tmp -= rpart[1]
+    res[0].imag = tmp
+    tmp[()] = rpart[0]
+    tmp -= ipart[1]
+    tmp *= fct
+    res[1].real = tmp
+    tmp[()] = rpart[1]
+    tmp += ipart[0]
+    tmp *= fct
+    res[1].imag = tmp
     res *= 1.0 / np.sqrt(2.0)
     res[0, :, 0] = rpart[0, :, 0] + 1j * ipart[0, :, 0]
     res[1, :, 0] = 0.0
@@ -309,7 +319,7 @@ def SHExpandDHC(grid, norm=1, sampling=1, csphase=1, lmax_calc=None):
 
 
 def MakeGridGLQ(
-    cilm, zeros, lmax=None, norm=1, csphase=1, lmax_calc=None, extend=False
+    cilm, lmax=None, norm=1, csphase=1, lmax_calc=None, extend=False
 ):
     if lmax is None:
         lmax = cilm.shape[1] - 1
@@ -322,7 +332,7 @@ def MakeGridGLQ(
 
 
 def MakeGridGLQC(
-    cilm, zeros, lmax=None, norm=1, csphase=1, lmax_calc=None, extend=False
+    cilm, lmax=None, norm=1, csphase=1, lmax_calc=None, extend=False
 ):
     if lmax is None:
         lmax = cilm.shape[1] - 1
@@ -341,7 +351,7 @@ def MakeGridGLQC(
     return res
 
 
-def SHExpandGLQ(grid, weights, zeros, norm=1, csphase=1, lmax_calc=None):
+def SHExpandGLQ(grid, norm=1, csphase=1, lmax_calc=None):
     if lmax_calc is None:
         lmax_calc = grid.shape[0] - 1
     if lmax_calc > (grid.shape[0] - 1):
@@ -350,7 +360,7 @@ def SHExpandGLQ(grid, weights, zeros, norm=1, csphase=1, lmax_calc=None):
     return _extract_alm(alm, lmax_calc, norm, csphase)
 
 
-def SHExpandGLQC(grid, weights, zeros, norm=1, csphase=1, lmax_calc=None):
+def SHExpandGLQC(grid, norm=1, csphase=1, lmax_calc=None):
     if lmax_calc is None:
         lmax_calc = grid.shape[0] - 1
     if lmax_calc > (grid.shape[0] - 1):

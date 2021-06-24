@@ -2417,7 +2417,7 @@ class GLQRealGrid(SHGrid):
 
         if preferred_backend() == "DUCC":
             cilm = ducc0_wrapper.SHExpandGLQ(self.data[:, :self.nlon-self.extend],
-                                             self.weights, self.zeros, norm=norm,
+                                             norm=norm,
                                              csphase=csphase, **kwargs)
         else:  # SHTOOLS
             cilm = _shtools.SHExpandGLQ(self.data[:, :self.nlon-self.extend],
@@ -2729,7 +2729,7 @@ class GLQComplexGrid(SHGrid):
 
         if preferred_backend() == "DUCC":
             cilm = ducc0_wrapper.SHExpandGLQC(self.data[:, :self.nlon-self.extend],
-                                         self.weights, self.zeros, norm=norm,
+                                         norm=norm,
                                          csphase=csphase, **kwargs)
         else:  # SHTOOLS
             cilm = _shtools.SHExpandGLQC(self.data[:, :self.nlon-self.extend],
