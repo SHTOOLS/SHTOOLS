@@ -49,73 +49,75 @@ def _get_norm(lmax, norm):
     raise RuntimeError("unsupported normalization")
 
 
-def _make_alm(cilm, lmax, norm, csphase):
+def _rcilm2alm(cilm, lmax):
     alm = np.empty((_nalm(lmax, lmax),), dtype=np.complex128)
-    lnorm = _get_norm(lmax, norm)
-    alm[0 : lmax + 1] = cilm[0, 0 : lmax + 1, 0]
-    alm[0 : lmax + 1] *= lnorm[0 : lmax + 1]
-    lnorm /= np.sqrt(2.0)
-    mlnorm = -lnorm
+    alm[0 : lmax+1] = cilm[0, :, 0]
+    ofs = lmax+1
+    for m in range(1, lmax+1):
+        alm[ofs : ofs+lmax+1-m].real = cilm[0, m:, m]
+        alm[ofs : ofs+lmax+1-m].imag = cilm[1, m:, m]
+        ofs += lmax+1-m
+    return alm
+
+
+def _ralm2cilm(alm, lmax):
+    cilm = np.zeros((2, lmax+1, lmax+1), dtype=np.float64)
+    cilm[0, :, 0] = alm[0 : lmax+1].real
     ofs = lmax + 1
     for m in range(1, lmax + 1):
-        alm[ofs : ofs + lmax + 1 - m].real = cilm[0, m : lmax + 1, m]
-        alm[ofs : ofs + lmax + 1 - m].imag = cilm[1, m : lmax + 1, m]
+        cilm[0, m:, m] = alm[ofs : ofs+lmax+1-m].real
+        cilm[1, m:, m] = alm[ofs : ofs+lmax+1-m].imag
+        ofs += lmax+1-m
+    return cilm
+
+
+def _apply_norm(alm, lmax, norm, csphase, reverse):
+    lnorm = _get_norm(lmax, norm)
+    if reverse:
+        lnorm = 1./lnorm
+    alm[0 : lmax + 1] *= lnorm[0 : lmax + 1]
+    lnorm *= np.sqrt(2.0) if reverse else (1./np.sqrt(2.0))
+    mlnorm = -lnorm
+    ofs = lmax+1
+    for m in range(1, lmax + 1):
         if csphase == 1:
             if m & 1:
-                alm[ofs : ofs + lmax + 1 - m].real *= mlnorm[m : lmax + 1]
-                alm[ofs : ofs + lmax + 1 - m].imag *= lnorm[m : lmax + 1]
+                alm[ofs : ofs+lmax+1-m].real *= mlnorm[m:]
+                alm[ofs : ofs+lmax+1-m].imag *= lnorm[m:]
             else:
-                alm[ofs : ofs + lmax + 1 - m].real *= lnorm[m : lmax + 1]
-                alm[ofs : ofs + lmax + 1 - m].imag *= mlnorm[m : lmax + 1]
+                alm[ofs : ofs+lmax+1-m].real *= lnorm[m:]
+                alm[ofs : ofs+lmax+1-m].imag *= mlnorm[m:]
         else:
-            alm[ofs : ofs + lmax + 1 - m].real *= lnorm[m : lmax + 1]
-            alm[ofs : ofs + lmax + 1 - m].imag *= mlnorm[m : lmax + 1]
-        ofs += lmax + 1 - m
+            alm[ofs : ofs+lmax+1-m].real *= lnorm[m:]
+            alm[ofs : ofs+lmax+1-m].imag *= mlnorm[m:]
+        ofs += lmax+1-m
     if norm == 3:  # special treatment for unnormalized a_lm
         r = np.arange(lmax + 1)
         fct = np.ones(lmax + 1)
         ofs = lmax + 1
-        for m in range(1, lmax + 1):
-            fct[m:] *= np.sqrt((r[m:] + m) * (r[m:] - m + 1))
-            alm[ofs : ofs + lmax + 1 - m] *= fct[m:]
-            ofs += lmax + 1 - m
-        alm[0 : lmax + 1] *= np.sqrt(2)
+        if reverse:
+            alm[0 : lmax + 1] /= np.sqrt(2)
+            for m in range(1, lmax + 1):
+                fct[m:] *= np.sqrt((r[m:] + m) * (r[m:] - m + 1))
+                alm[ofs : ofs + lmax + 1 - m] /= fct[m:]
+                ofs += lmax + 1 - m
+        else:
+            alm[0 : lmax + 1] *= np.sqrt(2)
+            for m in range(1, lmax + 1):
+                fct[m:] *= np.sqrt((r[m:] + m) * (r[m:] - m + 1))
+                alm[ofs : ofs + lmax + 1 - m] *= fct[m:]
+                ofs += lmax + 1 - m
     return alm
+   
+
+def _make_alm(cilm, lmax, norm, csphase):
+    alm = _rcilm2alm(cilm, lmax)
+    return _apply_norm(alm, lmax, norm, csphase, False)
 
 
 def _extract_alm(alm, lmax, norm, csphase):
-    almx = alm.reshape((-1,))
-    cilm = np.zeros((2, lmax + 1, lmax + 1), dtype=np.float64)
-    lnorm = 1.0 / _get_norm(lmax, norm)
-    cilm[0, 0 : lmax + 1, 0] = almx[0 : lmax + 1].real * lnorm[0 : lmax + 1]
-    lnorm *= np.sqrt(2.0)
-    mlnorm = -lnorm
-    tmp = np.empty(lmax + 1, dtype=np.complex128)
-    ofs = lmax + 1
-    for m in range(1, lmax + 1):
-        tmp[m:] = almx[ofs : ofs + lmax + 1 - m]
-        if csphase == 1:
-            if m & 1:
-                tmp[m:].real *= mlnorm[m : lmax + 1]
-                tmp[m:].imag *= lnorm[m : lmax + 1]
-            else:
-                tmp[m:].real *= lnorm[m : lmax + 1]
-                tmp[m:].imag *= mlnorm[m : lmax + 1]
-        else:
-            tmp[m:].real *= lnorm[m : lmax + 1]
-            tmp[m:].imag *= mlnorm[m : lmax + 1]
-
-        cilm[0, m : lmax + 1, m] = tmp[m:].real
-        cilm[1, m : lmax + 1, m] = tmp[m:].imag
-        ofs += lmax + 1 - m
-    if norm == 3:  # special treatment for unnormalized a_lm
-        r = np.arange(lmax + 1)
-        fct = np.ones(lmax + 1)
-        for m in range(1, lmax + 1):
-            fct[m:] /= np.sqrt((r[m:] + m) * (r[m:] - m + 1))
-            cilm[:, m:, m] *= fct[m:]
-        cilm[:, 0] /= np.sqrt(2)
-    return cilm
+    _apply_norm(alm, lmax, norm, csphase, True)
+    return _ralm2cilm(alm, lmax)
 
 
 def _synthesize_DH(alm, lmax, extend, out):
@@ -178,55 +180,66 @@ def _analyze_GLQ(map, lmax):
     return alm[0]
 
 
-def _extractRealPart(ccoeffs):
-    fct = (-1) ** np.arange(ccoeffs.shape[2]).reshape((1, -1))
-    tmp = np.conj(ccoeffs[1])
-    tmp *= fct
-    tmp += ccoeffs[0]
-    tmp *= 1.0 / np.sqrt(2.0)
-    rpart = np.empty(ccoeffs.shape, dtype=np.float64)
-    rpart[0] = tmp.real
-    rpart[1] = -tmp.imag
-    rpart[0, :, 0] = ccoeffs[0, :, 0].real
-    rpart[1, :, 0] = 0.0
-    return rpart
+def _ccilm2almr(cilm):
+    lmax = cilm.shape[1]-1
+    alm = np.empty((_nalm(lmax, lmax),), dtype=np.complex128)
+    fct = (-1) ** np.arange(lmax+1)
+    alm[0:lmax+1] = cilm[0, :, 0].real
+    ofs = lmax + 1
+    for m in range(1, lmax+1):
+        tmp = np.conj(cilm[1, m:, m])
+        tmp *= fct[m]
+        tmp += cilm[0, m:, m]
+        tmp *= 1./np.sqrt(2.)
+        alm[ofs:ofs+lmax+1-m] = np.conj(tmp)
+        ofs += lmax+1-m
+    return alm
 
+def _ccilm2almi(cilm):
+    lmax = cilm.shape[1]-1
+    alm = np.empty((_nalm(lmax, lmax),), dtype=np.complex128)
+    fct = (-1) ** np.arange(lmax+1)
+    alm[0:lmax+1] = cilm[0, :, 0].imag
+    ofs = lmax + 1
+    for m in range(1, lmax+1):
+        tmp = np.conj(cilm[1, m:, m])
+        tmp *= -fct[m]
+        tmp += cilm[0, m:, m]
+        tmp *= 1./np.sqrt(2.)
+        alm[ofs:ofs+lmax+1-m] = tmp.imag + 1j*tmp.real
+        ofs += lmax + 1 - m
+    return alm
 
-def _extractImagPart(ccoeffs):
-    fct = (-1) ** np.arange(ccoeffs.shape[2]).reshape((1, -1))
-    tmp = np.conj(ccoeffs[1])
-    tmp *= -fct
-    tmp += ccoeffs[0]
-    tmp *= 1.0 / np.sqrt(2.0)
-    ipart = np.empty(ccoeffs.shape, dtype=np.float64)
-    ipart[0] = tmp.imag
-    ipart[1] = tmp.real
-    ipart[0, :, 0] = ccoeffs[0, :, 0].imag
-    ipart[1, :, 0] = 0.0
-    return ipart
-
-
-def _combineComplexCoef(rpart, ipart):
-    fct = (-1) ** np.arange(rpart.shape[2]).reshape((1, -1))
-    res = np.empty(rpart.shape, dtype=np.complex128)
-    tmp = rpart[0].copy()
-    tmp += ipart[1]
-    res[0].real = tmp
-    tmp[()] = ipart[0]
-    tmp -= rpart[1]
-    res[0].imag = tmp
-    tmp[()] = rpart[0]
-    tmp -= ipart[1]
-    tmp *= fct
-    res[1].real = tmp
-    tmp[()] = rpart[1]
-    tmp += ipart[0]
-    tmp *= fct
-    res[1].imag = tmp
-    res *= 1.0 / np.sqrt(2.0)
-    res[0, :, 0] = rpart[0, :, 0] + 1j * ipart[0, :, 0]
-    res[1, :, 0] = 0.0
-    return res
+def _addRealpart(cilm, alm):
+    lmax = cilm.shape[1]-1
+    cilm[0,:,0].real += alm[0:lmax+1].real
+    ofs = lmax+1
+    for m in range(1, lmax+1):
+        tmp = alm[ofs:ofs+lmax+1-m] / np.sqrt(2.)
+        cilm[0,m:,m].real += tmp.real
+        cilm[0,m:,m].imag -= tmp.imag
+        if m & 1:
+            cilm[1,m:,m] -= tmp
+        else:           
+            cilm[1,m:,m] += tmp
+        ofs += lmax + 1 - m
+    return cilm
+def _addImagpart(cilm, alm):
+    lmax = cilm.shape[1]-1
+    cilm[0,:,0].imag += alm[0:lmax+1].real
+    ofs = lmax+1
+    for m in range(1, lmax+1):
+        tmp = alm[ofs:ofs+lmax+1-m] / np.sqrt(2.)
+        cilm[0,m:,m].real += tmp.imag
+        cilm[0,m:,m].imag += tmp.real
+        if m & 1:
+            cilm[1,m:,m].real += tmp.imag
+            cilm[1,m:,m].imag -= tmp.real
+        else:
+            cilm[1,m:,m].real -= tmp.imag
+            cilm[1,m:,m].imag += tmp.real
+        ofs += lmax + 1 - m
+    return cilm
 
 
 def SHRotateRealCoef(rcoeffs, angles):
@@ -240,21 +253,22 @@ def SHRotateRealCoef(rcoeffs, angles):
 
 def SHRotateComplexCoef(ccoeffs, angles):
     lmax = ccoeffs.shape[1] - 1
-    cilmR = _extractRealPart(ccoeffs)
-    alm = _make_alm(cilmR, lmax, 1, 1)
+    alm = _ccilm2almr(ccoeffs)
+    alm = _apply_norm(alm, lmax, 1, 1, False)
     alm = ducc0.sht.rotate_alm(
         alm, lmax, -angles[0], -angles[1], -angles[2], nthreads=nthreads
     )
-    cilmR = _extract_alm(alm, lmax, 1, 1)
-    del alm
-    cilmI = _extractImagPart(ccoeffs)
-    alm = _make_alm(cilmI, lmax, 1, 1)
+    alm = _apply_norm(alm, lmax, 1, 1, True)
+    res = np.zeros((2,lmax+1,lmax+1), dtype=np.complex128)
+    _addRealpart(res,alm)
+    alm = _ccilm2almi(ccoeffs)
+    alm = _apply_norm(alm, lmax, 1, 1, False)
     alm = ducc0.sht.rotate_alm(
         alm, lmax, -angles[0], -angles[1], -angles[2], nthreads=nthreads
     )
-    cilmI = _extract_alm(alm, lmax, 1, 1)
-    del alm
-    return _combineComplexCoef(cilmR, cilmI)
+    alm = _apply_norm(alm, lmax, 1, 1, True)
+    _addImagpart(res,alm)
+    return res
 
 
 def MakeGridDH(
@@ -278,14 +292,12 @@ def MakeGridDHC(
     cilm = cilm[:, : lmax + 1, : lmax + 1]
     if lmax_calc is None:
         lmax_calc = cilm.shape[1] - 1
-    cilmx = _extractImagPart(cilm)
-    alm = _make_alm(cilmx, lmax_calc, norm, csphase)
-    del cilmx
+    alm = _ccilm2almi(cilm)
+    alm = _apply_norm(alm, lmax, norm, csphase, False)
     res = np.empty([2*lmax+2+extend, sampling*(2*lmax+2)+extend], dtype=np.complex128)
     _synthesize_DH(alm, lmax_calc, extend, res.imag)
-    cilmx = _extractRealPart(cilm)
-    alm = _make_alm(cilmx, lmax_calc, norm, csphase)
-    del cilmx
+    alm = _ccilm2almr(cilm)
+    alm = _apply_norm(alm, lmax, norm, csphase, False)
     _synthesize_DH(alm, lmax_calc, extend, res.real)
     return res
 
@@ -310,12 +322,14 @@ def SHExpandDHC(grid, norm=1, sampling=1, csphase=1, lmax_calc=None):
     if lmax_calc > (grid.shape[0] // 2 - 1):
         raise RuntimeError("lmax_calc too high")
     lmax = grid.shape[0] // 2 - 1 if lmax_calc is None else lmax_calc
+    res = np.zeros((2,lmax+1,lmax+1), dtype=np.complex128)
     alm = _analyze_DH(grid.real, lmax_calc)
-    cilmR = _extract_alm(alm, lmax_calc, norm, csphase)
+    alm = _apply_norm(alm, lmax, norm, csphase, True)
+    _addRealpart(res,alm)
     alm = _analyze_DH(grid.imag, lmax_calc)
-    cilmI = _extract_alm(alm, lmax_calc, norm, csphase)
-    del alm
-    return _combineComplexCoef(cilmR, cilmI)
+    alm = _apply_norm(alm, lmax, norm, csphase, True)
+    _addImagpart(res,alm)
+    return res
 
 
 def MakeGridGLQ(
@@ -339,14 +353,12 @@ def MakeGridGLQC(
     cilm = cilm[:, : lmax + 1, : lmax + 1]
     if lmax_calc is None:
         lmax_calc = cilm.shape[1] - 1
-    cilmx = _extractImagPart(cilm)
-    alm = _make_alm(cilmx, lmax_calc, norm, csphase)
-    del cilmx
+    alm = _ccilm2almi(cilm)
+    alm = _apply_norm(alm, lmax, norm, csphase, False)
     res = np.empty([lmax+1, 2*lmax+1+extend], dtype=np.complex128)
     _synthesize_GLQ(alm, lmax_calc, extend, res.imag)
-    cilmx = _extractRealPart(cilm)
-    alm = _make_alm(cilmx, lmax_calc, norm, csphase)
-    del cilmx
+    alm = _ccilm2almr(cilm)
+    alm = _apply_norm(alm, lmax, norm, csphase, False)
     _synthesize_GLQ(alm, lmax_calc, extend, res.real)
     return res
 
@@ -365,12 +377,14 @@ def SHExpandGLQC(grid, norm=1, csphase=1, lmax_calc=None):
         lmax_calc = grid.shape[0] - 1
     if lmax_calc > (grid.shape[0] - 1):
         raise RuntimeError("lmax_calc too high")
+    res = np.zeros((2,lmax_calc+1,lmax_calc+1), dtype=np.complex128)
     alm = _analyze_GLQ(grid.real, lmax_calc)
-    cilmR = _extract_alm(alm, lmax_calc, norm, csphase)
+    alm = _apply_norm(alm, lmax_calc, norm, csphase, True)
+    _addRealpart(res,alm)
     alm = _analyze_GLQ(grid.imag, lmax_calc)
-    cilmI = _extract_alm(alm, lmax_calc, norm, csphase)
-    del alm
-    return _combineComplexCoef(cilmR, cilmI)
+    alm = _apply_norm(alm, lmax_calc, norm, csphase, True)
+    _addImagpart(res,alm)
+    return res
 
 
 def MakeGradientDH(cilm, lmax=None, sampling=1, lmax_calc=None, extend=False):
