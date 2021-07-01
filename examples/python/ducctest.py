@@ -199,6 +199,21 @@ for lmax in lmax_list:
             "lmax={:4}: L2 error={:e}, speedup factor={:f}".format(lmax, res[0], res[1])
         )
 
+lmax_list = [80]
+
+print("SHT tests unnorm:")
+for grid in ["GLQ", "DH", "DH2"]:
+    for csphase in [-1, 1]:
+        for norm in ["unnorm"]:
+            for extend in [True, False]:
+                for lmax in [5,10,20,85]:
+                    res = test_SHT(lmax, grid, csphase, norm, extend)
+                    print(
+                        "{:3}, CS={:2}, norm={:7}, extend={:5}, lmax={:4}:  L2 error={:e}, speedup factor={:f}".format(
+                            grid, csphase, norm, extend, lmax, res[0], res[1]
+                        )
+                    )
+
 lmax_list = [127, 255, 511, 1023, 2047]
 
 print("SHT tests:")
