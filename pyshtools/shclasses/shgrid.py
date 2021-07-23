@@ -975,9 +975,9 @@ class SHGrid(object):
             ax3d = fig.add_subplot(1, 1, 1, projection='3d')
         else:
             fig = ax.get_figure()
-            geometry = ax.get_geometry()
+            subplotspec = ax.get_subplotspec()
             ax.remove()
-            ax3d = fig.add_subplot(*geometry, projection='3d')
+            ax3d = fig.add_subplot(subplotspec, projection='3d')
 
         if self.kind == 'real':
             data = self.data
@@ -1679,9 +1679,9 @@ class DHRealGrid(SHGrid):
         else:
             if projection is not None:
                 fig = ax.get_figure()
-                geometry = ax.get_geometry()
+                subplotspec = ax.get_subplotspec()
                 ax.remove()
-                axes = fig.add_subplot(*geometry, projection=projection)
+                axes = fig.add_subplot(subplotspec, projection=projection)
             else:
                 axes = ax
 
