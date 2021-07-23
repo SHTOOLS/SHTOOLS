@@ -2093,7 +2093,7 @@ class DHRealGrid(SHGrid):
             if colorbar is not None:
                 if shading is not None:
                     figure.colorbar(position=position, frame=cb_str,
-                                    I=shading_amplitude)
+                                    shading=shading_amplitude)
                 else:
                     figure.colorbar(position=position, frame=cb_str)
 
