@@ -360,7 +360,7 @@ class SHGrid(object):
             coslat = _np.cos(lats[i])
             sinlat = _np.sin(lats[i])
             for j in range(0, temp.nlon):
-                dist = min(coslat * (x * coslon[j] + y * sinlon[j]) + z * sinlat, 1.)
+                dist = coslat * (x * coslon[j] + y * sinlon[j]) + z * sinlat
                 if _np.arccos(dist) <= theta:
                     temp.data[i, j] = 1.
 
