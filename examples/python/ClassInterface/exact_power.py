@@ -9,7 +9,7 @@ import numpy as np
 def example():
     """Plot random phase and Gaussian random variable spectra."""
     ldata = 200
-    degrees = np.arange(ldata+1, dtype=float)
+    degrees = np.arange(ldata+1, dtype=np.float64)
     degrees[0] = np.inf
     power = degrees**(-1)
 

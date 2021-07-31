@@ -207,14 +207,14 @@ class SHGrid(object):
 
         if kind == 'real':
             if empty:
-                array = _np.empty((nlat, nlon), dtype=_np.float_)
+                array = _np.empty((nlat, nlon), dtype=_np.float64)
             else:
-                array = _np.zeros((nlat, nlon), dtype=_np.float_)
+                array = _np.zeros((nlat, nlon), dtype=_np.float64)
         else:
             if empty:
-                array = _np.empty((nlat, nlon), dtype=_np.complex_)
+                array = _np.empty((nlat, nlon), dtype=_np.complex128)
             else:
-                array = _np.zeros((nlat, nlon), dtype=_np.complex_)
+                array = _np.zeros((nlat, nlon), dtype=_np.complex128)
 
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):

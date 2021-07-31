@@ -20,7 +20,7 @@ def test_SHRotations():
     alpha, beta, gamma = 20., 90., 90.
 
     # ---- derived parameters ----
-    mask = np.zeros((2, lmax + 1, lmax + 1), dtype=np.bool)
+    mask = np.zeros((2, lmax + 1, lmax + 1), dtype=bool)
     for l in np.arange(lmax + 1):
         mask[:, l, :l + 1] = True
     mask[1, :, 0] = False

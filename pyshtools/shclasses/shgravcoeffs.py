@@ -2270,7 +2270,7 @@ class SHGravCoeffs(object):
                 clm.errors = _np.pad(
                     clm.errors, ((0, 0), (0, lmax - self.lmax),
                                  (0, lmax - self.lmax)), 'constant')
-            mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
+            mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=bool)
             for l in _np.arange(lmax + 1):
                 mask[:, l, :l + 1] = True
             mask[1, :, 0] = False
@@ -3054,8 +3054,8 @@ class SHGravCoeffs(object):
 
         # need to add one extra value to each in order for pcolormesh
         # to plot the last row and column.
-        ls = _np.arange(lmax+2).astype(_np.float)
-        ms = _np.arange(-lmax, lmax + 2, dtype=_np.float)
+        ls = _np.arange(lmax+2).astype(_np.float64)
+        ms = _np.arange(-lmax, lmax + 2, dtype=_np.float64)
         if origin in ('left', 'right'):
             xgrid, ygrid = _np.meshgrid(ls, ms, indexing='ij')
         elif origin in ('top', 'bottom'):
@@ -3685,7 +3685,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
         """Initialize real gravitational potential coefficients class."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
-        mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
+        mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=bool)
         mask[0, 0, 0] = True
         for l in _np.arange(lmax + 1):
             mask[:, l, :l + 1] = True
@@ -3791,7 +3791,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
                                       r=r, lat=latin, lon=lonin,
                                       lmax=lmax_calc, omega=self.omega)
         elif type(lat) is _np.ndarray:
-            values = _np.empty((len(lat), 3), dtype=float)
+            values = _np.empty((len(lat), 3), dtype=_np.float64)
             for i, (latitude, longitude) in enumerate(zip(latin, lonin)):
                 if f == 0.:
                     r = a

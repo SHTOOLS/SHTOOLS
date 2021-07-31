@@ -11,6 +11,7 @@ python module _SHTOOLS
     interface
 
         subroutine PlmBar(exitstatus,p,lmax,z,csphase,cnorm,p_d0)
+            threadsafe
             fortranname pyplmbar
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -24,6 +25,7 @@ python module _SHTOOLS
         end subroutine PlmBar
 
         subroutine PlmBar_d1(exitstatus,p,dp1,lmax,z,csphase,cnorm,p_d0,dp1_d0)
+            threadsafe
             fortranname pyplmbar_d1
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -39,6 +41,7 @@ python module _SHTOOLS
         end subroutine PlmBar_d1
 
         subroutine PlBar(exitstatus,p,lmax,z,p_d0)
+            threadsafe
             fortranname pyplbar
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -50,6 +53,7 @@ python module _SHTOOLS
         end subroutine PlBar
 
         subroutine PlBar_d1(exitstatus,p,dp1,lmax,z,p_d0,dp1_d0)
+            threadsafe
             fortranname pyplbar_d1
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -63,6 +67,7 @@ python module _SHTOOLS
         end subroutine PlBar_d1
 
         subroutine PlmON(exitstatus,p,lmax,z,csphase,cnorm,p_d0)
+            threadsafe
             fortranname pyplmon
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -76,6 +81,7 @@ python module _SHTOOLS
         end subroutine PlmON
 
         subroutine PlmON_d1(exitstatus,p,dp1,lmax,z,csphase,cnorm,p_d0,dp1_d0)
+            threadsafe
             fortranname pyplmon_d1
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -91,6 +97,7 @@ python module _SHTOOLS
         end subroutine PlmON_d1
 
         subroutine PlON(exitstatus,p,lmax,z,p_d0)
+            threadsafe
             fortranname pyplon
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -102,6 +109,7 @@ python module _SHTOOLS
         end subroutine PlON
 
         subroutine PlON_d1(exitstatus,p,dp1,lmax,z,p_d0,dp1_d0)
+            threadsafe
             fortranname pyplon_d1
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -115,6 +123,7 @@ python module _SHTOOLS
         end subroutine PlON_d1
 
         subroutine PlmSchmidt(exitstatus,p,lmax,z,csphase,cnorm,p_d0)
+            threadsafe
             fortranname pyplmschmidt
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -128,6 +137,7 @@ python module _SHTOOLS
         end subroutine PlmSchmidt
 
         subroutine PlmSchmidt_d1(exitstatus,p,dp1,lmax,z,csphase,cnorm,p_d0,dp1_d0)
+            threadsafe
             fortranname pyplmschmidt_d1
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -143,6 +153,7 @@ python module _SHTOOLS
         end subroutine PlmSchmidt_d1
 
         subroutine PlSchmidt(exitstatus,p,lmax,z,p_d0)
+            threadsafe
             fortranname pyplschmidt
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -154,6 +165,7 @@ python module _SHTOOLS
         end subroutine PlSchmidt
 
         subroutine PlSchmidt_d1(exitstatus,p,dp1,lmax,z,p_d0,dp1_d0)
+            threadsafe
             fortranname pyplschmidt_d1
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -167,6 +179,7 @@ python module _SHTOOLS
         end subroutine PlSchmidt_d1
 
         subroutine PLegendreA(exitstatus,p,lmax,z,csphase,p_d0)
+            threadsafe
             fortranname pyplegendrea
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -179,6 +192,7 @@ python module _SHTOOLS
         end subroutine PLegendreA
 
         subroutine PLegendre(exitstatus,p,lmax,z,p_d0)
+            threadsafe
             fortranname pyplegendre
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -190,6 +204,7 @@ python module _SHTOOLS
         end subroutine PLegendre
 
         subroutine PLegendreA_d1(exitstatus,p,dp1,lmax,z,csphase,p_d0,dp1_d0)
+            threadsafe
             fortranname pyplegendrea_d1
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -204,6 +219,7 @@ python module _SHTOOLS
         end subroutine PLegendreA_d1
 
         subroutine PLegendre_d1(exitstatus,p,dp1,lmax,z,p_d0,dp1_d0)
+            threadsafe
             fortranname pyplegendre_d1
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -217,6 +233,7 @@ python module _SHTOOLS
         end subroutine PLegendre_d1
 
         subroutine SHExpandDH(exitstatus,grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)
+            threadsafe
             fortranname pyshexpanddh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -237,6 +254,7 @@ python module _SHTOOLS
         end subroutine SHExpandDH
 
         subroutine MakeGridDH(exitstatus,griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,extend,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1)
+            threadsafe
             fortranname pymakegriddh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -258,6 +276,7 @@ python module _SHTOOLS
         end subroutine MakeGridDH
 
         subroutine SHExpandDHC(exitstatus,grid,n,cilm,lmax,norm,sampling,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)
+            threadsafe
             fortranname pyshexpanddhc
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -278,6 +297,7 @@ python module _SHTOOLS
         end subroutine SHExpandDHC
 
         subroutine MakeGridDHC(exitstatus,griddh,n,cilm,lmax,norm,sampling,csphase,lmax_calc,extend,cilm_d0,cilm_d1,cilm_d2,griddh_d0,griddh_d1)
+            threadsafe
             fortranname pymakegriddhc
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -299,6 +319,7 @@ python module _SHTOOLS
         end subroutine MakeGridDHC
 
         subroutine SHGLQ(exitstatus,lmax,zero,w,zero_d0,w_d0)
+            threadsafe
             fortranname pyshglq
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -311,6 +332,7 @@ python module _SHTOOLS
         end subroutine SHGLQ
 
         subroutine SHExpandGLQ(exitstatus,cilm,lmax,gridglq,w,zero,norm,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0)
+            threadsafe
             fortranname pyshexpandglq
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -333,6 +355,7 @@ python module _SHTOOLS
         end subroutine SHExpandGLQ
 
         subroutine MakeGridGLQ(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,extend,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0)
+            threadsafe
             fortranname pymakegridglq
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -354,6 +377,7 @@ python module _SHTOOLS
         end subroutine MakeGridGLQ
 
         subroutine SHExpandGLQC(exitstatus,cilm,lmax,gridglq,w,zero,norm,csphase,lmax_calc,cilm_d0,cilm_d1,cilm_d2,gridglq_d0,gridglq_d1,zero_d0,w_d0)
+            threadsafe
             fortranname pyshexpandglqc
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -376,6 +400,7 @@ python module _SHTOOLS
         end subroutine SHExpandGLQC
 
         subroutine MakeGridGLQC(exitstatus,gridglq,cilm,lmax,zero,norm,csphase,lmax_calc,extend,gridglq_d0,gridglq_d1,cilm_d0,cilm_d1,cilm_d2,zero_d0)
+            threadsafe
             fortranname pymakegridglqc
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -397,6 +422,7 @@ python module _SHTOOLS
         end subroutine MakeGridGLQC
 
         subroutine GLQGridCoord(exitstatus,latglq,longlq,lmax,nlat,nlong,extend,latglq_d0,longlq_d0)
+            threadsafe
             fortranname pyglqgridcoord
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -412,6 +438,7 @@ python module _SHTOOLS
         end subroutine GLQGridCoord
 
         subroutine SHExpandLSQ(exitstatus,cilm,d,lat,lon,nmax,lmax,norm,chi2,csphase,cilm_d0,cilm_d1,cilm_d2,d_d0,lat_d0,lon_d0)
+            threadsafe
             fortranname pyshexpandlsq
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -434,6 +461,7 @@ python module _SHTOOLS
         end subroutine SHExpandLSQ
 
         subroutine SHExpandWLSQ(exitstatus,cilm,d,w,lat,lon,nmax,lmax,norm,chi2,csphase,cilm_d0,cilm_d1,cilm_d2,d_d0,w_d0,lat_d0,lon_d0)
+            threadsafe
             fortranname pyshexpandwlsq
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -458,6 +486,7 @@ python module _SHTOOLS
         end subroutine SHExpandWLSQ
 
         function MakeGridPoint(cilm,lmax,lat,lon,norm,csphase,dealloc,cilm_d0,cilm_d1,cilm_d2)
+            threadsafe
             fortranname pymakegridpoint
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -475,6 +504,7 @@ python module _SHTOOLS
         end function MakeGridPoint
 
         function MakeGridPointC(cilm,lmax,lat,lon,norm,csphase,dealloc,cilm_d0,cilm_d1,cilm_d2)
+            threadsafe
             fortranname pymakegridpointc
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -492,6 +522,7 @@ python module _SHTOOLS
         end function MakeGridPointC
 
         subroutine SHMultiply(exitstatus,shout,sh1,lmax1,sh2,lmax2,precomp,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,shout_d0,shout_d1,shout_d2)
+            threadsafe
             fortranname pyshmultiply
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -516,6 +547,7 @@ python module _SHTOOLS
         end subroutine SHMultiply
 
         subroutine MakeGrid2D(exitstatus,grid,cilm,lmax,interval,nlat,nlong,norm,csphase,f,a,north,south,east,west,dealloc,cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)
+            threadsafe
             fortranname pymakegrid2d
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -543,6 +575,7 @@ python module _SHTOOLS
         end subroutine MakeGrid2d
 
         subroutine SHRead2(exitstatus,filename,cilm,lmax,lmax_in,gm,r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,dot_d0,dot_d1,dot_d2)
+            threadsafe
             fortranname pyshread2
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -566,6 +599,7 @@ python module _SHTOOLS
         end subroutine SHRead2
 
         subroutine SHRead2Error(exitstatus,filename,cilm,error,lmax,lmax_in,gm,r0_pot,dot,doystart,doyend,epoch,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2,dot_d0,dot_d1,dot_d2)
+            threadsafe
             fortranname pyshread2error
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -593,6 +627,7 @@ python module _SHTOOLS
         end subroutine SHRead2Error
 
         subroutine SHReadJPL(exitstatus,filename,cilm,lmax,lmax_in,gm,formatstring,cilm_d0,cilm_d1,cilm_d2)
+            threadsafe
             fortranname pyshreadjpl
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -609,6 +644,7 @@ python module _SHTOOLS
         end subroutine SHReadJPL
 
         subroutine SHReadJPLError(exitstatus,filename,cilm,error,lmax,lmax_in,gm,formatstring,cilm_d0,cilm_d1,cilm_d2,error_d0,error_d1,error_d2)
+            threadsafe
             fortranname pyshreadjplerror
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -629,6 +665,7 @@ python module _SHTOOLS
         end subroutine SHReadJPLError
 
         subroutine SHCilmToVector(exitstatus,cilm,vector,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2)
+            threadsafe
             fortranname pyshcilmtovector
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -643,6 +680,7 @@ python module _SHTOOLS
         end subroutine SHCilmToVector
 
         subroutine SHVectorToCilm(exitstatus,vector,cilm,lmax,vector_d0,cilm_d0,cilm_d1,cilm_d2)
+            threadsafe
             fortranname pyshvectortocilm
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -657,6 +695,7 @@ python module _SHTOOLS
         end subroutine SHVectorToCilm
 
         subroutine SHCilmToCindex(exitstatus,cilm,cindex,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2)
+            threadsafe
             fortranname pyshcilmtocindex
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -672,6 +711,7 @@ python module _SHTOOLS
         end subroutine SHCilmToCindex
 
         subroutine SHCindexToCilm(exitstatus,cindex,cilm,degmax,cindex_d0,cindex_d1,cilm_d0,cilm_d1,cilm_d2)
+            threadsafe
             fortranname pyshcindextocilm
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -687,6 +727,7 @@ python module _SHTOOLS
         end subroutine SHCindexToCilm
 
         subroutine SHrtoc(exitstatus,rcilm,ccilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2)
+            threadsafe
             fortranname pyshrtoc
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -705,6 +746,7 @@ python module _SHTOOLS
         end subroutine SHrtoc
 
         subroutine SHctor(exitstatus,ccilm,rcilm,degmax,convention,switchcs,rcilm_d0,rcilm_d1,rcilm_d2,ccilm_d0,ccilm_d1,ccilm_d2)
+            threadsafe
             fortranname pyshctor
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -723,6 +765,7 @@ python module _SHTOOLS
         end subroutine SHctor
 
         subroutine djpi2(exitstatus,dj,lmax,dj_d0,dj_d1,dj_d2)
+            threadsafe
             fortranname pydjpi2
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -735,6 +778,7 @@ python module _SHTOOLS
         end subroutine djpi2
 
         subroutine SHRotateCoef(exitstatus,x,cof,rcof,dj,lmax,rcof_d0,rcof_d1,dj_d0,dj_d1,dj_d2,cof_d0,cof_d1)
+            threadsafe
             fortranname pyshrotatecoef
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -754,6 +798,7 @@ python module _SHTOOLS
         end subroutine SHRotateCoef
 
         subroutine SHRotateRealCoef(exitstatus,cilmrot,cilm,lmax,x,dj,x_d0,dj_d0,dj_d1,dj_d2,cilm_d0,cilm_d1,cilm_d2,cilmrot_d0,cilmrot_d1,cilmrot_d2)
+            threadsafe
             fortranname pyshrotaterealcoef
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -776,6 +821,7 @@ python module _SHTOOLS
         end subroutine SHRotateRealCoef
 
         subroutine SHAdmitCorr(exitstatus,G,T,lmax,admit,admit_error,corr,G_d0,G_d1,G_d2,admit_d0,admit_error_d0,T_d0,T_d1,T_d2,corr_d0)
+            threadsafe
             fortranname pyshadmitcorr
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -798,6 +844,7 @@ python module _SHTOOLS
         end subroutine SHAdmitCorr
 
         function SHConfidence(l_conf,r)
+            threadsafe
             fortranname pyshconfidence
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -807,6 +854,7 @@ python module _SHTOOLS
         end function SHConfidence
 
         subroutine SHMultiTaperSE(exitstatus,mtse,sd,sh,lmax,tapers,taper_order,lmaxt,k,lat,lon,taper_wt,norm,csphase,taper_order_d0,taper_wt_d0,sh_d0,sh_d1,sh_d2,tapers_d0,tapers_d1,mtse_d0,sd_d0)
+            threadsafe
             fortranname pyshmultitaperse
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -836,6 +884,7 @@ python module _SHTOOLS
         end subroutine SHMultiTaperSE
 
         subroutine SHMultiTaperCSE(exitstatus,mtse,sd,sh1,lmax1,sh2,lmax2,tapers,taper_order,lmaxt,k,lat,lon,taper_wt,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,taper_order_d0,taper_wt_d0,tapers_d0,tapers_d1,sd_d0,mtse_d0)
+            threadsafe
             fortranname pyshmultitapercse
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -870,6 +919,7 @@ python module _SHTOOLS
         end subroutine SHMultiTaperCSE
 
         subroutine SHLocalizedAdmitCorr(exitstatus,g,t,tapers,taper_order,k,lat,lon,lwin,lmax,admit,corr,admit_error,corr_error,taper_wt,mtdef,k1linsig,taper_order_d0,g_d0,g_d1,g_d2,taper_wt_d0,corr_error_d0,admit_d0,admit_error_d0,corr_d0,tapers_d0,tapers_d1,t_d0,t_d1,t_d2)
+            threadsafe
             fortranname pyshlocalizedadmitcorr
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -907,6 +957,7 @@ python module _SHTOOLS
         end subroutine SHLocalizedAdmitCorr
 
         subroutine SHReturnTapers(exitstatus,theta0,lmax,tapers,eigenvalues,taper_order,degrees,eigenvalues_d0,tapers_d0,tapers_d1,taper_order_d0,degrees_d0)
+            threadsafe
             fortranname pyshreturntapers
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -925,6 +976,7 @@ python module _SHTOOLS
         end subroutine SHReturnTapers
 
         subroutine SHReturnTapersM(exitstatus,theta0,lmax,m,tapers,eigenvalues,degrees,tapers_d0,tapers_d1,eigenvalues_d0,degrees_d0)
+            threadsafe
             fortranname pyshreturntapersm
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -942,6 +994,7 @@ python module _SHTOOLS
         end subroutine SHReturnTapersM
 
         subroutine ComputeDm(exitstatus,dllm,lmax,m,theta0,degrees,dllm_d0,dllm_d1,degrees_d0)
+            threadsafe
             fortranname pycomputedm
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -957,6 +1010,7 @@ python module _SHTOOLS
         end subroutine ComputeDm
 
         subroutine ComputeDG82(exitstatus,dG82,lmax,m,theta0,dG82_d0,dG82_d1)
+            threadsafe
             fortranname pycomputedg82
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -970,6 +1024,7 @@ python module _SHTOOLS
         end subroutine ComputeDG82
 
         function SHFindLWin(theta0,m,alpha,taper_number)
+            threadsafe
             fortranname pyshfindlwin
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -981,6 +1036,7 @@ python module _SHTOOLS
         end function SHFindLWin
 
         subroutine SHBiasK(exitstatus,tapers,lwin,k,incspectra,ldata,outcspectra,taper_wt,save_cg,taper_wt_d0,tapers_d0,tapers_d1,incspectra_d0,outcspectra_d0)
+            threadsafe
             fortranname pyshbiask
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1001,6 +1057,7 @@ python module _SHTOOLS
         end subroutine SHBiasK
 
         subroutine SHMTCouplingMatrix(exitstatus,Mmt,lmax,tapers_power,lwin,k,taper_wt,Mmt_d0,Mmt_d1,tapers_power_d0,tapers_power_d1,taper_wt_d0)
+            threadsafe
             fortranname pyshmtcouplingmatrix
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1019,6 +1076,7 @@ python module _SHTOOLS
         end subroutine
 
         subroutine SHBiasAdmitCorr(exitstatus,sgt,sgg,stt,lmax,tapers,lwin,k,admit,corr,mtdef,taper_wt,taper_wt_d0,sgt_d0,stt_d0,admit_d0,tapers_d0,tapers_d1,corr_d0,sgg_d0)
+            threadsafe
             fortranname pyshbiasadmitcorr
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1045,6 +1103,7 @@ python module _SHTOOLS
         end subroutine SHBiasAdmitCorr
 
         subroutine SHMTDebias(exitstatus,mtdebias,mtspectra,lmax,tapers,lwin,k,nl,lmid,n,taper_wt,mtdebias_d0,mtdebias_d1,taper_wt_d0,mtspectra_d0,mtspectra_d1,tapers_d0,tapers_d1,lmid_d0)
+            threadsafe
             fortranname pyshmtdebias
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1070,6 +1129,7 @@ python module _SHTOOLS
         end subroutine SHMTDebias
 
         subroutine SHMTVarOpt(exitstatus,l,tapers,taper_order,lwin,kmax,Sff,var_opt,var_unit,weight_opt,nocross,taper_order_d0,weight_opt_d0,weight_opt_d1,var_unit_d0,var_opt_d0,Sff_d0,tapers_d0,tapers_d1)
+            threadsafe
             fortranname pyshmtvaropt
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1095,6 +1155,7 @@ python module _SHTOOLS
         end subroutine SHMTVarOpt
 
         subroutine SHMTVar(exitstatus,l,tapers,taper_order,Sff,kmax,lwin,variance,taper_wt,nocross,taper_order_d0,taper_wt_d0,Sff_d0,tapers_d0,tapers_d1)
+            threadsafe
             fortranname pyshmtvar
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1116,6 +1177,7 @@ python module _SHTOOLS
         end subroutine SHMTVar
 
         function SHSjkPG(incspectra,l,m,mprime,hj_real,hk_real,mj,mk,lwin,hkcc,hk_real_d0,incspectra_d0,hj_real_d0)
+            threadsafe
             fortranname pyshsjkpg
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1136,6 +1198,7 @@ python module _SHTOOLS
         end function SHSjkPG
 
         subroutine SHReturnTapersMap(exitstatus,tapers,eigenvalues,dh_mask,n_dh,lmax,sampling,ntapers,degrees,dh_mask_d0,dh_mask_d1,tapers_d0,tapers_d1,eigenvalues_d0,degrees_d0)
+            threadsafe
             fortranname pyshreturntapersmap
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1157,6 +1220,7 @@ python module _SHTOOLS
         end subroutine SHReturnTapersMap
 
         subroutine SHBiasKMask(exitstatus,tapers,lwin,k,incspectra,ldata,outcspectra,taper_wt,save_cg,taper_wt_d0,tapers_d0,tapers_d1,incspectra_d0,outcspectra_d0)
+            threadsafe
             fortranname pyshbiaskmask
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1177,6 +1241,7 @@ python module _SHTOOLS
         end subroutine SHBiasKMask
 
         subroutine SHMultiTaperMaskSE(exitstatus,mtse,sd,sh,lmax,tapers,lmaxt,k,taper_wt,norm,csphase,taper_wt_d0,sh_d0,sh_d1,sh_d2,tapers_d0,tapers_d1,mtse_d0,sd_d0)
+            threadsafe
             fortranname pyshmultitapermaskse
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1202,6 +1267,7 @@ python module _SHTOOLS
         end subroutine SHMultiTaperMaskSE
 
         subroutine SHMultiTaperMaskCSE(exitstatus,mtse,sd,sh1,lmax1,sh2,lmax2,tapers,lmaxt,k,taper_wt,norm,csphase,sh1_d0,sh1_d1,sh1_d2,sh2_d0,sh2_d1,sh2_d2,taper_wt_d0,tapers_d0,tapers_d1,sd_d0,mtse_d0)
+            threadsafe
             fortranname pyshmultitapermaskcse
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1232,6 +1298,7 @@ python module _SHTOOLS
         end subroutine SHMultiTaperMaskCSE
 
         subroutine ComputeDMap(exitstatus,Dij,dh_mask,n_dh,lmax,sampling,degrees,dh_mask_d0,dh_mask_d1,Dij_d0,Dij_d1,degrees_d0)
+            threadsafe
             fortranname pycomputedmap
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1250,6 +1317,7 @@ python module _SHTOOLS
         end subroutine ComputeDMap
 
         subroutine Curve2Mask(exitstatus,dhgrid,n,sampling,profile,nprofile,NP,extend,profile_d0,profile_d1,dhgrid_d0,dhgrid_d1)
+            threadsafe
             fortranname pycurve2mask
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1268,6 +1336,7 @@ python module _SHTOOLS
         end subroutine Curve2Mask
 
         subroutine SHBias(exitstatus,Shh,lwin,incspectra,ldata,outcspectra,save_cg,Shh_d0,incspectra_d0,outcspectra_d0)
+            threadsafe
             fortranname pyshbias
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1284,6 +1353,7 @@ python module _SHTOOLS
         end subroutine SHBias
 
         subroutine SphericalCapCoef(exitstatus,coef,theta,lmax,coef_d0)
+            threadsafe
             fortranname pysphericalcapcoef
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1295,6 +1365,7 @@ python module _SHTOOLS
         end subroutine SphericalCapCoef
 
         subroutine MakeGravGridDH(exitstatus,cilm,lmax,gm,r0,a,f,rad,theta,phi,total,pot,n,sampling,lmax_calc,omega,normal_gravity,extend,phi_d0,phi_d1,total_d0,total_d1,rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2,theta_d0,theta_d1,pot_d0,pot_d1)
+            threadsafe
             fortranname pymakegravgriddh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1332,6 +1403,7 @@ python module _SHTOOLS
         end subroutine MakeGravGridDH
 
         subroutine MakeGravGridPoint(vec,cilm,lmax,gm,r0,r,lat,lon,omega,dealloc,cilm_d0,cilm_d1,cilm_d2)
+            threadsafe
             fortranname pymakegravgridpoint
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1351,6 +1423,7 @@ python module _SHTOOLS
         end subroutine MakeGravGridPoint
 
         subroutine MakeGravGradGridDH(exitstatus,cilm,lmax,gm,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling,lmax_calc,extend,vyz_d0,vyz_d1,vyy_d0,vyy_d1,cilm_d0,cilm_d1,cilm_d2,vzz_d0,vzz_d1,vxy_d0,vxy_d1,vxx_d0,vxx_d1,vxz_d0,vxz_d1)
+            threadsafe
             fortranname pymakegravgradgriddh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1389,6 +1462,7 @@ python module _SHTOOLS
         end subroutine MakeGravGradGridDH
 
         subroutine MakeMagGradGridDH(exitstatus,cilm,lmax,r0,a,f,vxx,vyy,vzz,vxy,vxz,vyz,n,sampling,lmax_calc,extend,vyz_d0,vyz_d1,vyy_d0,vyy_d1,cilm_d0,cilm_d1,cilm_d2,vzz_d0,vzz_d1,vxy_d0,vxy_d1,vxx_d0,vxx_d1,vxz_d0,vxz_d1)
+            threadsafe
             fortranname pymakemaggradgriddh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1426,6 +1500,7 @@ python module _SHTOOLS
         end subroutine MakeMagGradGridDH
 
         subroutine MakeMagGridPoint(vec,cilm,lmax,a,r,lat,lon,dealloc,cilm_d0,cilm_d1,cilm_d2)
+            threadsafe
             fortranname pymakemaggridpoint
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1443,6 +1518,7 @@ python module _SHTOOLS
         end subroutine MakeMagGridPoint
 
         subroutine MakeGeoidGridDH(exitstatus,geoid,cilm,lmax,r0pot,GM,PotRef,omega,r,sampling,order,nlat,nlong,lmax_calc,a,f,extend,cilm_d0,cilm_d1,cilm_d2,geoid_d0,geoid_d1)
+            threadsafe
             fortranname pymakegeoidgriddh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1471,6 +1547,7 @@ python module _SHTOOLS
         end subroutine MakeGeoidGridDH
 
         subroutine CilmPlusDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
+            threadsafe
             fortranname pycilmplusdh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1492,6 +1569,7 @@ python module _SHTOOLS
         end subroutine CilmPlusDH
 
         subroutine CilmMinusDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2)
+            threadsafe
             fortranname pycilmminusdh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1513,6 +1591,7 @@ python module _SHTOOLS
         end subroutine CilmMinusDH
 
         subroutine CilmPlusRhoHDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
+            threadsafe
             fortranname pycilmplusrhohdh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1536,6 +1615,7 @@ python module _SHTOOLS
         end subroutine CilmPlusRhoHDH
 
         subroutine CilmMinusRhoHDH(exitstatus,cilm,gridin,lmax,nmax,mass,d,rho,sampling,n,gridin_d0,gridin_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
+            threadsafe
             fortranname pycilmminusrhohdh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1559,6 +1639,7 @@ python module _SHTOOLS
         end subroutine CilmMinusRhoHDH
 
         subroutine BAtoHilmDH(exitstatus,cilm,ba,griddh,lmax,nmax,mass,r0,rho,sampling,filter_type,filter_deg,lmax_calc,ba_d0,ba_d1,ba_d2,griddh_d0,griddh_d1,cilm_d0,cilm_d1,cilm_d2)
+            threadsafe
             fortranname pybatohilmdh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1586,6 +1667,7 @@ python module _SHTOOLS
         end subroutine BAtoHilmDH
 
         subroutine BAtoHilmRhoHDH(exitstatus,cilm,ba,griddh,rho,lmax,nmax,mass,r0,sampling,filter_type,filter_deg,lmax_calc,ba_d0,ba_d1,ba_d2,griddh_d0,griddh_d1,cilm_d0,cilm_d1,cilm_d2,rho_d0,rho_d1)
+            threadsafe
             fortranname pybatohilmrhohdh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1615,6 +1697,7 @@ python module _SHTOOLS
         end subroutine BAtoHilmRhoHDH
 
         function DownContFilterMA(l,half,r,d)
+            threadsafe
             fortranname pydowncontfilterma
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1626,6 +1709,7 @@ python module _SHTOOLS
         end function DownContFilterMA
 
         function DownContFilterMC(l,half,r,d)
+            threadsafe
             fortranname pydowncontfiltermc
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1637,6 +1721,7 @@ python module _SHTOOLS
         end function DownContFilterMC
 
         function NormalGravity(geocentric_lat,gm,omega,a,b)
+            threadsafe
             fortranname pynormalgravity
             integer, parameter :: dp = selected_real_kind(p=15)
             real(dp),intent(in) :: geocentric_lat
@@ -1648,6 +1733,7 @@ python module _SHTOOLS
         end function NormalGravity
 
         subroutine MakeMagGridDH(exitstatus,cilm,lmax,r0,a,f,rad,theta,phi,total,pot,n,sampling,lmax_calc,extend,total_d0,total_d1,cilm_d0,cilm_d1,cilm_d2,rad_d0,rad_d1,theta_d0,theta_d1,phi_d0,phi_d1,pot_d0,pot_d1)
+            threadsafe
             fortranname pymakemaggriddh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1682,6 +1768,7 @@ python module _SHTOOLS
         end subroutine MakeMagGridDH
 
         subroutine MakeCircleCoord(exitstatus,coord,lat,lon,theta0,cinterval,cnum,coord_d0,coord_d1)
+            threadsafe
             fortranname pymakecirclecoord
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1697,6 +1784,7 @@ python module _SHTOOLS
         end subroutine MakeCircleCoord
 
         subroutine MakeEllipseCoord(exitstatus,coord,lat,lon,dec,A_theta,B_theta,cinterval,cnum,coord_d0,coord_d1)
+            threadsafe
             fortranname pymakeellipsecoord
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1714,6 +1802,7 @@ python module _SHTOOLS
         end subroutine MakeEllipseCoord
 
         subroutine Wigner3j(exitstatus,w3j,jmin,jmax,j2,j3,m1,m2,m3,w3j_d0)
+            threadsafe
             fortranname pywigner3j
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1730,6 +1819,7 @@ python module _SHTOOLS
         end subroutine Wigner3j
 
         subroutine DHaj(exitstatus,n,aj,extend,aj_d0)
+            threadsafe
             fortranname pydhaj
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1741,6 +1831,7 @@ python module _SHTOOLS
         end subroutine DHaj
 
         subroutine SHRotateTapers(exitstatus,tapersrot,tapers,taper_order,lmax,nrot,x,dj,tapersrot_d0,tapersrot_d1,tapers_d0,tapers_d1,taper_order_d0,dj_d0,dj_d1,dj_d2)
+            threadsafe
             fortranname pyshrotatetapers
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1763,6 +1854,7 @@ python module _SHTOOLS
         end subroutine SHRotateTapers
 
         subroutine SlepianCoeffs(exitstatus,falpha,galpha,flm,lmax,nmax,falpha_d0,galpha_d0,galpha_d1,flm_d0,flm_d1,flm_d2)
+            threadsafe
             fortranname pyslepiancoeffs
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1781,6 +1873,7 @@ python module _SHTOOLS
         end subroutine SlepianCoeffs
 
         subroutine SlepianCoeffsToSH(exitstatus,flm,falpha,galpha,lmax,nmax,flm_d0,flm_d1,flm_d2,falpha_d0,galpha_d0,galpha_d1)
+            threadsafe
             fortranname pyslepiancoeffstosh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1799,6 +1892,7 @@ python module _SHTOOLS
         end subroutine SlepianCoeffsToSH
 
         subroutine SHSCouplingMatrix(exitstatus,kij,galpha,lmax,nmax,kij_d0,kij_d1,galpha_d0,galpha_d1)
+            threadsafe
             fortranname pyshscouplingmatrix
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1814,6 +1908,7 @@ python module _SHTOOLS
         end subroutine SHSCouplingMatrix
 
         subroutine SHSlepianVar(exitstatus,l,galpha,galpha_order,Sff,kmax,lmax,variance,galpha_order_d0,Sff_d0,galpha_d0,galpha_d1)
+            threadsafe
             fortranname pyshslepianvar
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1832,6 +1927,7 @@ python module _SHTOOLS
         end subroutine SHSlepianVar
 
         subroutine SHSCouplingMatrixCap(exitstatus,kij,galpha,galpha_order,lmax,nmax,kij_d0,kij_d1,galpha_d0,galpha_d1,galpha_order_d0)
+            threadsafe
             fortranname pyshscouplingmatrixcap
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)
@@ -1849,6 +1945,7 @@ python module _SHTOOLS
         end subroutine SHSCouplingMatrixCap
 
         subroutine MakeGradientDH(exitstatus,cilm,lmax,theta,phi,n,sampling,lmax_calc,extend,phi_d0,phi_d1,cilm_d0,cilm_d1,cilm_d2,theta_d0,theta_d1)
+            threadsafe
             fortranname pymakegradientdh
             integer, parameter :: dp = selected_real_kind(p=15)
             integer, parameter :: int32 = selected_int_kind(9)

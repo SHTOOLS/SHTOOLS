@@ -81,7 +81,7 @@ def TestNormalGravity():
 def TestGravGrad():
     # ---- input parameters ----
     lmax = 100
-    clm = np.zeros((2, lmax + 1, lmax + 1), dtype=float)
+    clm = np.zeros((2, lmax + 1, lmax + 1), dtype=np.float64)
     clm[0, 2, 2] = 1.0
     gm = 1.0
     r0 = 1.0
