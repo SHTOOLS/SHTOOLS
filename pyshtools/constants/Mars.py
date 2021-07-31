@@ -30,7 +30,7 @@ mass = _Constant(
                          ),
     reference='Derived from gm_mars and G.')
 
-r = _Constant(
+mean_radius = _Constant(
     abbrev='r_mars',
     name='Mean radius of Mars',
     value=3389.500e3,
@@ -41,16 +41,18 @@ r = _Constant(
     '(Eds.), Treatise on Geophysics, 2nd ed., Vol. 10, pp. 153-193). '
     'Oxford, Elsevier-Pergamon, doi:10.1016/B978-0-444-53802-4.00169-X.')
 
+r = mean_radius
+
 density = _Constant(
     abbrev='density_mars',
     name='Mean density of Mars',
-    value=3 * mass.value / (_np.pi * 4 * r.value**3),
+    value=3 * mass.value / (_np.pi * 4 * mean_radius.value**3),
     unit='kg / m3',
     uncertainty=_np.sqrt((3 * mass.uncertainty /
-                         (_np.pi * 4 * r.value**3))**2
+                         (_np.pi * 4 * mean_radius.value**3))**2
                          + (3 * 3 * mass.value *
-                         r.uncertainty /
-                         (_np.pi * 4 * r.value**4))**2
+                         mean_radius.uncertainty /
+                         (_np.pi * 4 * mean_radius.value**4))**2
                          ),
     reference='Derived from mass_mars and r_mars.')
 
@@ -58,11 +60,11 @@ g0 = _Constant(
     abbrev='g0_mars',
     name='Mean surface gravity of Mars at mean planetary radius, '
     'ignoring rotation and tides',
-    value=gm.value / r.value**2,
+    value=gm.value / mean_radius.value**2,
     unit='m / s2',
-    uncertainty=_np.sqrt((gm.uncertainty / r.value**2)**2
-                         + (2 * gm.value * r.uncertainty
-                         / r.value**3)**2
+    uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
+                         + (2 * gm.value * mean_radius.uncertainty
+                         / mean_radius.value**3)**2
                          ),
     reference='Derived from gm_mars and r_mars.')
 
@@ -125,4 +127,5 @@ u0 = _Constant(
     'the planet Mars. Earth, Moon, and Planets, 106, 1-13, '
     'doi:10.1007/s11038-009-9342-7.')
 
-__all__ = ['gm', 'mass', 'r', 'density', 'g0', 'omega', 'a', 'b', 'f', 'u0']
+__all__ = ['gm', 'mass', 'mean_radius', 'r', 'density', 'g0', 'omega', 'a',
+           'b', 'f', 'u0']

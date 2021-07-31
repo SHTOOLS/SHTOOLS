@@ -110,7 +110,7 @@ def TestGravGrad():
 
 def TestFilter():
     half = 80
-    r = constants.Moon.r.value
+    r = constants.Moon.mean_radius.value
     d = r - 40.e3
     deglist = np.arange(1, 200, 1)
     wl = np.zeros(len(deglist) + 1)
@@ -134,7 +134,8 @@ def TestMakeMagGrid():
     infile = '../../ExampleDataFiles/FSU_mars90.sh'
     clm, lmax, header = shio.shread(infile, header=True, skip=1)
     r0 = float(header[0]) * 1.e3
-    a = constants.Mars.r.value + 145.0e3  # radius to evaluate the field
+    a = constants.Mars.mean_radius.value + 145.0e3  # radius to evaluate the
+                                                    # field
 
     rad, theta, phi, total, pot = gravmag.MakeMagGridDH(
         clm, r0, lmax=719, a=a, f=constants.Mars.f.value, lmax_calc=90)
