@@ -2308,7 +2308,7 @@
     end subroutine pySHSCouplingMatrixCap
 
     subroutine pyMakeGradientDH(exitstatus,cilm,lmax,theta,phi,n,sampling,&
-                                lmax_calc,extend,phi_d0,phi_d1,cilm_d0,&
+                                lmax_calc,extend,radius,phi_d0,phi_d1,cilm_d0,&
                                 cilm_d1,cilm_d2,theta_d0,theta_d1)
         use shtools, only: MakeGradientDH
         use ftypes
@@ -2329,7 +2329,8 @@
         integer(int32),intent(in) :: sampling
         integer(int32),intent(in) :: lmax_calc
         integer(int32),intent(in) :: extend
+        real(dp),intent(in) :: radius
         call MakeGradientDH(cilm,lmax,theta,phi,n,sampling=sampling,&
-                            lmax_calc=lmax_calc,extend=extend,&
+                            lmax_calc=lmax_calc,extend=extend,radius=radius,&
                             exitstatus=exitstatus)
     end subroutine pyMakeGradientDH

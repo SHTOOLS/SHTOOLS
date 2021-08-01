@@ -2171,7 +2171,7 @@ class SHCoeffs(object):
 
     # ---- Compute the horizontal gradient ----
     def gradient(self, grid='DH2', lmax=None, lmax_calc=None, units=None,
-                 extend=True):
+                 extend=True, radius=None):
         """
         Compute the horizontal gradient of the function and return an
         SHGradient class instance.
@@ -2200,11 +2200,10 @@ class SHCoeffs(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
+        radius : float, optional, default = 1.0
+            The radius of the sphere used when computing the gradient of the
+            function.
 
-        Notes
-        -----
-        The gradient is evaluated using the radius given by the degree 0
-        coefficient of the function.
         """
         if lmax is None:
             lmax = self.lmax
@@ -2218,11 +2217,11 @@ class SHCoeffs(object):
         if grid.upper() in ('DH', 'DH1'):
             gradientout = self._gradientDH(sampling=1, lmax=lmax,
                                            lmax_calc=lmax_calc, units=units,
-                                           extend=extend)
+                                           extend=extend, radius=radius)
         elif grid.upper() == 'DH2':
             gradientout = self._gradientDH(sampling=2, lmax=lmax,
                                            lmax_calc=lmax_calc, units=units,
-                                           extend=extend)
+                                           extend=extend, radius=radius)
         elif grid.upper() == 'GLQ':
             raise NotImplementedError('gradient() does not support the use '
                                       'of GLQ grids.')
@@ -4074,13 +4073,14 @@ class SHRealCoeffs(SHCoeffs):
                              'ndarray, or list. Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
-    def _gradientDH(self, sampling, lmax, lmax_calc, units, extend):
+    def _gradientDH(self, sampling, lmax, lmax_calc, units, extend, radius):
         """Evaluate the gradient on a Driscoll and Healy (1994) grid."""
         from .shgradient import SHGradient
 
         theta, phi = _shtools.MakeGradientDH(
             self.to_array(normalization='4pi', csphase=1, errors=False),
-            sampling=sampling, lmax=lmax, lmax_calc=lmax_calc, extend=extend)
+            sampling=sampling, lmax=lmax, lmax_calc=lmax_calc, extend=extend,
+            radius=radius)
 
         return SHGradient(theta, phi, lmax, lmax_calc, units=units)
 
