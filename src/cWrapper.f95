@@ -292,6 +292,27 @@
                                ,lmax_calc=lmax_calc,extend=extend,exitstatus=exitstatus)
     end subroutine cMakeGridDHC
 
+    subroutine cMakeGradientDH(cilm,cilm_dim,lmax,theta,phi,theta_d0,theta_d1,n,sampling&
+                                   ,lmax_calc,extend,exitstatus)  bind(c, name="MakeGradientDH")
+        use, intrinsic :: iso_c_binding
+        use shtools, only: MakeGradientDH
+        implicit none
+        integer(kind=c_int), value,intent(in) :: cilm_dim
+        real(kind=c_double), dimension(2,cilm_dim,cilm_dim),intent(in) :: cilm
+        integer(kind=c_int), value,intent(in) :: theta_d0
+        integer(kind=c_int), value,intent(in) :: theta_d1
+        real(kind=c_double), dimension(theta_d0,theta_d1),intent(out) :: theta
+        real(kind=c_double), dimension(theta_d0,theta_d1),intent(out) :: phi
+        integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_int), intent(out) :: n
+        integer(kind=c_int), optional,intent(in) :: sampling
+        integer(kind=c_int), optional,intent(in) :: lmax_calc
+        integer(kind=c_int), optional,intent(in) :: extend
+        integer(kind=c_int), optional,intent(out) :: exitstatus
+        call MakeGradientDH(cilm,lmax,theta,phi,n,sampling=sampling&
+                                ,lmax_calc=lmax_calc,extend=extend,exitstatus=exitstatus)
+    end subroutine cMakeGradientDH
+
     subroutine cSHGLQ(lmax,zero,w,plx,norm,csphase,cnorm,exitstatus)  bind(c, name="SHGLQ")
         use, intrinsic :: iso_c_binding
         use shtools, only: SHGLQ

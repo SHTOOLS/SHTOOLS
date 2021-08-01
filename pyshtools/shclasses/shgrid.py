@@ -356,12 +356,15 @@ class SHGrid(object):
 
         coslon = _np.cos(lons)
         sinlon = _np.sin(lons)
+        costheta = _np.cos(theta)
         for i in range(imin, imax+1):
             coslat = _np.cos(lats[i])
             sinlat = _np.sin(lats[i])
             for j in range(0, temp.nlon):
                 dist = coslat * (x * coslon[j] + y * sinlon[j]) + z * sinlat
-                if _np.arccos(dist) <= theta:
+                if dist >= costheta: # ie. _np.arccos(dist) <= theta 
+                    #since 0 <= theta <= pi/2 and 0 <= dist <= 1
+                    #so cos is decreasing
                     temp.data[i, j] = 1.
 
         return temp
@@ -2189,7 +2192,8 @@ class DHComplexGrid(SHGrid):
 
         cilm = _shtools.SHExpandDHC(self.data[:self.nlat-self.extend,
                                               :self.nlon-self.extend],
-                                    norm=norm, csphase=csphase, **kwargs)
+                                    norm=norm, csphase=csphase,
+                                    sampling=self.sampling, **kwargs)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
                                      copy=False)
