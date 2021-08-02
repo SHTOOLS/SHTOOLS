@@ -382,7 +382,7 @@ class SHGravCoeffs(object):
                   header=True, header2=False, errors=None, error_kind=None,
                   csphase=1, r0_index=0, gm_index=1, omega_index=None,
                   header_units='m', set_degree0=True, name=None, epoch=None,
-                  encoding=None, **kwargs):
+                  encoding=None, quiet=False, **kwargs):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -395,7 +395,7 @@ class SHGravCoeffs(object):
                                    header_units, set_degree0, name, encoding])
         x = SHGravCoeffs.from_file(filename, format='icgem', [lmax, omega,
                                    normalization, csphase, errors, set_degree0,
-                                   name, name, epoch, encoding])
+                                   name, name, epoch, encoding, quiet])
         x = SHGravCoeffs.from_file(filename, format='bshc', gm, r0, [lmax,
                                    omega, normalization, csphase, set_degree0,
                                    name])
@@ -483,6 +483,9 @@ class SHGravCoeffs(object):
         encoding : str, optional, default = None
             Encoding of the input file when format is 'shtools', 'dov' or
             'icgem'. The default is to use the system default.
+        quiet : bool, default = False
+            If True, suppress warnings about undefined keywords when reading
+            ICGEM formatted files.
         **kwargs : keyword argument list, optional for format = 'npy'
             Keyword arguments of numpy.load() when format is 'npy'.
 
@@ -626,11 +629,12 @@ class SHGravCoeffs(object):
                 coeffs, gm, r0 = _read_icgem_gfc(filename=fname,
                                                  errors=None, lmax=lmax,
                                                  epoch=epoch,
-                                                 encoding=encoding)
+                                                 encoding=encoding,
+                                                 quiet=quiet)
             elif errors in valid_err:
                 coeffs, gm, r0, error_coeffs = _read_icgem_gfc(
                     filename=fname, errors=errors, lmax=lmax, epoch=epoch,
-                    encoding=encoding)
+                    encoding=encoding, quiet=quiet)
                 error_kind = errors
             else:
                 raise ValueError('errors must be among: {}. '

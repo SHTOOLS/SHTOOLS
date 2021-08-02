@@ -387,7 +387,7 @@ def SHExpandGLQC(grid, norm=1, csphase=1, lmax_calc=None):
     return res
 
 
-def MakeGradientDH(cilm, lmax=None, sampling=1, lmax_calc=None, extend=False):
+def MakeGradientDH(cilm, lmax=None, sampling=1, lmax_calc=None, extend=False, radius=None):
     if lmax is None:
         lmax = cilm.shape[1] - 1
     cilm = cilm[:, : lmax + 1, : lmax + 1]
@@ -396,5 +396,6 @@ def MakeGradientDH(cilm, lmax=None, sampling=1, lmax_calc=None, extend=False):
     alm = _make_alm(cilm, lmax_calc, norm=1, csphase=1)
     res = np.empty((2, 2*lmax+2+extend, sampling*(2*lmax+2)+extend))
     res = _synthesize_DH_deriv1(alm, lmax_calc, extend, res)
-    res *= 1.0 / cilm[0, 0, 0]
+    if radius is not None:
+        res *= 1.0 / radius
     return res

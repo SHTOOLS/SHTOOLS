@@ -111,18 +111,18 @@ def test_SHT_deriv(lmax, grd, csphase, extend):
 
     pysh.backends.select_ducc_backend(nthreads=nthreads)
     t0 = time()
-    grad = clm.gradient(extend=extend)
+    grad = clm.gradient(extend=extend,radius=3.4)
     tducc = time() - t0
     pysh.backends.select_shtools_backend()
     t0 = time()
-    grad2 = clm.gradient(extend=extend)
+    grad2 = clm.gradient(extend=extend,radius=1.)
     tshtools = time() - t0
 
     flush_buffers(grd)
 
     return (
-        _l2error(grad.phi.to_array(), grad2.phi.to_array())
-        + _l2error(grad.theta.to_array(), grad2.theta.to_array()),
+        _l2error(3.4*grad.phi.to_array(), grad2.phi.to_array())
+        + _l2error(3.4*grad.theta.to_array(), grad2.theta.to_array()),
         tshtools / tducc,
     )
 
