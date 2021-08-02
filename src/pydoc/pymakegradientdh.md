@@ -5,7 +5,7 @@ Compute the gradient of a scalar function and return grids of the two horizontal
 # Usage
 
 ```python
-`theta`, `phi` = MakeGradientDH (`cilm`, [`lmax`, `sampling`, `lmax_calc`, `extend`])
+`theta`, `phi` = MakeGradientDH (`cilm`, [`lmax`, `sampling`, `lmax_calc`, `extend`, `radius`])
 ```
 
 # Returns
@@ -30,8 +30,12 @@ Compute the gradient of a scalar function and return grids of the two horizontal
 `lmax_calc` : optional, integer, default = `lmax`
 :   The maximum spherical harmonic degree used in evaluating the functions. This must be less than or equal to `lmax`.
 
-`extend` : input, optional, bool, default = False
+`extend` : optional, bool, default = False
 :   If True, compute the longitudinal band for 360 E and the latitudinal band for 90 S. This increases each of the dimensions of `griddh` by 1.
+
+`radius` : optional, float, default = 1.0
+:   The radius of the sphere used when computing the gradient of the function.
+
 
 # Description
 
@@ -39,7 +43,7 @@ Compute the gradient of a scalar function and return grids of the two horizontal
 
 `Grad F = 1/r dF/theta theta-hat + 1/(r sin theta) dF/dphi phi-hat`.
 
-where theta is colatitude and phi is longitude. The radius r is taken from the degree zero coefficient of the input function.
+where theta is colatitude and phi is longitude. The radius r is by default set to 1, but this can be modified by use of the optional parameter `radius`.
 
 The default is to use an input grid that is equally sampled (`n` by `n`), but this can be changed to use an equally spaced grid (`n` by 2`n`) by the optional argument `sampling`. The redundant longitudinal band for 360 E and the latitudinal band for 90 S are excluded by default, but these can be computed by specifying the optional argument `extend`.
 
