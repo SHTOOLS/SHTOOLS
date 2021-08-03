@@ -207,7 +207,7 @@ class SHGeoid(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         return self.geoid.plot(projection=projection,
