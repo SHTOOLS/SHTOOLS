@@ -293,7 +293,7 @@
     end subroutine cMakeGridDHC
 
     subroutine cMakeGradientDH(cilm,cilm_dim,lmax,theta,phi,theta_d0,theta_d1,n,sampling&
-                                   ,lmax_calc,extend,exitstatus)  bind(c, name="MakeGradientDH")
+                                   ,lmax_calc,extend,radius,exitstatus)  bind(c, name="MakeGradientDH")
         use, intrinsic :: iso_c_binding
         use shtools, only: MakeGradientDH
         implicit none
@@ -304,6 +304,7 @@
         real(kind=c_double), dimension(theta_d0,theta_d1),intent(out) :: theta
         real(kind=c_double), dimension(theta_d0,theta_d1),intent(out) :: phi
         integer(kind=c_int), value,intent(in) :: lmax
+        integer(kind=c_double), optional,intent(in) :: radius
         integer(kind=c_int), intent(out) :: n
         integer(kind=c_int), optional,intent(in) :: sampling
         integer(kind=c_int), optional,intent(in) :: lmax_calc
