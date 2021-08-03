@@ -1,16 +1,17 @@
 subroutine MakeGradientDH(cilm, lmax, theta_grid, phi_grid, n, sampling, &
-                          lmax_calc, extend, exitstatus)
+                          lmax_calc, extend, radius, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   Given the spherical harmonic coefficients CILM of a scalar function defined
 !   on the sphere, this subroutine will compute the horizontal gradient of the
-!   function, and return 2D Driscol and Healy sampled grids for the theta and
-!   phi vector components. The gradient is given by the formula:
+!   function on the unit sphere, and return 2D Driscol and Healy sampled grids
+!   for the theta and phi vector components. The gradient is given by the
+!   formula:
 !
 !       Grad F = 1/r dF/theta theta-hat + 1/(r sin theta) dF/dphi phi-hat
 !
-!   where theta is colatitude and phi is longitude. The radius r is taken from
-!   the degree zero coefficient of the function CILM(1,1,1).
+!   where theta is colatitude and phi is longitude. The radius r is by default
+!   set to 1, but this can be modified by use of the optional parameter RADIUS.
 !
 !   The output grids contain N samples in latitude and longitude by default,
 !   but if the optional parameter SAMPLING is set to 2, the grids will contain
@@ -41,6 +42,9 @@ subroutine MakeGradientDH(cilm, lmax, theta_grid, phi_grid, n, sampling, &
 !           extend      If 1, return a grid that contains an additional column
 !                       and row corresponding to 360 E longitude and 90 S
 !                       latitude, respectively.
+!           radius      The radius of the sphere used when computing the
+!                       gradient of the function. If not specified, the radius
+!                       will be set to 1.
 !
 !       OUT
 !           theta_grid  Gridded expansaion of the theta component of the
@@ -83,6 +87,7 @@ subroutine MakeGradientDH(cilm, lmax, theta_grid, phi_grid, n, sampling, &
     integer(int32), intent(out) :: n
     integer(int32), intent(in), optional :: sampling, lmax_calc, extend
     integer(int32), intent(out), optional :: exitstatus
+    real(dp), intent(in), optional :: radius
     integer(int32) :: l, m, i, l1, m1, lmax_comp, i_eq, i_s, astat(4), nlong, &
                       nlat_out, nlong_out, extend_grid
     real(dp) :: grid(4*lmax+4), pi, theta, scalef, rescalem, u, p, dpl, pmm, &
@@ -208,8 +213,12 @@ subroutine MakeGradientDH(cilm, lmax, theta_grid, phi_grid, n, sampling, &
 
     end if
 
-    r = cilm(1,1,1)  ! set the radius equal to the degree 0 term of the
-                     ! function.
+    if (present(radius)) then
+        r = radius
+    else
+        r = 1.0_dp
+    end if
+
     !--------------------------------------------------------------------------
     !
     !   Calculate recursion constants used in computing Legendre functions.

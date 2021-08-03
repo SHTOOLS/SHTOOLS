@@ -1944,7 +1944,7 @@ python module _SHTOOLS
             integer(int32),optional,intent(in),depend(galpha_order),intent(hide) :: galpha_order_d0 = len(galpha_order)
         end subroutine SHSCouplingMatrixCap
 
-        subroutine MakeGradientDH(exitstatus,cilm,lmax,theta,phi,n,sampling,lmax_calc,extend,phi_d0,phi_d1,cilm_d0,cilm_d1,cilm_d2,theta_d0,theta_d1)
+        subroutine MakeGradientDH(exitstatus,cilm,lmax,theta,phi,n,sampling,lmax_calc,extend,radius,phi_d0,phi_d1,cilm_d0,cilm_d1,cilm_d2,theta_d0,theta_d1)
             threadsafe
             fortranname pymakegradientdh
             integer, parameter :: dp = selected_real_kind(p=15)
@@ -1958,6 +1958,7 @@ python module _SHTOOLS
             integer(int32),optional,intent(in) :: sampling = 2
             integer(int32),optional,intent(in),depend(lmax) :: lmax_calc = lmax
             integer(int32),optional,intent(in) :: extend = 0
+            real(dp),optional,intent(in) :: radius = 1.0
             integer(int32),intent(in),intent(hide),depend(lmax,extend),check(lmax>=0) :: phi_d0 = 2*(lmax+1)+extend
             integer(int32),intent(in),intent(hide),depend(sampling,lmax,extend) :: phi_d1 = sampling*2*(lmax+1)+extend
             integer(int32),optional,intent(in),depend(cilm),intent(hide) :: cilm_d0 = shape(cilm,0)
