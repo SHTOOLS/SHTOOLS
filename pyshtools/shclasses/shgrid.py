@@ -63,27 +63,31 @@ class SHGrid(object):
 
     Each class instance provides the following methods:
 
-    to_array()  : Return the raw gridded data as a numpy array.
-    to_xarray() : Return the gridded data as an xarray DataArray.
-    to_file()   : Save gridded data to a text or binary file.
-    to_netcdf() : Return the gridded data as a netcdf formatted file or object.
-    to_real()   : Return a new SHGrid class instance of the real component
-                  of the data.
-    to_imag()   : Return a new SHGrid class instance of the imaginary component
-                  of the data.
-    lats()      : Return a vector containing the latitudes of each row
-                  of the gridded data.
-    lons()      : Return a vector containing the longitudes of each column
-                  of the gridded data.
-    histogram() : Return an area-weighted histogram of the gridded data.
-    expand()    : Expand the grid into spherical harmonics.
-    max()       : Return the maximum value of data using numpy.max().
-    min()       : Return the minimum value of data using numpy.min().
-    copy()      : Return a copy of the class instance.
-    plot()      : Plot the data.
-    plotgmt()   : Plot projected data using the generic mapping tools (GMT).
-    plot3d()    : Plot a 3-dimensional representation of the data.
-    info()      : Print a summary of the data stored in the SHGrid instance.
+    to_array()       : Return the raw gridded data as a numpy array.
+    to_xarray()      : Return the gridded data as an xarray DataArray.
+    to_file()        : Save gridded data to a text or binary file.
+    to_netcdf()      : Return the gridded data as a netcdf formatted file or
+                       object.
+    to_real()        : Return a new SHGrid class instance of the real component
+                       of the data.
+    to_imag()        : Return a new SHGrid class instance of the imaginary
+                       component of the data.
+    lats()           : Return a vector containing the latitudes of each row
+                       of the gridded data.
+    lons()           : Return a vector containing the longitudes of each column
+                       of the gridded data.
+    histogram()      : Return an area-weighted histogram of the gridded data.
+    expand()         : Expand the grid into spherical harmonics.
+    max()            : Return the maximum value of data using numpy.max().
+    min()            : Return the minimum value of data using numpy.min().
+    copy()           : Return a copy of the class instance.
+    plot()           : Plot the data.
+    plotgmt()        : Plot projected data using the generic mapping tools
+                       (GMT).
+    plot3d()         : Plot a 3-dimensional representation of the data.
+    plot_histogram() : Plot a histogram of the area-weighted gridded data.
+    info()           : Print a summary of the data stored in the SHGrid
+                       instance.
     """
 
     def __init__():
@@ -912,14 +916,14 @@ class SHGrid(object):
             return self._lons()
 
     # ---- Functions that act on the data ----
-    def histogram(self, bins=10):
+    def histogram(self, bins=10, range=None):
         """
         Return an area-weighted histogram of the gridded data, normalized such
         that the integral over the range is unity.
 
         Usage
         -----
-        hist, bin_edges = x.historgram([bins])
+        hist, bin_edges = x.historgram([bins, range])
 
         Returns
         -------
@@ -931,19 +935,21 @@ class SHGrid(object):
 
         Parameters
         ----------
-        bins : option, int or sequence of scalars or str, default = 10
+        bins : int or sequence of scalars or str, optional, default = 10
              If bins is an int, it defines the number of equal-width bins in
              the given range. If bins is a sequence, it defines a monotonically
              increasing array of bin edges, including the rightmost edge,
              allowing for non-uniform bin widths. If bins is a string, it
              defines the method used to calculate the optimal bin width, as
              defined by numpy.histogram_bin_edges.
+        range : (float, float), optional, default = None
+            The lower and upper range of the bins.
 
         Notes
         -----
         This method does not work with complex data.
         """
-        return self._histogram(bins=bins)
+        return self._histogram(bins=bins, range=range)
 
     def expand(self, normalization='4pi', csphase=1, **kwargs):
         """
@@ -1037,7 +1043,8 @@ class SHGrid(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, save the image to the specified file.
+            If present, and if ax is not specified, save the image to the
+            specified file.
 
         Notes
         -----
@@ -1278,7 +1285,7 @@ class SHGrid(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if projection is not None:
@@ -1603,6 +1610,145 @@ class SHGrid(object):
         if fig is None:
             return figure
 
+    def plot_histogram(self, bins=10, range=None, cumulative=False,
+                       histtype='bar', orientation='vertical', xscale='lin',
+                       yscale='lin', color=None, legend=None,
+                       legend_loc='best', xlabel=None,
+                       ylabel='Fraction', title=None, grid=False,
+                       axes_labelsize=None, tick_labelsize=None,
+                       titlesize=None, ax=None, show=True, fname=None):
+        """
+        Plot an area-weighted histogram of the gridded data, normalized such
+        that the integral over the range is unity.
+
+        Usage
+        -----
+        x.plot_histogram([bins, range, cumulative, histtype, orientation,
+                          xscale, yscale, color, legend, legend_loc, xlabel,
+                          ylabel, title, grid, axes_labelsize, tick_labelsize,
+                          titlesize, ax, show, fname])
+
+        Parameters
+        ----------
+        bins : int or sequence of scalars or str, optional, default = 10
+             If bins is an int, it defines the number of equal-width bins in
+             the given range. If bins is a sequence, it defines a monotonically
+             increasing array of bin edges, including the rightmost edge,
+             allowing for non-uniform bin widths. If bins is a string, it
+             defines the method used to calculate the optimal bin width, as
+             defined by numpy.histogram_bin_edges.
+        range : (float, float), optional, default = None
+            The lower and upper range of the bins.
+        cumulative : bool or -1, optional, default = False
+            If True, then a histogram is computed where each bin gives the
+            counts in that bin plus all bins for smaller values. If cumulative
+            is -1, the direction of accumulation is reversed.
+        histtype : str, optional, default = 'bar'
+            The type of histogram to draw. 'bar' is a traditional bar-type
+            histogram. 'barstacked' is a bar-type histogram where multiple data
+            are stacked on top of each other. 'step' generates a lineplot that
+            is unfilled. 'stepfilled' generates a lineplot that is filled.
+        orientation : str, optional, default = 'vertical'
+            Orientiation of the histogram, either 'vertical' or 'horizontal'.
+        xscale : str, optional, default = 'lin'
+            Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'lin'
+            Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
+        title : str or list, optional, default = None
+            The title of the plot.
+        color : str, optional, default = None
+            Name of the color used for the histogram bars or lines.
+        legend : str or None, optional, default = None
+            Label to use when plotting multiple datasets.
+        legend_loc : str, optional, default = 'best'
+            Location of the legend, such as 'upper right' or 'lower center'
+            (see pyplot.legend for all options).
+        xlabel : str, optional, default = None
+            Label for the x axis.
+        ylabel : str, optional, default = 'Fraction'
+            Label for the y axis.
+        grid : bool, optional, default = False
+            If True, plot grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        titlesize : int, optional, default = None
+            The font size of the title.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        fname : str, optional, default = None
+            If present, and if ax is not specified, save the image to the
+            specified file.
+
+        Notes
+        -----
+        This method calls histogram() to bin the data, and then uses
+        matplotlib.pyplot.hist() to plot the binned data. This method does not
+        work with complex data.
+        """
+        if self.kind == 'complex':
+            raise NotImplementedError(
+                'plot_histogram() does not support complex data.')
+
+        if ax is None:
+            fig, axes = _plt.subplots(1, 1)
+        else:
+            axes = ax
+
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
+        if titlesize is None:
+            titlesize = _mpl.rcParams['axes.titlesize']
+            if type(titlesize) == str:
+                titlesize = _mpl.font_manager \
+                                 .FontProperties(size=titlesize) \
+                                 .get_size_in_points()
+
+        hist, bin_edges = self.histogram(bins=bins, range=range)
+        axes.hist(bin_edges[:-1], bin_edges, weights=hist,
+                  cumulative=cumulative, histtype=histtype,
+                  orientation=orientation, color=color, label=legend)
+
+        if xscale == 'log':
+            axes.set_xscale('log')
+        if yscale == 'log':
+            axes.set_yscale('log')
+
+        if xlabel is not None:
+            axes.set_xlabel(xlabel, fontsize=axes_labelsize)
+        if ylabel is not None:
+            axes.set_ylabel(ylabel, fontsize=axes_labelsize)
+        if title is not None:
+            axes.set_title(title, fontsize=titlesize)
+
+        axes.tick_params(which='major', labelsize=tick_labelsize)
+        axes.minorticks_on()
+        axes.grid(grid, which='major')
+
+        if legend is not None:
+            axes.legend(loc=legend_loc)
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            if show:
+                fig.show()
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
+
 
 # ---- Real Driscoll and Healy grid class ----
 
@@ -1664,7 +1810,7 @@ class DHRealGrid(SHGrid):
             lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
-    def _histogram(self, bins=None):
+    def _histogram(self, bins=None, range=None):
         """Return an area-weighted histogram normalized to unity."""
         delta_phi = self.lons()[1] - self.lons()[0]
         delta_phi *= _np.pi / 180.
@@ -1674,7 +1820,7 @@ class DHRealGrid(SHGrid):
         # i=0, 90 N
         theta2 = 90.0 - (90.0 + self.lats()[1]) / 2.
         da[0, :] = 1. - _np.cos(theta2 * _np.pi / 180.)
-        for i in range(1, self.nlat-1):
+        for i in _np.arange(1, self.nlat-1):
             theta1 = 90.0 - (self.lats()[i-1] + self.lats()[i]) / 2.
             theta2 = 90.0 - (self.lats()[i] + self.lats()[i+1]) / 2.
             da[i, :] = _np.cos(theta1 * _np.pi / 180.) - \
@@ -1693,7 +1839,7 @@ class DHRealGrid(SHGrid):
         return _np.histogram(self.data[:, :self.nlon-self.extend],
                              bins=bins,
                              weights=da[:, :self.nlon-self.extend],
-                             density=True)
+                             density=True, range=range)
 
     def _expand(self, normalization, csphase, **kwargs):
         """Expand the grid into real spherical harmonics."""
@@ -2458,7 +2604,7 @@ class GLQRealGrid(SHGrid):
             lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
-    def _histogram(self, bins=None):
+    def _histogram(self, bins=None, range=None):
         """Return an area-weighted histogram normalized to unity."""
         delta_phi = self.lons()[1] - self.lons()[0]
         delta_phi *= _np.pi / 180.
@@ -2468,7 +2614,7 @@ class GLQRealGrid(SHGrid):
         # First latitudinal band includes 90 N
         theta2 = 90.0 - (self.lats()[0] + self.lats()[1]) / 2.
         da[0, :] = 1. - _np.cos(theta2 * _np.pi / 180.)
-        for i in range(1, self.nlat-1):
+        for i in _np.arange(1, self.nlat-1):
             theta1 = 90.0 - (self.lats()[i-1] + self.lats()[i]) / 2.
             theta2 = 90.0 - (self.lats()[i] + self.lats()[i+1]) / 2.
             da[i, :] = _np.cos(theta1 * _np.pi / 180.) - \
@@ -2481,7 +2627,7 @@ class GLQRealGrid(SHGrid):
         return _np.histogram(self.data[:, :self.nlon-self.extend],
                              bins=bins,
                              weights=da[:, :self.nlon-self.extend],
-                             density=True)
+                             density=True, range=range)
 
     def _expand(self, normalization, csphase, **kwargs):
         """Expand the grid into real spherical harmonics."""

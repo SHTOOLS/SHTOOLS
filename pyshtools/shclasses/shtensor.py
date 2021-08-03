@@ -204,7 +204,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -312,7 +312,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -420,7 +420,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -528,7 +528,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -636,7 +636,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -744,7 +744,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -852,7 +852,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -960,7 +960,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -1068,7 +1068,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -1170,7 +1170,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
        """
         if colorbar is not None:
@@ -1388,7 +1388,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -1500,7 +1500,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -1613,7 +1613,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -1727,7 +1727,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -1834,7 +1834,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if colorbar is not None:
@@ -1990,7 +1990,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -2101,7 +2101,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -2212,7 +2212,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -2318,7 +2318,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if colorbar is not None:
@@ -2462,7 +2462,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -2573,7 +2573,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -2684,7 +2684,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if cb_label is None:
@@ -2791,7 +2791,7 @@ class Tensor(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if colorbar is not None:

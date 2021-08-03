@@ -2736,7 +2736,7 @@ class SHGravCoeffs(object):
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot().
@@ -2789,8 +2789,16 @@ class SHGravCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
 
         axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
 
@@ -2951,7 +2959,7 @@ class SHGravCoeffs(object):
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
 
         Notes
@@ -3394,7 +3402,7 @@ class SHGravCoeffs(object):
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot() and pyplot.errorbar().
@@ -3478,8 +3486,16 @@ class SHGravCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
 
         if style in ('admit', 'separate', 'combined'):
             if errors:
@@ -3589,7 +3605,7 @@ class SHGravCoeffs(object):
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot() and pyplot.errorbar().
@@ -3653,7 +3669,7 @@ class SHGravCoeffs(object):
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot() and pyplot.errorbar().
