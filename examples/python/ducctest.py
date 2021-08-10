@@ -62,7 +62,7 @@ def test_SHTducc(lmax, grd, nthreads):
 
     clm = clm.convert(normalization="ortho", csphase=1, lmax=lmax)
 
-    pysh.backends.select_ducc_backend(nthreads=nthreads)
+    pysh.backends.select_preferred_backend("ducc", nthreads=nthreads)
     t0 = time()
     grid = clm.expand(grid=grd, extend=False)
     cilm = grid.expand(normalization="ortho", csphase=1)
@@ -80,12 +80,12 @@ def test_SHTC(lmax, grd, csphase, normalization, extend):
 
     clm = clm.convert(normalization=normalization, csphase=csphase, lmax=lmax)
 
-    pysh.backends.select_ducc_backend(nthreads=nthreads)
+    pysh.backends.select_preferred_backend("ducc", nthreads=nthreads)
     t0 = time()
     grid = clm.expand(grid=grd, extend=extend)
     cilm = grid.expand(normalization=normalization, csphase=csphase)
     tducc = time() - t0
-    pysh.backends.select_shtools_backend()
+    pysh.backends.select_preferred_backend("shtools")
     t0 = time()
     grid2 = clm.expand(grid=grd, extend=extend)
     cilm2 = grid2.expand(normalization=normalization, csphase=csphase)
@@ -109,11 +109,11 @@ def test_SHT_deriv(lmax, grd, csphase, extend):
 
     clm = clm.convert(csphase=csphase, lmax=lmax)
 
-    pysh.backends.select_ducc_backend(nthreads=nthreads)
+    pysh.backends.select_preferred_backend("ducc", nthreads=nthreads)
     t0 = time()
     grad = clm.gradient(extend=extend,radius=3.4)
     tducc = time() - t0
-    pysh.backends.select_shtools_backend()
+    pysh.backends.select_preferred_backend("shtools")
     t0 = time()
     grad2 = clm.gradient(extend=extend,radius=1.)
     tshtools = time() - t0
