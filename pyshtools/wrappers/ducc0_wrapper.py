@@ -242,7 +242,8 @@ def _addImagpart(cilm, alm):
     return cilm
 
 
-def SHRotateRealCoef(rcoeffs, angles):
+# dj_matrix is ignored
+def SHRotateRealCoef(rcoeffs, angles, dj_matrix=None):
     lmax = rcoeffs.shape[1] - 1
     alm = _make_alm(rcoeffs, lmax, 1, 1)
     alm = ducc0.sht.rotate_alm(
@@ -251,7 +252,8 @@ def SHRotateRealCoef(rcoeffs, angles):
     return _extract_alm(alm, lmax, 1, 1)
 
 
-def SHRotateComplexCoef(ccoeffs, angles):
+# dj_matrix is ignored
+def SHRotateComplexCoef(ccoeffs, angles, dj_matrix=None):
     lmax = ccoeffs.shape[1] - 1
     alm = _ccilm2almr(ccoeffs)
     alm = _apply_norm(alm, lmax, 1, 1, False)
@@ -332,8 +334,9 @@ def SHExpandDHC(grid, norm=1, sampling=1, csphase=1, lmax_calc=None):
     return res
 
 
+# zero is ignored (they are computed internally)
 def MakeGridGLQ(
-    cilm, lmax=None, norm=1, csphase=1, lmax_calc=None, extend=False
+    cilm, lmax=None, zero=None, norm=1, csphase=1, lmax_calc=None, extend=False
 ):
     if lmax is None:
         lmax = cilm.shape[1] - 1
@@ -345,8 +348,9 @@ def MakeGridGLQ(
     return _synthesize_GLQ(alm, lmax_calc, extend, out)
 
 
+# zero is ignored (they are computed internally)
 def MakeGridGLQC(
-    cilm, lmax=None, norm=1, csphase=1, lmax_calc=None, extend=False
+    cilm, lmax=None, zero=None, norm=1, csphase=1, lmax_calc=None, extend=False
 ):
     if lmax is None:
         lmax = cilm.shape[1] - 1
@@ -363,7 +367,8 @@ def MakeGridGLQC(
     return res
 
 
-def SHExpandGLQ(grid, norm=1, csphase=1, lmax_calc=None):
+# weights and zeros are ignored (they are computed internally)
+def SHExpandGLQ(grid, weights=None, zeros=None, norm=1, csphase=1, lmax_calc=None):
     if lmax_calc is None:
         lmax_calc = grid.shape[0] - 1
     if lmax_calc > (grid.shape[0] - 1):
@@ -372,7 +377,8 @@ def SHExpandGLQ(grid, norm=1, csphase=1, lmax_calc=None):
     return _extract_alm(alm, lmax_calc, norm, csphase)
 
 
-def SHExpandGLQC(grid, norm=1, csphase=1, lmax_calc=None):
+# weights and zeros are ignored (they are computed internally)
+def SHExpandGLQC(grid, weights=None, zeros=None, norm=1, csphase=1, lmax_calc=None):
     if lmax_calc is None:
         lmax_calc = grid.shape[0] - 1
     if lmax_calc > (grid.shape[0] - 1):

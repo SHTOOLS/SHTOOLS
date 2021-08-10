@@ -15,7 +15,7 @@ def flush_buffers(grd):
     degrees[0] = np.inf
     power = degrees ** (-2)
 
-    pysh.backends.select_shtools_backend()
+    pysh.backends.select_preferred_backend("shtools")
     clm = pysh.SHCoeffs.from_random(power, seed=12345)
     grid2 = clm.expand(grid=grd)
     cilm2 = grid2.expand()
@@ -33,12 +33,12 @@ def test_SHT(lmax, grd, csphase, normalization, extend):
 
     clm = clm.convert(normalization=normalization, csphase=csphase, lmax=lmax)
 
-    pysh.backends.select_ducc_backend(nthreads=nthreads)
+    pysh.backends.select_preferred_backend("ducc", nthreads=nthreads)
     t0 = time()
     grid = clm.expand(grid=grd, extend=extend)
     cilm = grid.expand()
     tducc = time() - t0
-    pysh.backends.select_shtools_backend()
+    pysh.backends.select_preferred_backend("shtools")
     t0 = time()
     grid2 = clm.expand(grid=grd, extend=extend)
     cilm2 = grid2.expand()
@@ -134,11 +134,11 @@ def test_rot(lmax, alpha, beta, gamma):
 
     clm = pysh.SHCoeffs.from_random(power, seed=12345)
 
-    pysh.backends.select_ducc_backend(nthreads=nthreads)
+    pysh.backends.select_preferred_backend("ducc", nthreads=nthreads)
     t0 = time()
     clm_rotated = clm.rotate(alpha, beta, gamma, degrees=True)
     tducc = time() - t0
-    pysh.backends.select_shtools_backend()
+    pysh.backends.select_preferred_backend("shtools")
     t0 = time()
     clm_rotated2 = clm.rotate(alpha, beta, gamma, degrees=True)
     tshtools = time() - t0
@@ -153,11 +153,11 @@ def test_rotc(lmax, alpha, beta, gamma):
 
     clm = pysh.SHCoeffs.from_random(power, seed=12345, kind="complex")
 
-    pysh.backends.select_ducc_backend(nthreads=nthreads)
+    pysh.backends.select_preferred_backend("ducc", nthreads=nthreads)
     t0 = time()
     clm_rotated = clm.rotate(alpha, beta, gamma, degrees=True)
     tducc = time() - t0
-    pysh.backends.select_shtools_backend()
+    pysh.backends.select_preferred_backend("shtools")
     t0 = time()
     clm_rotated2 = clm.rotate(alpha, beta, gamma, degrees=True)
     tshtools = time() - t0
@@ -172,7 +172,7 @@ def test_rot2(lmax, alpha, beta, gamma):
 
     clm = pysh.SHCoeffs.from_random(power, seed=12345)
 
-    pysh.backends.select_ducc_backend(nthreads=nthreads)
+    pysh.backends.select_preferred_backend("ducc", nthreads=nthreads)
     t0 = time()
     clm_rotated = clm.rotate(alpha, beta, gamma, degrees=True)
     clm_rotated = clm_rotated.rotate(-gamma, -beta, -alpha, degrees=True)
