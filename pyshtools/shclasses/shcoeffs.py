@@ -4235,7 +4235,7 @@ class SHComplexCoeffs(SHCoeffs):
                 "'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
-        coeffs_rot = backend().SHExpandDHC(grid_rot, norm=norm,
+        coeffs_rot = _shtools.SHExpandDHC(grid_rot, norm=norm,
                                           csphase=self.csphase)
 
         return SHCoeffs.from_array(coeffs_rot, errors=self.errors,
