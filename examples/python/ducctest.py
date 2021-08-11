@@ -3,7 +3,8 @@ import pyshtools as pysh
 from time import time
 
 
-nthreads=1
+nthreads = 1
+
 
 def _l2error(a, b):
     return np.sqrt(np.sum(np.abs(a - b) ** 2) / np.sum(np.abs(a) ** 2))
@@ -18,10 +19,10 @@ def flush_buffers(grd):
     pysh.backends.select_preferred_backend("shtools")
     clm = pysh.SHCoeffs.from_random(power, seed=12345)
     grid2 = clm.expand(grid=grd)
-    cilm2 = grid2.expand()
+    _ = grid2.expand()
     clm = pysh.SHCoeffs.from_random(power, seed=12345, kind="complex")
     grid2 = clm.expand(grid=grd)
-    cilm2 = grid2.expand()
+    _ = grid2.expand()
 
 
 def test_SHT(lmax, grd, csphase, normalization, extend):
@@ -111,18 +112,18 @@ def test_SHT_deriv(lmax, grd, csphase, extend):
 
     pysh.backends.select_preferred_backend("ducc", nthreads=nthreads)
     t0 = time()
-    grad = clm.gradient(extend=extend,radius=3.4)
+    grad = clm.gradient(extend=extend, radius=3.4)
     tducc = time() - t0
     pysh.backends.select_preferred_backend("shtools")
     t0 = time()
-    grad2 = clm.gradient(extend=extend,radius=1.)
+    grad2 = clm.gradient(extend=extend, radius=1.0)
     tshtools = time() - t0
 
     flush_buffers(grd)
 
     return (
-        _l2error(3.4*grad.phi.to_array(), grad2.phi.to_array())
-        + _l2error(3.4*grad.theta.to_array(), grad2.theta.to_array()),
+        _l2error(3.4 * grad.phi.to_array(), grad2.phi.to_array())
+        + _l2error(3.4 * grad.theta.to_array(), grad2.theta.to_array()),
         tshtools / tducc,
     )
 
@@ -143,7 +144,10 @@ def test_rot(lmax, alpha, beta, gamma):
     clm_rotated2 = clm.rotate(alpha, beta, gamma, degrees=True)
     tshtools = time() - t0
 
-    return _l2error(clm_rotated.to_array(), clm_rotated2.to_array()), tshtools / tducc
+    return (
+        _l2error(clm_rotated.to_array(), clm_rotated2.to_array()),
+        tshtools / tducc,
+    )
 
 
 def test_rotc(lmax, alpha, beta, gamma):
@@ -162,7 +166,10 @@ def test_rotc(lmax, alpha, beta, gamma):
     clm_rotated2 = clm.rotate(alpha, beta, gamma, degrees=True)
     tshtools = time() - t0
 
-    return _l2error(clm_rotated.to_array(), clm_rotated2.to_array()), tshtools / tducc
+    return (
+        _l2error(clm_rotated.to_array(), clm_rotated2.to_array()),
+        tshtools / tducc,
+    )
 
 
 def test_rot2(lmax, alpha, beta, gamma):
@@ -188,7 +195,9 @@ for lmax in lmax_list:
     for alpha in [47]:
         res = test_rot(lmax, alpha, 27, 59)
         print(
-            "lmax={:4}: L2 error={:e}, speedup factor={:f}".format(lmax, res[0], res[1])
+            "lmax={:4}: L2 error={:e}, speedup factor={:f}".format(
+                lmax, res[0], res[1]
+            )
         )
 
 print("SHComplexCoeff rotation tests:")
@@ -196,7 +205,9 @@ for lmax in lmax_list:
     for alpha in [47]:
         res = test_rotc(lmax, alpha, 27, 59)
         print(
-            "lmax={:4}: L2 error={:e}, speedup factor={:f}".format(lmax, res[0], res[1])
+            "lmax={:4}: L2 error={:e}, speedup factor={:f}".format(
+                lmax, res[0], res[1]
+            )
         )
 
 lmax_list = [80]
@@ -206,10 +217,11 @@ for grid in ["GLQ", "DH", "DH2"]:
     for csphase in [-1, 1]:
         for norm in ["unnorm"]:
             for extend in [True, False]:
-                for lmax in [5,10,20,85]:
+                for lmax in [5, 10, 20, 85]:
                     res = test_SHT(lmax, grid, csphase, norm, extend)
                     print(
-                        "{:3}, CS={:2}, norm={:7}, extend={:5}, lmax={:4}:  L2 error={:e}, speedup factor={:f}".format(
+                        "{:3}, CS={:2}, norm={:7}, extend={:5}, lmax={:4}:  "
+                        "L2 error={:e}, speedup factor={:f}".format(
                             grid, csphase, norm, extend, lmax, res[0], res[1]
                         )
                     )
@@ -224,7 +236,8 @@ for grid in ["GLQ", "DH", "DH2"]:
                 for lmax in lmax_list:
                     res = test_SHT(lmax, grid, csphase, norm, extend)
                     print(
-                        "{:3}, CS={:2}, norm={:7}, extend={:5}, lmax={:4}:  L2 error={:e}, speedup factor={:f}".format(
+                        "{:3}, CS={:2}, norm={:7}, extend={:5}, lmax={:4}:  "
+                        "L2 error={:e}, speedup factor={:f}".format(
                             grid, csphase, norm, extend, lmax, res[0], res[1]
                         )
                     )
@@ -236,7 +249,8 @@ for grid in ["GLQ", "DH", "DH2"]:
                 for lmax in lmax_list:
                     res = test_SHTC(lmax, grid, csphase, norm, extend)
                     print(
-                        "{:3}, CS={:2}, norm={:7}, extend={:5}, lmax={:4}:  L2 error={:e}, speedup factor={:f}".format(
+                        "{:3}, CS={:2}, norm={:7}, extend={:5}, lmax={:4}:  "
+                        "L2 error={:e}, speedup factor={:f}".format(
                             grid, csphase, norm, extend, lmax, res[0], res[1]
                         )
                     )
@@ -247,7 +261,8 @@ for grid in ["DH", "DH2"]:
             for lmax in lmax_list:
                 res = test_SHT_deriv(lmax, grid, csphase, extend)
                 print(
-                    "{:3}, CS={:2}, extend={:5}, lmax={:4}:  L2 error={:e}, speedup factor={:f}".format(
+                    "{:3}, CS={:2}, extend={:5}, lmax={:4}:  L2 error={:e}, "
+                    "speedup factor={:f}".format(
                         grid, csphase, extend, lmax, res[0], res[1]
                     )
                 )
@@ -256,7 +271,9 @@ print("DUCC: forward/backward rotation with high band limits:")
 for lmax in [4095]:
     for alpha in [47]:
         res = test_rot2(lmax, alpha, 27, 59)
-        print("lmax={:4}: L2 error={:e}, time={:f}".format(lmax, res[0], res[1]))
+        print(
+            "lmax={:4}: L2 error={:e}, time={:f}".format(lmax, res[0], res[1])
+        )
 
 print("DUCC: forward/backward SHT with high band limits:")
 for lmax in [8191]:

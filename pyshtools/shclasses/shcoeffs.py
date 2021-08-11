@@ -4205,7 +4205,7 @@ class SHComplexCoeffs(SHCoeffs):
         if dj_matrix is None:
             dj_matrix = _shtools.djpi2(self.lmax + 1)
 
-        cgrid = self.expand(grid='DH',extend=False)
+        cgrid = self.expand(grid='DH', extend=False)
         rgrid, igrid = cgrid.data.real, cgrid.data.imag
         rgridcoeffs = _shtools.SHExpandDH(rgrid, norm=1, sampling=1, csphase=1)
         igridcoeffs = _shtools.SHExpandDH(igrid, norm=1, sampling=1, csphase=1)
@@ -4260,8 +4260,8 @@ class SHComplexCoeffs(SHCoeffs):
                 "'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
-        data = backend().MakeGridDHC(self.coeffs, sampling=sampling,
-                                     norm=norm, csphase=self.csphase, lmax=lmax,
+        data = backend().MakeGridDHC(self.coeffs, sampling=sampling, norm=norm,
+                                     csphase=self.csphase, lmax=lmax,
                                      lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='DH', units=self.units,
                                     copy=False)

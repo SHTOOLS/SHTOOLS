@@ -68,6 +68,6 @@ __author__ = 'SHTOOLS developers'
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constants', 'shclasses', 'legendre', 'expand', 'shio', 'shtools',
-           'spectralanalysis', 'rotate', 'gravmag', 'utils', 'SHCoeffs',
-           'SHGrid', 'SHWindow', 'Slepian', 'SHGravCoeffs', 'SHMagCoeffs',
-           'datasets']
+           'spectralanalysis', 'rotate', 'gravmag', 'utils', 'backends',
+           'SHCoeffs', 'SHGrid', 'SHWindow', 'Slepian', 'SHGravCoeffs',
+           'SHMagCoeffs', 'datasets']

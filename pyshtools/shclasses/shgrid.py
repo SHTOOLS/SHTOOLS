@@ -363,9 +363,9 @@ class SHGrid(object):
             sinlat = _np.sin(lats[i])
             for j in range(0, temp.nlon):
                 dist = coslat * (x * coslon[j] + y * sinlon[j]) + z * sinlat
-                if dist >= costheta: # ie. _np.arccos(dist) <= theta 
-                    #since 0 <= theta <= pi/2 and 0 <= dist <= 1
-                    #so cos is decreasing
+                if dist >= costheta:  # ie. _np.arccos(dist) <= theta
+                    # since 0 <= theta <= pi/2 and 0 <= dist <= 1
+                    # so cos is decreasing
                     temp.data[i, j] = 1.
 
         return temp
