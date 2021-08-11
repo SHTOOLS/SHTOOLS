@@ -95,7 +95,7 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
         degrees = _np.arange(lmax+1)
 
     if _np.iscomplexobj(clm1):
-        array = _np.empty(len(degrees), dtype='complex')
+        array = _np.empty(len(degrees), dtype=_np.complex128)
     else:
         array = _np.empty(len(degrees))
 

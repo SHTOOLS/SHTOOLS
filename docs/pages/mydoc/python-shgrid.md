@@ -68,6 +68,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `to_imag()` | Return a new SHGrid class instance of the imaginary component of the data. |
 | `lats()` | Return a vector containing the latitudes of each row of the gridded data. |
 | `lons()` | Return a vector containing the longitudes of each column of the gridded data. |
+| `histogram()` | Return an area-weighted histogram of the gridded data. |
 | `expand()` | Expand the grid into spherical harmonics. |
 | `min()` | Return the minimum value of data. |
 | `max()` | Return the maximum value of data. |

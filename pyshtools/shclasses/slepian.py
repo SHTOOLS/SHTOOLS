@@ -787,7 +787,7 @@ class Slepian(object):
                      maxcolumns=3, xscale='lin', yscale='log', grid=True,
                      xlim=(None, None), ylim=(None, None), show=True,
                      title=True, axes_labelsize=None, tick_labelsize=None,
-                     title_labelsize=None, ax=None, fname=None):
+                     titlesize=None, ax=None, fname=None):
         """
         Plot the spectra of the best-concentrated Slepian functions.
 
@@ -795,7 +795,7 @@ class Slepian(object):
         -----
         x.plot_spectra(nmax, [convention, unit, base, maxcolumns, xscale,
                               yscale, grid, xlim, ylim, show, title,
-                              axes_labelsize, tick_labelsize, title_labelsize,
+                              axes_labelsize, tick_labelsize, titlesize,
                               ax, fname])
 
         Parameters
@@ -835,7 +835,7 @@ class Slepian(object):
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        title_labelsize : int, optional, default = None
+        titlesize : int, optional, default = None
             The font size for the subplot titles.
         ax : matplotlib axes object, optional, default = None
             An array of matplotlib axes objects where the plots will appear.
@@ -844,10 +844,22 @@ class Slepian(object):
         """
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-        if title_labelsize is None:
-            title_labelsize = _mpl.rcParams['axes.titlesize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
+        if titlesize is None:
+            titlesize = _mpl.rcParams['axes.titlesize']
+            if type(titlesize) == str:
+                titlesize = _mpl.font_manager \
+                                 .FontProperties(size=titlesize) \
+                                 .get_size_in_points()
 
         degrees = self.degrees()
         spectrum = self.spectra(nmax=nmax, convention=convention, unit=unit,
@@ -927,7 +939,7 @@ class Slepian(object):
             if title is True:
                 axtemp.set_title('#{:d} [loss={:2.2g}]'
                                  .format(alpha, 1-evalue),
-                                 fontsize=title_labelsize)
+                                 fontsize=titlesize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -940,7 +952,7 @@ class Slepian(object):
     def plot_coupling_matrix(self, nmax=None, vmin=None, vmax=None,
                              xlabel='Input degree', ylabel='Output degree',
                              title=None, axes_labelsize=None,
-                             tick_labelsize=None, title_labelsize=None,
+                             tick_labelsize=None, titlesize=None,
                              colorbar=None, cb_label=None, normalize=False,
                              show=True, ax=None, fname=None, **kwargs):
         """
@@ -953,7 +965,7 @@ class Slepian(object):
         -----
         x.plot_coupling_matrix([nmax, vmin, vmax, xlabel, ylabel, title
                                 axes_labelsize, tick_labelsize,
-                                title_labelsize, colorbar, cb_label, normalize,
+                                titlesize, colorbar, cb_label, normalize,
                                 show, ax, fname, **kwargs])
 
         Parameters
@@ -977,7 +989,7 @@ class Slepian(object):
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        title_labelsize : int, optional, default = None
+        titlesize : int, optional, default = None
             The font size for the title.
         colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
@@ -996,10 +1008,22 @@ class Slepian(object):
         """
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-        if title_labelsize is None:
-            tick_labelsize = _mpl.rcParams['axes.titlesize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
+        if titlesize is None:
+            titlesize = _mpl.rcParams['axes.titlesize']
+            if type(titlesize) == str:
+                titlesize = _mpl.font_manager \
+                                 .FontProperties(size=titlesize) \
+                                 .get_size_in_points()
 
         if ax is None:
             if colorbar is not None:
@@ -1030,7 +1054,7 @@ class Slepian(object):
         if ylabel is not None:
             axes.set_ylabel(ylabel, fontsize=axes_labelsize)
         if title is not None:
-            axes.set_title(title, fontsize=title_labelsize)
+            axes.set_title(title, fontsize=titlesize)
         axes.tick_params(labelsize=tick_labelsize)
         axes.minorticks_on()
 

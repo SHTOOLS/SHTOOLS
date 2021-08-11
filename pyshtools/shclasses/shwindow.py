@@ -1049,10 +1049,22 @@ class SHWindow(object):
         """
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
+            if type(titlesize) == str:
+                titlesize = _mpl.font_manager \
+                                 .FontProperties(size=titlesize) \
+                                 .get_size_in_points()
 
         degrees = self.degrees()
         spectrum = self.spectra(nwin=nwin, convention=convention, unit=unit,
@@ -1150,7 +1162,7 @@ class SHWindow(object):
                              vmin=None, vmax=None, xlabel='Input degree',
                              ylabel='Output degree', title=None,
                              axes_labelsize=None, tick_labelsize=None,
-                             title_labelsize=None, colorbar=None,
+                             titlesize=None, colorbar=None,
                              cb_label=None, normalize=False, show=True,
                              ax=None, fname=None, **kwargs):
         """
@@ -1163,7 +1175,7 @@ class SHWindow(object):
         -----
         x.plot_coupling_matrix(lmax, [k, weights, mode, vmin, vmax, xlabel,
                                       ylabel, title, axes_labelsize,
-                                      tick_labelsize, title_labelsize,
+                                      tick_labelsize, titlesize,
                                       colorbar, cb_label, normalize, show, ax,
                                       fname, weights, **kwargs])
 
@@ -1200,7 +1212,7 @@ class SHWindow(object):
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
-        title_labelsize : int, optional, default = None
+        titlesize : int, optional, default = None
             The font size for the title.
         colorbar : str, optional, default = None
             Plot a colorbar that is either 'horizontal' or 'vertical'.
@@ -1235,10 +1247,22 @@ class SHWindow(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-        if title_labelsize is None:
-            tick_labelsize = _mpl.rcParams['axes.titlesize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
+        if titlesize is None:
+            titlesize = _mpl.rcParams['axes.titlesize']
+            if type(titlesize) == str:
+                titlesize = _mpl.font_manager \
+                                 .FontProperties(size=titlesize) \
+                                 .get_size_in_points()
 
         if ax is None:
             if colorbar is not None:
@@ -1269,7 +1293,7 @@ class SHWindow(object):
         if ylabel is not None:
             axes.set_ylabel(ylabel, fontsize=axes_labelsize)
         if title is not None:
-            axes.set_title(title, fontsize=title_labelsize)
+            axes.set_title(title, fontsize=titlesize)
         axes.tick_params(labelsize=tick_labelsize)
         axes.minorticks_on()
 

@@ -7,5 +7,5 @@ pyshp
 six
 shapely
 cartopy>=0.18.0
-pygmt>=0.2
+pygmt>=0.3
 flake8

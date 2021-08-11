@@ -25,7 +25,7 @@ def TimingAccuracyGLQ():
     print('Driscoll-Healy (real)')
 
     # ---- create mask to filter out m<=l ----
-    mask = np.zeros((2, maxdeg + 1, maxdeg + 1), dtype=np.bool)
+    mask = np.zeros((2, maxdeg + 1, maxdeg + 1), dtype=bool)
     mask[0, 0, 0] = True
     for l in ls:
         mask[:, l, :l + 1] = True

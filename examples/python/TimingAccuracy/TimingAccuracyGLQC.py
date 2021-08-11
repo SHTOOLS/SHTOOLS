@@ -26,7 +26,7 @@ def TimingAccuracyGLQC():
     print('Gauss-Legendre quadrature (complex)')
 
     # ---- create mask to filter out m<=l ----
-    mask = np.zeros((2, maxdeg + 1, maxdeg + 1), dtype=np.bool)
+    mask = np.zeros((2, maxdeg + 1, maxdeg + 1), dtype=bool)
     mask[0, 0, 0] = True
     for l in ls:
         mask[:, l, :l + 1] = True
@@ -35,7 +35,7 @@ def TimingAccuracyGLQC():
     # ---- create Gaussian powerlaw coefficients ----
     print('creating {:d} random coefficients'.format(2 * (maxdeg + 1) *
                                                      (maxdeg + 1)))
-    cilm = np.zeros((2, maxdeg + 1, maxdeg + 1), dtype=np.complex)
+    cilm = np.zeros((2, maxdeg + 1, maxdeg + 1), dtype=np.complex128)
     cilm.imag = np.random.normal(loc=0., scale=1.,
                                  size=(2, maxdeg + 1, maxdeg + 1))
     cilm.real = np.random.normal(loc=0., scale=1.,

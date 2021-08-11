@@ -29,7 +29,7 @@ mass = _Constant(
                          ),
     reference='Derived from gm_venus and G.')
 
-r = _Constant(
+mean_radius = _Constant(
     abbrev='r_venus',
     name='Mean radius of Venus',
     value=6051.878e3,
@@ -40,27 +40,29 @@ r = _Constant(
     '(Eds.), Treatise on Geophysics, 2nd ed., Vol. 10, pp. 153-193). '
     'Oxford, Elsevier-Pergamon, doi:10.1016/B978-0-444-53802-4.00169-X.')
 
+r = mean_radius
+
 density = _Constant(
     abbrev='density_venus',
     name='Mean density of Venus',
-    value=3 * mass.value / (_np.pi * 4 * r.value**3),
+    value=3 * mass.value / (_np.pi * 4 * mean_radius.value**3),
     unit='kg / m3',
     uncertainty=_np.sqrt((3 * mass.uncertainty /
-                         (_np.pi * 4 * r.value**3))**2
+                         (_np.pi * 4 * mean_radius.value**3))**2
                          + (3 * 3 * mass.value *
-                         r.uncertainty /
-                         (_np.pi * 4 * r.value**4))**2
+                         mean_radius.uncertainty /
+                         (_np.pi * 4 * mean_radius.value**4))**2
                          ),
     reference='Derived from mass_venus and r_venus.')
 
 g0 = _Constant(
     abbrev='g0_venus',
     name='Surface gravity of Venus, ignoring rotation and tides',
-    value=gm.value / r.value**2,
+    value=gm.value / mean_radius.value**2,
     unit='m / s2',
-    uncertainty=_np.sqrt((gm.uncertainty / r.value**2)**2
-                         + (2 * gm.value * r.uncertainty
-                         / r.value**3)**2
+    uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
+                         + (2 * gm.value * mean_radius.uncertainty
+                         / mean_radius.value**3)**2
                          ),
     reference='Derived from gm_venus and r_venus.')
 
@@ -75,4 +77,4 @@ omega = _Constant(
     'inertia of Venus (2021), Nature Astronomy, '
     'doi:10.1038/s41550-021-01339-7.')
 
-__all__ = ['gm', 'mass', 'r', 'gm', 'density', 'omega']
+__all__ = ['gm', 'mass', 'mean_radius', 'r', 'gm', 'density', 'omega']

@@ -22,7 +22,7 @@ def test_SHConversions():
     print('---- testing SHrtoc and SHctor ----')
     lmax = 10
     coeffs1 = np.random.normal(loc=0., scale=1., size=(2, lmax + 1, lmax + 1))
-    mask = np.zeros((2, lmax + 1, lmax + 1), dtype=np.bool)
+    mask = np.zeros((2, lmax + 1, lmax + 1), dtype=bool)
     for l in np.arange(lmax + 1):
         mask[:, l, :l + 1] = True
     mask[1, :, 0] = False
@@ -40,7 +40,7 @@ def example():
     coeffs1 = coeffs1[:, :lmax + 1, :lmax + 1]
 
     # --- convert to complex coefficients, fill negative order coefficients ---
-    coeffs2 = np.empty((2, lmax + 1, lmax + 1), dtype=np.complex)
+    coeffs2 = np.empty((2, lmax + 1, lmax + 1), dtype=np.complex128)
     coeffs2_buf = shio.SHrtoc(coeffs1, convention=1, switchcs=0)
     coeffs2[0, :, :].real = coeffs2_buf[0, :, :]
     coeffs2[0, :, :].imag = coeffs2_buf[1, :, :]

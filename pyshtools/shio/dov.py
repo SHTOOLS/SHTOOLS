@@ -243,12 +243,13 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                 errors = _np.zeros((2, lmaxout+1, lmaxout+1))
         except ValueError:
             try:
-                num = complex(line.split()[2])  # noqa F841
-                coeffs = _np.zeros((2, lmaxout+1, lmaxout+1), dtype=complex)
+                num = _np.complex128(line.split()[2])  # noqa F841
+                coeffs = _np.zeros((2, lmaxout+1, lmaxout+1),
+                                   dtype=_np.complex128)
                 kind = 'complex'
                 if error is True:
                     errors = _np.zeros((2, lmaxout+1, lmaxout+1),
-                                       dtype=complex)
+                                       dtype=_np.complex128)
             except ValueError:
                 raise ValueError('Coefficients can not be converted to '
                                  'either float or complex. Coefficient '
@@ -304,13 +305,13 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                     m2 = abs(m2)
 
                 if kind == 'real':
-                    coeffs[0, l, m] = float(line.split()[2])
+                    coeffs[0, l, m] = _np.float64(line.split()[2])
                     if order > 0:
-                        coeffs[1, l, m] = float(line2.split()[2])
+                        coeffs[1, l, m] = _np.float64(line2.split()[2])
                 else:
-                    coeffs[0, l, m] = complex(line.split()[2])
+                    coeffs[0, l, m] = _np.complex128(line.split()[2])
                     if order > 0:
-                        coeffs[1, l, m] = complex(line2.split()[2])
+                        coeffs[1, l, m] = _np.complex128(line2.split()[2])
 
                 if error:
                     if len(line.split()) < 4:
@@ -320,13 +321,13 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                                            'Last line is: {:s}'.format(line))
 
                     if kind == 'real':
-                        errors[0, l, m] = float(line.split()[3])
+                        errors[0, l, m] = _np.float64(line.split()[3])
                         if order > 0:
-                            errors[1, l, m] = float(line2.split()[3])
+                            errors[1, l, m] = _np.float64(line2.split()[3])
                     else:
-                        errors[0, l, m] = complex(line.split()[3])
+                        errors[0, l, m] = _np.complex128(line.split()[3])
                         if order > 0:
-                            errors[1, l, m] = complex(line2.split()[3])
+                            errors[1, l, m] = _np.complex128(line2.split()[3])
 
     if error is True and header is True:
         if header2:
