@@ -1916,9 +1916,10 @@ class SHCoeffs(object):
         if degrees:
             angles = _np.radians(angles)
 
-        if self.lmax > 1200 and backend_name() != "ducc":
+        if self.lmax > 1200 and backend_name() == "shtools":
             _warnings.warn("The rotate() method is accurate only to about" +
-                           " spherical harmonic degree 1200. " +
+                           " spherical harmonic degree 1200 when using the" +
+                           " shtools backend. " +
                            "lmax = {:d}".format(self.lmax),
                            category=RuntimeWarning)
 
@@ -3950,7 +3951,7 @@ class SHRealCoeffs(SHCoeffs):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
 
         # The coefficients need to be 4pi normalized with csphase = 1
-        if backend_name() != "ducc" and dj_matrix is None:
+        if backend_name() == "shtools" and dj_matrix is None:
             dj_matrix = _shtools.djpi2(self.lmax + 1)
         coeffs = backend().SHRotateRealCoef(
             self.to_array(normalization='4pi', csphase=1, errors=False),
@@ -4010,7 +4011,7 @@ class SHRealCoeffs(SHCoeffs):
                 "'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
-        if backend_name() != "ducc" and zeros is None:
+        if backend_name() == "shtools" and zeros is None:
             zeros, weights = _shtools.SHGLQ(self.lmax)
         data = backend().MakeGridGLQ(self.coeffs, zero=zeros, norm=norm,
                                      csphase=self.csphase, lmax=lmax,
@@ -4283,7 +4284,7 @@ class SHComplexCoeffs(SHCoeffs):
                 "'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
-        if backend_name() != "ducc" and zeros is None:
+        if backend_name() == "shtools" and zeros is None:
             zeros, weights = _shtools.SHGLQ(self.lmax)
         data = backend().MakeGridGLQC(self.coeffs, zero=zeros, norm=norm,
                                       csphase=self.csphase, lmax=lmax,
