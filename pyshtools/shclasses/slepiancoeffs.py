@@ -262,7 +262,7 @@ class SlepianCoeffs(object):
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot().

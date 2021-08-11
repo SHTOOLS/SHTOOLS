@@ -319,10 +319,10 @@ class SHCoeffs(object):
             if errors:
                 error_coeffs = _np.zeros((2, lmax + 1, lmax + 1))
         else:
-            coeffs = _np.zeros((2, lmax + 1, lmax + 1), dtype=complex)
+            coeffs = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.complex128)
             if errors:
                 error_coeffs = _np.zeros((2, lmax + 1, lmax + 1),
-                                         dtype=complex)
+                                         dtype=_np.complex128)
         if errors is True and error_kind is None:
             error_kind = 'unspecified'
 
@@ -629,7 +629,7 @@ class SHCoeffs(object):
                 coeffs[:2, l, :l+1] = _np.random.normal(size=(2, l+1))
         elif kind.lower() == 'complex':
             # - need to divide by sqrt 2 as there are two terms for each coeff.
-            coeffs = _np.zeros((2, nl, nl), dtype=complex)
+            coeffs = _np.zeros((2, nl, nl), dtype=_np.complex128)
             for l in degrees:
                 coeffs[:2, l, :l+1] = (_np.random.normal(size=(2, l+1)) +
                                        1j * _np.random.normal(size=(2, l+1))
@@ -2057,7 +2057,7 @@ class SHCoeffs(object):
                 clm.errors = _np.pad(
                     clm.errors, ((0, 0), (0, lmax - self.lmax),
                                  (0, lmax - self.lmax)), 'constant')
-            mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
+            mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=bool)
             for l in _np.arange(lmax + 1):
                 mask[:, l, :l + 1] = True
             mask[1, :, 0] = False
@@ -2286,7 +2286,7 @@ class SHCoeffs(object):
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot().
@@ -2334,8 +2334,16 @@ class SHCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
 
         axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
         if convention == 'Energy':
@@ -2453,7 +2461,7 @@ class SHCoeffs(object):
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot().
@@ -2502,8 +2510,16 @@ class SHCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
 
         axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
         if convention == 'Energy':
@@ -2668,7 +2684,7 @@ class SHCoeffs(object):
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
 
         Notes
@@ -2773,8 +2789,8 @@ class SHCoeffs(object):
 
         # need to add one extra value to each in order for pcolormesh
         # to plot the last row and column.
-        ls = _np.arange(lmax+2).astype(_np.float)
-        ms = _np.arange(-lmax, lmax + 2, dtype=_np.float)
+        ls = _np.arange(lmax+2).astype(_np.float64)
+        ms = _np.arange(-lmax, lmax + 2, dtype=_np.float64)
         if origin in ('left', 'right'):
             xgrid, ygrid = _np.meshgrid(ls, ms, indexing='ij')
         elif origin in ('top', 'bottom'):
@@ -3164,7 +3180,7 @@ class SHCoeffs(object):
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
 
         Notes
@@ -3272,8 +3288,8 @@ class SHCoeffs(object):
 
         # need to add one extra value to each in order for pcolormesh
         # to plot the last row and column.
-        ls = _np.arange(lmax+2).astype(_np.float)
-        ms = _np.arange(-lmax, lmax + 2, dtype=_np.float)
+        ls = _np.arange(lmax+2).astype(_np.float64)
+        ms = _np.arange(-lmax, lmax + 2, dtype=_np.float64)
         if origin in ('left', 'right'):
             xgrid, ygrid = _np.meshgrid(ls, ms, indexing='ij')
         elif origin in ('top', 'bottom'):
@@ -3606,7 +3622,7 @@ class SHCoeffs(object):
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot() and pyplot.errorbar().
@@ -3688,8 +3704,16 @@ class SHCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
 
         if style in ('admit', 'separate', 'combined'):
             if errors:
@@ -3789,7 +3813,7 @@ class SHCoeffs(object):
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot() and pyplot.errorbar().
@@ -3853,7 +3877,7 @@ class SHCoeffs(object):
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         **kwargs : keyword arguments, optional
             Keyword arguments for pyplot.plot() and pyplot.errorbar().
@@ -3890,7 +3914,7 @@ class SHRealCoeffs(SHCoeffs):
         """Initialize Real SH Coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
-        mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
+        mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=bool)
         mask[0, 0, 0] = True
         for l in _np.arange(lmax + 1):
             mask[:, l, :l + 1] = True
@@ -3929,7 +3953,7 @@ class SHRealCoeffs(SHCoeffs):
         # These coefficients are using real floats, and need to be
         # converted to complex form.
         complex_coeffs = _np.zeros((2, self.lmax+1, self.lmax+1),
-                                   dtype='complex')
+                                   dtype=_np.complex128)
         complex_coeffs[0, :, :] = (rcomplex_coeffs[0, :, :] + 1j *
                                    rcomplex_coeffs[1, :, :])
         complex_coeffs[1, :, :] = complex_coeffs[0, :, :].conjugate()
@@ -4051,7 +4075,7 @@ class SHRealCoeffs(SHCoeffs):
                                           lmax=lmax_calc, norm=norm,
                                           csphase=self.csphase)
         elif type(lat) is _np.ndarray:
-            values = _np.empty_like(lat, dtype=float)
+            values = _np.empty_like(lat, dtype=_np.float64)
             for v, latitude, longitude in _np.nditer([values, latin, lonin],
                                                      op_flags=['readwrite']):
                 v[...] = _shtools.MakeGridPoint(self.coeffs, lat=latitude,
@@ -4101,7 +4125,7 @@ class SHComplexCoeffs(SHCoeffs):
         """Initialize Complex coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
-        mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.bool)
+        mask = _np.zeros((2, lmax + 1, lmax + 1), dtype=bool)
         mask[0, 0, 0] = True
         for l in _np.arange(lmax + 1):
             mask[:, l, :l + 1] = True
@@ -4307,7 +4331,7 @@ class SHComplexCoeffs(SHCoeffs):
                                            lmax=lmax_calc, norm=norm,
                                            csphase=self.csphase)
         elif type(lat) is _np.ndarray:
-            values = _np.empty_like(lat, dtype=_np.complex)
+            values = _np.empty_like(lat, dtype=_np.complex128)
             for v, latitude, longitude in _np.nditer([values, latin, lonin],
                                                      op_flags=['readwrite']):
                 v[...] = _shtools.MakeGridPointC(self.coeffs, lat=latitude,

@@ -228,7 +228,7 @@ class SHGravGrid(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         return self.rad.plot(projection=projection,
@@ -333,7 +333,7 @@ class SHGravGrid(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         return self.theta.plot(projection=projection,
@@ -438,7 +438,7 @@ class SHGravGrid(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         return self.phi.plot(projection=projection,
@@ -543,7 +543,7 @@ class SHGravGrid(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
 
         Note
@@ -665,7 +665,7 @@ class SHGravGrid(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         return self.pot.plot(projection=projection,
@@ -761,7 +761,7 @@ class SHGravGrid(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if colorbar is not None:

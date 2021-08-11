@@ -139,14 +139,14 @@ def spharm(lmax, theta, phi, normalization='4pi', kind='real', csphase=1,
 
     if packed is False:
         if kind.lower() == 'real':
-            ylm = _np.zeros((2, lmax+1, lmax+1), dtype=_np.float_)
+            ylm = _np.zeros((2, lmax+1, lmax+1), dtype=_np.float64)
             ylm[0, :, :] = p[:, :]
             ylm[1, :, :] = p[:, :]
             for m in range(lmax+1):
                 ylm[0, m:lmax+1, m] *= _np.cos(m*phi)
                 ylm[1, m:lmax+1, m] *= _np.sin(m*phi)
         else:
-            ylm = _np.zeros((2, lmax+1, lmax+1), dtype=_np.complex_)
+            ylm = _np.zeros((2, lmax+1, lmax+1), dtype=_np.complex128)
             ylm[0, :, :] = p[:, :]
             for m in range(lmax+1):
                 ylm[0, m:lmax+1, m] *= (_np.cos(m*phi) + 1j * _np.sin(m*phi))
@@ -156,7 +156,7 @@ def spharm(lmax, theta, phi, normalization='4pi', kind='real', csphase=1,
 
     else:
         if kind.lower() == 'real':
-            ylm = _np.zeros((2, (lmax+1)*(lmax+2)//2), dtype=_np.float_)
+            ylm = _np.zeros((2, (lmax+1)*(lmax+2)//2), dtype=_np.float64)
             ylm[0, :] = p[:]
             ylm[1, :] = p[:]
             for m in range(lmax+1):
@@ -167,7 +167,7 @@ def spharm(lmax, theta, phi, normalization='4pi', kind='real', csphase=1,
                     ylm[0, ind] *= cos
                     ylm[1, ind] *= sin
         else:
-            ylm = _np.zeros((2, (lmax+1)*(lmax+2)//2), dtype=_np.complex_)
+            ylm = _np.zeros((2, (lmax+1)*(lmax+2)//2), dtype=_np.complex128)
             ylm[0, :] = p[:]
             ylm[1, :] = p[:]
             for m in range(lmax+1):
