@@ -1,4 +1,4 @@
-import numpy as np
+import numpy as _np
 
 try:
     import ducc0
@@ -11,10 +11,10 @@ except:
 
 # setup a few required variables
 if ducc0 is not None:
-    import os
+    import os as _os
 
     try:
-        nthreads = int(os.environ["OMP_NUM_THREADS"])
+        nthreads = int(_os.environ["OMP_NUM_THREADS"])
     except:
         nthreads = 0
 
@@ -40,18 +40,18 @@ def _nalm(lmax, mmax):
 
 def _get_norm(lmax, norm):
     if norm == 1:
-        return np.full(lmax + 1, np.sqrt(4 * np.pi))
+        return _np.full(lmax + 1, _np.sqrt(4 * _np.pi))
     if norm == 2:
-        return np.sqrt(4 * np.pi / (2 * np.arange(lmax + 1) + 1.0))
+        return _np.sqrt(4 * _np.pi / (2 * _np.arange(lmax + 1) + 1.0))
     if norm == 3:
-        return np.sqrt(2 * np.pi / (2 * np.arange(lmax + 1) + 1.0))
+        return _np.sqrt(2 * _np.pi / (2 * _np.arange(lmax + 1) + 1.0))
     if norm == 4:
-        return np.ones(lmax + 1)
+        return _np.ones(lmax + 1)
     raise RuntimeError("unsupported normalization")
 
 
 def _rcilm2alm(cilm, lmax):
-    alm = np.empty((_nalm(lmax, lmax),), dtype=np.complex128)
+    alm = _np.empty((_nalm(lmax, lmax),), dtype=_np.complex128)
     alm[0:lmax + 1] = cilm[0, :, 0]
     ofs = lmax + 1
     for m in range(1, lmax + 1):
@@ -62,7 +62,7 @@ def _rcilm2alm(cilm, lmax):
 
 
 def _ralm2cilm(alm, lmax):
-    cilm = np.zeros((2, lmax + 1, lmax + 1), dtype=np.float64)
+    cilm = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.float64)
     cilm[0, :, 0] = alm[0:lmax + 1].real
     ofs = lmax + 1
     for m in range(1, lmax + 1):
@@ -77,7 +77,7 @@ def _apply_norm(alm, lmax, norm, csphase, reverse):
     if reverse:
         lnorm = 1.0 / lnorm
     alm[0:lmax + 1] *= lnorm[0:lmax + 1]
-    lnorm *= np.sqrt(2.0) if reverse else (1.0 / np.sqrt(2.0))
+    lnorm *= _np.sqrt(2.0) if reverse else (1.0 / _np.sqrt(2.0))
     mlnorm = -lnorm
     ofs = lmax + 1
     for m in range(1, lmax + 1):
@@ -93,19 +93,19 @@ def _apply_norm(alm, lmax, norm, csphase, reverse):
             alm[ofs:ofs + lmax + 1 - m].imag *= mlnorm[m:]
         ofs += lmax + 1 - m
     if norm == 3:  # special treatment for unnormalized a_lm
-        r = np.arange(lmax + 1)
-        fct = np.ones(lmax + 1)
+        r = _np.arange(lmax + 1)
+        fct = _np.ones(lmax + 1)
         ofs = lmax + 1
         if reverse:
-            alm[0:lmax + 1] /= np.sqrt(2)
+            alm[0:lmax + 1] /= _np.sqrt(2)
             for m in range(1, lmax + 1):
-                fct[m:] *= np.sqrt((r[m:] + m) * (r[m:] - m + 1))
+                fct[m:] *= _np.sqrt((r[m:] + m) * (r[m:] - m + 1))
                 alm[ofs:ofs + lmax + 1 - m] /= fct[m:]
                 ofs += lmax + 1 - m
         else:
-            alm[0:lmax + 1] *= np.sqrt(2)
+            alm[0:lmax + 1] *= _np.sqrt(2)
             for m in range(1, lmax + 1):
-                fct[m:] *= np.sqrt((r[m:] + m) * (r[m:] - m + 1))
+                fct[m:] *= _np.sqrt((r[m:] + m) * (r[m:] - m + 1))
                 alm[ofs:ofs + lmax + 1 - m] *= fct[m:]
                 ofs += lmax + 1 - m
     return alm
@@ -192,31 +192,31 @@ def _analyze_GLQ(map, lmax):
 
 def _ccilm2almr(cilm):
     lmax = cilm.shape[1] - 1
-    alm = np.empty((_nalm(lmax, lmax),), dtype=np.complex128)
-    fct = (-1) ** np.arange(lmax + 1)
+    alm = _np.empty((_nalm(lmax, lmax),), dtype=_np.complex128)
+    fct = (-1) ** _np.arange(lmax + 1)
     alm[0:lmax + 1] = cilm[0, :, 0].real
     ofs = lmax + 1
     for m in range(1, lmax + 1):
-        tmp = np.conj(cilm[1, m:, m])
+        tmp = _np.conj(cilm[1, m:, m])
         tmp *= fct[m]
         tmp += cilm[0, m:, m]
-        tmp *= 1.0 / np.sqrt(2.0)
-        alm[ofs:ofs + lmax + 1 - m] = np.conj(tmp)
+        tmp *= 1.0 / _np.sqrt(2.0)
+        alm[ofs:ofs + lmax + 1 - m] = _np.conj(tmp)
         ofs += lmax + 1 - m
     return alm
 
 
 def _ccilm2almi(cilm):
     lmax = cilm.shape[1] - 1
-    alm = np.empty((_nalm(lmax, lmax),), dtype=np.complex128)
-    fct = (-1) ** np.arange(lmax + 1)
+    alm = _np.empty((_nalm(lmax, lmax),), dtype=_np.complex128)
+    fct = (-1) ** _np.arange(lmax + 1)
     alm[0:lmax + 1] = cilm[0, :, 0].imag
     ofs = lmax + 1
     for m in range(1, lmax + 1):
-        tmp = np.conj(cilm[1, m:, m])
+        tmp = _np.conj(cilm[1, m:, m])
         tmp *= -fct[m]
         tmp += cilm[0, m:, m]
-        tmp *= 1.0 / np.sqrt(2.0)
+        tmp *= 1.0 / _np.sqrt(2.0)
         alm[ofs:ofs + lmax + 1 - m] = tmp.imag + 1j * tmp.real
         ofs += lmax + 1 - m
     return alm
@@ -227,7 +227,7 @@ def _addRealpart(cilm, alm):
     cilm[0, :, 0].real += alm[0:lmax + 1].real
     ofs = lmax + 1
     for m in range(1, lmax + 1):
-        tmp = alm[ofs:ofs + lmax + 1 - m] / np.sqrt(2.0)
+        tmp = alm[ofs:ofs + lmax + 1 - m] / _np.sqrt(2.0)
         cilm[0, m:, m].real += tmp.real
         cilm[0, m:, m].imag -= tmp.imag
         if m & 1:
@@ -243,7 +243,7 @@ def _addImagpart(cilm, alm):
     cilm[0, :, 0].imag += alm[0:lmax + 1].real
     ofs = lmax + 1
     for m in range(1, lmax + 1):
-        tmp = alm[ofs:ofs + lmax + 1 - m] / np.sqrt(2.0)
+        tmp = alm[ofs:ofs + lmax + 1 - m] / _np.sqrt(2.0)
         cilm[0, m:, m].real += tmp.imag
         cilm[0, m:, m].imag += tmp.real
         if m & 1:
@@ -275,7 +275,7 @@ def SHRotateComplexCoef(ccoeffs, angles, dj_matrix=None):
         alm, lmax, -angles[0], -angles[1], -angles[2], nthreads=nthreads
     )
     alm = _apply_norm(alm, lmax, 1, 1, True)
-    res = np.zeros((2, lmax + 1, lmax + 1), dtype=np.complex128)
+    res = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.complex128)
     _addRealpart(res, alm)
     alm = _ccilm2almi(ccoeffs)
     alm = _apply_norm(alm, lmax, 1, 1, False)
@@ -302,7 +302,7 @@ def MakeGridDH(
         lmax_calc = cilm.shape[1] - 1
     cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
-    out = np.empty([2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend])
+    out = _np.empty([2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend])
     return _synthesize_DH(alm, lmax_calc, extend, out)
 
 
@@ -322,9 +322,9 @@ def MakeGridDHC(
     cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
     alm = _ccilm2almi(cilm)
     alm = _apply_norm(alm, lmax, norm, csphase, False)
-    res = np.empty(
+    res = _np.empty(
         [2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend],
-        dtype=np.complex128,
+        dtype=_np.complex128,
     )
     _synthesize_DH(alm, lmax_calc, extend, res.imag)
     alm = _ccilm2almr(cilm)
@@ -352,7 +352,7 @@ def SHExpandDHC(grid, norm=1, sampling=1, csphase=1, lmax_calc=None):
     if lmax_calc > (grid.shape[0] // 2 - 1):
         raise RuntimeError("lmax_calc too high")
     lmax = grid.shape[0] // 2 - 1 if lmax_calc is None else lmax_calc
-    res = np.zeros((2, lmax + 1, lmax + 1), dtype=np.complex128)
+    res = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.complex128)
     alm = _analyze_DH(grid.real, lmax_calc)
     alm = _apply_norm(alm, lmax, norm, csphase, True)
     _addRealpart(res, alm)
@@ -372,7 +372,7 @@ def MakeGridGLQ(
         lmax_calc = cilm.shape[1] - 1
     cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
-    out = np.empty([lmax + 1, (2 * lmax + 1) + extend])
+    out = _np.empty([lmax + 1, (2 * lmax + 1) + extend])
     return _synthesize_GLQ(alm, lmax_calc, extend, out)
 
 
@@ -387,7 +387,7 @@ def MakeGridGLQC(
     cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
     alm = _ccilm2almi(cilm)
     alm = _apply_norm(alm, lmax, norm, csphase, False)
-    res = np.empty([lmax + 1, 2 * lmax + 1 + extend], dtype=np.complex128)
+    res = _np.empty([lmax + 1, 2 * lmax + 1 + extend], dtype=_np.complex128)
     _synthesize_GLQ(alm, lmax_calc, extend, res.imag)
     alm = _ccilm2almr(cilm)
     alm = _apply_norm(alm, lmax, norm, csphase, False)
@@ -415,7 +415,7 @@ def SHExpandGLQC(
         lmax_calc = grid.shape[0] - 1
     if lmax_calc > (grid.shape[0] - 1):
         raise RuntimeError("lmax_calc too high")
-    res = np.zeros((2, lmax_calc + 1, lmax_calc + 1), dtype=np.complex128)
+    res = _np.zeros((2, lmax_calc + 1, lmax_calc + 1), dtype=_np.complex128)
     alm = _analyze_GLQ(grid.real, lmax_calc)
     alm = _apply_norm(alm, lmax_calc, norm, csphase, True)
     _addRealpart(res, alm)
@@ -434,7 +434,7 @@ def MakeGradientDH(
     if lmax_calc is None:
         lmax_calc = cilm.shape[1] - 1
     alm = _make_alm(cilm, lmax_calc, norm=1, csphase=1)
-    res = np.empty(
+    res = _np.empty(
         (2, 2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend)
     )
     res = _synthesize_DH_deriv1(alm, lmax_calc, extend, res)
