@@ -20,7 +20,8 @@ def backend_module(backend=None, nthreads=None):
         return shtools
     elif backend == "ducc":
         from .wrappers import ducc0_wrapper
-
+        if not ducc0_wrapper.available():
+            raise ImportError('"ducc" backend requested, but not installed.')
         if nthreads is not None:
             ducc0_wrapper.set_nthreads(nthreads)
         return ducc0_wrapper
@@ -44,10 +45,10 @@ def select_preferred_backend(backend="shtools", nthreads=None):
             import ducc0
 
             major, minor, patch = ducc0.__version__.split(".")
-            if int(major) < 1 and int(minor) < 14:
+            if int(major) < 1 and int(minor) < 15:
                 print(
                     "ducc0 installation found, but it is too old. "
-                    "Need at least version 0.14"
+                    "Need at least version 0.15"
                 )
                 raise RuntimeError
         except:

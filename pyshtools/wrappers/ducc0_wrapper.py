@@ -298,9 +298,9 @@ def MakeGridDH(
 ):
     if lmax is None:
         lmax = cilm.shape[1] - 1
-    cilm = cilm[:, : lmax + 1, : lmax + 1]
     if lmax_calc is None:
         lmax_calc = cilm.shape[1] - 1
+    cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
     out = np.empty([2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend])
     return _synthesize_DH(alm, lmax_calc, extend, out)
@@ -317,9 +317,9 @@ def MakeGridDHC(
 ):
     if lmax is None:
         lmax = cilm.shape[1] - 1
-    cilm = cilm[:, : lmax + 1, : lmax + 1]
     if lmax_calc is None:
         lmax_calc = cilm.shape[1] - 1
+    cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
     alm = _ccilm2almi(cilm)
     alm = _apply_norm(alm, lmax, norm, csphase, False)
     res = np.empty(
@@ -368,9 +368,9 @@ def MakeGridGLQ(
 ):
     if lmax is None:
         lmax = cilm.shape[1] - 1
-    cilm = cilm[:, : lmax + 1, : lmax + 1]
     if lmax_calc is None:
         lmax_calc = cilm.shape[1] - 1
+    cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
     out = np.empty([lmax + 1, (2 * lmax + 1) + extend])
     return _synthesize_GLQ(alm, lmax_calc, extend, out)
@@ -382,9 +382,9 @@ def MakeGridGLQC(
 ):
     if lmax is None:
         lmax = cilm.shape[1] - 1
-    cilm = cilm[:, : lmax + 1, : lmax + 1]
     if lmax_calc is None:
         lmax_calc = cilm.shape[1] - 1
+    cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
     alm = _ccilm2almi(cilm)
     alm = _apply_norm(alm, lmax, norm, csphase, False)
     res = np.empty([lmax + 1, 2 * lmax + 1 + extend], dtype=np.complex128)
