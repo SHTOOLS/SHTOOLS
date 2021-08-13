@@ -257,12 +257,14 @@ def _addImagpart(cilm, alm):
 
 
 def _prep_lmax(lmax, lmax_calc, cilm):
+    if lmax is None:
+        lmax = cilm.shape[1] - 1
     if lmax_calc is None:
         lmax_calc = cilm.shape[1] - 1
-    if lmax is None:
-        lmax = lmax_calc
-    cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
-    return lmax, lmax_calc, cilm
+    # lmax_calc need not be higher than lmax, and it must not be higher than
+    # cilm.shape[1] - 1.
+    lmax_calc = min(lmax, cilm.shape[1] - 1, lmax_calc)
+    return lmax, lmax_calc, cilm[:, : lmax_calc + 1, : lmax_calc + 1]
 
 
 # dj_matrix is ignored
