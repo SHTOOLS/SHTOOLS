@@ -261,6 +261,17 @@ def _addImagpart(cilm, alm):
     return cilm
 
 
+def _prep_lmax(lmax, lmax_calc, cilm):
+    if lmax is None:
+        lmax = cilm.shape[1] - 1
+    if lmax_calc is None:
+        lmax_calc = cilm.shape[1] - 1
+    # lmax_calc need not be higher than lmax, and it must not be higher than
+    # cilm.shape[1] - 1.
+    lmax_calc = min(lmax, cilm.shape[1] - 1, lmax_calc)
+    return lmax, lmax_calc, cilm[:, : lmax_calc + 1, : lmax_calc + 1]
+
+
 # dj_matrix is ignored
 def SHRotateRealCoef(rcoeffs, angles, dj_matrix=None):
     lmax = rcoeffs.shape[1] - 1
@@ -301,11 +312,7 @@ def MakeGridDH(
     lmax_calc=None,
     extend=False,
 ):
-    if lmax is None:
-        lmax = cilm.shape[1] - 1
-    if lmax_calc is None:
-        lmax_calc = cilm.shape[1] - 1
-    cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
+    lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
     out = _np.empty(
         [2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend])
@@ -321,11 +328,7 @@ def MakeGridDHC(
     lmax_calc=None,
     extend=False,
 ):
-    if lmax is None:
-        lmax = cilm.shape[1] - 1
-    if lmax_calc is None:
-        lmax_calc = cilm.shape[1] - 1
-    cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
+    lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _ccilm2almi(cilm)
     alm = _apply_norm(alm, lmax, norm, csphase, False)
     res = _np.empty(
@@ -372,11 +375,7 @@ def SHExpandDHC(grid, norm=1, sampling=1, csphase=1, lmax_calc=None):
 def MakeGridGLQ(
     cilm, lmax=None, zero=None, norm=1, csphase=1, lmax_calc=None, extend=False
 ):
-    if lmax is None:
-        lmax = cilm.shape[1] - 1
-    if lmax_calc is None:
-        lmax_calc = cilm.shape[1] - 1
-    cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
+    lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
     out = _np.empty([lmax + 1, (2 * lmax + 1) + extend])
     return _synthesize_GLQ(alm, lmax_calc, extend, out)
@@ -386,11 +385,7 @@ def MakeGridGLQ(
 def MakeGridGLQC(
     cilm, lmax=None, zero=None, norm=1, csphase=1, lmax_calc=None, extend=False
 ):
-    if lmax is None:
-        lmax = cilm.shape[1] - 1
-    if lmax_calc is None:
-        lmax_calc = cilm.shape[1] - 1
-    cilm = cilm[:, : lmax_calc + 1, : lmax_calc + 1]
+    lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _ccilm2almi(cilm)
     alm = _apply_norm(alm, lmax, norm, csphase, False)
     res = _np.empty([lmax + 1, 2 * lmax + 1 + extend], dtype=_np.complex128)
@@ -434,11 +429,7 @@ def SHExpandGLQC(
 def MakeGradientDH(
     cilm, lmax=None, sampling=1, lmax_calc=None, extend=False, radius=None
 ):
-    if lmax is None:
-        lmax = cilm.shape[1] - 1
-    cilm = cilm[:, : lmax + 1, : lmax + 1]
-    if lmax_calc is None:
-        lmax_calc = cilm.shape[1] - 1
+    lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _make_alm(cilm, lmax_calc, norm=1, csphase=1)
     res = _np.empty(
         (2, 2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend)
