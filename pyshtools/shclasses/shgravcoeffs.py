@@ -37,8 +37,9 @@ from ..shtools import MakeGravGridDH as _MakeGravGridDH
 from ..shtools import MakeGravGradGridDH as _MakeGravGradGridDH
 from ..shtools import MakeGeoidGridDH as _MakeGeoidGridDH
 from ..shtools import djpi2 as _djpi2
-from ..shtools import SHRotateRealCoef as _SHRotateRealCoef
 from ..shtools import MakeGravGridPoint as _MakeGravGridPoint
+from ..backends import backend_module
+from ..backends import preferred_backend
 
 
 class SHGravCoeffs(object):
@@ -976,7 +977,8 @@ class SHGravCoeffs(object):
 
     @classmethod
     def from_shape(self, shape, rho, gm, nmax=7, lmax=None, lmax_grid=None,
-                   lmax_calc=None, omega=None, name=None, epoch=None):
+                   lmax_calc=None, omega=None, name=None, epoch=None,
+                   backend=None, nthreads=None):
         """
         Initialize a class of gravitational potential spherical harmonic
         coefficients by calculuting the gravitational potential associatiated
@@ -986,7 +988,7 @@ class SHGravCoeffs(object):
         -----
         x = SHGravCoeffs.from_shape(shape, rho, gm, [nmax, lmax, lmax_grid,
                                                      lmax_calc, omega, name,
-                                                     epoch])
+                                                     epoch, backend, nthreads])
 
         Returns
         -------
@@ -1028,6 +1030,12 @@ class SHGravCoeffs(object):
         epoch : str or float, optional, default = None
             The epoch time of the spherical harmonic coefficients as given by
             the format YYYYMMDD.DD.
+        backend : str, optional, default = preferred_backend()
+            Name of the preferred backend, either 'shtools' or 'ducc'.
+        nthreads : int, optional, default = 1
+            Number of threads to use for the 'ducc' backend. Setting this
+            parameter to 0 will use as many threads as there are hardware
+            threads on the system.
 
         Notes
         -----
@@ -1066,6 +1074,9 @@ class SHGravCoeffs(object):
         """
         mass = gm / _G.value
 
+        if backend is None:
+            backend = preferred_backend()
+
         if type(shape) is not _SHRealCoeffs and type(shape) is not _DHRealGrid:
             raise ValueError('shape must be of type SHRealCoeffs '
                              'or DHRealGrid. Input type is {:s}.'
@@ -1080,10 +1091,12 @@ class SHGravCoeffs(object):
                              .format(repr(type(rho))))
 
         if type(shape) is _SHRealCoeffs:
-            shape = shape.expand(lmax=lmax_grid, lmax_calc=lmax_calc)
+            shape = shape.expand(lmax=lmax_grid, lmax_calc=lmax_calc,
+                                 backend=backend, nthreads=nthreads)
 
         if type(rho) is _SHRealCoeffs:
-            rho = rho.expand(lmax=lmax_grid, lmax_calc=lmax_calc)
+            rho = rho.expand(lmax=lmax_grid, lmax_calc=lmax_calc,
+                             backend=backend, nthreads=nthreads)
 
         if type(rho) is _DHRealGrid:
             if shape.lmax != rho.lmax:
@@ -2049,7 +2062,7 @@ class SHGravCoeffs(object):
 
     # ---- Operations that return a new SHGravCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
-               body=False, dj_matrix=None):
+               body=False, dj_matrix=None, backend=None, nthreads=None):
         """
         Rotate either the coordinate system used to express the spherical
         harmonic coefficients or the physical body, and return a new class
@@ -2058,7 +2071,7 @@ class SHGravCoeffs(object):
         Usage
         -----
         x_rotated = x.rotate(alpha, beta, gamma, [degrees, convention,
-                             body, dj_matrix])
+                             body, dj_matrix, backend, nthreads])
 
         Returns
         -------
@@ -2078,7 +2091,14 @@ class SHGravCoeffs(object):
         body : bool, optional, default = False
             If true, rotate the physical body and not the coordinate system.
         dj_matrix : ndarray, optional, default = None
-            The djpi2 rotation matrix computed by a call to djpi2.
+            The djpi2 rotation matrix computed by a call to djpi2 (not used if
+            the backend is 'ducc').
+        backend : str, optional, default = preferred_backend()
+            Name of the preferred backend, either 'shtools' or 'ducc'.
+        nthreads : int, optional, default = 1
+            Number of threads to use for the 'ducc' backend. Setting this
+            parameter to 0 will use as many threads as there are hardware
+            threads on the system.
 
         Notes
         -----
@@ -2146,15 +2166,12 @@ class SHGravCoeffs(object):
 
         if degrees:
             angles = _np.radians(angles)
-
-        if self.lmax > 1200:
-            _warnings.warn("The rotate() method is accurate only to about"
-                           " spherical harmonic degree 1200. "
-                           "lmax = {:d}".format(self.lmax),
-                           category=RuntimeWarning)
+        if backend is None:
+            backend = preferred_backend()
 
         rot = self._rotate(angles, dj_matrix, gm=self.gm, r0=self.r0,
-                           omega=self.omega)
+                           omega=self.omega, backend=backend,
+                           nthreads=nthreads)
         return rot
 
     def convert(self, normalization=None, csphase=None, lmax=None):
@@ -3754,15 +3771,23 @@ class SHGravRealCoeffs(SHGravCoeffs):
                         repr(self.header), repr(self.header2),
                         repr(self.name), repr(self.epoch)))
 
-    def _rotate(self, angles, dj_matrix, gm=None, r0=None, omega=None):
+    def _rotate(self, angles, dj_matrix, gm=None, r0=None, omega=None,
+                backend=None, nthreads=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
-        if dj_matrix is None:
+        if self.lmax > 1200 and backend.lower() == "shtools":
+            _warnings.warn("The rotate() method is accurate only to about" +
+                           " spherical harmonic degree 1200 when using the" +
+                           " shtools backend. " +
+                           "lmax = {:d}".format(self.lmax),
+                           category=RuntimeWarning)
+        if backend == "shtools" and dj_matrix is None:
             dj_matrix = _djpi2(self.lmax + 1)
 
         # The coefficients need to be 4pi normalized with csphase = 1
-        coeffs = _SHRotateRealCoef(
-            self.to_array(normalization='4pi', csphase=1, errors=False),
-            angles, dj_matrix)
+        coeffs = backend_module(
+            backend=backend, nthreads=nthreads).SHRotateRealCoef(
+                self.to_array(normalization='4pi', csphase=1, errors=False),
+                angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.

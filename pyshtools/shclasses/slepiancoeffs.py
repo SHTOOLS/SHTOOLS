@@ -4,6 +4,8 @@
 import numpy as _np
 import copy as _copy
 
+from ..backends import backend_module
+from ..backends import preferred_backend
 from .. import shtools as _shtools
 
 from .shcoeffs import SHCoeffs
@@ -83,7 +85,8 @@ class SlepianCoeffs(object):
         str += '\nSlepian functions:\n' + self.galpha.__repr__()
         return str
 
-    def expand(self, nmax=None, grid='DH2', zeros=None, extend=True):
+    def expand(self, nmax=None, grid='DH2', zeros=None, extend=True,
+               backend=None, nthreads=None):
         """
         Expand the function on a grid using the first n Slepian coefficients.
 
@@ -110,6 +113,12 @@ class SlepianCoeffs(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
+        backend : str, optional, default = preferred_backend()
+            Name of the preferred backend, either 'shtools' or 'ducc'.
+        nthreads : int, optional, default = 1
+            Number of threads to use for the 'ducc' backend. Setting this
+            parameter to 0 will use as many threads as there are hardware
+            threads on the system.
         """
         if type(grid) != str:
             raise ValueError('grid must be a string. ' +
@@ -118,6 +127,8 @@ class SlepianCoeffs(object):
 
         if nmax is None:
             nmax = self.nmax
+        if backend is None:
+            backend = preferred_backend()
 
         if self.galpha.kind == 'cap':
             shcoeffs = _shtools.SlepianCoeffsToSH(self.falpha,
@@ -127,18 +138,21 @@ class SlepianCoeffs(object):
                                                   self.galpha.tapers, nmax)
 
         if grid.upper() in ('DH', 'DH1'):
-            gridout = _shtools.MakeGridDH(shcoeffs, sampling=1,
-                                          norm=1, csphase=1, extend=extend)
+            gridout = backend_module(
+                backend=backend, nthreads=nthreads).MakeGridDH(
+                    shcoeffs, sampling=1, norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'DH2':
-            gridout = _shtools.MakeGridDH(shcoeffs, sampling=2,
-                                          norm=1, csphase=1, extend=extend)
+            gridout = backend_module(
+                backend=backend, nthreads=nthreads).MakeGridDH(
+                    shcoeffs, sampling=2, norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
-            if zeros is None:
+            if backend == "shtools" and zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.galpha.lmax)
-            gridout = _shtools.MakeGridGLQ(shcoeffs, zeros, norm=1, csphase=1,
-                                           extend=extend)
+            gridout = backend_module(
+                backend=backend, nthreads=nthreads).MakeGridGLQ(
+                    shcoeffs, zeros=zeros, norm=1, csphase=1, extend=extend)
             return SHGrid.from_array(gridout, grid='GLQ', copy=False)
         else:
             raise ValueError(

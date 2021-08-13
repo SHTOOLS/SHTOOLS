@@ -29,6 +29,8 @@ main namespace:
     rotate            : Spherical harmonic rotation routines.
     gravmag           : Gravity and magnetics routines.
     utils             : pyshtools utilities.
+    backends          : Routines for selecting the spherical harmonic
+                        transform backend.
 
 For further information, consult the web documentation at
 
