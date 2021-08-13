@@ -266,9 +266,12 @@ def _prep_lmax(lmax, lmax_calc, cilm):
         lmax = cilm.shape[1] - 1
     if lmax_calc is None:
         lmax_calc = cilm.shape[1] - 1
-    # lmax_calc need not be higher than lmax, and it must not be higher than
-    # cilm.shape[1] - 1.
-    lmax_calc = min(lmax, cilm.shape[1] - 1, lmax_calc)
+    if lmax_calc > lmax:
+        raise RuntimeError(
+            "lmax_calc ({}) must be less than or equal to lmax ({})"
+                .format(lmax_calc, lmax))
+    # lmax_calc need must not be higher than cilm.shape[1] - 1.
+    lmax_calc = min(cilm.shape[1] - 1, lmax_calc)
     return lmax, lmax_calc, cilm[:, : lmax_calc + 1, : lmax_calc + 1]
 
 

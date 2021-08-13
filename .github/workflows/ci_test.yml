@@ -1,10 +1,8 @@
 name: Continuous Integration Tests
 
-# FIXME: only temporary, so I can run tests manually when needed
-on: workflow_dispatch
-#on:
-#  pull_request:
-#    branches: [master, develop]
+on:
+  pull_request:
+    branches: [master, develop]
 
 jobs:
   build:
@@ -58,8 +56,6 @@ jobs:
       shell: bash -l {0}
       run: |
         conda env list
-        #FIXME temporary
-        python examples/python/ducctest.py
         python examples/notebooks/test_notebooks.py
         export MPLBACKEND=Agg
         make -C examples/python -f Makefile no-timing
