@@ -1,3 +1,8 @@
+"""
+    Distinctly Useful Code Collection (DUCC)
+
+    DUCC wrapper functions for use in pyshtools.
+"""
 import numpy as _np
 
 try:
@@ -312,7 +317,8 @@ def MakeGridDH(
 ):
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
-    out = _np.empty([2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend])
+    out = _np.empty(
+        [2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend])
     return _synthesize_DH(alm, lmax_calc, extend, out)
 
 

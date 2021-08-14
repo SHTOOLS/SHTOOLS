@@ -29,8 +29,9 @@ from ..shio import read_igrf as _read_igrf
 from ..shtools import MakeMagGridDH as _MakeMagGridDH
 from ..shtools import MakeMagGradGridDH as _MakeMagGradGridDH
 from ..shtools import djpi2 as _djpi2
-from ..shtools import SHRotateRealCoef as _SHRotateRealCoef
 from ..shtools import MakeMagGridPoint as _MakeMagGridPoint
+from ..backends import backend_module
+from ..backends import preferred_backend
 
 
 class SHMagCoeffs(object):
@@ -1538,7 +1539,7 @@ class SHMagCoeffs(object):
 
     # ---- Operations that return a new SHMagCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
-               body=False, dj_matrix=None):
+               body=False, dj_matrix=None, backend=None, nthreads=None):
         """
         Rotate either the coordinate system used to express the spherical
         harmonic coefficients or the physical body, and return a new class
@@ -1547,7 +1548,7 @@ class SHMagCoeffs(object):
         Usage
         -----
         x_rotated = x.rotate(alpha, beta, gamma, [degrees, convention,
-                             body, dj_matrix])
+                             body, dj_matrix, backend, nthreads])
 
         Returns
         -------
@@ -1567,7 +1568,14 @@ class SHMagCoeffs(object):
         body : bool, optional, default = False
             If true, rotate the physical body and not the coordinate system.
         dj_matrix : ndarray, optional, default = None
-            The djpi2 rotation matrix computed by a call to djpi2.
+            The djpi2 rotation matrix computed by a call to djpi2 (not used if
+            the backend is 'ducc').
+        backend : str, optional, default = preferred_backend()
+            Name of the preferred backend, either 'shtools' or 'ducc'.
+        nthreads : int, optional, default = 1
+            Number of threads to use for the 'ducc' backend. Setting this
+            parameter to 0 will use as many threads as there are hardware
+            threads on the system.
 
         Notes
         -----
@@ -1636,6 +1644,8 @@ class SHMagCoeffs(object):
 
         if degrees:
             angles = _np.radians(angles)
+        if backend is None:
+            backend = preferred_backend()
 
         if self.lmax > 1200:
             _warnings.warn("The rotate() method is accurate only to about"
@@ -1643,7 +1653,8 @@ class SHMagCoeffs(object):
                            "lmax = {:d}.".format(self.lmax),
                            category=RuntimeWarning)
 
-        rot = self._rotate(angles, dj_matrix, r0=self.r0)
+        rot = self._rotate(angles, dj_matrix, r0=self.r0, backend=backend,
+                           nthread=nthreads)
         return rot
 
     def convert(self, normalization=None, csphase=None, lmax=None):
@@ -2848,15 +2859,22 @@ class SHMagRealCoeffs(SHMagCoeffs):
                         repr(self.header2), repr(self.name), repr(self.units),
                         repr(self.year)))
 
-    def _rotate(self, angles, dj_matrix, r0=None):
+    def _rotate(self, angles, dj_matrix, r0=None, backend=None, nthreads=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
-        if dj_matrix is None:
+        if self.lmax > 1200 and backend.lower() == "shtools":
+            _warnings.warn("The rotate() method is accurate only to about" +
+                           " spherical harmonic degree 1200 when using the" +
+                           " shtools backend. " +
+                           "lmax = {:d}".format(self.lmax),
+                           category=RuntimeWarning)
+        if backend == "shtools" and dj_matrix is None:
             dj_matrix = _djpi2(self.lmax + 1)
 
         # The coefficients need to be 4pi normalized with csphase = 1
-        coeffs = _SHRotateRealCoef(
-            self.to_array(normalization='4pi', csphase=1, errors=False),
-            angles, dj_matrix)
+        coeffs = backend_module(
+            backend=backend, nthreads=nthreads).SHRotateRealCoef(
+                self.to_array(normalization='4pi', csphase=1, errors=False),
+                angles, dj_matrix)
 
         # Convert 4pi normalized coefficients to the same normalization
         # as the unrotated coefficients.

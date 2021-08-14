@@ -16,3 +16,6 @@
 * Aaryaman Vasishta / [jammm](https://github.com/jammm)
 * Alex Kalinin / [alkalinin](https://github.com/alkalinin)
 * Armin Corbin / [rainbowsend](https://github.com/rainbowsend)
+* Tristan Brugere
+* Erik Schnetter / [eschnett](https://github.com/eschnett)
+* [mreineck](https://github.com/mreineck)
