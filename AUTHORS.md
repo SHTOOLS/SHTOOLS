@@ -18,4 +18,4 @@
 * Armin Corbin / [rainbowsend](https://github.com/rainbowsend)
 * Tristan Brugere
 * Erik Schnetter / [eschnett](https://github.com/eschnett)
-* [mreineck](https://github.com/mreineck)
+* Martin Reinecke / [mreineck](https://github.com/mreineck)
