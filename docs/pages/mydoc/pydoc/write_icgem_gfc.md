@@ -16,8 +16,9 @@ file.
 
 ```python
 write_icgem_gfc(filename, coeffs, [errors, header, lmax, modelname, gm, r0,
-    product_type, earth_gm, error_kind, tide_system, normalization, format)
+    product_type, earth_gm, error_kind, tide_system, normalization, format,
 ```
+        encoding)
 
 ## Parameters
 
@@ -55,7 +56,7 @@ write_icgem_gfc(filename, coeffs, [errors, header, lmax, modelname, gm, r0,
 :   Reference radius of the model, in meters.
 
 **error_kind : str, optional, default = None**
-:   Which errors to read. Can be either 'unknown', 'calibrated', or
+:   Which errors to write. Can be either 'unknown', 'calibrated', or
         'formal'.
 
 **tide_system : str, optional, default = 'unknown'**
@@ -67,4 +68,7 @@ write_icgem_gfc(filename, coeffs, [errors, header, lmax, modelname, gm, r0,
 
 **format : str, optional, default = None**
 :   The format of the ICGEM spherical harmonic coefficients.
+
+**encoding : str, optional, default = None**
+:   Encoding of the output file. The default is to use the system default.
     

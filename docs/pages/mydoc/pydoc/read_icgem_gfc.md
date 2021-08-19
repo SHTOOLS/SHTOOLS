@@ -16,8 +16,9 @@ file.
 
 ```python
 cilm, gm, r0, [errors] = read_icgem_gfc(filename,
-    [errors, lmax, epoch, encoding)
+    [errors, lmax, epoch, encoding,
 ```
+                                             quiet)
 
 ## Returns
 
@@ -56,7 +57,40 @@ cilm, gm, r0, [errors] = read_icgem_gfc(filename,
         If the format of the file is 'icgem2.0' then the epoch must be
         specified.
 
-**encoding : str, optional**
-:   Encoding of the input file. Try to use 'iso-8859-1' if the default
-        (UTF-8) fails.
+**encoding : str, optional, default = None**
+:   Encoding of the input file. The default is to use the system default.
+        If the default encoding doesn't work, try 'iso-8859-1'.
+
+**quiet : bool, default = False**
+:   If True, suppress warnings about undefined keywords when reading the
+        file.
+
+## Notes
+
+This routine reads ICGEM formatted files of gravitational potential models
+and outputs arrays of the gravitational potential coefficients, errors, GM,
+and the reference radius. If epoch is specified, the coefficients will make
+use of the time variable terms in order to compute and return the potential
+coefficients for the specified epoch. Otherwise, the coefficients will be
+returned for the reference epoch of the model.
+
+Valid keys in the header section include:
+        modelname (not used)
+        product_type (only 'gravity_field' is allowed)
+        earth_gravity_constant or gravity_constant
+        radius
+        max_degree
+        errors ('unknown', 'formal', 'calibrated' or 'calibrated_and_formal')
+        tide_system (not used)
+        norm (not used)
+        format (either None or 'icgem2.0')
+
+Valid keys in the data section include:
+        gfc
+        gfct
+        trnd or dot
+        asin
+        acos
+
+Data lines starting with an unknown key are ignored.
     

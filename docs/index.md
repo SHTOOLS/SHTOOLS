@@ -17,11 +17,13 @@ toc: false
 
 * Use of both regularly sampled geographic grids and grids appropriate for Gauss-Legendre quadrature.
 
-* Spherical harmonic transforms proven to be accurate up to about degree 2800.
+* Spherical harmonic transforms proven to be fast and accurate.
+
+* Supports multiple backends for performing basic mathematical operations, including [shtools](index-fortran.html) and the [Distinctly Useful Code Collection (DUCC)](https://mtr.pages.mpcdf.de/ducc/).
 
 * Perform localized multitaper spectral analyses, or expand functions in terms of localized Slepian bases.
 
-* Support for standard data and file formats, including *xarray* and *netcdf*.
+* Supports standard data and file formats, including *xarray* and *netcdf*.
 
 * Import research-grade gravity, topography, and magnetic field datasets with a single command.
 

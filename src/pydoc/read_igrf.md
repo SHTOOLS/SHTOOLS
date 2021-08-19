@@ -25,6 +25,9 @@ read_igrm(filename, [year])
 **year : float, optional, default = 2020.**
 :   The year to compute the coefficients.
 
+**encoding : str, optional, default = None**
+:   Encoding of the input file. The default is to use the system default.
+
 # Notes
 
 The current International Geomagnetic Reference Field (IGRF-13) is a

@@ -15,8 +15,9 @@ Read shtools-formatted spherical harmonic coefficients from a text file.
 
 ```python
 coeffs, [errors], lmaxout, [header], [header2] = shread(
-    filename, [error=True, header=True, header2=True, lmax, skip])
+    filename, [error=True, header=True, header2=True, lmax, skip,
 ```
+        encoding])
 
 ## Returns
 
@@ -63,6 +64,9 @@ coeffs, [errors], lmaxout, [header], [header2] = shread(
 
 **skip : int, optional, default = 0**
 :   The number of lines to skip before parsing the file.
+
+**encoding : str, optional, default = None**
+:   Encoding of the input file. The default is to use the system default.
 
 ## Notes
 
