@@ -524,7 +524,7 @@ class SHCoeffs(object):
     @classmethod
     def from_random(self, power, lmax=None, kind='real', normalization='4pi',
                     csphase=1, name=None, units=None, exact_power=False,
-                    seed=None):
+                    power_unit='per_l', seed=None):
         """
         Initialize the class with spherical harmonic coefficients as random
         variables with a given spectrum.
@@ -532,7 +532,8 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_random(power, [lmax, kind, normalization, csphase,
-                                         name, units, exact_power, seed])
+                                         name, units, exact_power, power_unit,
+                                         seed])
 
         Returns
         -------
@@ -541,9 +542,11 @@ class SHCoeffs(object):
         Parameters
         ----------
         power : ndarray, shape (L+1)
-            numpy array of shape (L+1) that specifies the expected power per
-            degree l of the random coefficients, where L is the maximum
-            spherical harmonic bandwidth.
+            numpy array of shape (L+1) that specifies the expected power
+            spectrum of the random coefficients, where L is the maximum
+            spherical harmonic bandwidth. By default, the power spectrum
+            represents the power of all angular orders as a function of
+            spherical harmonic degree (see power_unit).
         lmax : int, optional, default = len(power) - 1
             The maximum spherical harmonic degree l of the output coefficients.
             The coefficients will be set to zero for degrees greater than L.
@@ -561,20 +564,30 @@ class SHCoeffs(object):
         units : str, optional, default = None
             The units of the spherical harmonic coefficients.
         exact_power : bool, optional, default = False
-            The total variance of the coefficients is set exactly to the input
-            power. The distribution of power at degree l amongst the angular
-            orders is random, but the total power is fixed.
+            If True, the spherical harmonic coefficients of the random
+            realization will be rescaled such that the power spectrum is
+            exactly equal to the input spectrum.
+        power_unit : str, optional, default = 'per_l'
+            If 'per_l', the input power spectrum represents the total power of
+            all angular orders as a function of spherical harmonic degree. If
+            'per_lm', the input power spectrum represents the power per
+            coefficient (which is assumed isotropic and varies only as a
+            function of spherical harmonic degree).
         seed : int, optional, default = None
             Set the seed for the numpy random number generator.
 
         Notes
         -----
         This routine returns a random realization of spherical harmonic
-        coefficients obtained from a normal distribution. The variance of
-        each coefficient at degree l is equal to the total power at degree
-        l divided by the number of coefficients at that degree. The power
-        spectrum of the random realization can be fixed exactly to the input
-        spectrum by setting exact_power to True.
+        coefficients obtained from a normal distribution. The variance of each
+        coefficient is determined by the input power spectrum and the type of
+        spectrum (as specified by power_unit). If power_unit is 'per_l'
+        (default), the variance of each coefficient at spherical harmonic
+        degree l is equal to the total power at degree l divided by the number
+        of coefficients at that degree. If power_unit is 'per_lm', the variance
+        of each coefficient at degree l is equal to the input power at that
+        degree. The power spectrum of the random realization can be fixed
+        exactly to the input spectrum by setting exact_power to True.
         """
         # check if all arguments are correct
         if type(normalization) != str:
@@ -599,6 +612,10 @@ class SHCoeffs(object):
             raise ValueError(
                 "kind must be 'real' or 'complex'. " +
                 "Input value is {:s}.".format(repr(kind)))
+
+        if power_unit.lower() not in ('per_l', 'per_lm'):
+            raise ValueError("power_unit must be 'per_l' or 'per_lm'. " +
+                             "Input value was {:s}".format(repr(power_unit)))
 
         if lmax is None:
             nl = len(power)
@@ -636,12 +653,17 @@ class SHCoeffs(object):
                                        ) / _np.sqrt(2.)
 
         if exact_power:
-            power_per_l = _spectrum(coeffs, normalization='4pi', unit='per_l')
+            power_realization = _spectrum(coeffs, normalization='4pi',
+                                          unit=power_unit)
             coeffs *= _np.sqrt(
-                power[0:nl] / power_per_l)[_np.newaxis, :, _np.newaxis]
+                power[0:nl] / power_realization)[_np.newaxis, :, _np.newaxis]
         else:
-            coeffs *= _np.sqrt(
-                power[0:nl] / (2 * degrees + 1))[_np.newaxis, :, _np.newaxis]
+            if power_unit == 'per_l':
+                coeffs *= \
+                    _np.sqrt(power[0:nl] / (2 * degrees + 1))[_np.newaxis, :,
+                                                              _np.newaxis]
+            elif power_unit == 'per_lm':
+                coeffs *= _np.sqrt(power[0:nl])[_np.newaxis, :, _np.newaxis]
 
         if normalization.lower() == '4pi':
             pass

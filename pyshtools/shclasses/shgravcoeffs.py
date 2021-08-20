@@ -682,7 +682,8 @@ class SHGravCoeffs(object):
     @classmethod
     def from_random(self, power, gm, r0, omega=None, function='geoid',
                     lmax=None, normalization='4pi', csphase=1,
-                    exact_power=False, name=None, epoch=None):
+                    exact_power=False, power_unit='per_l', name=None,
+                    epoch=None):
         """
         Initialize the class of gravitational potential spherical harmonic
         coefficients as random variables with a given spectrum.
@@ -692,7 +693,7 @@ class SHGravCoeffs(object):
         x = SHGravCoeffs.from_random(power, gm, r0, [omega, function, lmax,
                                                      normalization,
                                                      csphase, exact_power,
-                                                     name, epoch])
+                                                     power_unit, name, epoch])
 
         Returns
         -------
@@ -701,8 +702,11 @@ class SHGravCoeffs(object):
         Parameters
         ----------
         power : ndarray, shape (L+1)
-            numpy array of shape (L+1) that specifies the expected power per
-            degree l, where L is the maximum spherical harmonic bandwidth.
+            numpy array of shape (L+1) that specifies the expected power
+            spectrum of the output function, where L is the maximum spherical
+            harmonic bandwidth. By default, the input power spectrum represents
+            the power of all angular orders of the geoid as a function of
+            spherical harmonic degree (see function and power_unit).
         gm : float
             The gravitational constant times the mass that is associated with
             the gravitational potential coefficients.
@@ -725,9 +729,15 @@ class SHGravCoeffs(object):
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
         exact_power : bool, optional, default = False
-            The total variance of the coefficients is set exactly to the input
-            power. The distribution of power at degree l amongst the angular
-            orders is random, but the total power is fixed.
+            If True, the spherical harmonic coefficients of the random
+            realization will be rescaled such that the power spectrum is
+            exactly equal to the input spectrum.
+        power_unit : str, optional, default = 'per_l'
+            If 'per_l', the input power spectrum represents the total power of
+            all angular orders as a function of spherical harmonic degree. If
+            'per_lm', the input power spectrum represents the power per
+            coefficient (which is assumed isotropic and varies only as a
+            function of spherical harmonic degree).
         name : str, optional, default = None
             The name of the dataset.
         epoch : str or float, optional, default = None
@@ -738,13 +748,16 @@ class SHGravCoeffs(object):
         -----
         This routine returns a random realization of spherical harmonic
         gravitational potential coefficients obtained from a normal
-        distribution. The variance of each coefficient at degree l is equal to
-        the total power at degree l divided by the number of coefficients at
-        that degree (2l+1). These coefficients are then divided by a prefactor
-        that depends upon the function being used to calculate the spectrum:
-        gm/r0 for the gravitiational potential, r0 for the geoid, and
-        (l+1)*gm/(r**2) for the radial gravity. The power spectrum of the
-        random realization can be fixed exactly to the input spectrum by
+        distribution. The variance of each coefficient is determined by the
+        input power spectrum and the type of spectrum (as specified by
+        function and power_unit). If power_unit is 'per_l' (default), the
+        variance of each coefficient at spherical harmonic degree l is equal to
+        the input total power at degree l divided by the number of coefficients
+        at that degree. If power_unit is 'per_lm', the variance of each
+        coefficient at degree l is equal to the input power at that degree.
+        The power of the input function can be either for the geoid (default),
+        potential, radial gravity, or total gravity field. The power spectrum
+        of the random realization can be fixed exactly to the input spectrum by
         setting exact_power to True.
 
         Note that the degree 0 term is set to 1, and the degree-1 terms are
@@ -775,6 +788,10 @@ class SHGravCoeffs(object):
                 .format(repr(csphase))
                 )
 
+        if power_unit.lower() not in ('per_l', 'per_lm'):
+            raise ValueError("power_unit must be 'per_l' or 'per_lm'. " +
+                             "Input value was {:s}".format(repr(power_unit)))
+
         if lmax is None:
             nl = len(power)
             lmax = nl - 1
@@ -801,12 +818,17 @@ class SHGravCoeffs(object):
             coeffs[:2, l, :l+1] = _np.random.normal(size=(2, l+1))
 
         if exact_power:
-            power_per_l = _spectrum(coeffs, normalization='4pi', unit='per_l')
+            power_realization = _spectrum(coeffs, normalization='4pi',
+                                          unit=power_unit)
             coeffs *= _np.sqrt(
-                power[0:nl] / power_per_l)[_np.newaxis, :, _np.newaxis]
+                power[0:nl] / power_realization)[_np.newaxis, :, _np.newaxis]
         else:
-            coeffs *= _np.sqrt(
-                power[0:nl] / (2 * degrees + 1))[_np.newaxis, :, _np.newaxis]
+            if power_unit == 'per_l':
+                coeffs *= \
+                    _np.sqrt(power[0:nl] / (2 * degrees + 1))[_np.newaxis, :,
+                                                              _np.newaxis]
+            elif power_unit == 'per_lm':
+                coeffs *= _np.sqrt(power[0:nl])[_np.newaxis, :, _np.newaxis]
 
         if normalization.lower() == '4pi':
             pass

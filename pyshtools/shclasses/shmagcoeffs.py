@@ -613,7 +613,7 @@ class SHMagCoeffs(object):
     @classmethod
     def from_random(self, power, r0, function='total', lmax=None,
                     normalization='schmidt', csphase=1, name=None, units='nT',
-                    year=None, exact_power=False):
+                    year=None, exact_power=False, power_unit='per_l'):
         """
         Initialize the class of magnetic potential spherical harmonic
         coefficients as random variables with a given spectrum.
@@ -622,7 +622,7 @@ class SHMagCoeffs(object):
         -----
         x = SHMagCoeffs.from_random(power, r0, [function, lmax, normalization,
                                                 csphase, name, units, year,
-                                                exact_power])
+                                                exact_power, power_unit])
 
         Returns
         -------
@@ -631,11 +631,14 @@ class SHMagCoeffs(object):
         Parameters
         ----------
         power : ndarray, shape (L+1)
-            numpy array of shape (L+1) that specifies the expected power per
-            degree l, where L is the maximum spherical harmonic bandwidth.
+            numpy array of shape (L+1) that specifies the expected power
+            spectrum of the output function, where L is the maximum spherical
+            harmonic bandwidth. By default, the input power spectrum represents
+            the power of all angular orders of the geoid as a function of
+            spherical harmonic degree (see function and power_unit).
         r0 : float
             The reference radius of the spherical harmonic coefficients.
-        function : str, optional, default = 'potential'
+        function : str, optional, default = 'total'
             The type of input power spectrum: 'potential' for the magnetic
             potential in nT m, 'radial' for the radial magnetic field in nT,
             or 'total' for the total magnetic field (Lowes-Mauersberger) in nT.
@@ -656,21 +659,31 @@ class SHMagCoeffs(object):
         year : float, default = None.
             The year of the time-variable spherical harmonic coefficients.
         exact_power : bool, optional, default = False
-            The total variance of the coefficients is set exactly to the input
-            power. The distribution of power at degree l amongst the angular
-            orders is random, but the total power is fixed.
+            If True, the spherical harmonic coefficients of the random
+            realization will be rescaled such that the power spectrum is
+            exactly equal to the input spectrum.
+        power_unit : str, optional, default = 'per_l'
+            If 'per_l', the input power spectrum represents the total power of
+            all angular orders as a function of spherical harmonic degree. If
+            'per_lm', the input power spectrum represents the power per
+            coefficient (which is assumed isotropic and varies only as a
+            function of spherical harmonic degree).
 
         Notes
         -----
         This routine returns a random realization of spherical harmonic
         magnetic potential coefficients obtained from a normal distribution.
-        The variance of each coefficient at degree l is equal to
-        the total power at degree l divided by the number of coefficients at
-        that degree (2l+1). These coefficients are then divided by a prefactor
-        that depends upon the function being used to calculate the spectrum:
-        r0 for the magnetic potential, (l+1) for the radial magnetic field,
-        or sqrt((l+1)*(2l+1)). The power spectrum of the random realization can
-        be fixed exactly to the input spectrum by setting exact_power to True.
+        The variance of each coefficient is determined by the input power
+        spectrum and the type of spectrum (as specified by function and
+        power_unit). If power_unit is 'per_l' (default), the variance of each
+        coefficient at spherical harmonic degree l is equal to the input total
+        power at degree l divided by the number of coefficients at that degree.
+        If power_unit is 'per_lm', the variance of each coefficient at degree l
+        is equal to the input power at that degree. The power of the input
+        function can be either for the potential (default), radial magnetic
+        field, or total (Lowes-Mauersberger) magnetic field. The power spectrum
+        of the random realization can be fixed exactly to the input spectrum by
+        setting exact_power to True.
         """
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
@@ -701,6 +714,10 @@ class SHMagCoeffs(object):
             raise ValueError("units can be only 'T' or 'nT'. Input "
                              "value is {:s}.".format(repr(units)))
 
+        if power_unit.lower() not in ('per_l', 'per_lm'):
+            raise ValueError("power_unit must be 'per_l' or 'per_lm'. " +
+                             "Input value was {:s}".format(repr(power_unit)))
+
         if lmax is None:
             nl = len(power)
             lmax = nl - 1
@@ -727,12 +744,17 @@ class SHMagCoeffs(object):
             coeffs[:2, l, :l+1] = _np.random.normal(size=(2, l+1))
 
         if exact_power:
-            power_per_l = _spectrum(coeffs, normalization='4pi', unit='per_l')
+            power_realization = _spectrum(coeffs, normalization='4pi',
+                                          unit=power_unit)
             coeffs *= _np.sqrt(
-                power[0:nl] / power_per_l)[_np.newaxis, :, _np.newaxis]
+                power[0:nl] / power_realization)[_np.newaxis, :, _np.newaxis]
         else:
-            coeffs *= _np.sqrt(
-                power[0:nl] / (2 * degrees + 1))[_np.newaxis, :, _np.newaxis]
+            if power_unit == 'per_l':
+                coeffs *= \
+                    _np.sqrt(power[0:nl] / (2 * degrees + 1))[_np.newaxis, :,
+                                                              _np.newaxis]
+            elif power_unit == 'per_lm':
+                coeffs *= _np.sqrt(power[0:nl])[_np.newaxis, :, _np.newaxis]
 
         if normalization.lower() == '4pi':
             pass
