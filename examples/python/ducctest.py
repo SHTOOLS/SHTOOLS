@@ -26,7 +26,7 @@ def flush_buffers(grd):
 
 
 def test_SHT(lmax, grd, csphase, normalization, extend):
-    degrees = np.arange(2 * lmax + 1, dtype=float)
+    degrees = np.arange(lmax + 1, dtype=float)
     degrees[0] = np.inf
     power = degrees ** (-2)
 
@@ -55,7 +55,7 @@ def test_SHT(lmax, grd, csphase, normalization, extend):
 
 
 def test_SHTducc(lmax, grd, nthreads):
-    degrees = np.arange(2 * lmax + 1, dtype=float)
+    degrees = np.arange(lmax + 1, dtype=float)
     degrees[0] = np.inf
     power = degrees ** (-2)
 
@@ -73,7 +73,7 @@ def test_SHTducc(lmax, grd, nthreads):
 
 
 def test_SHTC(lmax, grd, csphase, normalization, extend):
-    degrees = np.arange(2 * lmax + 1, dtype=float)
+    degrees = np.arange(lmax + 1, dtype=float)
     degrees[0] = np.inf
     power = degrees ** (-2)
 
@@ -102,7 +102,7 @@ def test_SHTC(lmax, grd, csphase, normalization, extend):
 
 
 def test_SHT_deriv(lmax, grd, csphase, extend):
-    degrees = np.arange(2 * lmax + 1, dtype=float)
+    degrees = np.arange(lmax + 1, dtype=float)
     degrees[0] = 1.0
     power = degrees ** (-2)
 

@@ -29,6 +29,10 @@ def preferred_backend():
     """
     Return the name of the current preferred backend used for the spherical
     harmonic transforms in pyshtools as a string.
+
+    Usage
+    -----
+    preferred_backend()
     """
     return _preferred_backend
 
@@ -37,6 +41,10 @@ def preferred_backend_module():
     """
     Return a reference to the current preferred backend module used for the
     spherical harmonic transforms in pyshtools.
+
+    Usage
+    -----
+    module = preferred_backend_module()
     """
     return _preferred_backend_module
 

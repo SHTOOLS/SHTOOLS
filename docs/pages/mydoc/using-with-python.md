@@ -46,6 +46,7 @@ This will load the following classes and subpackages into the `pysh` namespace:
 | [rotate](python-spherical-harmonic-rotations.html) | Spherical harmonic rotation routines |
 | [gravmag](python-gravity-magnetics.html) | Gravity and magnetics routines |
 | [utils](python-utilities.html) | Utilities |
+| [backends](python-backends.html) | Functions to control which backend to use for the spherical harmonic transforms. |
 | shtools | All Python wrapped Fortran 95 routines |
 
 
