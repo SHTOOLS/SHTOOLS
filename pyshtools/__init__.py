@@ -29,6 +29,8 @@ main namespace:
     rotate            : Spherical harmonic rotation routines.
     gravmag           : Gravity and magnetics routines.
     utils             : pyshtools utilities.
+    backends          : Routines for selecting the spherical harmonic
+                        transform backend.
 
 For further information, consult the web documentation at
 
@@ -52,6 +54,7 @@ from . import spectralanalysis
 from . import rotate
 from . import gravmag
 from . import utils
+from . import backends
 
 # ---- Import principal classes into pyshtools namespace
 from .shclasses import SHCoeffs
@@ -67,6 +70,6 @@ __author__ = 'SHTOOLS developers'
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['constants', 'shclasses', 'legendre', 'expand', 'shio', 'shtools',
-           'spectralanalysis', 'rotate', 'gravmag', 'utils', 'SHCoeffs',
-           'SHGrid', 'SHWindow', 'Slepian', 'SHGravCoeffs', 'SHMagCoeffs',
-           'datasets']
+           'spectralanalysis', 'rotate', 'gravmag', 'utils', 'backends',
+           'SHCoeffs', 'SHGrid', 'SHWindow', 'Slepian', 'SHGravCoeffs',
+           'SHMagCoeffs', 'datasets']

@@ -8,7 +8,8 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 import xarray as _xr
 import tempfile as _tempfile
-
+from ..backends import backend_module
+from ..backends import preferred_backend
 from .. import shtools as _shtools
 
 try:
@@ -951,13 +952,14 @@ class SHGrid(object):
         """
         return self._histogram(bins=bins, range=range)
 
-    def expand(self, normalization='4pi', csphase=1, **kwargs):
+    def expand(self, normalization='4pi', csphase=1, lmax_calc=None,
+               backend=None, nthreads=None):
         """
         Expand the grid into spherical harmonics.
 
         Usage
         -----
-        clm = x.expand([normalization, csphase, lmax_calc])
+        clm = x.expand([normalization, csphase, lmax_calc, backend, nthreads])
 
         Returns
         -------
@@ -974,6 +976,12 @@ class SHGrid(object):
             or -1 to include it.
         lmax_calc : int, optional, default = x.lmax
             Maximum spherical harmonic degree to return.
+        backend : str, optional, default = preferred_backend()
+            Name of the preferred backend, either 'shtools' or 'ducc'.
+        nthreads : int, optional, default = 1
+            Number of threads to use for the 'ducc' backend. Setting this
+            parameter to 0 will use as many threads as there are hardware
+            threads on the system.
 
         Notes
         -----
@@ -1000,8 +1008,12 @@ class SHGrid(object):
                 .format(repr(csphase))
                 )
 
+        if backend is None:
+            backend = preferred_backend()
+
         return self._expand(normalization=normalization, csphase=csphase,
-                            **kwargs)
+                            lmax_calc=lmax_calc, backend=backend,
+                            nthreads=nthreads)
 
     # ---- Plotting routines ----
     def plot3d(self, elevation=20, azimuth=30, cmap='viridis',
@@ -1841,7 +1853,7 @@ class DHRealGrid(SHGrid):
                              weights=da[:, :self.nlon-self.extend],
                              density=True, range=range)
 
-    def _expand(self, normalization, csphase, **kwargs):
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -1859,10 +1871,11 @@ class DHRealGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandDH(self.data[:self.nlat-self.extend,
-                                             :self.nlon-self.extend],
-                                   norm=norm, csphase=csphase,
-                                   sampling=self.sampling, **kwargs)
+        cilm = backend_module(
+            backend=backend, nthreads=nthreads).SHExpandDH(
+                self.data[:self.nlat-self.extend, :self.nlon-self.extend],
+                norm=norm, csphase=csphase, sampling=self.sampling,
+                lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
@@ -2390,7 +2403,7 @@ class DHComplexGrid(SHGrid):
         """Return an area-weighted histogram normalized to unity."""
         raise NotImplementedError('histogram() does not support complex data.')
 
-    def _expand(self, normalization, csphase, **kwargs):
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -2408,10 +2421,11 @@ class DHComplexGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandDHC(self.data[:self.nlat-self.extend,
-                                              :self.nlon-self.extend],
-                                    norm=norm, csphase=csphase,
-                                    sampling=self.sampling, **kwargs)
+        cilm = backend_module(
+            backend=backend, nthreads=nthreads).SHExpandDHC(
+                self.data[:self.nlat-self.extend, :self.nlon-self.extend],
+                norm=norm, csphase=csphase, sampling=self.sampling,
+                lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
                                      copy=False)
@@ -2629,7 +2643,7 @@ class GLQRealGrid(SHGrid):
                              weights=da[:, :self.nlon-self.extend],
                              density=True, range=range)
 
-    def _expand(self, normalization, csphase, **kwargs):
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -2647,9 +2661,10 @@ class GLQRealGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandGLQ(self.data[:, :self.nlon-self.extend],
-                                    self.weights, self.zeros, norm=norm,
-                                    csphase=csphase, **kwargs)
+        cilm = backend_module(
+            backend=backend, nthreads=nthreads).SHExpandGLQ(
+                self.data[:, :self.nlon-self.extend], self.weights, self.zeros,
+                norm=norm, csphase=csphase, lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
                                      copy=False)
@@ -2940,7 +2955,7 @@ class GLQComplexGrid(SHGrid):
         """Return an area-weighted histogram normalized to unity."""
         raise NotImplementedError('histogram() does not support complex data.')
 
-    def _expand(self, normalization, csphase, **kwargs):
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -2958,9 +2973,10 @@ class GLQComplexGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandGLQC(self.data[:, :self.nlon-self.extend],
-                                     self.weights, self.zeros, norm=norm,
-                                     csphase=csphase, **kwargs)
+        cilm = backend_module(
+            backend=backend, nthreads=nthreads).SHExpandGLQC(
+                self.data[:, :self.nlon-self.extend], self.weights, self.zeros,
+                norm=norm, csphase=csphase, lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
                                      copy=False)

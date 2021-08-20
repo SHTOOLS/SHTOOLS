@@ -23,6 +23,8 @@ from ..shio import read_dov as _read_dov
 from ..shio import write_dov as _write_dov
 from ..shio import read_bshc as _read_bshc
 from ..shio import write_bshc as _write_bshc
+from ..backends import backend_module
+from ..backends import preferred_backend
 
 
 class SHCoeffs(object):
@@ -785,7 +787,7 @@ class SHCoeffs(object):
     @classmethod
     def from_cap(self, theta, lmax, clat=None, clon=None, normalization='4pi',
                  csphase=1, kind='real', name=None, units=None, degrees=True,
-                 copy=True):
+                 copy=True, backend=None, nthreads=None):
         """
         Initialize the class with spherical harmonic coefficients of a
         spherical cap centered at the north pole.
@@ -793,7 +795,8 @@ class SHCoeffs(object):
         Usage
         -----
         x = SHCoeffs.from_cap(theta, lmax, [clat, clon, normalization, csphase,
-                                            kind, name, units, degrees, copy])
+                                            kind, name, units, degrees, copy,
+                                            backend, nthreads])
 
         Returns
         -------
@@ -826,6 +829,12 @@ class SHCoeffs(object):
         copy : bool, optional, default = True
             If True, make a copy of array when initializing the class instance.
             If False, initialize the class instance with a reference to array.
+        backend : str, optional, default = preferred_backend()
+            Name of the preferred backend, either 'shtools' or 'ducc'.
+        nthreads : int, optional, default = 1
+            Number of threads to use for the 'ducc' backend. Setting this
+            parameter to 0 will use as many threads as there are hardware
+            threads on the system.
 
         Notes
         -----
@@ -884,11 +893,15 @@ class SHCoeffs(object):
                            csphase=csphase, name=name, units=units, copy=copy)
 
         if clat is not None and clon is not None:
+            if backend is None:
+                backend = preferred_backend()
             if degrees is True:
-                temp = temp.rotate(0., -90 + clat, -clon, degrees=True)
+                temp = temp.rotate(0., -90 + clat, -clon, degrees=True,
+                                   backend=backend, nthreads=nthreads)
             else:
                 temp = temp.rotate(0., -_np.pi/2. + clat, -clon,
-                                   degrees=False)
+                                   degrees=False, backend=backend,
+                                   nthreads=nthreads)
 
         return temp
 
@@ -1739,14 +1752,14 @@ class SHCoeffs(object):
                 admit = _np.column_stack((admit, _np.sqrt(sigma)))
             return admit, corr
 
-    def volume(self, lmax=None):
+    def volume(self, lmax=None, backend=None, nthreads=None):
         """
         If the function is the real shape of an object, calculate the volume
         of the body.
 
         Usage
         -----
-        volume = x.volume([lmax])
+        volume = x.volume([lmax, backend, nthreads])
 
         Returns
         -------
@@ -1758,6 +1771,12 @@ class SHCoeffs(object):
         lmax : int, optional, default = x.lmax
             The maximum spherical harmonic degree to use when calculating the
             volume.
+        backend : str, optional, default = preferred_backend()
+            Name of the preferred backend, either 'shtools' or 'ducc'.
+        nthreads : int, optional, default = 1
+            Number of threads to use for the 'ducc' backend. Setting this
+            parameter to 0 will use as many threads as there are hardware
+            threads on the system.
 
         Notes
         -----
@@ -1779,11 +1798,18 @@ class SHCoeffs(object):
 
         if lmax is None:
             lmax = self.lmax
+        if backend is None:
+            backend = preferred_backend()
+        if backend == 'shtools':
+            lmax = min(3*lmax, 2800)
 
         r0 = self.coeffs[0, 0, 0]
-        grid = self.expand(lmax=min(3*lmax, 2800)) - r0
-        h200 = (grid**2).expand(lmax_calc=0).coeffs[0, 0, 0]
-        h300 = (grid**3).expand(lmax_calc=0).coeffs[0, 0, 0]
+        grid = self.expand(lmax=lmax, backend=backend,
+                           nthreads=nthreads) - r0
+        h200 = (grid**2).expand(lmax_calc=0, backend=backend,
+                                nthreads=nthreads).coeffs[0, 0, 0]
+        h300 = (grid**3).expand(lmax_calc=0, backend=backend,
+                                nthreads=nthreads).coeffs[0, 0, 0]
 
         volume = 4 * _np.pi / 3 * (h300 + 3 * r0 * h200 + r0**3)
         return volume
@@ -1816,7 +1842,7 @@ class SHCoeffs(object):
 
     # ---- Operations that return a new SHGravCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
-               body=False, dj_matrix=None):
+               body=False, dj_matrix=None, backend=None, nthreads=None):
         """
         Rotate either the coordinate system used to express the spherical
         harmonic coefficients or the physical body, and return a new class
@@ -1825,7 +1851,7 @@ class SHCoeffs(object):
         Usage
         -----
         x_rotated = x.rotate(alpha, beta, gamma, [degrees, convention,
-                             body, dj_matrix])
+                             body, dj_matrix, backend, nthreads])
 
         Returns
         -------
@@ -1845,7 +1871,14 @@ class SHCoeffs(object):
         body : bool, optional, default = False
             If true, rotate the physical body and not the coordinate system.
         dj_matrix : ndarray, optional, default = None
-            The djpi2 rotation matrix computed by a call to djpi2.
+            The djpi2 rotation matrix computed by a call to djpi2 (not used if
+            the backend is 'ducc').
+        backend : str, optional, default = preferred_backend()
+            Name of the preferred backend, either 'shtools' or 'ducc'.
+        nthreads : int, optional, default = 1
+            Number of threads to use for the 'ducc' backend. Setting this
+            parameter to 0 will use as many threads as there are hardware
+            threads on the system.
 
         Notes
         -----
@@ -1914,13 +1947,10 @@ class SHCoeffs(object):
         if degrees:
             angles = _np.radians(angles)
 
-        if self.lmax > 1200:
-            _warnings.warn("The rotate() method is accurate only to about" +
-                           " spherical harmonic degree 1200. " +
-                           "lmax = {:d}".format(self.lmax),
-                           category=RuntimeWarning)
+        if backend is None:
+            backend = preferred_backend()
 
-        rot = self._rotate(angles, dj_matrix)
+        rot = self._rotate(angles, dj_matrix, backend, nthreads)
         return rot
 
     def convert(self, normalization=None, csphase=None, lmax=None, kind=None,
@@ -2068,14 +2098,15 @@ class SHCoeffs(object):
 
     # ---- Expand the coefficients onto a grid ----
     def expand(self, grid='DH2', lat=None, colat=None, lon=None, degrees=True,
-               zeros=None, lmax=None, lmax_calc=None, extend=True):
+               zeros=None, lmax=None, lmax_calc=None, extend=True,
+               backend=None, nthreads=None):
         """
         Evaluate the spherical harmonic coefficients either on a global grid
         or for a list of coordinates.
 
         Usage
         -----
-        f = x.expand([grid, lmax, lmax_calc, zeros])
+        f = x.expand([grid, lmax, lmax_calc, zeros, backend, nthreads])
         g = x.expand(lat=lat, lon=lon, [lmax_calc, degrees])
         g = x.expand(colat=colat, lon=lon, [lmax_calc, degrees])
 
@@ -2110,6 +2141,12 @@ class SHCoeffs(object):
         zeros : ndarray, optional, default = None
             The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
             grids.
+        backend : str, optional, default = preferred_backend()
+            Name of the preferred backend, either 'shtools' or 'ducc'.
+        nthreads : int, optional, default = 1
+            Number of threads to use for the 'ducc' backend. Setting this
+            parameter to 0 will use as many threads as there are hardware
+            threads on the system.
 
         Notes
         -----
@@ -2148,6 +2185,8 @@ class SHCoeffs(object):
                 lmax = self.lmax
             if lmax_calc is None:
                 lmax_calc = lmax
+            if backend is None:
+                backend = preferred_backend()
 
             if type(grid) != str:
                 raise ValueError('grid must be a string. Input type is {:s}.'
@@ -2155,13 +2194,16 @@ class SHCoeffs(object):
 
             if grid.upper() in ('DH', 'DH1'):
                 gridout = self._expandDH(sampling=1, lmax=lmax,
-                                         lmax_calc=lmax_calc, extend=extend)
+                                         lmax_calc=lmax_calc, extend=extend,
+                                         backend=backend, nthreads=nthreads)
             elif grid.upper() == 'DH2':
                 gridout = self._expandDH(sampling=2, lmax=lmax,
-                                         lmax_calc=lmax_calc, extend=extend)
+                                         lmax_calc=lmax_calc, extend=extend,
+                                         backend=backend, nthreads=nthreads)
             elif grid.upper() == 'GLQ':
                 gridout = self._expandGLQ(zeros=zeros, lmax=lmax,
-                                          lmax_calc=lmax_calc, extend=extend)
+                                          lmax_calc=lmax_calc, extend=extend,
+                                          backend=backend, nthreads=nthreads)
             else:
                 raise ValueError(
                     "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
@@ -2171,14 +2213,14 @@ class SHCoeffs(object):
 
     # ---- Compute the horizontal gradient ----
     def gradient(self, grid='DH2', lmax=None, lmax_calc=None, units=None,
-                 extend=True, radius=None):
+                 extend=True, radius=None, backend=None, nthreads=None):
         """
         Compute the horizontal gradient of the function and return an
         SHGradient class instance.
 
         Usage
         -----
-        g = x.gradient([grid, lmax, lmax_calc, units])
+        g = x.gradient([grid, lmax, lmax_calc, units, backend, nthreads])
 
         Returns
         -------
@@ -2203,12 +2245,20 @@ class SHCoeffs(object):
         radius : float, optional, default = 1.0
             The radius of the sphere used when computing the gradient of the
             function.
+        backend : str, optional, default = preferred_backend()
+            Name of the preferred backend, either 'shtools' or 'ducc'.
+        nthreads : int, optional, default = 1
+            Number of threads to use for the 'ducc' backend. Setting this
+            parameter to 0 will use as many threads as there are hardware
+            threads on the system.
 
         """
         if lmax is None:
             lmax = self.lmax
         if lmax_calc is None:
             lmax_calc = lmax
+        if backend is None:
+            backend = preferred_backend()
 
         if type(grid) != str:
             raise ValueError('grid must be a string. Input type is {:s}.'
@@ -2217,11 +2267,13 @@ class SHCoeffs(object):
         if grid.upper() in ('DH', 'DH1'):
             gradientout = self._gradientDH(sampling=1, lmax=lmax,
                                            lmax_calc=lmax_calc, units=units,
-                                           extend=extend, radius=radius)
+                                           extend=extend, radius=radius,
+                                           backend=backend, nthreads=nthreads)
         elif grid.upper() == 'DH2':
             gradientout = self._gradientDH(sampling=2, lmax=lmax,
                                            lmax_calc=lmax_calc, units=units,
-                                           extend=extend, radius=radius)
+                                           extend=extend, radius=radius,
+                                           backend=backend, nthreads=nthreads)
         elif grid.upper() == 'GLQ':
             raise NotImplementedError('gradient() does not support the use '
                                       'of GLQ grids.')
@@ -3968,13 +4020,20 @@ class SHRealCoeffs(SHCoeffs):
                                    csphase=self.csphase, units=self.units,
                                    copy=False)
 
-    def _rotate(self, angles, dj_matrix):
+    def _rotate(self, angles, dj_matrix, backend, nthreads):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
-        if dj_matrix is None:
-            dj_matrix = _shtools.djpi2(self.lmax + 1)
+        if self.lmax > 1200 and backend.lower() == "shtools":
+            _warnings.warn("The rotate() method is accurate only to about" +
+                           " spherical harmonic degree 1200 when using the" +
+                           " shtools backend. " +
+                           "lmax = {:d}".format(self.lmax),
+                           category=RuntimeWarning)
 
         # The coefficients need to be 4pi normalized with csphase = 1
-        coeffs = _shtools.SHRotateRealCoef(
+        if backend == "shtools" and dj_matrix is None:
+            dj_matrix = _shtools.djpi2(self.lmax + 1)
+        coeffs = backend_module(
+            backend=backend, nthreads=nthreads).SHRotateRealCoef(
             self.to_array(normalization='4pi', csphase=1, errors=False),
             angles, dj_matrix)
 
@@ -3991,7 +4050,7 @@ class SHRealCoeffs(SHCoeffs):
             return SHCoeffs.from_array(coeffs, errors=self.errors,
                                        units=self.units, copy=False)
 
-    def _expandDH(self, sampling, lmax, lmax_calc, extend):
+    def _expandDH(self, sampling, lmax, lmax_calc, extend, backend, nthreads):
         """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
         from .shgrid import SHGrid
         if self.normalization == '4pi':
@@ -4008,14 +4067,16 @@ class SHRealCoeffs(SHCoeffs):
                 "'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
-        data = _shtools.MakeGridDH(self.coeffs, sampling=sampling, norm=norm,
-                                   csphase=self.csphase, lmax=lmax,
-                                   lmax_calc=lmax_calc, extend=extend)
+        data = backend_module(
+            backend=backend, nthreads=nthreads).MakeGridDH(
+                self.coeffs, sampling=sampling, norm=norm,
+                csphase=self.csphase, lmax=lmax,
+                lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='DH', units=self.units,
                                     copy=False)
         return gridout
 
-    def _expandGLQ(self, zeros, lmax, lmax_calc, extend):
+    def _expandGLQ(self, zeros, lmax, lmax_calc, extend, backend, nthreads):
         """Evaluate the coefficients on a Gauss Legendre quadrature grid."""
         from .shgrid import SHGrid
         if self.normalization == '4pi':
@@ -4032,12 +4093,13 @@ class SHRealCoeffs(SHCoeffs):
                 "'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
-        if zeros is None:
+        if backend == "shtools" and zeros is None:
             zeros, weights = _shtools.SHGLQ(self.lmax)
-
-        data = _shtools.MakeGridGLQ(self.coeffs, zeros, norm=norm,
-                                    csphase=self.csphase, lmax=lmax,
-                                    lmax_calc=lmax_calc, extend=extend)
+        data = backend_module(
+            backend=backend, nthreads=nthreads).MakeGridGLQ(
+                self.coeffs, zero=zeros, norm=norm,
+                csphase=self.csphase, lmax=lmax,
+                lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='GLQ', units=self.units,
                                     copy=False)
         return gridout
@@ -4097,14 +4159,17 @@ class SHRealCoeffs(SHCoeffs):
                              'ndarray, or list. Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
-    def _gradientDH(self, sampling, lmax, lmax_calc, units, extend, radius):
+    def _gradientDH(self, sampling, lmax, lmax_calc, units, extend, radius,
+                    backend, nthreads):
         """Evaluate the gradient on a Driscoll and Healy (1994) grid."""
         from .shgradient import SHGradient
 
-        theta, phi = _shtools.MakeGradientDH(
-            self.to_array(normalization='4pi', csphase=1, errors=False),
-            sampling=sampling, lmax=lmax, lmax_calc=lmax_calc, extend=extend,
-            radius=radius)
+        theta, phi = backend_module(
+                backend=backend, nthreads=nthreads).MakeGradientDH(
+                    self.to_array(
+                        normalization='4pi', csphase=1, errors=False),
+                    sampling=sampling, lmax=lmax,
+                    lmax_calc=lmax_calc, extend=extend, radius=radius)
 
         return SHGradient(theta, phi, lmax, lmax_calc, units=units)
 
@@ -4198,18 +4263,42 @@ class SHComplexCoeffs(SHCoeffs):
                                    normalization=self.normalization,
                                    csphase=self.csphase, units=self.units)
 
-    def _rotate(self, angles, dj_matrix):
+    def _rotate(self, angles, dj_matrix, backend, nthreads):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
+        if backend == 'ducc':
+            coeffs = backend_module(
+                backend=backend, nthreads=nthreads).SHRotateComplexCoef(
+                    self.to_array(normalization='4pi', csphase=1,
+                                  errors=False), angles)
+            # Convert 4pi normalized coefficients to the same normalization
+            # as the unrotated coefficients.
+            if self.normalization != '4pi' or self.csphase != 1:
+                temp = _convert(coeffs, normalization_in='4pi', csphase_in=1,
+                                normalization_out=self.normalization,
+                                csphase_out=self.csphase)
+                return SHCoeffs.from_array(
+                    temp, errors=self.errors, normalization=self.normalization,
+                    csphase=self.csphase, units=self.units, copy=False)
+            else:
+                return SHCoeffs.from_array(coeffs, errors=self.errors,
+                                           units=self.units, copy=False)
+
         # Note that the current method is EXTREMELY inefficient. The complex
         # coefficients are expanded onto real and imaginary grids, each of
         # the two components are rotated separately as real data, the rotated
         # real data are re-expanded on new real and complex grids, they are
         # combined to make a complex grid, and the resultant is expanded
         # in complex spherical harmonics.
+        if self.lmax > 1200 and backend.lower() == "shtools":
+            _warnings.warn("The rotate() method is accurate only to about" +
+                           " spherical harmonic degree 1200 when using the" +
+                           " shtools backend. " +
+                           "lmax = {:d}".format(self.lmax),
+                           category=RuntimeWarning)
         if dj_matrix is None:
             dj_matrix = _shtools.djpi2(self.lmax + 1)
 
-        cgrid = self.expand(grid='DH')
+        cgrid = self.expand(grid='DH', extend=False)
         rgrid, igrid = cgrid.data.real, cgrid.data.imag
         rgridcoeffs = _shtools.SHExpandDH(rgrid, norm=1, sampling=1, csphase=1)
         igridcoeffs = _shtools.SHExpandDH(igrid, norm=1, sampling=1, csphase=1)
@@ -4242,12 +4331,12 @@ class SHComplexCoeffs(SHCoeffs):
         coeffs_rot = _shtools.SHExpandDHC(grid_rot, norm=norm,
                                           csphase=self.csphase)
 
-        return SHCoeffs.from_array(coeffs_rot, errros=self.errors,
+        return SHCoeffs.from_array(coeffs_rot, errors=self.errors,
                                    normalization=self.normalization,
                                    csphase=self.csphase, units=self.units,
                                    copy=False)
 
-    def _expandDH(self, sampling, lmax, lmax_calc, extend):
+    def _expandDH(self, sampling, lmax, lmax_calc, extend, backend, nthreads):
         """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
         from .shgrid import SHGrid
         if self.normalization == '4pi':
@@ -4264,14 +4353,16 @@ class SHComplexCoeffs(SHCoeffs):
                 "'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
-        data = _shtools.MakeGridDHC(self.coeffs, sampling=sampling,
-                                    norm=norm, csphase=self.csphase, lmax=lmax,
-                                    lmax_calc=lmax_calc, extend=extend)
+        data = backend_module(
+                backend=backend, nthreads=nthreads).MakeGridDHC(
+                    self.coeffs, sampling=sampling, norm=norm,
+                    csphase=self.csphase, lmax=lmax,
+                    lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='DH', units=self.units,
                                     copy=False)
         return gridout
 
-    def _expandGLQ(self, zeros, lmax, lmax_calc, extend):
+    def _expandGLQ(self, zeros, lmax, lmax_calc, extend, backend, nthreads):
         """Evaluate the coefficients on a Gauss-Legendre quadrature grid."""
         from .shgrid import SHGrid
         if self.normalization == '4pi':
@@ -4288,12 +4379,13 @@ class SHComplexCoeffs(SHCoeffs):
                 "'unnorm'. Input value is {:s}."
                 .format(repr(self.normalization)))
 
-        if zeros is None:
+        if backend == "shtools" and zeros is None:
             zeros, weights = _shtools.SHGLQ(self.lmax)
-
-        data = _shtools.MakeGridGLQC(self.coeffs, zeros, norm=norm,
-                                     csphase=self.csphase, lmax=lmax,
-                                     lmax_calc=lmax_calc, extend=extend)
+        data = backend_module(
+                backend=backend, nthreads=nthreads).MakeGridGLQC(
+                    self.coeffs, zero=zeros, norm=norm,
+                    csphase=self.csphase, lmax=lmax,
+                    lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='GLQ', units=self.units,
                                     copy=False)
         return gridout

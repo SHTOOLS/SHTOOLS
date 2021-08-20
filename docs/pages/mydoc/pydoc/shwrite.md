@@ -14,7 +14,7 @@ Write shtools-formatted spherical harmonic coefficients to a text file.
 ## Usage
 
 ```python
-shwrite(filename, coeffs, [errors, header, header2, lmax])
+shwrite(filename, coeffs, [errors, header, header2, lmax, encoding])
 ```
 
 ## Parameters
@@ -40,6 +40,9 @@ shwrite(filename, coeffs, [errors, header, header2, lmax])
 
 **lmax : int, optional, default = None**
 :   The maximum spherical harmonic degree to write to the file.
+
+**encoding : str, optional, default = None**
+:   Encoding of the output file. The default is to use the system default.
 
 ## Notes
 

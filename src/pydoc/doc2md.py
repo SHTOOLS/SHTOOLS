@@ -24,7 +24,11 @@ functions = [
     ['pysh.shio.YilmIndexVector', 'pyyilmindexvector.md'],
     ['pysh.spectralanalysis.cross_spectrum', 'cross_spectrum.md'],
     ['pysh.spectralanalysis.spectrum', 'spectrum.md'],
-    ['pysh.utils.figstyle', 'figstyle.md']
+    ['pysh.utils.figstyle', 'figstyle.md'],
+    ['pysh.backends.select_preferred_backend', 'select_preferred_backend.md'],
+    ['pysh.backends.preferred_backend', 'preferred_backend.md'],
+    ['pysh.backends.preferred_backend_module', 'preferred_backend_module.md'],
+    ['pysh.backends.backend_module', 'backend_module.md']
 ]
 
 for func, file in functions:
