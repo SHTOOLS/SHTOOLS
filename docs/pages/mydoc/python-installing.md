@@ -130,5 +130,6 @@ To make use of the 'ducc' backend for the spherical harmonic transforms, it will
 ```bash
 pip install pyshtools[ducc]  # installs ducc at the same time as pyshtools
 pip install ducc0>=0.15  # if pyshtools is already installed
+pip install ducc0>=0.15 -no-binary ducc0  # install ducc from source
 ```
-A conda version of *ducc0* exists, but it is not custom-built for the user's hardware and will therefore be roughly half as fast on most machines.
+Note: By installing *ducc0* from source, it might be possible to benefit from the use of AVX instructions which can improve execution speeds by a factor of about 2.

@@ -19,5 +19,4 @@ dependencies:
     - pypandoc
     - flake8
     - pip
-    - pip:
-      - ducc0>=0.15
+    - ducc0>=0.15
