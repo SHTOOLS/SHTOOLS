@@ -20,4 +20,4 @@ dependencies:
     - flake8
     - pip
     - pip:
-      - ducc0>=0.12
+      - ducc0>=0.15
