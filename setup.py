@@ -216,7 +216,7 @@ def configuration(parent_package='', top_path=None):
 
 CMDCLASS = numpy_cmdclass
 CMDCLASS.update({'build': build, 'install': install, 'develop': develop})
-CMDCLASS.update(versioneer.get_cmdclass())
+CMDCLASS = versioneer.get_cmdclass(CMDCLASS)
 
 metadata = dict(
     name='pyshtools',

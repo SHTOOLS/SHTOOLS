@@ -46,8 +46,8 @@ def read_bshc(filename, lmax=None):
     (with all orders being listed, one degree at a time). For a 100 degree
     file, the contents are
 
-    0 10800  
-    C(0,0), C(1,0), C(1,1), C(2,0), C(2,1), ... C(100,99), C(100,100)  
+    0 10800
+    C(0,0), C(1,0), C(1,1), C(2,0), C(2,1), ... C(100,99), C(100,100)
     S(0,0), S(1,0), S(1,1), S(2,0), S(2,1), ... S(100,99), S(100,100).
 
     If filename starts with 'http://', 'https://', or 'ftp://', the file will
@@ -138,8 +138,8 @@ def write_bshc(filename, coeffs, lmax=None):
     (with all orders being listed, one degree at a time). For a 100 degree
     file, the contents are
 
-    0 100  
-    C(0,0), C(1,0), C(1,1), C(2,0), C(2,1), ... C(100,99), C(100,100)  
+    0 100
+    C(0,0), C(1,0), C(1,1), C(2,0), C(2,1), ... C(100,99), C(100,100)
     S(0,0), S(1,0), S(1,1), S(2,0), S(2,1), ... S(100,99), S(100,100).
 
     If the filename ends with '.gz', the file will be automatically
