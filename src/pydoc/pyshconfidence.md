@@ -4,26 +4,24 @@ Compute the probability that two functions are correlated at a given spherical h
 
 # Usage
 
-```python
-`prob` = SHConfidence (`l`, `corr`)
-```
+prob = SHConfidence (l, corr)
 
 # Returns
 
-`prob` : float, ndarray
-:   Probability that two functions expressed in spherical coefficients with spectral correlation `corr` are correlated at degree `l`.
+prob : float, ndarray
+:   Probability that two functions expressed in spherical coefficients with spectral correlation corr are correlated at degree l.
 
 # Parameters
 
-`l` :  integer, array_like
+l :  integer, array_like
 :   The spherical harmonic degree.
 
-`corr` : float, array_like
-:   The correlation coefficient of the two data sets at degree `l`.
+corr : float, array_like
+:   The correlation coefficient of the two data sets at degree l.
 
 # Description
 
-`SHConfidence` will calculate the probability (between 0 and 1) that two sets of spherical harmonic coefficients with spectral correlation `corr` are linearly correlated at a given degree. This is calculated using equation A7 from Pauer et al. (2006).
+SHConfidence will calculate the probability (between 0 and 1) that two sets of spherical harmonic coefficients with spectral correlation corr are linearly correlated at a given degree. This is calculated using equation A7 from Pauer et al. (2006).
 
 # References
 

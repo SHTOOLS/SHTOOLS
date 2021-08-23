@@ -1,6 +1,6 @@
 ---
 title: SHFindLWin()
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshfindlwin.html
 summary:
@@ -13,32 +13,30 @@ Determine the spherical-harmonic bandwidth that is necessary to achieve a certai
 
 ## Usage
 
-```python
-`lwin` = SHFindLWin (`theta0`, `m`, `alpha`, [`taper_number`])
-```
+lwin = SHFindLWin (theta0, m, alpha, [taper_number])
 
 ## Returns
 
-`lwin` : integer
-:   The spherical harmonic bandwidth
+lwin : integer
+:   The spherical harmonic bandwidth.
 
 ## Parameters
 
-`theta0` : float
+theta0 : float
 :   The angular radius of the spherical cap in radians.
 
-`m` : integer
+m : integer
 :   The angular order of the taper.
 
-`alpha` : float
+alpha : float
 :   The desired concentration factor of the window. This must lie between 0 and 1.
 
-`taper_number` : optional, integer, default = 1
-:   The taper number corresponding to the angular order `m`. The default is to use the first taper.
+taper_number : optional, integer, default = 1
+:   The taper number corresponding to the angular order m. The default is to use the first taper.
 
 ## Description
 
-`SHFindLWin` will determine the spherical harmonic bandwidth that is required for a window of the spherical-cap concentration problem to achive a certain concentration factor. By default, the first taper corresponding to the angular order `m` will be used, but this can be modified by specifying the optional argument `taper_number`. 
+SHFindLWin will determine the spherical harmonic bandwidth that is required for a window of the spherical-cap concentration problem to achive a certain concentration factor. By default, the first taper corresponding to the angular order m will be used, but this can be modified by specifying the optional argument taper_number.
 
 ## References
 

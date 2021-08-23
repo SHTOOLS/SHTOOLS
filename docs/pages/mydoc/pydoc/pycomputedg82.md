@@ -1,6 +1,6 @@
 ---
 title: ComputeDG82()
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pycomputedg82.html
 summary:
@@ -13,29 +13,27 @@ Compute the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the 
 
 ## Usage
 
-```python
-`dg82` = ComputeDG82 (`lmax`, `m`, `theta0`)
-```
+dg82 = ComputeDG82 (lmax, m, theta0)
 
 ## Returns
 
-`dg82` : float, dimension (`lmax`-abs(`m`)+1, `lmax`-abs(`m`)+1)
+dg82 : float, dimension (lmax-abs(m)+1, lmax-abs(m)+1)
 :   The tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of order M of a spherical cap.
 
 ## Parameters
 
-`lmax` : integer
+lmax : integer
 :   The spherical harmonic bandwidth of the windows.
 
-`m` : integer
+m : integer
 :   The angular order of the concentration problem.
 
-`theta0` : float
+theta0 : float
 :   The angular radius of the spherical cap in radians.
 
 ## Description
 
-`ComputeDG82` will calculate the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of order `m` of a spherical cap. The eigenfunctions of this matrix correspond to a family of orthogonal windowing functions, and the eigenvalues correspond to the window's concentration factor (i.e., the power of the window within `theta0` divided by the total power of the function). It is assumed that the employed spherical harmonic functions are normalized to the same value for all degrees and angular orders, which is the case for both the geodesy 4-pi and orthonormalized harmonics. The returned matrix is symmetric, and the first element corresponds to (abs(`m`), abs(`m`)) as the values for elements less than this are identically zero.
+ComputeDG82 will calculate the tridiagonal matrix of Grunbaum et al. (1982) that commutes with the space-concentration kernel of order m of a spherical cap. The eigenfunctions of this matrix correspond to a family of orthogonal windowing functions, and the eigenvalues correspond to the window's concentration factor (i.e., the power of the window within theta0 divided by the total power of the function). It is assumed that the employed spherical harmonic functions are normalized to the same value for all degrees and angular orders, which is the case for both the geodesy 4-pi and orthonormalized harmonics. The returned matrix is symmetric, and the first element corresponds to (abs(m), abs(m)) as the values for elements less than this are identically zero.
 
 ## References
 

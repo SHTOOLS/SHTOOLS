@@ -1,6 +1,6 @@
 ---
 title: shwrite()
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: shwrite.html
 summary:
@@ -13,35 +13,33 @@ Write shtools-formatted spherical harmonic coefficients to a text file.
 
 ## Usage
 
-```python
 shwrite(filename, coeffs, [errors, header, header2, lmax, encoding])
-```
 
 ## Parameters
 
-**filename : str**
+filename : str
 :   File name of the shtools-formatted spherical harmonic coefficients. If
-        filename ends with '.gz' the file will be automatically compressed with
-        gzip.
+    filename ends with '.gz' the file will be automatically compressed with
+    gzip.
 
-**coeffs : ndarray, size(2, lmaxin+1, lmaxin+1)**
+coeffs : ndarray, size(2, lmaxin+1, lmaxin+1)
 :   The spherical harmonic coefficients.
 
-**errors : ndarray, size(2, lmaxin+1, lmaxin+1), optional, default = None**
+errors : ndarray, size(2, lmaxin+1, lmaxin+1), optional, default = None
 :   The errors associated with the spherical harmonic coefficients.
 
-**header : str, optional default = None**
+header : str, optional default = None
 :   A string to be written directly before the spherical harmonic
-        coefficients.
+    coefficients.
 
-**header2 : str, optional default = None**
+header2 : str, optional default = None
 :   A second string to be written directly before the spherical harmonic
-        coefficients.
+    coefficients.
 
-**lmax : int, optional, default = None**
+lmax : int, optional, default = None
 :   The maximum spherical harmonic degree to write to the file.
 
-**encoding : str, optional, default = None**
+encoding : str, optional, default = None
 :   Encoding of the output file. The default is to use the system default.
 
 ## Notes
@@ -66,4 +64,4 @@ inceasing order, from 0 to l.
 
 If the filename ends with '.gz', the file will be automatically compressed
 using gzip.
-    
+

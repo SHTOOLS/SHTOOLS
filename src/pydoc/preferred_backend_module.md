@@ -5,7 +5,5 @@ spherical harmonic transforms in pyshtools.
 
 # Usage
 
-```python
 module = preferred_backend_module()
-```
-    
+

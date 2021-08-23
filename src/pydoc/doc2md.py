@@ -95,27 +95,28 @@ for func, file in functions:
             elif kind[i] == 'underline':
                 lines[i] = '\n'
             elif kind[i] == 'parameter':
-                lines[i] = '**' + lines[i].strip() + '**\n'
+                lines[i] = lines[i].strip() + '\n'
                 if lines[i-1] != '\n':
                     lines[i-1] = lines[i-1] + '\n'
             elif kind[i] == 'usage':
-                lines[i] = '```python\n' + lines[i].strip() + '\n```\n'
+                lines[i] = lines[i].strip() + '\n'
             elif kind[i] == 'continuation' and kind[i-1] == 'parameter':
-                lines[i] = lines[i].strip() + '**\n'
-                lines[i-1] = lines[i-1].strip()[:-2] + ' '
+                lines[i] = lines[i].strip() + '\n'
+                lines[i-1] = lines[i-1].strip() + ' '
             elif kind[i] == 'continuation' and kind[i-1] == 'usage':
-                lines[i] = '    ' + lines[i].strip() + '\n```\n'
-                lines[i-1] = lines[i-1].strip()[:-4] + '\n'
+                lines[i] = '    ' + lines[i].strip() + '\n'
+                lines[i-1] = lines[i-1].strip() + '\n'
             elif kind[i] == 'desc' and kind[i-1] == 'parameter':
                 lines[i] = ':   ' + lines[i].strip() + '\n'
             elif kind[i] == 'desc' and kind[i-1] == 'continuation':
-                lines[i] = ':   ' + lines[i].strip() + '\n'
-            elif kind[i] == 'desc' and kind[i-1] == 'desc':
-                lines[i] = lines[i].strip() + '\n'
-                lines[i-1] = lines[i-1].strip() + ' '
+                 lines[i] = ':   ' + lines[i].strip() + '\n'
+            elif kind[i] == 'continuation' and kind[i-1] == 'continuation':
+                lines[i] = '    ' + lines[i].strip() + '\n'
+            elif kind[i] == 'continuation' and kind[i-1] == 'desc':
+                lines[i] = '    ' + lines[i].strip() + '\n'
             elif kind[i] == 'text':
                 lines[i] = lines[i].strip() + '\n'
-                if lines[i-1] == 'text':
-                    lines[i-1] == lines[i-1].strip() + ' '
+            elif kind[i] == 'blank':
+                lines[i] = '\n'
 
         f.writelines(lines)

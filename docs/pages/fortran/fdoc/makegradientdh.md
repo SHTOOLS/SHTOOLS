@@ -13,7 +13,7 @@ Compute the gradient of a scalar function and return grids of the two horizontal
 
 ## Usage
 
-call MakeGradientDH (`cilm`, `lmax`, `theta`, `phi`, `n`, `sampling`, `lmax_calc`, `extend`, `exitstatus`)
+call MakeGradientDH (`cilm`, `lmax`, `theta`, `phi`, `n`, `sampling`, `lmax_calc`, `extend`, `radius`, `exitstatus`)
 
 ## Parameters
 
@@ -41,6 +41,9 @@ call MakeGradientDH (`cilm`, `lmax`, `theta`, `phi`, `n`, `sampling`, `lmax_calc
 `extend` : input, optional, integer(int32), default = 0
 :   If 1, compute the longitudinal band for 360 E and the latitudinal band for 90 S. This increases each of the dimensions of the grids by 1.
 
+`radius` : input, optional, real(dp), default = 1.0
+:   The radius of the sphere used when computing the gradient of the function.
+
 `exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
@@ -50,7 +53,7 @@ call MakeGradientDH (`cilm`, `lmax`, `theta`, `phi`, `n`, `sampling`, `lmax_calc
 
 `Grad F = 1/r dF/theta theta-hat + 1/(r sin theta) dF/dphi phi-hat`.
 
-where theta is colatitude and phi is longitude. The radius r is taken from the degree zero coefficient of the input function.
+where theta is colatitude and phi is longitude. The radius r is by default set to 1, but this can be modified by use of the optional parameter `radius`.
 
 The default is to use an input grid that is equally sampled (`n` by `n`), but this can be changed to use an equally spaced grid (`n` by 2`n`) by the optional argument `sampling`. The redundant longitudinal band for 360 E and the latitudinal band for 90 S are excluded by default, but these can be computed by specifying the optional argument `extend`.
 

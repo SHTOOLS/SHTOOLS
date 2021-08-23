@@ -21,10 +21,11 @@ Ravat2020         :  Ravat et al. (2020)
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
-from ..shclasses import SHCoeffs as _SHCoeffs
-from ..shclasses import SHGravCoeffs as _SHGravCoeffs
-from ..shclasses import SHMagCoeffs as _SHMagCoeffs
-from ..constants.Moon import omega as _omega
+from ...shclasses import SHCoeffs as _SHCoeffs
+from ...shclasses import SHGravCoeffs as _SHGravCoeffs
+from ...shclasses import SHMagCoeffs as _SHMagCoeffs
+from ...constants.Moon import omega as _omega
+from . import historical  # noqa: F401
 
 
 def MoonTopo2600p(lmax=2600):

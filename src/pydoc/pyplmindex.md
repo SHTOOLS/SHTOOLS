@@ -5,22 +5,20 @@ l and angular order m.
 
 # Usage
 
-```python
 index = PlmIndex (l, m)
-```
 
 # Returns
 
-**index : integer, ndarray**
+index : integer, ndarray
 :   Index of an array of associated Legendre functions corresponding to
-        degree l and angular order m.
+    degree l and angular order m.
 
 # Parameters
 
-**l : integer, array_like**
+l : integer, array_like
 :   The spherical harmonic degree.
 
-**m : integer, array_like**
+m : integer, array_like
 :   The angular order.
 
 # Notes
