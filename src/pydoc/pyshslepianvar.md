@@ -4,32 +4,30 @@ Calculate the theoretical variance of the power of a function expanded in spheri
 
 # Usage
 
-```python
-`variance` = SHSlepianVar (`l`, `galpha`, `galpha_order`, `sff`, [`kmax`])
-```
+variance = SHSlepianVar (l, galpha, galpha_order, sff, [kmax])
 
 # Returns
 
-`variance` : float
-:   The theoretical variance of the spectral estimate for degree `l`.
+variance : float
+:   The theoretical variance of the spectral estimate for degree l.
 
 # Parameters
 
-`l` : integer
+l : integer
 :   The spherical harmonic degree used to calculate the theoretical variance.
 
-`galpha` : float, dimension (`lmaxin`+1, `kmaxin`)
-:   A matrix of spherical-cap Slepian functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
+galpha : float, dimension (lmaxin+1, kmaxin)
+:   A matrix of spherical-cap Slepian functions obtained from SHReturnTapers or SHReturnTapersM.
 
-`galpha_order` : integer, dimension (`kmaxin`)
-:   The angular order of the Slepian functions in `galpha`.
+galpha_order : integer, dimension (kmaxin)
+:   The angular order of the Slepian functions in galpha.
 
-`sff` : float, dimension (`lmaxin`+1)
+sff : float, dimension (lmaxin+1)
 :   The global power spectrum of the function.
 
-`kmax` : optional, integer, default = `kmaxin`
+kmax : optional, integer, default = kmaxin
 :   The maximum number of Slepian functions to use when calculating the variance.
 
 # Description
 
-`SHSlepianVar` will compute the theoretical variance of the power of a function expanded in spherical-cap Slepian functions for a given spherical harmonic degree. This routine takes as input the spherical harmonic coefficients of the spherical-cap Slepian functions as obtained by a call to `SHReturnTapers`, and only the first `kmax` Slepian functions in the matrix `galpha` are used to compute the variance.
+SHSlepianVar will compute the theoretical variance of the power of a function expanded in spherical-cap Slepian functions for a given spherical harmonic degree. This routine takes as input the spherical harmonic coefficients of the spherical-cap Slepian functions as obtained by a call to SHReturnTapers, and only the first kmax Slepian functions in the matrix galpha are used to compute the variance.

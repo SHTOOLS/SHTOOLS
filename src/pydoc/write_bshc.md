@@ -4,23 +4,21 @@ Write real spherical harmonic coefficients to a binary bshc file.
 
 # Usage
 
-```python
 write_bshc(filename, coeffs, [lmax])
-```
 
 # Parameters
 
-**filename : str**
+filename : str
 :   File name of the binary 'bshc'-formatted spherical harmonic
-        coefficients. If filename ends with '.gz' the file will be
-        automatically compressed with gzip.
+    coefficients. If filename ends with '.gz' the file will be
+    automatically compressed with gzip.
 
-**coeffs : ndarray, size(2, lmaxin+1, lmaxin+1)**
+coeffs : ndarray, size(2, lmaxin+1, lmaxin+1)
 :   The spherical harmonic coefficients.
 
-**lmax : int, optional, default = None**
+lmax : int, optional, default = None
 :   The maximum spherical harmonic degree to write to the file. The
-        default is to write all coefficients.
+    default is to write all coefficients.
 
 # Notes
 
@@ -37,4 +35,4 @@ S(0,0), S(1,0), S(1,1), S(2,0), S(2,1), ... S(100,99), S(100,100).
 
 If the filename ends with '.gz', the file will be automatically
 compressed using gzip.
-    
+

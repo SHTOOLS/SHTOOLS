@@ -5,26 +5,24 @@ corresponding to i, l, and m.
 
 # Usage
 
-```python
 index = YilmIndexVector (i, l, m)
-```
 
 # Returns
 
-**index : integer**
+index : integer
 :   Index of a 1D array of spherical harmonic coefficients corresponding
-        to i, l, and m.
+    to i, l, and m.
 
 # Parameters
 
-**i : integer**
+i : integer
 :   1 corresponds to the cosine coefficient Ylm = cilm[0,:,:], and 2
-        corresponds to the sine coefficient Yl,-m = cilm[1,:,:].
+    corresponds to the sine coefficient Yl,-m = cilm[1,:,:].
 
-**l : integer**
+l : integer
 :   The spherical harmonic degree.
 
-**m : integer**
+m : integer
 :   The angular order, which must be greater or equal to zero.
 
 # Notes
@@ -32,4 +30,4 @@ index = YilmIndexVector (i, l, m)
 YilmIndexVector will calculate the index of a 1D vector of spherical
 harmonic coefficients corresponding to degree l, (positive) angular order
 m and i (1 = cosine, 2 = sine). The index is given by l\*\*2+(i-1)\*l+m.
-    
+

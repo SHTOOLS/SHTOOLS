@@ -1,6 +1,6 @@
 ---
 title: SphericalCapCoef()
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pysphericalcapcoef.html
 summary:
@@ -13,23 +13,21 @@ Calculate the spherical harmonic coefficients of a spherical cap.
 
 ## Usage
 
-```python
-`coef` = SphericalCapCoef (`theta`, `lmax`)
-```
+coef = SphericalCapCoef (theta, lmax)
 
 ## Returns
 
-`coef` : float, dimension(`lmax`+1)
+coef : float, dimension(lmax+1)
 :   The zonal spherical harmonic coefficients of a spherical cap centered over the north pole.
 
 ## Parameters
 
-`theta` : float
+theta : float
 :   The angular radius of the spherical cap in radians.
 
-`lmax` : integer
+lmax : integer
 :   The maximum spherical harmonic degree to calculate the spherical harmonic coefficients.
 
 ## Description
 
-`SphericalCapCoef` will calculate the spherical harmonic coefficients of a spherical cap centered over the north pole. The zonal coefficients, returned in the array `coef`, are normalized such that the degree-0 term is 1, and are to be used with either the geodesy 4-pi normalized or orthonormalized spherical harmonics.
+SphericalCapCoef will calculate the spherical harmonic coefficients of a spherical cap centered over the north pole. The zonal coefficients, returned in the array coef, are normalized such that the degree-0 term is 1, and are to be used with either the geodesy 4-pi normalized or orthonormalized spherical harmonics.

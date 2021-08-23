@@ -525,6 +525,10 @@ class SHGravCoeffs(object):
         header_list = None
         header2_list = None
 
+        if not header:
+            r0_index = None
+            gm_index = None
+
         if type(normalization) != str:
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'

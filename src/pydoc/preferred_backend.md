@@ -5,7 +5,5 @@ harmonic transforms in pyshtools as a string.
 
 # Usage
 
-```python
 preferred_backend()
-```
-    
+

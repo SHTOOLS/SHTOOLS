@@ -7,6 +7,47 @@ summary:
 toc: true
 folder: fortran
 ---
+## Version 4.9
+
+**Backends**
+
+Implemented the option to use a different backend when performing certain operations requiring spherical harmonic transforms. At present, only 'shtools' (default) and the [Distinctly Useful Code Collection ('ducc')](https://mtr.pages.mpcdf.de/ducc/) are supported.
+
+* Introduced a new module `backends` that has functions allowing the user to control which backend is used. To set the backend for all subsequent operations, use `backends.select_preferred_backend()`.
+* Added the optional parameters `backend` and `nthreads` ('ducc' only) to all methods of the pyshtools classes that allow multiple backends (such as `SHGrid` and `SHCoeffs`).
+* Added a new `backends` web documentation page that describes the use of the new module.
+
+**Plotting routines**
+
+* Added the new methods `SHGrid.histogram()` and `SHGrid.plot_histogram()` for generating area-weighted histograms.
+* Renamed a few instances of variable names used in the plotting routines from `title_labelsize` to `titlesize` for consistency. This affects the methods `Slepian.plot_coupling_matrix()`, `Slepian.plot_spectra()`, and `SHWindow.plot_coupling_matrix()`.
+* Modified some plotting routines so that fontsizes can be specified using standard matplotlib strings.
+* Replaced the deprecated matplotlib `get_geometry` with `get_subplotspec`.
+* Replaced the pygmt option `I` with the alias `shading` for colorbars.
+
+**IO and datasets**
+
+* Updated the Venus rotation period using data from Margot et al. (2021).
+* Renamed `constants` variables `r` to `mean_radius` (but kept `r` as an alias for backwards compatibility).
+* Improved the reading of ICGEM formatted files of gravitational potential models. Fixed a bug where the time variable contribution was not computed when the coefficients had an associated `trnd` or `dot` term. When a line in the data section starts with an unknown key, a warning is now printed to the screen (which can be turned off by specifying `quiet=True`). For files formatted as `icgem2.0`, time variable terms were simply ignored if the specified epoch fell outside of the allowed range. Now, the routine will instead raise an error. Finally, the documentation was improved by describing the allowable keyword entries of the header and data section of the file.
+* Added the option `encoding` for all routines and methods that read or write text-based spherical harmonic files.
+* Hard coded all datasets to use `utf-8` in order to avoid problems with the XGM2019E dataset that has a character that can not be decoded by the GBK encoding that is the default in some Chinese installations.
+* Added a few historical lunar gravity fields to the module `datasets.Moon.historical.gravity`.
+
+**Other changes**
+
+* Add a C wrapper for the function `MakeGradientDH()`.
+* Changed the default behavior of the Fortran routine `MakeGradientDH()` and `SHCoeffs.gradient()`. The original behavior was to compute the gradient on a sphere of radius `r`, where `r` was the degree 0 coefficient of the function. The new behaviour is to compute the gradient on the unit sphere. This radius can be modified by supplying the optional argument `radius`.
+* Added the option 'per_lm' for generating random spherical harmonic coefficients in the `.from_random()` methods of `SHCoeffs`, `SHGravCoeffs`, and `SHMagCoeffs`.
+* Fixed two bugs related to complex spherical harmonic transforms. First, for complex grids, the last coefficient `coeffs[1, lmax, lmax]` was in error when `lmax` was odd and when using `DH` grids. Second, when using `SHGrid.expand()` with grid type `DH2` the parameter `sampling=2` was not passed to the Fortran routine.
+* Updated `makefile install` to include example data files, and to place them in the correct directories when installing with homebrew.
+* Updated a few dependencies, including `astropy>=4.0` and `pygmt>=0.3.0`.
+* Fixed a floating point error-caused bug in `SHGrid` that could arise if the value input to arccos was greater than 1.
+* Converted `np.float_` and `np.complex_` to `np.float64` and `np.complex128` to avoid numpy deprectation warning.
+* Added `threadsafe` to numpy signature files.
+
+M. A. Wieczorek, M. Meschede, T. Brugere, A. Corbin, A. Hattori, K. Leinweber, I. Oshchepkov, M. Reinecke, E. Sales de Andrade, E. Schnetter, S. Schröder, A. Vasishta, A. Walker, B. Xu (2021). SHTOOLS: Version 4.9, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.4467730)
+
 ## Version 4.8
 
 * Several functions have been vectorized using `numpy.vectorize()`. These include: `spharm_lm()`, `legendre_lm()`, `MakeGridPoint()`, `MakeGridPointC()`, `DownContFilterMA()`, `DownContFilterMC()`, `NormalGravity()`, `SHConfidence()`, and `PlmIndex()`.
@@ -24,7 +65,7 @@ folder: fortran
 * Added the  optional attribute `name` to the coefficient classes `SHGrid`, `SHGravCoeffs`, `SHMagCoeffs` and `SlepianCoeffs`. All datasets now explicity set `name` to the function call of the dataset.
 * Moved the file `shtools.h` from `src/` to `include/` and updated the Makefiles accordingly.
 
-M. A. Wieczorek, M. Meschede, E. Sales de Andrade, A. Corbin, I. Oshchepkov, B. Xu, and A. Walker, A. Hattori, S. Schröder, K. Leinweber, A. Vasishta (2021). SHTOOLS: Version 4.8, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+M. A. Wieczorek, M. Meschede, E. Sales de Andrade, A. Corbin, I. Oshchepkov, B. Xu, and A. Walker, A. Hattori, S. Schröder, K. Leinweber, A. Vasishta (2021). SHTOOLS: Version 4.8, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.4467730)
 
 ## Version 4.7.1
 

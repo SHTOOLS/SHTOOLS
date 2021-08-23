@@ -1,6 +1,6 @@
 ---
 title: preferred_backend()
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: preferred_backend.html
 summary:
@@ -14,7 +14,5 @@ harmonic transforms in pyshtools as a string.
 
 ## Usage
 
-```python
 preferred_backend()
-```
-    
+
