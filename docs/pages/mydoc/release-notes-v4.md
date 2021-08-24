@@ -11,7 +11,7 @@ folder: mydoc
 
 **Backends**
 
-Implemented the option to use a different backend when performing certain operations requiring spherical harmonic transforms. At present, only 'shtools' (default) and the [Distinctly Useful Code Collection ('ducc')](https://mtr.pages.mpcdf.de/ducc/) are supported.
+Implemented the option to use a different backend when performing certain operations requiring spherical harmonic transforms. At present, only 'shtools' (default) and the [Distinctly Useful Code Collection ('ducc')](https://gitlab.mpcdf.mpg.de/mtr/ducc) are supported.
 
 * Introduced a new module `backends` that has functions allowing the user to control which backend is used. To set the backend for all subsequent operations, use `backends.select_preferred_backend()`.
 * Added the optional parameters `backend` and `nthreads` ('ducc' only) to all methods of the pyshtools classes that allow multiple backends (such as `SHGrid` and `SHCoeffs`).

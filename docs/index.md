@@ -19,7 +19,7 @@ toc: false
 
 * Spherical harmonic transforms proven to be fast and accurate.
 
-* Supports multiple backends for performing basic mathematical operations, including [shtools](index-fortran.html) and the [Distinctly Useful Code Collection (DUCC)](https://mtr.pages.mpcdf.de/ducc/).
+* Supports multiple backends for performing basic mathematical operations, including [shtools](index-fortran.html) and the [Distinctly Useful Code Collection (DUCC)](https://gitlab.mpcdf.mpg.de/mtr/ducc).
 
 * Perform localized multitaper spectral analyses, or expand functions in terms of localized Slepian bases.
 

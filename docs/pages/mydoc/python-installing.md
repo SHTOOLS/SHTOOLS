@@ -86,7 +86,7 @@ When installing pyshtools using `conda`, the following will also be installed au
 
 * [cartopy](https://scitools.org.uk/cartopy/docs/latest/): required for Cartopy map projections. Cartopy requires (see below) *proj*, *geos*, *cython*, *pyshp*, *six*, and *shapely*.
 * [pygmt](https://www.pygmt.org) (>=0.3): required for pygmt map projections. pygmt requires (see below) *gmt (>=6.1.1)*.
-* [ducc0](https://mtr.pages.mpcdf.de/ducc/) (>=0.15): required for using the 'ducc' backend for spherical harmonic transforms.
+* [ducc0](https://gitlab.mpcdf.mpg.de/mtr/ducc) (>=0.15): required for using the 'ducc' backend for spherical harmonic transforms.
 * [palettable](https://jiffyclub.github.io/palettable/): scientific color maps required by one of the tutorials.
 
 The above four packages will need to be installed separately when installing pyshtools with `pip`, as described in the following subsections.
