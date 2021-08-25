@@ -12,7 +12,7 @@ import shutil as _shutil
 
 
 def read_dov(filename, lmax=None, error=False, header=False, header2=False,
-             skip=0):
+             skip=0, encoding=None):
     """
     Read spherical harmonic coefficients from a text file formatted as
     [degree, order, value].
@@ -20,7 +20,8 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
     Usage
     -----
     coeffs, [errors], lmaxout, [header], [header2] = read_dov(
-        filename, [error=True, header=True, header2=True, lmax, skip])
+        filename, [error=True, header=True, header2=True, lmax, skip,
+        encoding])
 
     Returns
     -------
@@ -58,6 +59,8 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
         the start of the spherical harmonic coefficients.
     skip : int, optional, default = 0
         The number of lines to skip before parsing the file.
+    encoding : str, optional, default = None
+        Encoding of the input file. The default is to use the system default.
 
     Notes
     -----
@@ -171,15 +174,17 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
     # open file, skip lines, read header, determine lstart, and then read
     # coefficients one line at a time
     if _isurl(filename):
+        if encoding is not None:
+            _response.encoding = encoding
         f = _io.StringIO(_response.text)
         if filename[-4:] == '.zip':
-            f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
+            f = _io.TextIOWrapper(zf.open(zf.namelist()[0]), encoding=encoding)
     elif filename[-3:] == '.gz':
-        f = _gzip.open(filename, mode='rt')
+        f = _gzip.open(filename, mode='rt', encoding=encoding)
     elif filename[-4:] == '.zip':
-        f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
+        f = _io.TextIOWrapper(zf.open(zf.namelist()[0]), encoding=encoding)
     else:
-        f = open(filename, 'r')
+        f = open(filename, 'r', encoding=encoding)
 
     with f:
         if skip != 0:
@@ -238,12 +243,13 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                 errors = _np.zeros((2, lmaxout+1, lmaxout+1))
         except ValueError:
             try:
-                num = complex(line.split()[2])  # noqa F841
-                coeffs = _np.zeros((2, lmaxout+1, lmaxout+1), dtype=complex)
+                num = _np.complex128(line.split()[2])  # noqa F841
+                coeffs = _np.zeros((2, lmaxout+1, lmaxout+1),
+                                   dtype=_np.complex128)
                 kind = 'complex'
                 if error is True:
                     errors = _np.zeros((2, lmaxout+1, lmaxout+1),
-                                       dtype=complex)
+                                       dtype=_np.complex128)
             except ValueError:
                 raise ValueError('Coefficients can not be converted to '
                                  'either float or complex. Coefficient '
@@ -299,13 +305,13 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                     m2 = abs(m2)
 
                 if kind == 'real':
-                    coeffs[0, l, m] = float(line.split()[2])
+                    coeffs[0, l, m] = _np.float64(line.split()[2])
                     if order > 0:
-                        coeffs[1, l, m] = float(line2.split()[2])
+                        coeffs[1, l, m] = _np.float64(line2.split()[2])
                 else:
-                    coeffs[0, l, m] = complex(line.split()[2])
+                    coeffs[0, l, m] = _np.complex128(line.split()[2])
                     if order > 0:
-                        coeffs[1, l, m] = complex(line2.split()[2])
+                        coeffs[1, l, m] = _np.complex128(line2.split()[2])
 
                 if error:
                     if len(line.split()) < 4:
@@ -315,13 +321,13 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                                            'Last line is: {:s}'.format(line))
 
                     if kind == 'real':
-                        errors[0, l, m] = float(line.split()[3])
+                        errors[0, l, m] = _np.float64(line.split()[3])
                         if order > 0:
-                            errors[1, l, m] = float(line2.split()[3])
+                            errors[1, l, m] = _np.float64(line2.split()[3])
                     else:
-                        errors[0, l, m] = complex(line.split()[3])
+                        errors[0, l, m] = _np.complex128(line.split()[3])
                         if order > 0:
-                            errors[1, l, m] = complex(line2.split()[3])
+                            errors[1, l, m] = _np.complex128(line2.split()[3])
 
     if error is True and header is True:
         if header2:
@@ -340,14 +346,14 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
 
 
 def write_dov(filename, coeffs, errors=None, header=None, header2=None,
-              lmax=None):
+              lmax=None, encoding=None):
     """
     Write spherical harmonic coefficients to a text file formatted as
     [degree, order, value].
 
     Usage
     -----
-    write_dov(filename, coeffs, [errors, header, header2, lmax])
+    write_dov(filename, coeffs, [errors, header, header2, lmax, encoding])
 
     Parameters
     ----------
@@ -367,6 +373,8 @@ def write_dov(filename, coeffs, errors=None, header=None, header2=None,
         coefficients.
     lmax : int, optional, default = None
         The maximum spherical harmonic degree to write to the file.
+    encoding : str, optional, default = None
+        Encoding of the output file. The default is to use the system default.
 
     Notes
     -----
@@ -407,7 +415,7 @@ def write_dov(filename, coeffs, errors=None, header=None, header2=None,
     else:
         filebase = filename
 
-    with open(filebase, mode='w') as file:
+    with open(filebase, mode='w', encoding=encoding) as file:
         if header is not None:
             file.write(header + '\n')
         if header2 is not None:

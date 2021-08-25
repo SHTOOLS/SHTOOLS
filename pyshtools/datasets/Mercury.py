@@ -43,7 +43,8 @@ def GTMES150(lmax=150):
         path=_os_cache('pyshtools'),
     )
     temp = _SHCoeffs.from_file(
-        fname, lmax=lmax, header=True, errors=True, name='GTMES150', units='m')
+        fname, lmax=lmax, header=True, errors=True, name='GTMES150', units='m',
+        encoding='utf-8')
     temp.coeffs *= 1000.
     temp.errors *= 1000.
     return temp
@@ -75,7 +76,7 @@ def JGMESS160A(lmax=160):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    errors=True, omega=_omega.value,
-                                   name='JGMESS160A')
+                                   name='JGMESS160A', encoding='utf-8')
 
 
 def JGMESS160A_ACCEL(lmax=160):
@@ -105,7 +106,7 @@ def JGMESS160A_ACCEL(lmax=160):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    errors=True, omega=_omega.value,
-                                   name='JGMESS160A_ACCEL')
+                                   name='JGMESS160A_ACCEL', encoding='utf-8')
 
 
 def JGMESS160A_TOPOSIG(lmax=160):
@@ -135,7 +136,7 @@ def JGMESS160A_TOPOSIG(lmax=160):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    errors=True, omega=_omega.value,
-                                   name='JGMESS160A_TOPOSIG')
+                                   name='JGMESS160A_TOPOSIG', encoding='utf-8')
 
 
 def GGMES100V08(lmax=100):
@@ -165,7 +166,7 @@ def GGMES100V08(lmax=100):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    errors=True, omega=_omega.value,
-                                   name='GGMES100V08')
+                                   name='GGMES100V08', encoding='utf-8')
 
 
 __all__ = ['GTMES150', 'JGMESS160A', 'JGMESS160A_ACCEL', 'JGMESS160A_TOPOSIG',

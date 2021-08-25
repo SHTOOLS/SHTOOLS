@@ -15,7 +15,7 @@ Make all changes on the branch `develop`. Verify that the version numbers and ot
 - [ ] `docs/_data/sidebars/mydoc_sidebar.yml` : update pyshtools version number for web documentation
 - [ ] `docs/_data/sidebars/fortran_sidebar.yml` : update shtools version number for web documentation
 - [ ] `docs/pages/mydoc/release-notes-v4.md` : update release notes
-- [ ] `docs/pages/mydoc/fortran-release-notes-v4.md` : update release notes
+- [ ] `docs/pages/fortran/fortran-release-notes-v4.md` : update release notes
 - [ ] `requirements.txt` : update version numbers of the python dependencies, if necessary
 - [ ] `requirements-dev.txt` : update version numbers of the python developer dependencies, if necessary
 - [ ] `environment.yml` : update version numbers of the conda environment, if necesseary
@@ -30,47 +30,26 @@ Update the documentation files and man pages
 
 ### Release ###
 - [ ] Commit all changes to the `develop` branch and then merge all changes to the `master` branch.
-- [ ] Go to [GitHub Release](https://github.com/SHTOOLS/SHTOOLS/releases), create a tag of the form `vX.X`, and draft a new release. After this is done, a zipped archive will be sent to [Zenodo](https://doi.org/10.5281/zenodo.592762), which will create a doi for citation.
+- [ ] Go to [GitHub Release](https://github.com/SHTOOLS/SHTOOLS/releases), create a tag of the form `vX.X`, and draft a new release.
 - [ ] Update the master branch on your personal repo, along with the newly created tag, using `git pull shtools master --tags`, where shtools is the name of the remote repo on github.
 
-### Update pypi ###
-For the next steps to work, the file ```.pypirc``` with the username and password needs to be set (see [this link](https://packaging.python.org/guides/migrating-to-pypi-org/#uploading)). ```pandoc``` needs to be installed with either ```conda install -c conda-forge pypandoc``` or ```pip install pypandoc```, and ```twine``` neeeds to be installed by ```pip install twine```.
-- [ ] A pypi upload can only be done once for a given version. It is therefore recommended to test it first on pypitest.
-    ```
-    python3 setup.py sdist
-    gpg --detach-sign -a dist/pyshtools-x.x.tar.gz
-    twine upload dist/* -r pypitest
-    ```
-- [ ] Inspect the pypi page at https://test.pypi.org/project/pyshtools/x.x/ for errors in the project description or metadata. Then install pyshtools in a directory that is different from your local pyshtools repo, and run a couple of quick tests.
-    ```
-    pip3 uninstall pyshtools
-    pip3 install -i https://test.pypi.org/simple pyshtools --no-binary pyshtools
-    pip3 uninstall pyshtools
-    ```
-- [ ] Upload to pypi:
-    ```
-    python3 setup.py sdist
-    gpg --detach-sign -a dist/pyshtools-x.x.tar.gz
-    twine upload dist/* -r pypi
-    pip3 install pyshtools  # check that it works!
-    ```
-    As a sanity check, inspect the pypi project page at https://pypi.org/project/pyshtools/.
-
-### Build wheels ###
-- [ ] Build wheels for linux, macOS and windows and upload to pypi. This is done using multibuild in combination with Travis and Appveyor, and requires the pypi upload from the previous step.
-    ```
-    git clone https://github.com/shtools/build-shtools.git # only necessary the first time.
-    cd build-shtools
-    git submodule update --remote  # add the option --init the first time you use this command.
-    git commit -a -m "Update shtools and multibuild to master"
-    git push
-    ```
-- [ ] Inspect the pypi project page at https://pypi.org/project/pyshtools/ to ensure that the wheels were uploaded.
+### Verify workflow execution ###
+- [ ] Creation and upload of a zipped archive to [Zenodo](https://doi.org/10.5281/zenodo.592762)
+- [ ] Upload of a source tarball as a release asset.
+- [ ] Upload of the source distribution to [pypi](https://pypi.org/project/pyshtools/).
+- [ ] Creation and upload of macOS and Linux binary wheels to [pypi](https://pypi.org/project/pyshtools/).
+- [ ] Manually trigger Appveyor on the [build-shtools](https://github.com/SHTOOLS/build-shtools) repo to create and upload a windows wheel.
 
 ### Update Homebrew ###
-Update the homebrew installation by editing the file `shtools.rb` in the homebrew-shtools repo.
+Update the homebrew installation by editing the file `shtools.rb` in the [homebrew-core](https://github.com/Homebrew/homebrew-core) repo.
 - [ ] Change "url" to point to the new version (the link to the tar.gz archive can be found on the release page).
-- [ ] Update the sha256 hash of the tar.gz pypi upload (either from the pypi files, or by using `shasum -a 256 filename`).
+- [ ] Update the sha256 hash of the tar.gz pypi upload by using `shasum -a 256 filename`.
+- [ ] Commit and push changes.
+
+### Update MacPorts ###
+Update the MacPorts installation by editing the file `Portfile` in the [macports-ports](https://github.com/macports/macports-ports) repo.
+- [ ] Change the version number in `github.setup`.
+- [ ] Update the sha256, rmd160 and file size of the release asset.
 - [ ] Commit and push changes.
 
 ### Update conda-forge ###

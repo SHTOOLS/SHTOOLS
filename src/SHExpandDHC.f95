@@ -669,7 +669,7 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
                       / sqr(2*lmax_comp) * rescalem
             case(2);    pmm = phase * pmm / sqr(2*lmax_comp) * rescalem
             case(3);    pmm = phase * pmm * (2*lmax_comp-1) * rescalem
-    
+
         end select
 
         cilm(1,lmax_comp+1,lmax_comp+1) = cilm(1,lmax_comp+1,lmax_comp+1) &
@@ -677,7 +677,8 @@ subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, &
                                           fcoef2(lmax_comp+1))
         cilm(2,lmax_comp+1,lmax_comp+1) = cilm(2,lmax_comp+1,lmax_comp+1) &
                                           + pmm * (fcoef1(nlong-(lmax_comp-1))&
-                                          + fcoef2(nlong-(lmax_comp-1)))
+                                          + fcoef2(nlong-(lmax_comp-1)))&
+                                          * ((-1)**mod(lmax_comp,2))
                                           ! fsymsign = 1
 
     end do

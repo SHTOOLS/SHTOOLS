@@ -1,6 +1,6 @@
 ---
 title: PlmIndex()
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyplmindex.html
 summary:
@@ -14,22 +14,20 @@ l and angular order m.
 
 ## Usage
 
-```python
 index = PlmIndex (l, m)
-```
 
 ## Returns
 
-**index : integer, ndarray**
+index : integer, ndarray
 :   Index of an array of associated Legendre functions corresponding to
-        degree l and angular order m.
+    degree l and angular order m.
 
 ## Parameters
 
-**l : integer, array_like**
+l : integer, array_like
 :   The spherical harmonic degree.
 
-**m : integer, array_like**
+m : integer, array_like
 :   The angular order.
 
 ## Notes

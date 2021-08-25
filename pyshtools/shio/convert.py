@@ -130,7 +130,7 @@ def convert(coeffs_in, normalization_in=None, normalization_out=None,
     degrees = _np.arange(lconv + 1)
 
     if _np.iscomplexobj(coeffs_in):
-        coeffs = _np.zeros((2, lmaxout+1, lmaxout+1), dtype=complex)
+        coeffs = _np.zeros((2, lmaxout+1, lmaxout+1), dtype=_np.complex128)
     else:
         coeffs = _np.zeros((2, lmaxout+1, lmaxout+1))
 

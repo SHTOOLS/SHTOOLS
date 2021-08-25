@@ -12,7 +12,7 @@ from pyshtools.utils.datetime import _yyyymmdd_to_year_fraction
 
 
 def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
-                   encoding=None):
+                   encoding=None, quiet=False):
     """
     Read real spherical harmonic gravity coefficients from an ICGEM formatted
     file.
@@ -20,7 +20,8 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
     Usage
     -----
     cilm, gm, r0, [errors] = read_icgem_gfc(filename,
-                                            [errors, lmax, epoch, encoding)
+                                            [errors, lmax, epoch, encoding,
+                                             quiet)
 
     Returns
     -------
@@ -52,9 +53,41 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
         format. If None then the reference epoch t0 of the model will be used.
         If the format of the file is 'icgem2.0' then the epoch must be
         specified.
-    encoding : str, optional
-        Encoding of the input file. Try to use 'iso-8859-1' if the default
-        (UTF-8) fails.
+    encoding : str, optional, default = None
+        Encoding of the input file. The default is to use the system default.
+        If the default encoding doesn't work, try 'iso-8859-1'.
+    quiet : bool, default = False
+        If True, suppress warnings about undefined keywords when reading the
+        file.
+
+    Notes
+    -----
+    This routine reads ICGEM formatted files of gravitational potential models
+    and outputs arrays of the gravitational potential coefficients, errors, GM,
+    and the reference radius. If epoch is specified, the coefficients will make
+    use of the time variable terms in order to compute and return the potential
+    coefficients for the specified epoch. Otherwise, the coefficients will be
+    returned for the reference epoch of the model.
+
+    Valid keys in the header section include:
+        modelname (not used)
+        product_type (only 'gravity_field' is allowed)
+        earth_gravity_constant or gravity_constant
+        radius
+        max_degree
+        errors ('unknown', 'formal', 'calibrated' or 'calibrated_and_formal')
+        tide_system (not used)
+        norm (not used)
+        format (either None or 'icgem2.0')
+
+    Valid keys in the data section include:
+        gfc
+        gfct
+        trnd or dot
+        asin
+        acos
+
+    Data lines starting with an unknown key are ignored.
     """
     header = {}
     header_keys = ['modelname', 'product_type', 'earth_gravity_constant',
@@ -71,18 +104,20 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                 raise Exception('read_icgem_gfc can only process zip archives '
                                 'that contain a single file. Archive '
                                 'contents:\n{}'.format(zf.namelist()))
-            f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
+            f = _io.TextIOWrapper(zf.open(zf.namelist()[0]), encoding=encoding)
         else:
+            if encoding is not None:
+                _response.encoding = encoding
             f = _io.StringIO(_response.text)
     elif filename[-3:] == '.gz':
-        f = _gzip.open(filename, mode='rt')
+        f = _gzip.open(filename, mode='rt', encoding=encoding)
     elif filename[-4:] == '.zip':
         zf = _zipfile.ZipFile(filename, 'r')
         if len(zf.namelist()) > 1:
             raise Exception('read_icgem_gfc can only process zip archives '
                             'that contain a single file. Archive contents: \n'
                             '{}'.format(zf.namelist()))
-        f = _io.TextIOWrapper(zf.open(zf.namelist()[0]))
+        f = _io.TextIOWrapper(zf.open(zf.namelist()[0]), encoding=encoding)
     else:
         f = open(filename, 'r', encoding=encoding)
 
@@ -96,7 +131,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
 
         if header['product_type'] != 'gravity_field':
             raise ValueError(
-                'This function reads only gravity_field data product.')
+                'This routine reads only gravity_field data products.')
 
         is_v2 = False
         if 'format' in header and header['format'] == 'icgem2.0':
@@ -104,7 +139,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
 
         if epoch is None and is_v2:
             raise ValueError(
-                'Epoch must be specified for the "icgem2.0" format.')
+                'epoch must be specified for the "icgem2.0" format.')
         elif epoch is not None:
             epoch = _yyyymmdd_to_year_fraction(epoch)
 
@@ -129,7 +164,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                 raise ValueError('This model has no errors.')
             elif errors not in valid_err[:-1]:
                 raise ValueError(
-                    'Errors can be either "unknown", "formal", "calibrated" '
+                    'errors can be either "unknown", "formal", "calibrated" '
                     'or None.')
             elif header['errors'] in valid_err and errors in valid_err[:-1]:
                 if (errors, header['errors']) == valid_err[2:]:
@@ -147,7 +182,9 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
 
         # read coefficients
         for line in f:
-            line = line.lower().replace('d', 'e').strip().split()
+            line = line.lower().strip().split()
+            for i in range(1, len(line)):
+                line[i] = line[i].replace('d', 'e')
 
             l, m = int(line[1]), int(line[2])
             if m > lmax:
@@ -169,25 +206,28 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                     t0i = _yyyymmdd_to_year_fraction(line[-2])
                     t1i = _yyyymmdd_to_year_fraction(line[-1])
                     if not t0i <= epoch < t1i:
-                        continue
+                        raise ValueError('epoch is not in the valid '
+                                         'time interval of the model.')
                 else:
                     t0i = _yyyymmdd_to_year_fraction(line[-1])
 
                 cilm[:, l, m] = value_cs
                 ref_epoch[l, m] = t0i
-            elif key == 'trnd':
+            elif key in ('trnd', 'dot'):
                 if is_v2:
                     t0i = _yyyymmdd_to_year_fraction(line[-2])
                     t1i = _yyyymmdd_to_year_fraction(line[-1])
                     if not t0i <= epoch < t1i:
-                        continue
+                        raise ValueError('epoch is not in the valid '
+                                         'time interval of the model.')
                 trnd[:, l, m] = value_cs
             elif key in ('acos', 'asin'):
                 if is_v2:
                     t0i = _yyyymmdd_to_year_fraction(line[-3])
                     t1i = _yyyymmdd_to_year_fraction(line[-2])
                     if not t0i <= epoch < t1i:
-                        continue
+                        raise ValueError('epoch is not in the valid '
+                                         'time interval of the model.')
 
                 period = float(line[-1])
                 if period not in periodic:
@@ -196,6 +236,10 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
                                         'asin': arr.copy()}
 
                 periodic[period][key][:, l, m] = value_cs
+            else:
+                if not quiet:
+                    print('Unrecognized keyword in data section of ICGEM '
+                          'file will be ignored : {:}'.format(key))
 
     if epoch is None:
         epoch = ref_epoch
@@ -211,7 +255,8 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
 def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
                     modelname=None, product_type='gravity_field',
                     earth_gm=None, gm=None, r0=None, error_kind=None,
-                    tide_system='unknown', normalization='4pi', format=None):
+                    tide_system='unknown', normalization='4pi', format=None,
+                    encoding=None):
     """
     Write real spherical harmonic gravity coefficients to an ICGEM formatted
     file.
@@ -219,7 +264,8 @@ def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
     Usage
     -----
     write_icgem_gfc(filename, coeffs, [errors, header, lmax, modelname, gm, r0,
-        product_type, earth_gm, error_kind, tide_system, normalization, format)
+        product_type, earth_gm, error_kind, tide_system, normalization, format,
+        encoding)
 
     Parameters
     ----------
@@ -247,7 +293,7 @@ def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
     r0 : float
         Reference radius of the model, in meters.
     error_kind : str, optional, default = None
-        Which errors to read. Can be either 'unknown', 'calibrated', or
+        Which errors to write. Can be either 'unknown', 'calibrated', or
         'formal'.
     tide_system : str, optional, default = 'unknown'
         The tide system: 'zero_tide', 'tide_free', or 'unknown'.
@@ -256,6 +302,8 @@ def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
         or 'unnorm'.
     format : str, optional, default = None
         The format of the ICGEM spherical harmonic coefficients.
+    encoding : str, optional, default = None
+        Encoding of the output file. The default is to use the system default.
     """
     valid_err = ('unknown', 'calibrated', 'formal', 'calibrated_and_formal')
     valid_tide = ('zero_tide', 'tide_free', 'unknown')
@@ -284,7 +332,7 @@ def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
     else:
         filebase = filename
 
-    with open(filebase, mode='w') as file:
+    with open(filebase, mode='w', encoding=encoding) as file:
         if header is not None:
             file.write(header + '\n')
 

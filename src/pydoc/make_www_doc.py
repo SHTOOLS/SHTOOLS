@@ -24,7 +24,7 @@ for fn in pydocfiles:
         string = ('---\n' + 'title: ' + title + '\n' +
                   'keywords: spherical harmonics software package, ' +
                   'spherical harmonic transform, legendre functions, ' +
-                  'multitaper spectral analysis, fortran, Python, ' +
+                  'multitaper spectral analysis, Python, ' +
                   'gravity, magnetic field\n' + 'sidebar: mydoc_sidebar\n' +
                   'permalink: ' + name + '.html\n' + 'summary:\n' +
                   'tags: [python]\n' + 'toc: false\n' + 'editdoc: pydoc\n' +

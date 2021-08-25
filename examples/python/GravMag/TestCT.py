@@ -60,7 +60,7 @@ def TestCrustalThickness():
 
     ba = pot - bc
 
-    moho_c = np.zeros([2, degmax + 1, degmax + 1], dtype=float)
+    moho_c = np.zeros([2, degmax + 1, degmax + 1], dtype=np.float64)
     moho_c[0, 0, 0] = d
 
     for l in range(1, degmax + 1):

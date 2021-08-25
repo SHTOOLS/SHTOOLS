@@ -58,7 +58,7 @@ def legendre(lmax, z, normalization='4pi', csphase=1, cnorm=0, packed=False):
     legendre will calculate all of the associated Legendre functions up to
     degree lmax for a given argument. The Legendre functions are used typically
     as a part of the spherical harmonic functions, and three parameters
-    determine how they are defined. `normalization` can be either '4pi'
+    determine how they are defined. normalization can be either '4pi'
     (default), 'ortho', 'schmidt', or 'unnorm' for use with 4pi normalized,
     orthonormalized, Schmidt semi-normalized, or unnormalized spherical
     harmonic functions, respectively. csphase determines whether to include
@@ -67,8 +67,8 @@ def legendre(lmax, z, normalization='4pi', csphase=1, cnorm=0, packed=False):
     or complex spherical harmonic functions.
 
     By default, the routine will return a 2-dimensional array, p[l, m]. If the
-    optional parameter `packed` is set to True, the output will instead be a
-    1-dimensional array where the indices correspond to `l*(l+1)/2+m`. The
+    optional parameter packed is set to True, the output will instead be a
+    1-dimensional array where the indices correspond to l*(l+1)/2+m. The
     Legendre functions are calculated using the standard three-term recursion
     formula, and in order to prevent overflows, the scaling approach of Holmes
     and Featherstone (2002) is utilized. The resulting functions are accurate

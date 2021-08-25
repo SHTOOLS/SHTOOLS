@@ -8,7 +8,8 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 import xarray as _xr
 import tempfile as _tempfile
-
+from ..backends import backend_module
+from ..backends import preferred_backend
 from .. import shtools as _shtools
 
 try:
@@ -63,26 +64,31 @@ class SHGrid(object):
 
     Each class instance provides the following methods:
 
-    to_array()  : Return the raw gridded data as a numpy array.
-    to_xarray() : Return the gridded data as an xarray DataArray.
-    to_file()   : Save gridded data to a text or binary file.
-    to_netcdf() : Return the gridded data as a netcdf formatted file or object.
-    to_real()   : Return a new SHGrid class instance of the real component
-                  of the data.
-    to_imag()   : Return a new SHGrid class instance of the imaginary component
-                  of the data.
-    lats()      : Return a vector containing the latitudes of each row
-                  of the gridded data.
-    lons()      : Return a vector containing the longitudes of each column
-                  of the gridded data.
-    expand()    : Expand the grid into spherical harmonics.
-    max()       : Return the maximum value of data using numpy.max().
-    min()       : Return the minimum value of data using numpy.min().
-    copy()      : Return a copy of the class instance.
-    plot()      : Plot the data.
-    plotgmt()   : Plot projected data using the generic mapping tools (GMT).
-    plot3d()    : Plot a 3-dimensional representation of the data.
-    info()      : Print a summary of the data stored in the SHGrid instance.
+    to_array()       : Return the raw gridded data as a numpy array.
+    to_xarray()      : Return the gridded data as an xarray DataArray.
+    to_file()        : Save gridded data to a text or binary file.
+    to_netcdf()      : Return the gridded data as a netcdf formatted file or
+                       object.
+    to_real()        : Return a new SHGrid class instance of the real component
+                       of the data.
+    to_imag()        : Return a new SHGrid class instance of the imaginary
+                       component of the data.
+    lats()           : Return a vector containing the latitudes of each row
+                       of the gridded data.
+    lons()           : Return a vector containing the longitudes of each column
+                       of the gridded data.
+    histogram()      : Return an area-weighted histogram of the gridded data.
+    expand()         : Expand the grid into spherical harmonics.
+    max()            : Return the maximum value of data using numpy.max().
+    min()            : Return the minimum value of data using numpy.min().
+    copy()           : Return a copy of the class instance.
+    plot()           : Plot the data.
+    plotgmt()        : Plot projected data using the generic mapping tools
+                       (GMT).
+    plot3d()         : Plot a 3-dimensional representation of the data.
+    plot_histogram() : Plot a histogram of the area-weighted gridded data.
+    info()           : Print a summary of the data stored in the SHGrid
+                       instance.
     """
 
     def __init__():
@@ -207,14 +213,14 @@ class SHGrid(object):
 
         if kind == 'real':
             if empty:
-                array = _np.empty((nlat, nlon), dtype=_np.float_)
+                array = _np.empty((nlat, nlon), dtype=_np.float64)
             else:
-                array = _np.zeros((nlat, nlon), dtype=_np.float_)
+                array = _np.zeros((nlat, nlon), dtype=_np.float64)
         else:
             if empty:
-                array = _np.empty((nlat, nlon), dtype=_np.complex_)
+                array = _np.empty((nlat, nlon), dtype=_np.complex128)
             else:
-                array = _np.zeros((nlat, nlon), dtype=_np.complex_)
+                array = _np.zeros((nlat, nlon), dtype=_np.complex128)
 
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
@@ -356,12 +362,16 @@ class SHGrid(object):
 
         coslon = _np.cos(lons)
         sinlon = _np.sin(lons)
+        costheta = _np.cos(theta)
         for i in range(imin, imax+1):
             coslat = _np.cos(lats[i])
             sinlat = _np.sin(lats[i])
             for j in range(0, temp.nlon):
                 dist = coslat * (x * coslon[j] + y * sinlon[j]) + z * sinlat
-                if _np.arccos(dist) <= theta:
+                if dist >= costheta:
+                    # ie. _np.arccos(dist) <= theta
+                    # since 0 <= theta <= pi/2 and 0 <= dist <= 1
+                    # cos is decreasing
                     temp.data[i, j] = 1.
 
         return temp
@@ -475,6 +485,7 @@ class SHGrid(object):
 
         return self.from_array(data_array.values, grid=grid, units=units)
 
+    # ---- I/O methods ----
     def copy(self):
         """
         Return a deep copy of the class instance.
@@ -679,6 +690,16 @@ class SHGrid(object):
         return SHGrid.from_array(self.to_array().imag, grid=self.grid,
                                  units=self.units, copy=False)
 
+    def info(self):
+        """
+        Print a summary of the data stored in the SHGrid instance.
+
+        Usage
+        -----
+        x.info()
+        """
+        print(repr(self))
+
     # -------------------------------------------------------------------------
     #    Mathematical operators
     #
@@ -860,7 +881,7 @@ class SHGrid(object):
             of the gridded data.
 
         Parameters
-        -------
+        ----------
         degrees : bool, optional, default = True
             If True, the output will be in degrees. If False, the output will
             be in radians.
@@ -885,7 +906,7 @@ class SHGrid(object):
             of the gridded data.
 
         Parameters
-        -------
+        ----------
         degrees : bool, optional, default = True
             If True, the output will be in degrees. If False, the output will
             be in radians.
@@ -894,6 +915,105 @@ class SHGrid(object):
             return _np.radians(self._lons())
         else:
             return self._lons()
+
+    # ---- Functions that act on the data ----
+    def histogram(self, bins=10, range=None):
+        """
+        Return an area-weighted histogram of the gridded data, normalized such
+        that the integral over the range is unity.
+
+        Usage
+        -----
+        hist, bin_edges = x.historgram([bins, range])
+
+        Returns
+        -------
+        hist : array
+            The values of the histogram, normalized such that the integral over
+            the range in unity.
+        bin_edges : array
+            The values of the edges of the histogram bins.
+
+        Parameters
+        ----------
+        bins : int or sequence of scalars or str, optional, default = 10
+             If bins is an int, it defines the number of equal-width bins in
+             the given range. If bins is a sequence, it defines a monotonically
+             increasing array of bin edges, including the rightmost edge,
+             allowing for non-uniform bin widths. If bins is a string, it
+             defines the method used to calculate the optimal bin width, as
+             defined by numpy.histogram_bin_edges.
+        range : (float, float), optional, default = None
+            The lower and upper range of the bins.
+
+        Notes
+        -----
+        This method does not work with complex data.
+        """
+        return self._histogram(bins=bins, range=range)
+
+    def expand(self, normalization='4pi', csphase=1, lmax_calc=None,
+               backend=None, nthreads=None):
+        """
+        Expand the grid into spherical harmonics.
+
+        Usage
+        -----
+        clm = x.expand([normalization, csphase, lmax_calc, backend, nthreads])
+
+        Returns
+        -------
+        clm : SHCoeffs class instance
+
+        Parameters
+        ----------
+        normalization : str, optional, default = '4pi'
+            Normalization of the output class: '4pi', 'ortho', 'schmidt', or
+            'unnorm', for geodesy 4pi normalized, orthonormalized, Schmidt
+            semi-normalized, or unnormalized coefficients, respectively.
+        csphase : int, optional, default = 1
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
+        lmax_calc : int, optional, default = x.lmax
+            Maximum spherical harmonic degree to return.
+        backend : str, optional, default = preferred_backend()
+            Name of the preferred backend, either 'shtools' or 'ducc'.
+        nthreads : int, optional, default = 1
+            Number of threads to use for the 'ducc' backend. Setting this
+            parameter to 0 will use as many threads as there are hardware
+            threads on the system.
+
+        Notes
+        -----
+        When expanding a Driscoll and Healy (1994) sampled grid (grid='DH' or
+        'DH2') into spherical harmonic coefficients, the latitudinal bands at
+        90 N and S are downweighted to zero and have no influence on the
+        returned spherical harmonic coefficients.
+        """
+        if type(normalization) != str:
+            raise ValueError('normalization must be a string. ' +
+                             'Input type is {:s}.'
+                             .format(str(type(normalization))))
+
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
+            raise ValueError(
+                "The normalization must be '4pi', 'ortho', 'schmidt', " +
+                "or 'unnorm'. Input value is {:s}."
+                .format(repr(normalization))
+                )
+
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be either 1 or -1. Input value is {:s}."
+                .format(repr(csphase))
+                )
+
+        if backend is None:
+            backend = preferred_backend()
+
+        return self._expand(normalization=normalization, csphase=csphase,
+                            lmax_calc=lmax_calc, backend=backend,
+                            nthreads=nthreads)
 
     # ---- Plotting routines ----
     def plot3d(self, elevation=20, azimuth=30, cmap='viridis',
@@ -935,7 +1055,8 @@ class SHGrid(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, save the image to the specified file.
+            If present, and if ax is not specified, save the image to the
+            specified file.
 
         Notes
         -----
@@ -975,9 +1096,9 @@ class SHGrid(object):
             ax3d = fig.add_subplot(1, 1, 1, projection='3d')
         else:
             fig = ax.get_figure()
-            geometry = ax.get_geometry()
+            subplotspec = ax.get_subplotspec()
             ax.remove()
-            ax3d = fig.add_subplot(*geometry, projection='3d')
+            ax3d = fig.add_subplot(subplotspec, projection='3d')
 
         if self.kind == 'real':
             data = self.data
@@ -1176,7 +1297,7 @@ class SHGrid(object):
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
-            If present, and if axes is not specified, save the image to the
+            If present, and if ax is not specified, save the image to the
             specified file.
         """
         if projection is not None:
@@ -1191,6 +1312,8 @@ class SHGrid(object):
                 raise ValueError('Map projections are supported only for '
                                  'DH grid types.')
 
+        if ticks is None:
+            ticks = ''
         if tick_interval is None:
             tick_interval = [None, None]
         if minor_tick_interval is None:
@@ -1499,67 +1622,144 @@ class SHGrid(object):
         if fig is None:
             return figure
 
-    def expand(self, normalization='4pi', csphase=1, **kwargs):
+    def plot_histogram(self, bins=10, range=None, cumulative=False,
+                       histtype='bar', orientation='vertical', xscale='lin',
+                       yscale='lin', color=None, legend=None,
+                       legend_loc='best', xlabel=None,
+                       ylabel='Fraction', title=None, grid=False,
+                       axes_labelsize=None, tick_labelsize=None,
+                       titlesize=None, ax=None, show=True, fname=None):
         """
-        Expand the grid into spherical harmonics.
+        Plot an area-weighted histogram of the gridded data, normalized such
+        that the integral over the range is unity.
 
         Usage
         -----
-        clm = x.expand([normalization, csphase, lmax_calc])
-
-        Returns
-        -------
-        clm : SHCoeffs class instance
+        x.plot_histogram([bins, range, cumulative, histtype, orientation,
+                          xscale, yscale, color, legend, legend_loc, xlabel,
+                          ylabel, title, grid, axes_labelsize, tick_labelsize,
+                          titlesize, ax, show, fname])
 
         Parameters
         ----------
-        normalization : str, optional, default = '4pi'
-            Normalization of the output class: '4pi', 'ortho', 'schmidt', or
-            'unnorm', for geodesy 4pi normalized, orthonormalized, Schmidt
-            semi-normalized, or unnormalized coefficients, respectively.
-        csphase : int, optional, default = 1
-            Condon-Shortley phase convention: 1 to exclude the phase factor,
-            or -1 to include it.
-        lmax_calc : int, optional, default = x.lmax
-            Maximum spherical harmonic degree to return.
+        bins : int or sequence of scalars or str, optional, default = 10
+             If bins is an int, it defines the number of equal-width bins in
+             the given range. If bins is a sequence, it defines a monotonically
+             increasing array of bin edges, including the rightmost edge,
+             allowing for non-uniform bin widths. If bins is a string, it
+             defines the method used to calculate the optimal bin width, as
+             defined by numpy.histogram_bin_edges.
+        range : (float, float), optional, default = None
+            The lower and upper range of the bins.
+        cumulative : bool or -1, optional, default = False
+            If True, then a histogram is computed where each bin gives the
+            counts in that bin plus all bins for smaller values. If cumulative
+            is -1, the direction of accumulation is reversed.
+        histtype : str, optional, default = 'bar'
+            The type of histogram to draw. 'bar' is a traditional bar-type
+            histogram. 'barstacked' is a bar-type histogram where multiple data
+            are stacked on top of each other. 'step' generates a lineplot that
+            is unfilled. 'stepfilled' generates a lineplot that is filled.
+        orientation : str, optional, default = 'vertical'
+            Orientiation of the histogram, either 'vertical' or 'horizontal'.
+        xscale : str, optional, default = 'lin'
+            Scale of the x axis: 'lin' for linear or 'log' for logarithmic.
+        yscale : str, optional, default = 'lin'
+            Scale of the y axis: 'lin' for linear or 'log' for logarithmic.
+        title : str or list, optional, default = None
+            The title of the plot.
+        color : str, optional, default = None
+            Name of the color used for the histogram bars or lines.
+        legend : str or None, optional, default = None
+            Label to use when plotting multiple datasets.
+        legend_loc : str, optional, default = 'best'
+            Location of the legend, such as 'upper right' or 'lower center'
+            (see pyplot.legend for all options).
+        xlabel : str, optional, default = None
+            Label for the x axis.
+        ylabel : str, optional, default = 'Fraction'
+            Label for the y axis.
+        grid : bool, optional, default = False
+            If True, plot grid lines.
+        axes_labelsize : int, optional, default = None
+            The font size for the x and y axes labels.
+        tick_labelsize : int, optional, default = None
+            The font size for the x and y tick labels.
+        titlesize : int, optional, default = None
+            The font size of the title.
+        ax : matplotlib axes object, optional, default = None
+            A single matplotlib axes object where the plot will appear.
+        show : bool, optional, default = True
+            If True, plot to the screen.
+        fname : str, optional, default = None
+            If present, and if ax is not specified, save the image to the
+            specified file.
 
         Notes
         -----
-        When expanding a Driscoll and Healy (1994) sampled grid (grid='DH' or
-        'DH2') into spherical harmonic coefficients, the latitudinal bands at
-        90 N and S are downweighted to zero and have no influence on the
-        returned spherical harmonic coefficients.
+        This method calls histogram() to bin the data, and then uses
+        matplotlib.pyplot.hist() to plot the binned data. This method does not
+        work with complex data.
         """
-        if type(normalization) != str:
-            raise ValueError('normalization must be a string. ' +
-                             'Input type is {:s}.'
-                             .format(str(type(normalization))))
+        if self.kind == 'complex':
+            raise NotImplementedError(
+                'plot_histogram() does not support complex data.')
 
-        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
-            raise ValueError(
-                "The normalization must be '4pi', 'ortho', 'schmidt', " +
-                "or 'unnorm'. Input value is {:s}."
-                .format(repr(normalization))
-                )
+        if ax is None:
+            fig, axes = _plt.subplots(1, 1)
+        else:
+            axes = ax
 
-        if csphase != 1 and csphase != -1:
-            raise ValueError(
-                "csphase must be either 1 or -1. Input value is {:s}."
-                .format(repr(csphase))
-                )
+        if axes_labelsize is None:
+            axes_labelsize = _mpl.rcParams['axes.labelsize']
+            if type(axes_labelsize) == str:
+                axes_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=axes_labelsize) \
+                                 .get_size_in_points()
+        if tick_labelsize is None:
+            tick_labelsize = _mpl.rcParams['xtick.labelsize']
+            if type(tick_labelsize) == str:
+                tick_labelsize = _mpl.font_manager \
+                                 .FontProperties(size=tick_labelsize) \
+                                 .get_size_in_points()
+        if titlesize is None:
+            titlesize = _mpl.rcParams['axes.titlesize']
+            if type(titlesize) == str:
+                titlesize = _mpl.font_manager \
+                                 .FontProperties(size=titlesize) \
+                                 .get_size_in_points()
 
-        return self._expand(normalization=normalization, csphase=csphase,
-                            **kwargs)
+        hist, bin_edges = self.histogram(bins=bins, range=range)
+        axes.hist(bin_edges[:-1], bin_edges, weights=hist,
+                  cumulative=cumulative, histtype=histtype,
+                  orientation=orientation, color=color, label=legend)
 
-    def info(self):
-        """
-        Print a summary of the data stored in the SHGrid instance.
+        if xscale == 'log':
+            axes.set_xscale('log')
+        if yscale == 'log':
+            axes.set_yscale('log')
 
-        Usage
-        -----
-        x.info()
-        """
-        print(repr(self))
+        if xlabel is not None:
+            axes.set_xlabel(xlabel, fontsize=axes_labelsize)
+        if ylabel is not None:
+            axes.set_ylabel(ylabel, fontsize=axes_labelsize)
+        if title is not None:
+            axes.set_title(title, fontsize=titlesize)
+
+        axes.tick_params(which='major', labelsize=tick_labelsize)
+        axes.minorticks_on()
+        axes.grid(grid, which='major')
+
+        if legend is not None:
+            axes.legend(loc=legend_loc)
+
+        if ax is None:
+            fig.tight_layout(pad=0.5)
+            if show:
+                fig.show()
+            if fname is not None:
+                fig.savefig(fname)
+            return fig, axes
 
 
 # ---- Real Driscoll and Healy grid class ----
@@ -1622,7 +1822,38 @@ class DHRealGrid(SHGrid):
             lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
-    def _expand(self, normalization, csphase, **kwargs):
+    def _histogram(self, bins=None, range=None):
+        """Return an area-weighted histogram normalized to unity."""
+        delta_phi = self.lons()[1] - self.lons()[0]
+        delta_phi *= _np.pi / 180.
+
+        da = _np.zeros_like(self.data)
+
+        # i=0, 90 N
+        theta2 = 90.0 - (90.0 + self.lats()[1]) / 2.
+        da[0, :] = 1. - _np.cos(theta2 * _np.pi / 180.)
+        for i in _np.arange(1, self.nlat-1):
+            theta1 = 90.0 - (self.lats()[i-1] + self.lats()[i]) / 2.
+            theta2 = 90.0 - (self.lats()[i] + self.lats()[i+1]) / 2.
+            da[i, :] = _np.cos(theta1 * _np.pi / 180.) - \
+                _np.cos(theta2 * _np.pi / 180.)
+        # last latitudinal band
+        i = self.nlat - 1
+        if self.extend:
+            theta1 = 90.0 - (-90.0 + self.lats()[i-1]) / 2.
+            da[i, :] = _np.cos(theta1 * _np.pi / 180.) + 1
+        else:
+            theta1 = 90.0 - (self.lats()[i-1] + self.lats()[i]) / 2.
+            theta2 = 90.0 - (self.lats()[i] - 90.) / 2.
+            da[i, :] = _np.cos(theta1 * _np.pi / 180.) - \
+                _np.cos(theta2 * _np.pi / 180.)
+
+        return _np.histogram(self.data[:, :self.nlon-self.extend],
+                             bins=bins,
+                             weights=da[:, :self.nlon-self.extend],
+                             density=True, range=range)
+
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -1640,10 +1871,11 @@ class DHRealGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandDH(self.data[:self.nlat-self.extend,
-                                             :self.nlon-self.extend],
-                                   norm=norm, csphase=csphase,
-                                   sampling=self.sampling, **kwargs)
+        cilm = backend_module(
+            backend=backend, nthreads=nthreads).SHExpandDH(
+                self.data[:self.nlat-self.extend, :self.nlon-self.extend],
+                norm=norm, csphase=csphase, sampling=self.sampling,
+                lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
@@ -1677,9 +1909,9 @@ class DHRealGrid(SHGrid):
         else:
             if projection is not None:
                 fig = ax.get_figure()
-                geometry = ax.get_geometry()
+                subplotspec = ax.get_subplotspec()
                 ax.remove()
-                axes = fig.add_subplot(*geometry, projection=projection)
+                axes = fig.add_subplot(subplotspec, projection=projection)
             else:
                 axes = ax
 
@@ -2091,7 +2323,7 @@ class DHRealGrid(SHGrid):
             if colorbar is not None:
                 if shading is not None:
                     figure.colorbar(position=position, frame=cb_str,
-                                    I=shading_amplitude)
+                                    shading=shading_amplitude)
                 else:
                     figure.colorbar(position=position, frame=cb_str)
 
@@ -2167,7 +2399,11 @@ class DHComplexGrid(SHGrid):
             lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
-    def _expand(self, normalization, csphase, **kwargs):
+    def _histogram(self, **kwargs):
+        """Return an area-weighted histogram normalized to unity."""
+        raise NotImplementedError('histogram() does not support complex data.')
+
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -2185,9 +2421,11 @@ class DHComplexGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandDHC(self.data[:self.nlat-self.extend,
-                                              :self.nlon-self.extend],
-                                    norm=norm, csphase=csphase, **kwargs)
+        cilm = backend_module(
+            backend=backend, nthreads=nthreads).SHExpandDHC(
+                self.data[:self.nlat-self.extend, :self.nlon-self.extend],
+                norm=norm, csphase=csphase, sampling=self.sampling,
+                lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
                                      copy=False)
@@ -2380,7 +2618,32 @@ class GLQRealGrid(SHGrid):
             lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
-    def _expand(self, normalization, csphase, **kwargs):
+    def _histogram(self, bins=None, range=None):
+        """Return an area-weighted histogram normalized to unity."""
+        delta_phi = self.lons()[1] - self.lons()[0]
+        delta_phi *= _np.pi / 180.
+
+        da = _np.zeros_like(self.data)
+
+        # First latitudinal band includes 90 N
+        theta2 = 90.0 - (self.lats()[0] + self.lats()[1]) / 2.
+        da[0, :] = 1. - _np.cos(theta2 * _np.pi / 180.)
+        for i in _np.arange(1, self.nlat-1):
+            theta1 = 90.0 - (self.lats()[i-1] + self.lats()[i]) / 2.
+            theta2 = 90.0 - (self.lats()[i] + self.lats()[i+1]) / 2.
+            da[i, :] = _np.cos(theta1 * _np.pi / 180.) - \
+                _np.cos(theta2 * _np.pi / 180.)
+        # Last latitudinal band includes 90 S
+        i = self.nlat - 1
+        theta1 = 90.0 - (self.lats()[i] + self.lats()[i-1]) / 2.
+        da[i, :] = _np.cos(theta1 * _np.pi / 180.) + 1
+
+        return _np.histogram(self.data[:, :self.nlon-self.extend],
+                             bins=bins,
+                             weights=da[:, :self.nlon-self.extend],
+                             density=True, range=range)
+
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -2398,9 +2661,10 @@ class GLQRealGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandGLQ(self.data[:, :self.nlon-self.extend],
-                                    self.weights, self.zeros, norm=norm,
-                                    csphase=csphase, **kwargs)
+        cilm = backend_module(
+            backend=backend, nthreads=nthreads).SHExpandGLQ(
+                self.data[:, :self.nlon-self.extend], self.weights, self.zeros,
+                norm=norm, csphase=csphase, lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
                                      copy=False)
@@ -2687,7 +2951,11 @@ class GLQComplexGrid(SHGrid):
             lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
-    def _expand(self, normalization, csphase, **kwargs):
+    def _histogram(self, **kwargs):
+        """Return an area-weighted histogram normalized to unity."""
+        raise NotImplementedError('histogram() does not support complex data.')
+
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -2705,9 +2973,10 @@ class GLQComplexGrid(SHGrid):
                 .format(repr(normalization))
                 )
 
-        cilm = _shtools.SHExpandGLQC(self.data[:, :self.nlon-self.extend],
-                                     self.weights, self.zeros, norm=norm,
-                                     csphase=csphase, **kwargs)
+        cilm = backend_module(
+            backend=backend, nthreads=nthreads).SHExpandGLQC(
+                self.data[:, :self.nlon-self.extend], self.weights, self.zeros,
+                norm=norm, csphase=csphase, lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
                                      copy=False)

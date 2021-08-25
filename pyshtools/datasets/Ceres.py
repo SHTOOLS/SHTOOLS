@@ -38,7 +38,7 @@ def CERES18D(lmax=18):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True,
-                                   name='CERES18D')
+                                   name='CERES18D', encoding='utf-8')
 
 
 __all__ = ['CERES18D']

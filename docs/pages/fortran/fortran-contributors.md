@@ -24,3 +24,6 @@ folder: fortran
 * Aaryaman Vasishta / [jammm](https://github.com/jammm)
 * Alex Kalinin / [alkalinin](https://github.com/alkalinin)
 * Armin Corbin / [rainbowsend](https://github.com/rainbowsend)
+* Tristan Brugere
+* Erik Schnetter / [eschnett](https://github.com/eschnett)
+* Martin Reinecke / [mreineck](https://github.com/mreineck)

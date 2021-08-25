@@ -1,6 +1,6 @@
 ---
 title: SHMTVar()
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyshmtvar.html
 summary:
@@ -13,44 +13,42 @@ Calculate the theoretical variance of a multitaper spectral estimate for a given
 
 ## Usage
 
-```python
-`variance` = SHMTVar (`l`, `tapers`, `taper_order`, `sff`, [`kmax`, `lwin`, `taper_wt`, `nocross`])
-```
+variance = SHMTVar (l, tapers, taper_order, sff, [kmax, lwin, taper_wt, nocross])
 
 ## Returns
 
-`variance` : float
-:   The variance of the multitaper spectral estimate for degree `l`.
+variance : float
+:   The variance of the multitaper spectral estimate for degree l.
 
 ## Parameters
 
-`l` : integer
+l : integer
 :   The spherical harmonic degree used to calculate the theoretical variance.
 
-`tapers` : float, dimension (`lwinin`+1, `kmaxin`)
-:   A matrix of localization functions obtained from `SHReturnTapers` or `SHReturnTapersM`.
+tapers : float, dimension (lwinin+1, kmaxin)
+:   A matrix of localization functions obtained from SHReturnTapers or SHReturnTapersM.
 
-`taper_order` : integer, dimension (`kmaxin`)
-:   The angular order of the windowing coefficients in `tapers`.
+taper_order : integer, dimension (kmaxin)
+:   The angular order of the windowing coefficients in tapers.
 
-`sff` : float, dimension (`l`+`lwinin`+1)
+sff : float, dimension (l+lwinin+1)
 :   The global unwindowed power spectrum of the function to be localized.
 
-`kmax` : optional, integer, default = `kmaxin`
+kmax : optional, integer, default = kmaxin
 :   The maximum number of tapers to be used when calculating the variance.
 
-`lwin` : optional, integer, default = `lwinin`
+lwin : optional, integer, default = lwinin
 :   The spherical harmonic bandwidth of the localizing windows.
 
-`taper_wt` : optional, float, dimension (`kmaxin`)
+taper_wt : optional, float, dimension (kmaxin)
 :   The weights to be applied to the multitaper spectral estimates.
 
-`nocross` : optional, integer, default = 0
+nocross : optional, integer, default = 0
 :   If 1, only the diagonal terms of the covariance matrix Fij will be computed. If 0, all terms will be computed.
 
 ## Description
 
-`SHMTVar` will determine the theoretical variance of a multitaper spectral estimate for a given input power spectrum, degree l, and optionally, a set of taper weights (see eq. C21 of Wieczorek and Simons 2007). The windowing functions are assumed to be solutions to the spherical-cap concentration problem, as determined by a call to `SHReturnTapers` or `SHReturnTapersM`. If `unweighted_covar` is specified, then the unweighted covariance matrix of the `kmax` tapers (i.e., Fij) will be output. If the optional argument `nocross` is set to 1, then only the diagnonal terms of `Fij` will be computed.
+SHMTVar will determine the theoretical variance of a multitaper spectral estimate for a given input power spectrum, degree l, and optionally, a set of taper weights (see eq. C21 of Wieczorek and Simons 2007). The windowing functions are assumed to be solutions to the spherical-cap concentration problem, as determined by a call to SHReturnTapers or SHReturnTapersM. If unweighted_covar is specified, then the unweighted covariance matrix of the kmax tapers (i.e., Fij) will be output. If the optional argument nocross is set to 1, then only the diagnonal terms of Fij will be computed.
 
 ## References
 

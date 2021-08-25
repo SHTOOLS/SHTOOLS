@@ -73,7 +73,7 @@ INSTALL_REQUIRES = [
     'numpy>=' + str(numpy.__version__),
     'scipy>=0.14.0',
     'matplotlib>=3.3',
-    'astropy',
+    'astropy>=4.0',
     'xarray',
     'requests',
     'pooch>=1.1',
@@ -81,7 +81,10 @@ INSTALL_REQUIRES = [
 ]
 
 EXTRAS_REQUIRE = {
-    'extras': ['cartopy>=0.18.0', 'pygmt>=0.2', 'palettable>=3.3']
+    'cartopy': ['cython', 'pyshp', 'six', 'shapely', 'cartopy>=0.18.0'],
+    'pygmt': ['pygmt==0.3'],
+    'palettable': ['palettable>=3.3'],
+    'ducc': ['ducc0>=0.15']
 }
 
 VERSION = versioneer.get_version()
@@ -213,7 +216,7 @@ def configuration(parent_package='', top_path=None):
 
 CMDCLASS = numpy_cmdclass
 CMDCLASS.update({'build': build, 'install': install, 'develop': develop})
-CMDCLASS.update(versioneer.get_cmdclass())
+CMDCLASS = versioneer.get_cmdclass(CMDCLASS)
 
 metadata = dict(
     name='pyshtools',

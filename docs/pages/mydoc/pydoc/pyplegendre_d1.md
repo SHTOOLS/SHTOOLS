@@ -1,6 +1,6 @@
 ---
 title: PLegendre_d1()
-keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
+keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: pyplegendre_d1.html
 summary:
@@ -13,26 +13,24 @@ Compute all the unnormalized Legendre polynomials and first derivatives.
 
 ## Usage
 
-```python
-`p`, `dp` = PLegendre_d1 (`lmax`, `z`)
-```
+p, dp = PLegendre_d1 (lmax, z)
 
 ## Returns
 
-`p` : float, dimension (`lmax`+1)
-:   An array of unnormalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l`.
+p : float, dimension (lmax+1)
+:   An array of unnormalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l.
 
-`dp` : float, dimension (`lmax`+1)
-:   An array of the first derivatives of the unnormalized Legendre polynomials up to degree `lmax`. Degree `l` corresponds to array index `l`.
+dp : float, dimension (lmax+1)
+:   An array of the first derivatives of the unnormalized Legendre polynomials up to degree lmax. Degree l corresponds to array index l.
 
 ## Parameters
 
-`lmax` : integer
+lmax : integer
 :   The maximum degree of the Legendre polynomials to be computed.
 
-`z` : float
+z : float
 :   The argument of the Legendre polynomial.
 
 ## Description
 
-`PLegendre_d1` will calculate all of the unnormalized Legendre polynomials and first derivatives up to degree `lmax` for a given argument. These are calculated using a standard three-term recursion formula, and the integral of the Legendre polynomials over the interval [-1, 1] is `2/(2l+1)`. Note that the derivative of the Legendre polynomials is calculated with respect to its arguement `z`, and not latitude or colatitude. If `z=cos(theta)`, where `theta` is the colatitude, then it is only necessary to multiply `dp` by `-sin(theta)` to obtain the derivative with respect to `theta`.
+PLegendre_d1 will calculate all of the unnormalized Legendre polynomials and first derivatives up to degree lmax for a given argument. These are calculated using a standard three-term recursion formula, and the integral of the Legendre polynomials over the interval [-1, 1] is 2/(2l+1). Note that the derivative of the Legendre polynomials is calculated with respect to its arguement z, and not latitude or colatitude. If z=cos(theta), where theta is the colatitude, then it is only necessary to multiply dp by -sin(theta) to obtain the derivative with respect to theta.
