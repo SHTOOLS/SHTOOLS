@@ -275,4 +275,4 @@ def GL1500E(lmax=1500):
 
 
 __all__ = ['MoonTopo2600p', 'T2015_449', 'Ravat2020', 'GRGM900C', 'GRGM1200B',
-           'GRGM1200B_RM1_1E0', 'GL0900D', 'GL1500E']
+           'GRGM1200B_RM1_1E0', 'GL0900D', 'GL1500E', 'historical']

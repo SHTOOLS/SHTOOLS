@@ -19,11 +19,12 @@ Morschhauser2014 :  Morschhauser et al. (2014)
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
-from ..shclasses import SHCoeffs as _SHCoeffs
-from ..shclasses import SHGravCoeffs as _SHGravCoeffs
-from ..shclasses import SHMagCoeffs as _SHMagCoeffs
+from ...shclasses import SHCoeffs as _SHCoeffs
+from ...shclasses import SHGravCoeffs as _SHGravCoeffs
+from ...shclasses import SHMagCoeffs as _SHMagCoeffs
 from pooch import Decompress as _Decompress
-from ..constants.Mars import omega as _omega
+from ...constants.Mars import omega as _omega
+from . import historical  # noqa: F401
 
 
 def MarsTopo2600(lmax=2600):
@@ -202,4 +203,4 @@ def Morschhauser2014(lmax=110):
 
 
 __all__ = ['MarsTopo2600', 'GMM3', 'GMM3_RM1_1E0', 'MRO120D', 'Langlais2019',
-           'Morschhauser2014']
+           'Morschhauser2014', 'historical']
