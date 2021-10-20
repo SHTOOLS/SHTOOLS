@@ -21,4 +21,4 @@ lmax : optional, optional, default = lmaxin
 
 # Description
 
-SHVectorToCilm will convert a 1-dimensional indexed vector of real spherical harmonic coefficients to a three-dimensional array. The degree l, order m, and i (1 = cosine, 2 = sine) corresponds to the index l**2+(i-1)*l+m.
+SHVectorToCilm will convert a 1-dimensional indexed vector of real spherical harmonic coefficients to a three-dimensional array. The degree l, order m, and i (1 = cosine, 2 = sine) corresponds to the index l\*\*2+(i-1)\*l+m.
