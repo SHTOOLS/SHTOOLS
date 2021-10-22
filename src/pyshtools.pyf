@@ -555,7 +555,7 @@ python module _SHTOOLS
             real(dp),dimension(grid_d0,grid_d1),intent(out) :: grid
             real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(in) :: cilm
             integer(int32),optional,intent(in),depend(cilm_d1) :: lmax = cilm_d1-1
-            real(dp),intent(in) :: interval = 1.0
+            real(dp),intent(in) :: interval
             integer(int32),intent(hide) :: nlat
             integer(int32),intent(hide) :: nlong
             integer(int32),optional,intent(in) :: norm = 1
