@@ -1,7 +1,7 @@
 '''
 Historical datasets related to the magnetic field of Mars.
 
-Gravity
+Magnetic field
 -------
 FSU50 (Mars Global Surveyor)  :  Cain et al. (2003)
 FSU90 (Mars Global Surveyor)  :  Cain et al. (2003)
