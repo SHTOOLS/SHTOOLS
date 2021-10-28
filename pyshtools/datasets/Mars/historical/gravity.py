@@ -3,6 +3,7 @@ Historical datasets related to the gravity field of Mars.
 
 Gravity
 -------
+GGMRO95A         :  Lemoine et al. (2008)
 MRO95A           :  Konopliv et al. (2011)
 MRO110B          :  Konopliv et al. (2011)
 MRO110B2         :  Konopliv et al. (2011)
@@ -14,6 +15,38 @@ from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
 from ....shclasses import SHGravCoeffs as _SHGravCoeffs
 from ....constants.Mars import omega as _omega
+
+
+def GGMRO95A(lmax=95):
+    '''
+    GGMRO95A is a GSFC 95 degree and order spherical harmonic model of the
+    gravitational potential of Mars. This model applies a Kaula constraint for
+    degrees greater than 50.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    Lemoine, F. G., Mazarico, E., Neumann, G., and D. Chinn (2008). New
+        Solutions for the Mars Static and Temporal Gravity Field using the
+        Mars Reconnaissance Orbiter Eos Trans. AGU, 89(53), Fall Meet. Suppl.,
+        Abstract P41B-1376.
+    '''
+    fname = _retrieve(
+        url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/ggmro_095a_sha.tab",  # noqa: E501
+        known_hash="sha256:94978102bc6f443ff195dda0f9020660994381b1b5b47d9ad3110922e87b7ebc",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    clm = _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
+                                  r0_index=0, gm_index=1, errors=True,
+                                  omega=_omega.value, name='GGMRO95A',
+                                  encoding='utf-8')
+    clm.r0 *= 1.e3
+    return clm
 
 
 def MRO95A(lmax=95):
@@ -167,4 +200,4 @@ def MRO120D(lmax=120):
                                    encoding='utf-8')
 
 
-__all__ = ['MRO95A', 'MRO110B', 'MRO110B2', 'MRO110C', 'MRO120D']
+__all__ = ['GGMRO95A', 'MRO95A', 'MRO110B', 'MRO110B2', 'MRO110C', 'MRO120D']
