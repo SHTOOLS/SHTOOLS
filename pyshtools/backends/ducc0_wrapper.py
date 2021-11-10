@@ -142,6 +142,22 @@ def _synthesize_DH(alm, lmax, extend, out):
     return out
 
 
+def _adjoint_analyze_DH(alm, lmax, extend, out):
+    ducc0.sht.experimental.adjoint_analysis_2d(
+        alm=alm.reshape((1, -1)),
+        map=out[:, : out.shape[1] - extend].reshape(
+            (1, out.shape[0], out.shape[1] - extend)
+        ),
+        spin=0,
+        lmax=lmax,
+        geometry="CC" if extend else "DH",
+        nthreads=nthreads,
+    )
+    if extend:
+        out[:, -1] = out[:, 0]
+    return out
+
+
 def _synthesize_DH_deriv1(alm, lmax, extend, out):
     ducc0.sht.experimental.synthesis_2d_deriv1(
         alm=alm.reshape((1, -1)),
@@ -159,6 +175,22 @@ def _synthesize_DH_deriv1(alm, lmax, extend, out):
 
 def _synthesize_GLQ(alm, lmax, extend, out):
     ducc0.sht.experimental.synthesis_2d(
+        alm=alm.reshape((1, -1)),
+        map=out[:, : out.shape[1] - extend].reshape(
+            (1, out.shape[0], out.shape[1] - extend)
+        ),
+        spin=0,
+        lmax=lmax,
+        geometry="GL",
+        nthreads=nthreads,
+    )
+    if extend:
+        out[:, -1] = out[:, 0]
+    return out
+
+
+def _adjoint_analyze_GLQ(alm, lmax, extend, out):
+    ducc0.sht.experimental.adjoint_analysis_2d(
         alm=alm.reshape((1, -1)),
         map=out[:, : out.shape[1] - extend].reshape(
             (1, out.shape[0], out.shape[1] - extend)
@@ -322,6 +354,22 @@ def MakeGridDH(
     return _synthesize_DH(alm, lmax_calc, extend, out)
 
 
+def MakeGridDH_adjoint_analysis(
+    cilm,
+    lmax=None,
+    norm=1,
+    sampling=1,
+    csphase=1,
+    lmax_calc=None,
+    extend=False,
+):
+    lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
+    alm = _make_alm(cilm, lmax_calc, norm, csphase)
+    out = _np.empty(
+        [2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend])
+    return _adjoint_analyze_DH(alm, lmax_calc, extend, out)
+
+
 def MakeGridDHC(
     cilm,
     lmax=None,
@@ -382,6 +430,16 @@ def MakeGridGLQ(
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
     out = _np.empty([lmax + 1, (2 * lmax + 1) + extend])
     return _synthesize_GLQ(alm, lmax_calc, extend, out)
+
+
+# zero is ignored (they are computed internally)
+def MakeGridGLQ_adjoint_analysis(
+    cilm, lmax=None, zero=None, norm=1, csphase=1, lmax_calc=None, extend=False
+):
+    lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
+    alm = _make_alm(cilm, lmax_calc, norm, csphase)
+    out = _np.empty([lmax + 1, (2 * lmax + 1) + extend])
+    return _adjoint_analyze_GLQ(alm, lmax_calc, extend, out)
 
 
 # zero is ignored (they are computed internally)

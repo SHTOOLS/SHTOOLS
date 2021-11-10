@@ -2233,6 +2233,121 @@ class SHCoeffs(object):
 
             return gridout
 
+    # ---- Expand the coefficients onto a grid ----
+    def expand_adjoint_analysis(self, grid='DH2', lat=None, colat=None, lon=None, degrees=True,
+               zeros=None, lmax=None, lmax_calc=None, extend=True,
+               backend=None, nthreads=None):
+        """
+        Perform an adjoint spherical harmonic analysis coefficients either onto
+        a global grid or for a list of coordinates.
+
+        Usage
+        -----
+        f = x.expand([grid, lmax, lmax_calc, zeros, backend, nthreads])
+        g = x.expand(lat=lat, lon=lon, [lmax_calc, degrees])
+        g = x.expand(colat=colat, lon=lon, [lmax_calc, degrees])
+
+        Returns
+        -------
+        f : SHGrid class instance
+        g : float, ndarray, or list
+
+        Parameters
+        ----------
+        lat : int, float, ndarray, or list, optional, default = None
+            Latitude coordinates where the function is to be evaluated.
+        colat : int, float, ndarray, or list, optional, default = None
+            Colatitude coordinates where the function is to be evaluated.
+        lon : int, float, ndarray, or list, optional, default = None
+            Longitude coordinates where the function is to be evaluated.
+        degrees : bool, optional, default = True
+            True if lat, colat and lon are in degrees, False if in radians.
+        grid : str, optional, default = 'DH2'
+            'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon,
+            'DH2' for an equidistant lat/lon grid with nlon=2*nlat, or 'GLQ'
+            for a Gauss-Legendre quadrature grid.
+        lmax : int, optional, default = x.lmax
+            The maximum spherical harmonic degree, which determines the grid
+            spacing of the output grid.
+        lmax_calc : int, optional, default = x.lmax
+            The maximum spherical harmonic degree to use when evaluating the
+            function.
+        extend : bool, optional, default = True
+            If True, compute the longitudinal band for 360 E (DH and GLQ grids)
+            and the latitudinal band for 90 S (DH grids only).
+        zeros : ndarray, optional, default = None
+            The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
+            grids.
+        backend : str, optional, default = preferred_backend()
+            Name of the preferred backend, either 'shtools' or 'ducc'.
+        nthreads : int, optional, default = 1
+            Number of threads to use for the 'ducc' backend. Setting this
+            parameter to 0 will use as many threads as there are hardware
+            threads on the system.
+
+        Notes
+        -----
+        This method either (1) evaluates the spherical harmonic coefficients on
+        a global grid and returns an SHGrid class instance, or (2) evaluates
+        the spherical harmonic coefficients for a list of (co)latitude and
+        longitude coordinates. For the first case, the grid type is defined
+        by the optional parameter grid, which can be 'DH', 'DH2' or 'GLQ'.For
+        the second case, the optional parameters lon and either colat or lat
+        must be provided.
+        """
+        if lat is not None and colat is not None:
+            raise ValueError('lat and colat can not both be specified.')
+
+        if (lat is not None or colat is not None) and lon is not None:
+            if lmax_calc is None:
+                lmax_calc = self.lmax
+
+            if colat is not None:
+                if degrees:
+                    temp = 90.
+                else:
+                    temp = _np.pi/2.
+
+                if type(colat) is list:
+                    lat = list(map(lambda x: temp - x, colat))
+                else:
+                    lat = temp - colat
+
+            values = self._expand_coord(lat=lat, lon=lon, degrees=degrees,
+                                        lmax_calc=lmax_calc)
+            return values
+
+        else:
+            if lmax is None:
+                lmax = self.lmax
+            if lmax_calc is None:
+                lmax_calc = lmax
+            if backend is None:
+                backend = preferred_backend()
+
+            if type(grid) != str:
+                raise ValueError('grid must be a string. Input type is {:s}.'
+                                 .format(str(type(grid))))
+
+            if grid.upper() in ('DH', 'DH1'):
+                gridout = self._expandDH_adjoint_analysis(sampling=1, lmax=lmax,
+                                         lmax_calc=lmax_calc, extend=extend,
+                                         backend=backend, nthreads=nthreads)
+            elif grid.upper() == 'DH2':
+                gridout = self._expandDH_adjoint_analysis(sampling=2, lmax=lmax,
+                                         lmax_calc=lmax_calc, extend=extend,
+                                         backend=backend, nthreads=nthreads)
+            elif grid.upper() == 'GLQ':
+                gridout = self._expandGLQ_adjoint_analysis(zeros=zeros, lmax=lmax,
+                                          lmax_calc=lmax_calc, extend=extend,
+                                          backend=backend, nthreads=nthreads)
+            else:
+                raise ValueError(
+                    "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
+                    "Input value is {:s}.".format(repr(grid)))
+
+            return gridout
+
     # ---- Compute the horizontal gradient ----
     def gradient(self, grid='DH2', lmax=None, lmax_calc=None, units=None,
                  extend=True, radius=None, backend=None, nthreads=None):
@@ -4098,6 +4213,32 @@ class SHRealCoeffs(SHCoeffs):
                                     copy=False)
         return gridout
 
+    def _expandDH_adjoint_analysis(self, sampling, lmax, lmax_calc, extend, backend, nthreads):
+        """Perform an adjoint analysis onto a Driscoll and Healy (1994) grid."""
+        from .shgrid import SHGrid
+        if self.normalization == '4pi':
+            norm = 1
+        elif self.normalization == 'schmidt':
+            norm = 2
+        elif self.normalization == 'unnorm':
+            norm = 3
+        elif self.normalization == 'ortho':
+            norm = 4
+        else:
+            raise ValueError(
+                "Normalization must be '4pi', 'ortho', 'schmidt', or " +
+                "'unnorm'. Input value is {:s}."
+                .format(repr(self.normalization)))
+
+        data = backend_module(
+            backend=backend, nthreads=nthreads).MakeGridDH_adjoint_analysis(
+                self.coeffs, sampling=sampling, norm=norm,
+                csphase=self.csphase, lmax=lmax,
+                lmax_calc=lmax_calc, extend=extend)
+        gridout = SHGrid.from_array(data, grid='DH', units=self.units,
+                                    copy=False)
+        return gridout
+
     def _expandGLQ(self, zeros, lmax, lmax_calc, extend, backend, nthreads):
         """Evaluate the coefficients on a Gauss Legendre quadrature grid."""
         from .shgrid import SHGrid
@@ -4119,6 +4260,34 @@ class SHRealCoeffs(SHCoeffs):
             zeros, weights = _shtools.SHGLQ(self.lmax)
         data = backend_module(
             backend=backend, nthreads=nthreads).MakeGridGLQ(
+                self.coeffs, zero=zeros, norm=norm,
+                csphase=self.csphase, lmax=lmax,
+                lmax_calc=lmax_calc, extend=extend)
+        gridout = SHGrid.from_array(data, grid='GLQ', units=self.units,
+                                    copy=False)
+        return gridout
+
+    def _expandGLQ_adjoint_analysis(self, zeros, lmax, lmax_calc, extend, backend, nthreads):
+        """Evaluate the coefficients on a Gauss Legendre quadrature grid."""
+        from .shgrid import SHGrid
+        if self.normalization == '4pi':
+            norm = 1
+        elif self.normalization == 'schmidt':
+            norm = 2
+        elif self.normalization == 'unnorm':
+            norm = 3
+        elif self.normalization == 'ortho':
+            norm = 4
+        else:
+            raise ValueError(
+                "Normalization must be '4pi', 'ortho', 'schmidt', or " +
+                "'unnorm'. Input value is {:s}."
+                .format(repr(self.normalization)))
+
+        if backend == "shtools" and zeros is None:
+            zeros, weights = _shtools.SHGLQ(self.lmax)
+        data = backend_module(
+            backend=backend, nthreads=nthreads).MakeGridGLQ_adjoint_analysis(
                 self.coeffs, zero=zeros, norm=norm,
                 csphase=self.csphase, lmax=lmax,
                 lmax_calc=lmax_calc, extend=extend)
