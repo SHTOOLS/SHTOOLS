@@ -1943,7 +1943,7 @@ class SHGravCoeffs(object):
                 admit = _np.column_stack((admit, _np.sqrt(sigma)))
 
         if function == 'geoid':
-            admit *= 1000. * self.gm / self.r0
+            admit *= 1000. * self.r0
         else:
             degrees = _np.arange(lmax+1)
             if errors:
@@ -2076,7 +2076,7 @@ class SHGravCoeffs(object):
                 admit = _np.column_stack((admit, _np.sqrt(sigma)))
 
         if function == 'geoid':
-            admit *= 1000. * self.gm / self.r0
+            admit *= 1000. * self.r0
         else:
             degrees = _np.arange(lmax+1)
             if errors:

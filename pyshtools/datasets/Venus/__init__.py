@@ -12,9 +12,10 @@ MGNP180U     :  Konopliv et al. (1999)
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
-from ..shclasses import SHCoeffs as _SHCoeffs
-from ..shclasses import SHGravCoeffs as _SHGravCoeffs
-from ..constants.Venus import omega as _omega
+from ...shclasses import SHCoeffs as _SHCoeffs
+from ...shclasses import SHGravCoeffs as _SHGravCoeffs
+from ...constants.Venus import omega as _omega
+from . import historical  # noqa: F401
 
 
 def VenusTopo719(lmax=719):
@@ -70,4 +71,4 @@ def MGNP180U(lmax=180):
                                    name='MGNP180U', encoding='utf-8')
 
 
-__all__ = ['VenusTopo719', 'MGNP180U']
+__all__ = ['VenusTopo719', 'MGNP180U', 'historical']
