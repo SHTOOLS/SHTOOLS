@@ -166,7 +166,7 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                         raise RuntimeError('Encountered beginning of file '
                                            'while attempting to determine '
                                            'lmax.')
-        lmaxout = int(line.split()[0])
+        lmaxout = int(float(line.split()[0]))
 
     else:
         lmaxout = lmax
@@ -232,7 +232,7 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                 raise RuntimeError('End of file encountered when determining '
                                    'value of lstart.')
         line = line.replace(',', ' ')
-        lstart = int(line.split()[0])
+        lstart = int(float(line.split()[0]))
 
         # determine if the coefficients are real or complex
         try:
@@ -273,13 +273,13 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                                            'degree and order {:d}, {:d}.'
                                            .format(degree, order))
                 line = line.replace(',', ' ')
-                l = int(line.split()[0])
-                m = int(line.split()[1])
+                l = int(float(line.split()[0]))
+                m = int(float(line.split()[1]))
                 if degree != l or order != m:
                     raise RuntimeError('Degree and order from file do not '
                                        'correspond to expected values.\n '
                                        'Read {:d}, {:d}. Expected {:d}, '
-                                       '{:d}.'.format(degree, order, l, m))
+                                       '{:d}.'.format(l, m, degree, order))
 
                 if order > 0:
                     line2 = f.readline()
@@ -294,14 +294,14 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                                                'degree and order {:d}, {:d}.'
                                                .format(degree, order))
                     line2 = line2.replace(',', ' ')
-                    l2 = int(line2.split()[0])
-                    m2 = int(line2.split()[1])
+                    l2 = int(float(line2.split()[0]))
+                    m2 = int(float(line2.split()[1]))
                     if degree != l2 or -order != m2:
                         raise RuntimeError('Degree and order from file do not '
                                            'correspond to expected values.\n '
                                            'Read {:d}, {:d}. Expected {:d}, '
-                                           '{:d}.'.format(degree, -order,
-                                                          l2, m2))
+                                           '{:d}.'.format(l2, m2,
+                                                          degree, -order))
                     m2 = abs(m2)
 
                 if kind == 'real':

@@ -165,7 +165,7 @@ def shread(filename, lmax=None, error=False, header=False, header2=False,
                                            'while attempting to determine '
                                            'lmax.')
 
-        lmaxout = int(line.split()[0])
+        lmaxout = int(float(line.split()[0]))
 
     else:
         lmaxout = lmax
@@ -232,7 +232,7 @@ def shread(filename, lmax=None, error=False, header=False, header2=False,
                 raise RuntimeError('End of file encountered when ' +
                                    'determining value of lstart.')
         line = line.replace(',', ' ')
-        lstart = int(line.split()[0])
+        lstart = int(float(line.split()[0]))
 
         # determine if the coefficients are real or complex
         try:
@@ -274,14 +274,14 @@ def shread(filename, lmax=None, error=False, header=False, header2=False,
                                            .format(degree, order))
 
                 line = line.replace(',', ' ')
-                l = int(line.split()[0])
-                m = int(line.split()[1])
+                l = int(float(line.split()[0]))
+                m = int(float(line.split()[1]))
 
                 if degree != l or order != m:
                     raise RuntimeError('Degree and order from file do not '
                                        'correspond to expected values.\n '
                                        'Read {:d}, {:d}. Expected {:d}, {:d}.'
-                                       .format(degree, order, l, m))
+                                       .format(l, m, degree, order))
 
                 if kind == 'real':
                     coeffs[0, l, m] = _np.float64(line.split()[2])
