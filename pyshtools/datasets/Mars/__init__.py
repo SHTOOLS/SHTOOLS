@@ -103,7 +103,7 @@ def GMM3_RM1_1E0(lmax=150):
         7686-7694, doi:10.1002/2017GL074172.
     '''
     fname = _retrieve(
-        url="https://core2.gsfc.nasa.gov/PGDA/data/MarsDensityRM1/sha.gmm3_l150_rm1_lambda_1",  # noqa: E501
+        url="https://pgda.gsfc.nasa.gov/data/MarsDensityRM1/sha.gmm3_l150_rm1_lambda_1",  # noqa: E501
         known_hash="sha256:b309917362bd2014df42a62cb19ea321ee8db97997b0688eda2774deb46ef538",  # noqa: E501
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
