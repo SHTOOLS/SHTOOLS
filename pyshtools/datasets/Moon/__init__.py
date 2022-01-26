@@ -203,7 +203,7 @@ def GRGM1200B_RM1_1E0(lmax=1200):
         doi:10.1029/2019JE006086.
     '''
     fname = _retrieve(
-        url="https://core2.gsfc.nasa.gov/PGDA/data/MoonRM1/sha.grgm1200b_rm1_1e0_sigma",  # noqa: E501
+        url="https://pgda.gsfc.nasa.gov/data/MoonRM1/sha.grgm1200b_rm1_1e0_sigma",  # noqa: E501
         known_hash="sha256:d42536cc716f5da8e067aa79a253c310e9d53d1d3b3ae7b43fa4517654d20d35",  # noqa: E501
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
