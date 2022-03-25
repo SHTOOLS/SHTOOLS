@@ -23,6 +23,10 @@ if ducc0 is not None:
     except:
         nthreads = 0
 
+def _fixdtype(arr):
+    if (arr.dtype == np.float32) or (arr.dtype == np.float64):
+        return arr
+    return arr.astype(np.float64)
 
 def set_nthreads(ntnew):
     global nthreads
@@ -346,6 +350,7 @@ def MakeGridDHC(
 
 
 def SHExpandDH(grid, norm=1, sampling=1, csphase=1, lmax_calc=None):
+    grid = _fixdtype(grid)
     if grid.shape[1] != sampling * grid.shape[0]:
         raise RuntimeError("grid resolution mismatch")
     if lmax_calc is None:
@@ -403,6 +408,7 @@ def MakeGridGLQC(
 def SHExpandGLQ(
     grid, weights=None, zeros=None, norm=1, csphase=1, lmax_calc=None
 ):
+    grid = _fixdtype(grid)
     if lmax_calc is None:
         lmax_calc = grid.shape[0] - 1
     if lmax_calc > (grid.shape[0] - 1):
