@@ -25,9 +25,7 @@ if ducc0 is not None:
 
 
 def _fixdtype(arr):
-    if (arr.dtype == _np.float32) or (arr.dtype == _np.float64):
-        return arr
-    return arr.astype(_np.float64)
+    return arr.astype(_np.float64, copy=False)
 
 
 def set_nthreads(ntnew):
