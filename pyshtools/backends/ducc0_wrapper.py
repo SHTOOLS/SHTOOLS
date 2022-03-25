@@ -23,10 +23,12 @@ if ducc0 is not None:
     except:
         nthreads = 0
 
+
 def _fixdtype(arr):
-    if (arr.dtype == np.float32) or (arr.dtype == np.float64):
+    if (arr.dtype == _np.float32) or (arr.dtype == _np.float64):
         return arr
-    return arr.astype(np.float64)
+    return arr.astype(_np.float64)
+
 
 def set_nthreads(ntnew):
     global nthreads
