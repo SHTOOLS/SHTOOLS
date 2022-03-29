@@ -1676,7 +1676,7 @@ class SHMagCoeffs(object):
                            category=RuntimeWarning)
 
         rot = self._rotate(angles, dj_matrix, r0=self.r0, backend=backend,
-                           nthread=nthreads)
+                           nthreads=nthreads)
         return rot
 
     def convert(self, normalization=None, csphase=None, lmax=None):

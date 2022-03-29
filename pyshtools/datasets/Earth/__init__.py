@@ -21,6 +21,7 @@ IGRF_13                    :  Thébault et al. (2015); degree 13
 SWARM_MLI_2D_0501          :  Thébault et al. (2013); degree 133
 NGDC_720_V3                :  Maus (2010); degree 740
 WDMAM2_800                 :  Lesur et al. (2016); degree 800
+Thebault2021               :  Thebault et al. (2021); degree 1050
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
@@ -346,6 +347,40 @@ def SWARM_MLI_2D_0501(lmax=133):
                                   encoding='utf-8')
 
 
+def Thebault2021(lmax=1050):
+    '''
+    Thebault2021 is a degree 1050 magnetic field model of the Earth's
+    lithsophere that is based on a combination of surface and satellite data.
+    This model includes data from CHAMP, SWARM, and WDMAP-2 near-surface scalar
+    measurements. The coefficients of the first 15 degrees are all zero.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    Thébault, E., Hulot, G., Langlais, B., Vigneron, P. (2021). A spherical
+        harmonic model of Earth's lithospheric magnetic field up to degree
+        1050, Geophysical Research Letters, 48, e2021GL095147,
+        doi:10.1029/2021GL095147.
+    '''
+    fname = _retrieve(
+        url="https://zenodo.org/record/5546528/files/Spherical_HarmonicModel_GRL.zip?download=1",  # noqa: E501
+        known_hash="sha256:d3ce3f049158cb055d1e69efaa39f0618d808d1e01f18efb5058b6ac5fa4e78d",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        processor=_Unzip(),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHMagCoeffs.from_file(fname[0], format='shtools', r0=6371.2e3,
+                                  r0_index=None, lmax=lmax, header=False,
+                                  header2=False, skip=13, file_units='nT',
+                                  name='Thebault2021', units='nT',
+                                  encoding='utf-8')
+
+
 __all__ = ['Earth2012', 'Earth2014', 'EGM2008', 'EIGEN_6C4',
            'GGM05C', 'GOCO06S', 'EIGEN_GRGS_RL04_MEAN_FIELD', 'XGM2019E',
-           'IGRF_13', 'NGDC_720_V3', 'WDMAM2_800', 'SWARM_MLI_2D_0501']
+           'IGRF_13', 'NGDC_720_V3', 'WDMAM2_800', 'SWARM_MLI_2D_0501',
+           'Thebault2021']

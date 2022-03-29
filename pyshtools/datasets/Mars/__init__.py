@@ -9,7 +9,7 @@ Gravity
 -------
 GMM3             :  Genova et al. (2016)
 GMM3_RM1_1E0     :  Goossens et al. (2017)
-MRO120D          :  Konopliv et al. (2016)
+MRO120F          :  Konopliv et al. (2020)
 
 Magnetic field
 --------------
@@ -19,11 +19,12 @@ Morschhauser2014 :  Morschhauser et al. (2014)
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
-from ..shclasses import SHCoeffs as _SHCoeffs
-from ..shclasses import SHGravCoeffs as _SHGravCoeffs
-from ..shclasses import SHMagCoeffs as _SHMagCoeffs
+from ...shclasses import SHCoeffs as _SHCoeffs
+from ...shclasses import SHGravCoeffs as _SHGravCoeffs
+from ...shclasses import SHMagCoeffs as _SHMagCoeffs
 from pooch import Decompress as _Decompress
-from ..constants.Mars import omega as _omega
+from ...constants.Mars import omega as _omega
+from . import historical  # noqa: F401
 
 
 def MarsTopo2600(lmax=2600):
@@ -102,7 +103,7 @@ def GMM3_RM1_1E0(lmax=150):
         7686-7694, doi:10.1002/2017GL074172.
     '''
     fname = _retrieve(
-        url="https://core2.gsfc.nasa.gov/PGDA/data/MarsDensityRM1/sha.gmm3_l150_rm1_lambda_1",  # noqa: E501
+        url="https://pgda.gsfc.nasa.gov/data/MarsDensityRM1/sha.gmm3_l150_rm1_lambda_1",  # noqa: E501
         known_hash="sha256:b309917362bd2014df42a62cb19ea321ee8db97997b0688eda2774deb46ef538",  # noqa: E501
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
@@ -113,9 +114,9 @@ def GMM3_RM1_1E0(lmax=150):
                                    encoding='utf-8')
 
 
-def MRO120D(lmax=120):
+def MRO120F(lmax=120):
     '''
-    MRO120D is a JPL 120 degree and order spherical harmonic model of the
+    MRO120F is a JPL 120 degree and order spherical harmonic model of the
     gravitational potential of Mars. This model applies a Kaula constraint for
     degrees greater than 80.
 
@@ -126,19 +127,20 @@ def MRO120D(lmax=120):
 
     Reference
     ---------
-    Konopliv, A.S., Park, R.S., Folkner, W.M. (2016). An improved JPL Mars
-        gravity field and orientation from Mars orbiter and lander tracking
-        data. Icarus, 274, 253-260, doi:10.1016/j.icarus.2016.02.052.
+    Konopliv, A.S., Park, R.S., Rivoldini, A., Baland, R.-M., Le Maistre, S.,
+        Van Hoolst, T., Yseboodt, M., Dehant, V. (2020). Detection of the
+        Chandler Wobble of Mars From Orbiting Spacecraft. Geophysical Research
+        Letters, 47, e2020GL090568, doi:10.1029/2020GL090568.
     '''
     fname = _retrieve(
-        url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/jgmro_120d_sha.tab",  # noqa: E501
-        known_hash="sha256:00c3a2fada7bdfb8022962752b1226be1de21ea469f9e88af5d8dc47d23883bd",  # noqa: E501
+        url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/jgmro_120f_sha.tab",  # noqa: E501
+        known_hash="sha256:ddd3de9c30d75879fe37aa17a1149e7c96c141c095962954cb7ea865a2c025b6",  # noqa: E501
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True,
-                                   omega=_omega.value, name='MRO120D',
+                                   omega=_omega.value, name='MRO120F',
                                    encoding='utf-8')
 
 
@@ -201,5 +203,5 @@ def Morschhauser2014(lmax=110):
                                   encoding='utf-8')
 
 
-__all__ = ['MarsTopo2600', 'GMM3', 'GMM3_RM1_1E0', 'MRO120D', 'Langlais2019',
-           'Morschhauser2014']
+__all__ = ['MarsTopo2600', 'GMM3', 'GMM3_RM1_1E0', 'MRO120F', 'Langlais2019',
+           'Morschhauser2014', 'historical']

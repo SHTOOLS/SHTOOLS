@@ -474,8 +474,9 @@ class SHWindow(object):
             1-D numpy array of the weights used in calculating the multitaper
             spectral estimates and standard error.
         clat, clon : float, optional, default = 90., 0.
-            Latitude and longitude of the center of the spherical-cap
-            localization windows.
+            When using spherical-cap localization windows, rotate the center of
+            the localization windows to the latitude and longitude coordinates
+            clat and clon, respectively.
         coord_degrees : bool, optional, default = True
             True if clat and clon are in degrees.
         """
@@ -542,8 +543,9 @@ class SHWindow(object):
             The weights used in calculating the multitaper cross-spectral
             estimates and standard error.
         clat, clon : float, optional, default = 90., 0.
-            Latitude and longitude of the center of the spherical-cap
-            localization windows.
+            When using spherical-cap localization windows, rotate the center of
+            the localization windows to the latitude and longitude coordinates
+            clat and clon, respectively.
         coord_degrees : bool, optional, default = True
             True if clat and clon are in degrees.
         """
@@ -1818,8 +1820,8 @@ class SHWindowMask(SHWindow):
 
         sh = clm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
-        mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.tapers, lmax=lmax,
-                                               k=k, taper_wt=weights)
+        mtse, sd = _shtools.SHMultiTaperMaskSE(sh, self.tapers, k=k,
+                                               taper_wt=weights)
 
         if (unit == 'per_l'):
             pass
@@ -1858,8 +1860,7 @@ class SHWindowMask(SHWindow):
         sh2 = slm.to_array(normalization='4pi', csphase=1, lmax=lmax)
 
         mtse, sd = _shtools.SHMultiTaperMaskCSE(sh1, sh2, self.tapers,
-                                                lmax=lmax, k=k,
-                                                taper_wt=weights)
+                                                k=k, taper_wt=weights)
 
         if (unit == 'per_l'):
             pass

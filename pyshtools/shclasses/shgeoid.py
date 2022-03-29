@@ -228,7 +228,7 @@ class SHGeoid(object):
 
     def to_netcdf(self, filename=None, title='', description='',
                   comment='pyshtools grid', name='geoid',
-                  dtype='f'):
+                  dtype='d'):
         """
         Return the gridded data as a netcdf formatted file or object.
 
@@ -248,7 +248,7 @@ class SHGeoid(object):
             Additional information about how the data were generated.
         name : str, optional, default = 'data'
             Name of the data array.
-        dtype : str, optional, default = 'f'
+        dtype : str, optional, default = 'd'
             Data type of the output array. Either 'f' or 'd' for single or
             double precision floating point, respectively.
         """
