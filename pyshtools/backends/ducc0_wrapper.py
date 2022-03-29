@@ -24,6 +24,10 @@ if ducc0 is not None:
         nthreads = 0
 
 
+def _fixdtype(arr):
+    return arr.astype(_np.float64, copy=False)
+
+
 def set_nthreads(ntnew):
     global nthreads
     nthreads = ntnew
@@ -346,6 +350,7 @@ def MakeGridDHC(
 
 
 def SHExpandDH(grid, norm=1, sampling=1, csphase=1, lmax_calc=None):
+    grid = _fixdtype(grid)
     if grid.shape[1] != sampling * grid.shape[0]:
         raise RuntimeError("grid resolution mismatch")
     if lmax_calc is None:
@@ -365,10 +370,10 @@ def SHExpandDHC(grid, norm=1, sampling=1, csphase=1, lmax_calc=None):
         raise RuntimeError("lmax_calc too high")
     lmax = grid.shape[0] // 2 - 1 if lmax_calc is None else lmax_calc
     res = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.complex128)
-    alm = _analyze_DH(grid.real, lmax_calc)
+    alm = _analyze_DH(_fixdtype(grid.real), lmax_calc)
     alm = _apply_norm(alm, lmax, norm, csphase, True)
     _addRealpart(res, alm)
-    alm = _analyze_DH(grid.imag, lmax_calc)
+    alm = _analyze_DH(_fixdtype(grid.imag), lmax_calc)
     alm = _apply_norm(alm, lmax, norm, csphase, True)
     _addImagpart(res, alm)
     return res
@@ -403,6 +408,7 @@ def MakeGridGLQC(
 def SHExpandGLQ(
     grid, weights=None, zeros=None, norm=1, csphase=1, lmax_calc=None
 ):
+    grid = _fixdtype(grid)
     if lmax_calc is None:
         lmax_calc = grid.shape[0] - 1
     if lmax_calc > (grid.shape[0] - 1):
@@ -420,10 +426,10 @@ def SHExpandGLQC(
     if lmax_calc > (grid.shape[0] - 1):
         raise RuntimeError("lmax_calc too high")
     res = _np.zeros((2, lmax_calc + 1, lmax_calc + 1), dtype=_np.complex128)
-    alm = _analyze_GLQ(grid.real, lmax_calc)
+    alm = _analyze_GLQ(_fixdtype(grid.real), lmax_calc)
     alm = _apply_norm(alm, lmax_calc, norm, csphase, True)
     _addRealpart(res, alm)
-    alm = _analyze_GLQ(grid.imag, lmax_calc)
+    alm = _analyze_GLQ(_fixdtype(grid.imag), lmax_calc)
     alm = _apply_norm(alm, lmax_calc, norm, csphase, True)
     _addImagpart(res, alm)
     return res
