@@ -125,7 +125,7 @@
 ###############################################################################
 
 # The VERSION number is used only for generating the man pages
-VERSION = 4.9
+VERSION = 4.10
 
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp

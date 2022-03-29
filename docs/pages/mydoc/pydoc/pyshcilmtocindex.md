@@ -30,4 +30,4 @@ lmax : optional, integer, default = lmaxin
 
 ## Description
 
-SHCilmToCindex will convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.  The degree l and order m corresponds to the index l*(l+1)/2+m.
+SHCilmToCindex will convert a three-dimensional array of spherical harmonic coefficients to a two-dimensional indexed array.  The degree l and order m corresponds to the index l\*(l+1)/2+m.

@@ -27,3 +27,4 @@ folder: fortran
 * Tristan Brugere
 * Erik Schnetter / [eschnett](https://github.com/eschnett)
 * Martin Reinecke / [mreineck](https://github.com/mreineck)
+* Juan Sierra / [jdsierral](https://github.com/jdsierral)
