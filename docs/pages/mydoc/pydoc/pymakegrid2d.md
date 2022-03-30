@@ -26,7 +26,7 @@ cilm : float, dimension (2, lmaxin+1, lmaxin+1)
 :   The real spherical harmonic coefficients to be expanded in the space domain. The coefficients C1lm and C2lm refer to the cosine (Clm) and sine (Slm) coefficients, respectively, with Clm=cilm[0,l,m] and Slm=cilm[1,l,m].
 
 interval : float
-:   The latitudinal and longitudinal spacing of grid.
+:   The latitudinal and longitudinal spacing of the output grid.
 
 lmax :optional, integer, default = lmaxin
 :   The maximum spherical harmonic degree of the coefficients cilm used when calculating the grid.
