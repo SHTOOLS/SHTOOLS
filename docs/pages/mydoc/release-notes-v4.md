@@ -30,6 +30,7 @@ folder: mydoc
 * Convert all grids to `float` before using the `ducc0` backend.
 * `SHGeoid.to_netcdf()` now outputs double precision by default (consistent with the other grid classes).
 * Fix bug with `SHWindow.multitaper_cross_spectrum()` when using arbitrary localization regions.
+* Fix bug with the c-wrapper for `cMakeGradientDH` regarding the optional `radius` parameters.
 * Minor changes to remove deprecation warnings.
 
 M. A. Wieczorek, M. Meschede, T. Brugere, A. Corbin, A. Hattori, K. Leinweber, I. Oshchepkov, M. Reinecke, E. Sales de Andrade, E. Schnetter, S. Schröder, A. Vasishta, A. Walker, B. Xu, J. Sierra (2022). SHTOOLS: Version 4.10, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)

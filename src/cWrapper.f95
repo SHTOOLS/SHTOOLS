@@ -304,14 +304,15 @@
         real(kind=c_double), dimension(theta_d0,theta_d1),intent(out) :: theta
         real(kind=c_double), dimension(theta_d0,theta_d1),intent(out) :: phi
         integer(kind=c_int), value,intent(in) :: lmax
-        integer(kind=c_double), optional,intent(in) :: radius
+        real(kind=c_double), optional,intent(in) :: radius
         integer(kind=c_int), intent(out) :: n
         integer(kind=c_int), optional,intent(in) :: sampling
         integer(kind=c_int), optional,intent(in) :: lmax_calc
         integer(kind=c_int), optional,intent(in) :: extend
         integer(kind=c_int), optional,intent(out) :: exitstatus
         call MakeGradientDH(cilm,lmax,theta,phi,n,sampling=sampling&
-                                ,lmax_calc=lmax_calc,extend=extend,exitstatus=exitstatus)
+                                ,lmax_calc=lmax_calc,extend=extend&
+                                ,radius=radius,exitstatus=exitstatus)
     end subroutine cMakeGradientDH
 
     subroutine cSHGLQ(lmax,zero,w,plx,norm,csphase,cnorm,exitstatus)  bind(c, name="SHGLQ")
