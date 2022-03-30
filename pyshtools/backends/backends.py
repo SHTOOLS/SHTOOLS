@@ -22,7 +22,7 @@ backend_module()             Return a reference to the specified backend
 
 # defaults
 from .. import shtools as _preferred_backend_module
-_preferred_backend = "shtools"
+_preferred_backend = "ducc"
 
 
 def preferred_backend():

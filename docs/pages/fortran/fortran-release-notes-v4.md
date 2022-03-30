@@ -19,6 +19,7 @@ folder: fortran
 * Update urls for databases hosted at GSFC.
 * Reorder optional arguments in docs for `makegravgradgriddh` and `makemaggravgradgrid` for consistency with code.
 * Allow shtools and dov file formats to contain floats for degree and order.
+* Change the preferred backend from 'shtools' to 'ducc'.
 * Minor changes and enhancements to the documentation.
 
 **Bug fixes**
