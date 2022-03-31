@@ -28,7 +28,7 @@ folder: mydoc
 * Fix bug with `SHGravCoeffs.admittance()` when using `function=geoid`.
 * Fix bug in python wrapper of the routine `MakeGrid2D` concerning the mandatory variable `interval`.
 * Add workaround to use pygmt with shading for versions >=0.4.
-* Convert all grids to `float` before using the `ducc0` backend.
+* Convert all grids to `float` before using the `ducc` backend.
 * `SHGeoid.to_netcdf()` now outputs double precision by default (consistent with the other grid classes).
 * Fix bug with `SHWindow.multitaper_cross_spectrum()` when using arbitrary localization regions.
 * Fix bug with the c-wrapper for `cMakeGradientDH` regarding the optional `radius` parameters.

@@ -6,9 +6,9 @@ the backends used for the spherical harmonic transforms in pyshtools.
 
 Supported backends
 ------------------
-shtools (default)            Spherical Harmonic Tools (Fortran 95), installed
+shtools (fallback)           Spherical Harmonic Tools (Fortran 95), installed
                              as part of pyshtools.
-ducc0                        Distinctly Useful Code Collection (C++17).
+ducc0 (default)              Distinctly Useful Code Collection (C++17).
 
 Functions
 ---------
@@ -20,9 +20,11 @@ backend_module()             Return a reference to the specified backend
                              module.
 """
 
+
 # defaults
-from .. import shtools as _preferred_backend_module
+from . import ducc0_wrapper
 _preferred_backend = "ducc"
+_preferred_backend_module = ducc0_wrapper
 
 
 def preferred_backend():
@@ -67,18 +69,26 @@ def backend_module(backend=None, nthreads=None):
         to 0 will use as many threads as there are hardware threads on the
         system.
     """
-    backend = backend.lower()
+    if backend is not None:
+        backend = backend.lower()
     if backend == "shtools":
         from .. import shtools
 
         return shtools
     elif backend == "ducc":
         from . import ducc0_wrapper
-        if not ducc0_wrapper.available():
-            raise ImportError('"ducc" backend requested, but not installed.')
-        if nthreads is not None:
-            ducc0_wrapper.set_nthreads(nthreads)
-        return ducc0_wrapper
+
+        if ducc0_wrapper.available():
+            if nthreads is not None:
+                ducc0_wrapper.set_nthreads(nthreads)
+            return ducc0_wrapper
+        else:
+            from .. import shtools
+
+            print('"ducc" backend requested, but not installed. '
+                  'Setting preferred backend to "shtools".')
+            select_preferred_backend(backend='shtools')
+            return shtools
     elif backend is None:
         return preferred_backend_module()
     else:
@@ -86,7 +96,7 @@ def backend_module(backend=None, nthreads=None):
         raise RuntimeError
 
 
-def select_preferred_backend(backend="shtools", nthreads=None):
+def select_preferred_backend(backend="ducc", nthreads=None):
     """
     Select the preferred backend module used for the spherical harmonic
     transforms in pyshtools.
@@ -97,7 +107,7 @@ def select_preferred_backend(backend="shtools", nthreads=None):
 
     Parameters
     ----------
-    backend : str, optional, default = 'shtools'
+    backend : str, optional, default = 'ducc'
         Name of the preferred backend, either 'shtools' or 'ducc'.
     nthreads : int, optional, default = 1
         Number of threads to use for the 'ducc' backend. Setting this parameter
@@ -114,6 +124,7 @@ def select_preferred_backend(backend="shtools", nthreads=None):
     elif backend == "ducc":
         try:
             import ducc0
+            from . import ducc0_wrapper
 
             major, minor, patch = ducc0.__version__.split(".")
             if int(major) < 1 and int(minor) < 15:
@@ -122,17 +133,18 @@ def select_preferred_backend(backend="shtools", nthreads=None):
                     "Need at least version 0.15"
                 )
                 raise RuntimeError
-        except:
-            print(
-                "DUCC backend requested, but the relevant package cannot be "
-                "imported. Leaving backend unchanged."
-            )
-        _preferred_backend = backend
-        from . import ducc0_wrapper
 
-        _preferred_backend_module = ducc0_wrapper
-        if nthreads is not None:
-            ducc0_wrapper.set_nthreads(nthreads)
+            _preferred_backend = 'ducc'
+            _preferred_backend_module = ducc0_wrapper
+            if nthreads is not None:
+                ducc0_wrapper.set_nthreads(nthreads)
+        except:
+            print('"ducc" backend requested, but not installed. '
+                  'Setting preferred backend to "shtools".')
+            _preferred_backend = 'shtools'
+            from .. import shtools
+
+            _preferred_backend_module = shtools
     else:
         print("Unknown backend '{}' requested.".format(backend))
         raise RuntimeError

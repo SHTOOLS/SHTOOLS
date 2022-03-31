@@ -16,5 +16,7 @@ dependencies:
     - pygmt>=0.3.0
     - palettable>=3.3
     - jupyter
+    - pypandoc
+    - flake8
     - pip
     - ducc0>=0.15
