@@ -21,10 +21,19 @@ backend_module()             Return a reference to the specified backend
 """
 
 
-# defaults
 from . import ducc0_wrapper
-_preferred_backend = "ducc"
-_preferred_backend_module = ducc0_wrapper
+from .. import shtools
+
+_available_backends = {"shtools": shtools}
+
+# defaults
+if ducc0_wrapper.available():
+    _preferred_backend = "ducc"
+    _preferred_backend_module = ducc0_wrapper
+    _available_backends["ducc"] = ducc0_wrapper
+else:
+    _preferred_backend = "shtools"
+    _preferred_backend_module = shtools
 
 
 def preferred_backend():
@@ -69,31 +78,15 @@ def backend_module(backend=None, nthreads=None):
         to 0 will use as many threads as there are hardware threads on the
         system.
     """
-    if backend is not None:
-        backend = backend.lower()
-    if backend == "shtools":
-        from .. import shtools
-
-        return shtools
-    elif backend == "ducc":
-        from . import ducc0_wrapper
-
-        if ducc0_wrapper.available():
-            if nthreads is not None:
-                ducc0_wrapper.set_nthreads(nthreads)
-            return ducc0_wrapper
-        else:
-            from .. import shtools
-
-            print('"ducc" backend requested, but not installed. '
-                  'Setting preferred backend to "shtools".')
-            select_preferred_backend(backend='shtools')
-            return shtools
-    elif backend is None:
+    if backend is None:
         return preferred_backend_module()
-    else:
-        print("Unknown backend '{}' requested.".format(backend))
+    backend = backend.lower()
+    if backend not in _available_backends:
+        print("Requested backend '{}' not available.".format(backend))
         raise RuntimeError
+    if backend == "ducc" and nthreads is not None:
+        ducc0_wrapper.set_nthreads(nthreads)
+    return _available_backends[backend]
 
 
 def select_preferred_backend(backend="ducc", nthreads=None):
@@ -116,37 +109,13 @@ def select_preferred_backend(backend="ducc", nthreads=None):
     """
     global _preferred_backend, _preferred_backend_module
     backend = backend.lower()
-    if backend == "shtools":
+    if backend in _available_backends:
         _preferred_backend = backend
-        from .. import shtools
-
-        _preferred_backend_module = shtools
-    elif backend == "ducc":
-        try:
-            import ducc0
-            from . import ducc0_wrapper
-
-            major, minor, patch = ducc0.__version__.split(".")
-            if int(major) < 1 and int(minor) < 15:
-                print(
-                    "ducc0 installation found, but it is too old. "
-                    "Need at least version 0.15"
-                )
-                raise RuntimeError
-
-            _preferred_backend = 'ducc'
-            _preferred_backend_module = ducc0_wrapper
-            if nthreads is not None:
-                ducc0_wrapper.set_nthreads(nthreads)
-        except:
-            print('"ducc" backend requested, but not installed. '
-                  'Setting preferred backend to "shtools".')
-            _preferred_backend = 'shtools'
-            from .. import shtools
-
-            _preferred_backend_module = shtools
+        _preferred_backend_module = _available_backends[backend]
+        if backend == "ducc" and nthreads is not None:
+            ducc0_wrapper.set_nthreads(nthreads)
     else:
-        print("Unknown backend '{}' requested.".format(backend))
+        print("Requested backend '{}' not available.".format(backend))
         raise RuntimeError
 
 
