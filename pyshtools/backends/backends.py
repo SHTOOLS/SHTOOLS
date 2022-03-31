@@ -24,16 +24,13 @@ backend_module()             Return a reference to the specified backend
 from . import ducc0_wrapper
 from .. import shtools
 
+# defaults
+_preferred_backend = "shtools"
 _available_backends = {"shtools": shtools}
 
-# defaults
 if ducc0_wrapper.available():
     _preferred_backend = "ducc"
-    _preferred_backend_module = ducc0_wrapper
     _available_backends["ducc"] = ducc0_wrapper
-else:
-    _preferred_backend = "shtools"
-    _preferred_backend_module = shtools
 
 
 def preferred_backend():
@@ -57,7 +54,7 @@ def preferred_backend_module():
     -----
     module = preferred_backend_module()
     """
-    return _preferred_backend_module
+    return _available_backends[_preferred_backend]
 
 
 def backend_module(backend=None, nthreads=None):
@@ -96,7 +93,7 @@ def select_preferred_backend(backend="ducc", nthreads=None):
 
     Usage
     -----
-    select_preferred_backend_module([backend, nthreads])
+    select_preferred_backend([backend, nthreads])
 
     Parameters
     ----------
@@ -107,11 +104,10 @@ def select_preferred_backend(backend="ducc", nthreads=None):
         to 0 will use as many threads as there are hardware threads on the
         system.
     """
-    global _preferred_backend, _preferred_backend_module
+    global _preferred_backend
     backend = backend.lower()
     if backend in _available_backends:
         _preferred_backend = backend
-        _preferred_backend_module = _available_backends[backend]
         if backend == "ducc" and nthreads is not None:
             ducc0_wrapper.set_nthreads(nthreads)
     else:
