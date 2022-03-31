@@ -6,9 +6,9 @@ the backends used for the spherical harmonic transforms in pyshtools.
 
 Supported backends
 ------------------
-shtools (default)            Spherical Harmonic Tools (Fortran 95), installed
+shtools (fallback)           Spherical Harmonic Tools (Fortran 95), installed
                              as part of pyshtools.
-ducc0                        Distinctly Useful Code Collection (C++17).
+ducc0 (default)              Distinctly Useful Code Collection (C++17).
 
 Functions
 ---------
