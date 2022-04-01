@@ -381,7 +381,7 @@ def SHExpandDHC(grid, norm=1, sampling=1, csphase=1, lmax_calc=None):
 
 # zero is ignored (they are computed internally)
 def MakeGridGLQ(
-    cilm, lmax=None, zero=None, norm=1, csphase=1, lmax_calc=None, extend=False
+    cilm, zero=None, lmax=None, norm=1, csphase=1, lmax_calc=None, extend=False
 ):
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
@@ -391,7 +391,7 @@ def MakeGridGLQ(
 
 # zero is ignored (they are computed internally)
 def MakeGridGLQC(
-    cilm, lmax=None, zero=None, norm=1, csphase=1, lmax_calc=None, extend=False
+    cilm, zero=None, lmax=None, norm=1, csphase=1, lmax_calc=None, extend=False
 ):
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _ccilm2almi(cilm)
