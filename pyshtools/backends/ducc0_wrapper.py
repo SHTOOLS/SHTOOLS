@@ -279,12 +279,84 @@ def _prep_lmax(lmax, lmax_calc, cilm):
     return lmax, lmax_calc, cilm[:, : lmax_calc + 1, : lmax_calc + 1]
 
 
-# dj_matrix is ignored
-def SHRotateRealCoef(rcoeffs, angles, dj_matrix=None):
-    lmax = rcoeffs.shape[1] - 1
-    alm = _make_alm(rcoeffs, lmax, 1, 1)
+def SHRotateRealCoef(cilm, x, dj=None):
+    """Determine the spherical harmonic coefficients of a real function rotated by
+    three Euler angles.
+    
+    Usage
+    -----
+    cilmrot = SHRotateRealCoef (cilm, x, dj, [lmax])
+    
+    Returns
+    -------
+    cilmrot : float, dimension (2, lmax+1, lmax+1)
+        The spherical harmonic coefficients of the rotated function, normalized for
+        use with the geodesy 4-pi spherical harmonics.
+    
+    Parameters
+    ----------
+    cilm : float, dimension (2, lmaxin+1, lmaxin+1)
+        The input real spherical harmonic coefficients. The coefficients must
+        correspond to geodesy 4-pi normalized spherical harmonics that do not
+        possess the Condon-Shortley phase convention.
+    x : float, dimension(3)
+        The three Euler angles, alpha, beta, and gamma, in radians.
+    dj : optional, ignored
+        This parameter only exists to maintain interface compatibility with the
+        "shtools" backend.
+    lmax : optional, integer, default = lmaxin
+        The maximum spherical harmonic degree of the input and output coefficients.
+    
+    Description
+    -----------
+    SHRotateRealCoef will take the real spherical harmonic coefficients of a
+    function, rotate it according to the three Euler anlges in x, and output the
+    spherical harmonic coefficients of the rotated function. The input and output
+    coefficients must correspond to geodesy 4-pi normalized spherical harmonics that
+    do not possess the Condon-Shortley phase convention. The input rotation matrix
+    dj is computed by a call to djpi2.
+    
+    The rotation of a coordinate system or body can be viewed in two complementary
+    ways involving three successive rotations. Both methods have the same initial
+    and final configurations, and the angles listed in both schemes are the same.
+    This routine uses the 'y convention', where the second rotation axis corresponds
+    to the y axis.
+    
+    Scheme A:
+    
+    (I) Rotation about the z axis by alpha.
+    (II) Rotation about the new y axis by beta.
+    (III) Rotation about the new z axis by gamma.
+    
+    Scheme B:
+    
+    (I) Rotation about the z axis by gamma.
+    (II) Rotation about the initial y axis by beta.
+    (III) Rotation about the initial z axis by alpha.
+    
+    The rotations can further be viewed either as a rotation of the coordinate
+    system or the physical body. For a rotation of the coordinate system without
+    rotation of the physical body, use
+    
+    x(alpha, beta, gamma).
+    
+    For a rotation of the physical body without rotation of the coordinate system,
+    use
+    
+    x(-gamma, -beta, -alpha).
+    
+    The inverse transform of x(alpha, beta, gamma) is x(-gamma, -beta, -alpha).
+    
+    Note that this routine uses the "y convention", where the second rotation is
+    with respect to the new y axis. If alpha, beta, and gamma were originally
+    defined in terms of the "x convention", where the second rotation was with
+    respect to the new x axis, the Euler angles according to the y convention would
+    be alpha_y=alpha_x-pi/2, beta_x=beta_y, and gamma_y=gamma_x+pi/2.
+    """
+    lmax = cilm.shape[1] - 1
+    alm = _make_alm(cilm, lmax, 1, 1)
     alm = ducc0.sht.rotate_alm(
-        alm, lmax, -angles[0], -angles[1], -angles[2], nthreads=nthreads
+        alm, lmax, -x[0], -x[1], -x[2], nthreads=nthreads
     )
     return _extract_alm(alm, lmax, 1, 1)
 
@@ -718,9 +790,9 @@ def MakeGridGLQ(
         minimum of lmax, lmaxin, or lmax_calc (if specified). The first index
         specifies the coefficient corresponding to the positive and negative order
         of m, respectively, with Clm=cilm[0,l,m+] and Cl,-m=cilm[1,l,m].
-    zero : float, dimension (lmax+1)
-        The nodes used in the Gauss-Legendre quadrature over latitude, calculated by
-        a call to SHGLQ.
+    zero : optional, ignored
+        This parameter only exists to maintain interface compatibility with the
+        "shtools" backend.
     lmax : optional, integer, default = lamxin
         The maximum spherical harmonic bandwidth of the function. This determines
         the sampling nodes and dimensions of the output grid.
@@ -799,9 +871,9 @@ def MakeGridGLQC(
         minimum of lmax, lmaxin, or lmax_calc (if specified). The first index
         specifies the coefficient corresponding to the positive and negative order
         of m, respectively, with Clm=cilm[0,l,m+] and Cl,-m=cilm[1,l,m].
-    zero : float, dimension (lmax+1)
-        The nodes used in the Gauss-Legendre quadrature over latitude, calculated by
-        a call to SHGLQ.
+    zero : optional, ignored
+        This parameter only exists to maintain interface compatibility with the
+        "shtools" backend.
     lmax : optional, integer, default = lmaxin
         The maximum spherical harmonic bandwidth of the function. This determines
         the sampling nodes and dimensions of the output grid.
@@ -1024,6 +1096,79 @@ def SHExpandGLQC(gridglq, w=None, zero=None, norm=1, csphase=1, lmax_calc=None):
 def MakeGradientDH(
     cilm, lmax=None, sampling=1, lmax_calc=None, extend=False, radius=None
 ):
+    """Compute the gradient of a scalar function and return grids of the two horizontal
+    components that conform with Driscoll and Healy's (1994) sampling theorem.
+    
+    Usage
+    -----
+    theta, phi = MakeGradientDH (cilm, [lmax, sampling, lmax_calc, extend, radius])
+    
+    Returns
+    -------
+    theta : float, dimension (nlat, nlong)
+        A 2D map of the theta component of the horizontal gradient that conforms to
+        the sampling theorem of Driscoll and Healy (1994). If sampling is 1, the
+        grid is equally sampled and is dimensioned as (n by n), where n is 2lmax+2.
+        If sampling is 2, the grid is equally spaced and is dimensioned as (n by
+        2n). The first latitudinal band of the grid corresponds to 90 N, the
+        latitudinal sampling interval is 180/n degrees, and the default behavior is
+        to exclude the latitudinal band for 90 S. The first longitudinal band of the
+        grid is 0 E, by default the longitudinal band for 360 E is not included, and
+        the longitudinal sampling interval is 360/n for an equally sampled and 180/n
+        for an equally spaced grid, respectively. If extend is 1, the longitudinal
+        band for 360 E and the latitudinal band for 90 S will be included, which
+        increases each of the dimensions of the grid by 1.
+    phi : float, dimension (nlat, nlong)
+        A 2D equally sampled or equally spaced grid of the phi component of the
+        horizontal gradient.
+    
+    Parameters
+    ----------
+    cilm : float, dimension (2, lmaxin+1, lmaxin+1)
+        The real 4-pi normalized spherical harmonic coefficients of a scalar
+        function. The coefficients c1lm and c2lm refer to the cosine and sine
+        coefficients, respectively, with c1lm=cilm[0,l,m] and c2lm=cilm[1,l,m].
+    lmax : optional, integer, default = lmaxin
+        The maximum spherical harmonic degree of the coefficients cilm. This
+        determines the number of samples of the output grids, n=2lmax+2, and the
+        latitudinal sampling interval, 90/(lmax+1).
+    sampling : optional, integer, default = 2
+        If 1 (default) the output grids are equally sampled (n by n). If 2, the
+        grids are equally spaced (n by 2n).
+    lmax_calc : optional, integer, default = lmax
+        The maximum spherical harmonic degree used in evaluating the functions. This
+        must be less than or equal to lmax.
+    extend : optional, bool, default = False
+        If True, compute the longitudinal band for 360 E and the latitudinal band
+        for 90 S. This increases each of the dimensions of griddh by 1.
+    radius : optional, float, default = 1.0
+        The radius of the sphere used when computing the gradient of the function.
+    
+    
+    Description
+    -----------
+    MakeGradientDH will compute the horizontal gradient of a scalar function on a
+    sphere defined by the spherical harmonic coefficients cilm. The output grids of
+    the theta and phi components of the gradient are either equally sampled (n by n)
+    or equally spaced (n by 2n) in latitude and longitude. The gradient is given by
+    the formula
+    
+    Grad F = 1/r dF/theta theta-hat + 1/(r sin theta) dF/dphi phi-hat.
+    
+    where theta is colatitude and phi is longitude. The radius r is by default set
+    to 1, but this can be modified by use of the optional parameter radius.
+    
+    The default is to use an input grid that is equally sampled (n by n), but this
+    can be changed to use an equally spaced grid (n by 2n) by the optional argument
+    sampling. The redundant longitudinal band for 360 E and the latitudinal band for
+    90 S are excluded by default, but these can be computed by specifying the
+    optional argument extend.
+    
+    Reference
+    ---------
+    Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on
+    the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
+    """
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _make_alm(cilm, lmax_calc, norm=1, csphase=1)
     res = _np.empty(
