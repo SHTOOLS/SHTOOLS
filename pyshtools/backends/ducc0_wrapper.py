@@ -319,6 +319,88 @@ def MakeGridDH(
     lmax_calc=None,
     extend=False,
 ):
+    """Create a 2D map from a set of spherical harmonic coefficients using the Driscoll
+    and Healy (1994) sampling theorem.
+    
+    Usage
+    -----
+    griddh = MakeGridDH (cilm, [lmax, norm, sampling, csphase, lmax_calc, extend])
+    
+    Returns
+    -------
+    griddh : float, dimension (nlat, nlong)
+        A 2D map of the input spherical harmonic coefficients cilm that conforms to
+        the sampling theorem of Driscoll and Healy (1994). If sampling is 1, the
+        grid is equally sampled and is dimensioned as (n by n), where n is 2lmax+2.
+        If sampling is 2, the grid is equally spaced and is dimensioned as (n by
+        2n). The first latitudinal band of the grid corresponds to 90 N, the
+        latitudinal sampling interval is 180/n degrees, and the default behavior is
+        to exclude the latitudinal band for 90 S. The first longitudinal band of the
+        grid is 0 E, by default the longitudinal band for 360 E is not included, and
+        the longitudinal sampling interval is 360/n for an equally sampled and 180/n
+        for an equally spaced grid, respectively. If extend is 1, the longitudinal
+        band for 360 E and the latitudinal band for 90 S will be included, which
+        increases each of the dimensions of the grid by 1.
+    
+    Parameters
+    ----------
+    cilm : float, dimension (2, lmaxin+1, lmaxin+1)
+        The real spherical harmonic coefficients of the function. The coefficients
+        cilm[0,l,m] and cilm[1,l,m] refer to the "cosine" (Clm) and "sine" (Slm)
+        coefficients, respectively.
+    lmax : optional, integer, default = lmaxin
+        The maximum spherical harmonic degree of the function, which determines the
+        sampling n of the output grid.
+    norm : optional, integer, default = 1
+        1 = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized
+        harmonics; 3 = unnormalized harmonics;  4 = orthonormal harmonics.
+    sampling : optional, integer, default = 1
+        If 1 (default) the input grid is equally sampled (n by n). If 2, the grid is
+        equally spaced (n by 2n).
+    csphase : optional, integer, default = 1
+        1 (default) = do not apply the Condon-Shortley phase factor to the
+        associated Legendre functions; -1 = append the Condon-Shortley phase factor
+        of (-1)^m to the associated Legendre functions.
+    lmax_calc : optional, integer, default = lmax
+        The maximum spherical harmonic degree used in evaluating the  function. This
+        must be less than or equal to lmax, and does not affect the number of
+        samples of the output grid.
+    extend : input, optional, bool, default = False
+        If True, compute the longitudinal band for 360 E and the latitudinal band
+        for 90 S. This increases each of the dimensions of griddh by 1.
+    
+    Description
+    -----------
+    MakeGridDH will create a 2-dimensional map equally sampled or equally spaced in
+    latitude and longitude from a set of input spherical harmonic coefficients. This
+    grid conforms with the sampling theorem of Driscoll and Healy (1994) and this
+    routine is the inverse of SHExpandDH. The function is evaluated at each
+    longitudinal band by inverse Fourier transforming the sin and cos terms for each
+    degree l, and then summing over all degrees. When evaluating the function, the
+    maximum spherical harmonic degree that is considered is the minimum of lmaxin,
+    lmax, and lmax_calc (if specified).
+    
+    The default is to use an input grid that is equally sampled (n by n), but this
+    can be changed to use an equally spaced grid (n by 2n) by the optional argument
+    sampling. The redundant longitudinal band for 360 E and the latitudinal band for
+    90 S are excluded by default, but these can be computed by specifying the
+    optional argument extend. The employed spherical harmonic normalization and
+    Condon-Shortley phase convention can be set by the optional arguments norm and
+    csphase; if not set, the default is to use geodesy 4-pi normalized harmonics
+    that exclude the Condon-Shortley phase of (-1)^m.
+    
+    The normalized legendre functions are calculated in
+    this routine using the recurrence given by Ishioka (2018), which are accurate
+    to at least degree 100000. The unnormalized functions are accurate
+    only to about degree 15.
+    
+    References
+    ----------
+    Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on
+    the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
+    
+    Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
+    """
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
     out = _np.empty(
@@ -334,7 +416,91 @@ def MakeGridDHC(
     csphase=1,
     lmax_calc=None,
     extend=False,
-):
+    ):
+    """Create a 2D complex map from a set of complex spherical harmonic coefficients
+    that conforms with Driscoll and Healy's (1994) sampling theorem.
+    
+    Usage
+    -----
+    griddh = MakeGridDHC (cilm, [lmax, norm, sampling, csphase, lmax_calc, extend])
+    
+    Returns
+    -------
+    griddh : complex, dimension (nlat, nlong)
+        A 2D complex map of the input spherical harmonic coefficients cilm that
+        conforms to the sampling theorem of Driscoll and Healy (1994). If sampling
+        is 1, the grid is equally sampled and is dimensioned as (n by n), where n is
+        2lmax+2. If sampling is 2, the grid is equally spaced and is dimensioned as
+        (n by 2n). The first latitudinal band of the grid corresponds to 90 N, the
+        latitudinal sampling interval is 180/n degrees, and the default behavior is
+        to exclude the latitudinal band for 90 S. The first longitudinal band of the
+        grid is 0 E, by default the longitudinal band for 360 E is not included, and
+        the longitudinal sampling interval is 360/n for an equally sampled and 180/n
+        for an equally spaced grid, respectively. If extend is 1, the longitudinal
+        band for 360 E and the latitudinal band for 90 S will be included, which
+        increases each of the dimensions of the grid by 1.
+    
+    Parameters
+    ----------
+    cilm : complex, dimension (2, lmaxin+1, lmaxin+1)
+        The complex spherical harmonic coefficients of the function.  The first
+        index specifies the coefficient corresponding to the positive and negative
+        order of m, respectively, with Clm=cilm[0,l,m] and Cl,-m=cilm[1,l,m)].
+    lmax : optional, integer, default = lmaxin
+        The maximum spherical harmonic degree of the function, which determines the
+        sampling n of the output grid.
+    norm : optional, integer, default = 1
+        1 = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-normalized
+        harmonics; 3 = unnormalized harmonics;  4 = orthonormal harmonics.
+    sampling : optional, integer, default = 1
+        If 1 (default) the input grid is equally sampled (n by n). If 2, the grid is
+        equally spaced (n by 2n).
+    csphase : optional, integer, default = 1
+        1 (default) = do not apply the Condon-Shortley phase factor to the
+        associated Legendre functions; -1 = append the Condon-Shortley phase factor
+        of (-1)^m to the associated Legendre functions.
+    lmax_calc : optional, integer, default = lmax
+        The maximum spherical harmonic degree used in evaluating the  function. This
+        must be less than or equal to lmax, and does not affect the number of
+        samples of the output grid.
+    extend : input, optional, bool, default = False
+        If True, compute the longitudinal band for 360 E and the latitudinal band
+        for 90 S. This increases each of the dimensions of griddh by 1.
+    
+    Description
+    -----------
+    MakeGridDHC will create a 2-dimensional complex map equally sampled (n by n) or
+    equally spaced (n by 2n) in latitude and longitude from a set of input complex
+    spherical harmonic coefficients, where N is 2lmax+2. This grid conforms with the
+    sampling theorem of Driscoll and Healy (1994) and this routine is the inverse of
+    SHExpandDHC. The function is evaluated at each longitudinal band by inverse
+    Fourier transforming the exponential terms for each degree l, and then summing
+    over all degrees. When evaluating the function, the maximum spherical harmonic
+    degree that is considered is the minimum of lmax, the size of cilm-1, or
+    lmax_calc (if specified).
+    
+    The default is to use an input grid that is equally sampled (n by n), but this
+    can be changed to use an equally spaced grid (n by 2n) by the optional argument
+    sampling. The redundant longitudinal band for 360 E and the latitudinal band for
+    90 S are excluded by default, but these can be computed by specifying the
+    optional argument extend. The employed spherical harmonic normalization and
+    Condon-Shortley phase convention can be set by the optional arguments norm and
+    csphase; if not set, the default is to use geodesy 4-pi normalized harmonics
+    that exclude the Condon-Shortley phase of (-1)^m.
+
+    The normalized legendre functions are calculated in
+    this routine using the recurrence given by Ishioka (2018), which are accurate
+    to at least degree 100000. The unnormalized functions are accurate
+    only to about degree 15.
+    
+    
+    References
+    ----------
+    Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on
+    the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
+
+    Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
+    """
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _ccilm2almi(cilm)
     alm = _apply_norm(alm, lmax, norm, csphase, False)
@@ -349,31 +515,178 @@ def MakeGridDHC(
     return res
 
 
-def SHExpandDH(grid, norm=1, sampling=1, csphase=1, lmax_calc=None):
-    grid = _fixdtype(grid)
-    if grid.shape[1] != sampling * grid.shape[0]:
+def SHExpandDH(griddh, norm=1, sampling=1, csphase=1, lmax_calc=None):
+    """Expand an equally sampled or equally spaced grid into spherical harmonics using
+    Driscoll and Healy's (1994) sampling theorem.
+    
+    Usage
+    -----
+    cilm = SHExpandDH (griddh, [norm, sampling, csphase, lmax_calc])
+    
+    Returns
+    -------
+    cilm : float, dimension (2, n/2, n/2) or (2, lmax_calc+1, lmax_calc+1)
+        The real spherical harmonic coefficients of the function. These will be
+        exact if the function is bandlimited to degree lmax=n/2-1. The coefficients
+        c1lm and c2lm refer to the cosine (clm) and sine (slm) coefficients,
+        respectively, with clm=cilm[0,l,m] and slm=cilm[1,l,m].
+    
+    Parameters
+    ----------
+    griddh : float, dimension (n, n) or (n, 2*n)
+        A 2D equally sampled (default) or equally spaced grid that conforms to the
+        sampling theorem of Driscoll and Healy (1994). The first latitudinal band
+        corresponds to 90 N, the latitudinal band for 90 S is not included, and the
+        latitudinal sampling interval is 180/n degrees. The first longitudinal band
+        is 0 E, the longitude band for 360 E is not included, and the longitudinal
+        sampling interval is 360/n for an equally and 180/n for an equally spaced
+        grid, respectively.
+    norm : optional, integer, default = 1
+        1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-
+        normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+    sampling : optional, integer, default = 1
+        If 1 (default) the input grid is equally sampled (n by n). If 2, the grid is
+        equally spaced (n by 2n).
+    csphase : optional, integer, default = 1
+        1 (default) = do not apply the Condon-Shortley phase factor to the
+        associated Legendre functions; -1 = append the Condon-Shortley phase factor
+        of (-1)^m to the associated Legendre functions.
+    lmax_calc : optional, integer, default = n/2-1
+        The maximum spherical harmonic degree calculated in the spherical harmonic
+        expansion.
+    
+    Description
+    -----------
+    SHExpandDH will expand an equally sampled (n by n) or equally spaced grid (n by
+    2n) into spherical harmonics using the sampling theorem of Driscoll and Healy
+    (1994). The number of latitudinal samples, n, must be even, and the transform is
+    exact if the function is bandlimited to spherical harmonic degree n/2-1. The
+    inverse transform is given by the routine MakeGridDH. If the optional parameter
+    lmax_calc is specified, the spherical harmonic coefficients will only be
+    calculated to this degree instead of n/2-1. The algorithm is based on performing
+    FFTs in longitude and then integrating over latitude using an exact quadrature
+    rule.
+    
+    The default is to use an input grid that is equally sampled (n by n), but this
+    can be changed to use an equally spaced grid (n by 2n) by the optional argument
+    sampling.  When using an equally spaced grid, the Fourier components
+    corresponding to degrees greater than n/2-1 are simply discarded; this is done
+    to prevent aliasing that would occur if an equally sampled grid was constructed
+    from an equally spaced grid by discarding every other column of the input grid.
+    
+    The employed spherical harmonic normalization and Condon-Shortley phase
+    convention can be set by the optional arguments norm and csphase; if not set,
+    the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-
+    Shortley phase of (-1)^m. The normalized legendre functions are calculated in
+    this routine using the recurrence given by Ishioka (2018), which are accurate
+    to at least degree 100000. The unnormalized functions are accurate
+    only to about degree 15.
+    
+    References
+    ----------
+    Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on
+    the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
+    
+    Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
+    """
+
+    griddh = _fixdtype(griddh)
+    if griddh.shape[1] != sampling * griddh.shape[0]:
         raise RuntimeError("grid resolution mismatch")
     if lmax_calc is None:
-        lmax_calc = grid.shape[0] // 2 - 1
-    if lmax_calc > (grid.shape[0] // 2 - 1):
+        lmax_calc = griddh.shape[0] // 2 - 1
+    if lmax_calc > (griddh.shape[0] // 2 - 1):
         raise RuntimeError("lmax_calc too high")
-    alm = _analyze_DH(grid, lmax_calc)
+    alm = _analyze_DH(griddh, lmax_calc)
     return _extract_alm(alm, lmax_calc, norm, csphase)
 
 
-def SHExpandDHC(grid, norm=1, sampling=1, csphase=1, lmax_calc=None):
-    if grid.shape[1] != sampling * grid.shape[0]:
+def SHExpandDHC(griddh, norm=1, sampling=1, csphase=1, lmax_calc=None):
+    """Expand an equally sampled or equally spaced complex grid into complex spherical
+    harmonics using Driscoll and Healy's (1994) sampling theorem.
+    
+    Usage
+    -----
+    cilm = SHExpandDHC (griddh, [norm, sampling, csphase, lmax_calc])
+    
+    Returns
+    -------
+    cilm : complex, dimension (2, n/2, n/2) or (2, lmax_calc+1, lmax_calc+1)
+        The complex spherical harmonic coefficients of the function. These will be
+        exact if the function is bandlimited to degree lmax=n/2-1. The first index
+        specifies the coefficient corresponding to the positive and negative order
+        of m, respectively, with Clm=cilm[0,l,m] and Cl,-m=cilm[1,l,m].
+    
+    Parameters
+    ----------
+    griddh : complex, dimension (n, n) or (n, 2*n)
+        A 2D equally sampled (default) or equally spaced complex grid that conforms
+        to the sampling theorem of Driscoll and Healy (1994). The first latitudinal
+        band corresponds to 90 N, the latitudinal band for 90 S is not included, and
+        the latitudinal sampling interval is 180/n degrees. The first longitudinal
+        band is 0 E, the longitude band for 360 E is not included, and the
+        longitudinal sampling interval is 360/n for an equally and 180/n for an
+        equally spaced grid, respectively.
+    norm : optional, integer, default = 1
+        1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-
+        normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+    sampling : optional, integer, default = 1
+        If 1 (default) the input grid is equally sampled (n by n). If 2, the grid is
+        equally spaced (n by 2n).
+    csphase : optional, integer, default = 1
+        1 (default) = do not apply the Condon-Shortley phase factor to the
+        associated Legendre functions; -1 = append the Condon-Shortley phase factor
+        of (-1)^m to the associated Legendre functions.
+    lmax_calc : optional, integer, default = n/2-1
+        The maximum spherical harmonic degree calculated in the spherical harmonic
+        expansion.
+    
+    Description
+    -----------
+    SHExpandDHC will expand an equally sampled (n by n) or equally spaced complex
+    grid (n by 2n) into complex spherical harmonics using the sampling theorem of
+    Driscoll and Healy (1994). The number of latitudinal samples n must be even, and
+    the transform is exact if the function is bandlimited to spherical harmonic
+    degree n/2 - 1. The inverse transform is given by the routine MakeGridDHC. If
+    the optional parameter lmax_calc is specified, the spherical harmonic
+    coefficients will only be calculated to this degree instead of n/2 - 1. The
+    algorithm is based on performing FFTs in longitude and then integrating over
+    latitude using an exact quadrature rule.
+    
+    The default is to use an input grid that is equally sampled (n by n), but this
+    can be changed to use an equally spaced grid (n by 2n) by the optional argument
+    sampling.  When using an equally spaced grid, the Fourier components
+    corresponding to degrees greater than n/2 - 1 are simply discarded; this is done
+    to prevent aliasing that would occur if an equally sampled grid was constructed
+    from an equally spaced grid by discarding every other column of the input grid.
+    
+    The employed spherical harmonic normalization and Condon-Shortley phase
+    convention can be set by the optional arguments norm and csphase; if not set,
+    the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-
+    Shortley phase of (-1)^m. The normalized legendre functions are calculated in
+    this routine using the recurrence given by Ishioka (2018), which are accurate
+    to at least degree 100000. The unnormalized functions are accurate
+    only to about degree 15.
+    
+    References
+    ----------
+    Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on
+    the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
+
+    Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
+    """
+    if griddh.shape[1] != sampling * griddh.shape[0]:
         raise RuntimeError("grid resolution mismatch")
     if lmax_calc is None:
-        lmax_calc = grid.shape[0] // 2 - 1
-    if lmax_calc > (grid.shape[0] // 2 - 1):
+        lmax_calc = griddh.shape[0] // 2 - 1
+    if lmax_calc > (griddh.shape[0] // 2 - 1):
         raise RuntimeError("lmax_calc too high")
-    lmax = grid.shape[0] // 2 - 1 if lmax_calc is None else lmax_calc
+    lmax = griddh.shape[0] // 2 - 1 if lmax_calc is None else lmax_calc
     res = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.complex128)
-    alm = _analyze_DH(_fixdtype(grid.real), lmax_calc)
+    alm = _analyze_DH(_fixdtype(griddh.real), lmax_calc)
     alm = _apply_norm(alm, lmax, norm, csphase, True)
     _addRealpart(res, alm)
-    alm = _analyze_DH(_fixdtype(grid.imag), lmax_calc)
+    alm = _analyze_DH(_fixdtype(griddh.imag), lmax_calc)
     alm = _apply_norm(alm, lmax, norm, csphase, True)
     _addImagpart(res, alm)
     return res
@@ -383,6 +696,76 @@ def SHExpandDHC(grid, norm=1, sampling=1, csphase=1, lmax_calc=None):
 def MakeGridGLQ(
     cilm, zero=None, lmax=None, norm=1, csphase=1, lmax_calc=None, extend=False
 ):
+    """Create a 2D map from a set of spherical harmonic coefficients sampled on the
+    Gauss-Legendre quadrature nodes.
+    
+    Usage
+    -----
+    gridglq = MakeGridGLQ (cilm, zero, [lmax,  norm, csphase, lmax_calc, extend])
+    
+    Returns
+    -------
+    gridglq : float, dimension (nlat, nlong)
+        A 2D map of the function sampled on the Gauss-Legendre quadrature nodes,
+        dimensioned as (lmax+1, 2*lmax+1) if extend is 0 or (lmax+1, 2*lmax+2) if
+        extend is 1.
+    
+    Parameters
+    ----------
+    cilm : float, dimension (2, lmaxin+1, lmaxin+1)
+        The real spherical harmonic coefficients of the function. When evaluating
+        the function, the maximum spherical harmonic degree considered is the
+        minimum of lmax, lmaxin, or lmax_calc (if specified). The first index
+        specifies the coefficient corresponding to the positive and negative order
+        of m, respectively, with Clm=cilm[0,l,m+] and Cl,-m=cilm[1,l,m].
+    zero : float, dimension (lmax+1)
+        The nodes used in the Gauss-Legendre quadrature over latitude, calculated by
+        a call to SHGLQ.
+    lmax : optional, integer, default = lamxin
+        The maximum spherical harmonic bandwidth of the function. This determines
+        the sampling nodes and dimensions of the output grid.
+    norm : optional, integer, default = 1
+        1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized
+        harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+    csphase : optional, integer, default = 1
+        1 (default) = do not apply the Condon-Shortley phase factor to the
+        associated Legendre functions; -1 = append the Condon-Shortley phase factor
+        of (-1)^m to the associated Legendre functions.
+    lmax_calc : optional, integer, default = lmax
+        The maximum spherical harmonic degree used in evaluating the function. This
+        must be less than or equal to lmax.
+    extend : input, optional, bool, default = False
+        If True, compute the longitudinal band for 360 E.
+    
+    Description
+    -----------
+    MakeGridGLQ will create a 2-dimensional map from a set of input spherical
+    harmonic coefficients sampled on the Gauss-Legendre quadrature nodes. This is
+    the inverse of the routine SHExpandGLQ. The latitudinal nodes correspond to the
+    zeros of the Legendre polynomial of degree lmax+1, and the longitudinal nodes
+    are equally spaced with an interval of 360/(2*lmax+1) degrees. When evaluating
+    the function, the maximum spherical harmonic degree that is considered is the
+    minimum of lmax, the size of cilm-1, or lmax_calc (if specified).
+    
+    The redundant longitudinal band for 360 E is excluded from the grid by default,
+    but this can be computed by specifying the optional argument extend. The
+    employed spherical harmonic normalization and Condon-Shortley phase convention
+    can be set by the optional arguments norm and csphase; if not set, the default
+    is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley
+    phase of (-1)^m. The normalized legendre functions are calculated in
+    this routine using the recurrence given by Ishioka (2018), which are accurate to
+    at least degree 100000. The unnormalized functions are accurate
+    only to about degree 15.
+
+    The zeros of the Legendre polynomials and the quadrature weights are computed
+    using the method described by Bogaert (2014).
+    
+    References
+    ----------
+    Bogaert, I.: SIAM Journal on Scientific Computing, 36, A1008-A1026, 2014
+
+    Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
+    """
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
     out = _np.empty([lmax + 1, (2 * lmax + 1) + extend])
@@ -393,6 +776,77 @@ def MakeGridGLQ(
 def MakeGridGLQC(
     cilm, zero=None, lmax=None, norm=1, csphase=1, lmax_calc=None, extend=False
 ):
+    """Create a 2D complex map from a set of complex spherical harmonic coefficients
+    sampled on the Gauss-Legendre quadrature nodes.
+    
+    Usage
+    -----
+    gridglq = MakeGridGLQC (cilm, zero, [lmax, norm, csphase, lmax_calc, extend])
+    
+    Returns
+    -------
+    gridglq : complex, dimension (nlat, nlong)
+        A 2D complex map of the function sampled on the Gauss-Legendre quadrature
+        nodes, dimensioned as (lmax+1, 2*lmax+1) if extend is 0 or (lmax+1,
+        2*lmax+2) if extend is 1.
+    
+    
+    Parameters
+    ----------
+    cilm : complex, dimension (2, lmaxin+1, lmaxin+1)
+        The complex spherical harmonic coefficients of the function. When evaluating
+        the function, the maximum spherical harmonic degree considered is the
+        minimum of lmax, lmaxin, or lmax_calc (if specified). The first index
+        specifies the coefficient corresponding to the positive and negative order
+        of m, respectively, with Clm=cilm[0,l,m+] and Cl,-m=cilm[1,l,m].
+    zero : float, dimension (lmax+1)
+        The nodes used in the Gauss-Legendre quadrature over latitude, calculated by
+        a call to SHGLQ.
+    lmax : optional, integer, default = lmaxin
+        The maximum spherical harmonic bandwidth of the function. This determines
+        the sampling nodes and dimensions of the output grid.
+    norm : optional, integer, default = 1
+        1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized
+        harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+    csphase : optional, integer, default = 1
+        1 (default) = do not apply the Condon-Shortley phase factor to the
+        associated Legendre functions; -1 = append the Condon-Shortley phase factor
+        of (-1)^m to the associated Legendre functions.
+    lmax_calc : optional, integer, default = lmax
+        The maximum spherical harmonic degree used in evaluating the function. This
+        must be less than or equal to lmax.
+    extend : input, optional, bool, default = False
+        If True, compute the longitudinal band for 360 E.
+    
+    Description
+    -----------
+    MakeGridGLQC will create a 2-dimensional complex map from a set of input complex
+    spherical harmonic coefficients sampled on the Gauss-Legendre quadrature nodes.
+    This is the inverse of the routine SHExpandGLQC. The latitudinal nodes
+    correspond to the zeros of the Legendre polynomial of degree lmax+1, and the
+    longitudinal nodes are equally spaced with an interval of 360/(2*lmax+1)
+    degrees. When evaluating the function, the maximum spherical harmonic degree
+    that is considered is the minimum of lmax, lmaxin, or lmax_calc (if specified).
+    
+    The redundant longitudinal band for 360 E is excluded from the grid by default,
+    but this can be computed by specifying the optional argument extend. The
+    employed spherical harmonic normalization and Condon-Shortley phase convention
+    can be set by the optional arguments norm and csphase; if not set, the default
+    is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley
+    phase of (-1)^m. The normalized legendre functions are calculated in
+    this routine using the recurrence given by Ishioka (2018), which are accurate to
+    at least degree 100000. The unnormalized functions are accurate
+    only to about degree 15.
+
+    The zeros of the Legendre polynomials and the quadrature weights are computed
+    using the method described by Bogaert (2014).
+    
+    References
+    ----------
+    Bogaert, I.: SIAM Journal on Scientific Computing, 36, A1008-A1026, 2014
+
+    Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
+    """
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _ccilm2almi(cilm)
     alm = _apply_norm(alm, lmax, norm, csphase, False)
@@ -406,30 +860,162 @@ def MakeGridGLQC(
 
 # weights and zeros are ignored (they are computed internally)
 def SHExpandGLQ(
-    grid, weights=None, zeros=None, norm=1, csphase=1, lmax_calc=None
+    gridglq, w=None, zero=None, norm=1, csphase=1, lmax_calc=None
 ):
-    grid = _fixdtype(grid)
+    """
+    Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical
+    harmonics.
+    
+    Usage
+    -----
+    cilm = SHExpandGLQ (gridglq, [w, zero, norm, csphase, lmax_calc])
+    
+    Returns
+    -------
+    cilm : float, dimension (2, lmax+1, lmax+1) or (2, lmax_calc+1, lmax_calc+1)
+        The real spherical harmonic coefficients of the function. The coefficients
+        C0lm and Cilm refer to the "cosine" (Clm) and "sine" (Slm) coefficients,
+        respectively, with Clm=cilm[0,l,m] and Slm=cilm[1,l,m].
+    
+    Parameters
+    ----------
+    gridglq : float, dimension (lmax+1, 2*lmax+1)
+        A 2D grid of data sampled on the Gauss-Legendre quadrature nodes. The
+        latitudinal nodes correspond to the zeros of the Legendre polynomial of
+        degree lmax+1, and the longitudinal nodes are equally spaced with an
+        interval of 360/(2*lmax+1) degrees. See also GLQGridCoord.
+    w : optional, ignored
+        This parameter only exists to maintain interface compatibility with the
+        "shtools" backend.
+    zero : optional, ignored
+        This parameter only exists to maintain interface compatibility with the
+        "shtools" backend.
+    norm : optional, integer, default = 1
+        1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized
+        harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+    csphase : optional, integer, default = 1
+        1 (default) = do not apply the Condon-Shortley phase factor to the
+        associated Legendre functions; -1 = append the Condon-Shortley phase factor
+        of (-1)^m to the associated Legendre functions.
+    lmax_calc : optional, integer, default = lmax
+        The maximum spherical harmonic degree calculated in the spherical harmonic
+        expansion.
+    
+    Description
+    -----------
+    SHExpandGLQ will expand a 2-dimensional grid of data sampled on the Gauss-
+    Legendre quadrature nodes into spherical harmonics. This is the inverse of the
+    routine MakeGridGLQ. The latitudinal nodes of the input grid correspond to the
+    zeros of the Legendre polynomial of degree lmax+1, and the longitudinal nodes
+    are equally spaced with an interval of 360/(2*lmax+1) degrees. It is implicitly
+    assumed that the function is bandlimited to degree lmax. If the optional
+    parameter lmax_calc is specified, the spherical harmonic coefficients will be
+    calculated up to this degree, instead of lmax.
+    
+    The employed spherical harmonic normalization and Condon-Shortley phase
+    convention can be set by the optional arguments norm and csphase; if not set,
+    the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-
+    Shortley phase of (-1)^m. The normalized legendre functions are calculated in
+    this routine using the recurrence given by Ishioka (2018), which are accurate to
+    at least degree 100000. The unnormalized functions are accurate
+    only to about degree 15.
+
+    The zeros of the Legendre polynomials and the quadrature weights are computed
+    using the method described by Bogaert (2014).
+    
+    References
+    ----------
+    Bogaert, I.: SIAM Journal on Scientific Computing, 36, A1008-A1026, 2014
+
+    Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
+    """
+    gridglq = _fixdtype(gridglq)
     if lmax_calc is None:
-        lmax_calc = grid.shape[0] - 1
-    if lmax_calc > (grid.shape[0] - 1):
+        lmax_calc = gridglq.shape[0] - 1
+    if lmax_calc > (gridglq.shape[0] - 1):
         raise RuntimeError("lmax_calc too high")
-    alm = _analyze_GLQ(grid, lmax_calc)
+    alm = _analyze_GLQ(gridglq, lmax_calc)
     return _extract_alm(alm, lmax_calc, norm, csphase)
 
 
 # weights and zeros are ignored (they are computed internally)
-def SHExpandGLQC(
-    grid, weights=None, zeros=None, norm=1, csphase=1, lmax_calc=None
-):
+def SHExpandGLQC(gridglq, w=None, zero=None, norm=1, csphase=1, lmax_calc=None):
+    """Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical
+    harmonics.
+    
+    Usage
+    -----
+    cilm = SHExpandGLQC (gridglq, w, zero, [norm, csphase, lmax_calc])
+    
+    Returns
+    -------
+    cilm : complex, dimension (2, lmax+1, lmax+1) or (2, lmax_calc+1, lmax_calc+1)
+        The complex spherical harmonic coefficients of the complex function. The
+        first index specifies the coefficient corresponding to the positive and
+        negative order of m, respectively, with Clm=cilm[0,l,m] and Cl,-m
+        =cilm[1,l,m].
+    
+    Parameters
+    ----------
+    gridglq : complex, dimension (lmax+1, 2*lmax+1)
+        A 2D grid of complex data sampled on the Gauss-Legendre quadrature nodes.
+        The latitudinal nodes correspond to the zeros of the Legendre polynomial of
+        degree lmax+1, and the longitudinal nodes are equally spaced with an
+        interval of 360/(2*lmax+1) degrees. See also GLQGridCoord.
+    w : optional, ignored
+        This parameter only exists to maintain interface compatibility with the
+        "shtools" backend.
+    zero : optional, ignored
+        This parameter only exists to maintain interface compatibility with the
+        "shtools" backend.
+    norm : optional, integer, default = 1
+        1 (default) = 4-pi (geodesy) normalized harmonics; 2 = Schmidt semi-
+        normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
+    csphase : optional, integer, default = 1
+        1 (default) = do not apply the Condon-Shortley phase factor to the
+        associated Legendre functions; -1 = append the Condon-Shortley phase factor
+        of (-1)^m to the associated Legendre functions.
+    lmax_calc : optional, integer, default = lmax
+        The maximum spherical harmonic degree calculated in the spherical harmonic
+        expansion.
+    
+    Description
+    -----------
+    SHExpandGLQC will expand a 2-dimensional grid of complex data sampled on the
+    Gauss-Legendre quadrature nodes into complex spherical harmonics. This is the
+    inverse of the routine MakeGridGLQC. The latitudinal nodes of the input grid
+    correspond to the zeros of the Legendre polynomial of degree lmax+1, and the
+    longitudinal nodes are equally spaced with an interval of 360/(2*lmax+1)
+    degrees. It is implicitly assumed that the function is bandlimited to degree
+    lmax. If the optional parameter lmax_calc is specified, the spherical harmonic
+    coefficients will be calculated up to this degree, instead of lmax.
+    
+    The employed spherical harmonic normalization and Condon-Shortley phase
+    convention can be set by the optional arguments norm and csphase; if not set,
+    the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-
+    Shortley phase of (-1)^m. The normalized legendre functions are calculated in
+    this routine using the recurrence given by Ishioka (2018), which are accurate
+    to at least degree 100000. The unnormalized functions are accurate
+    only to about degree 15.
+    
+    The zeros of the Legendre polynomials and the quadrature weights are computed
+    using the method described by Bogaert (2014).
+
+    References
+    ----------
+    Bogaert, I.: SIAM Journal on Scientific Computing, 36, A1008-A1026, 2014
+
+    Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
+    """
     if lmax_calc is None:
-        lmax_calc = grid.shape[0] - 1
-    if lmax_calc > (grid.shape[0] - 1):
+        lmax_calc = gridglq.shape[0] - 1
+    if lmax_calc > (gridglq.shape[0] - 1):
         raise RuntimeError("lmax_calc too high")
     res = _np.zeros((2, lmax_calc + 1, lmax_calc + 1), dtype=_np.complex128)
-    alm = _analyze_GLQ(_fixdtype(grid.real), lmax_calc)
+    alm = _analyze_GLQ(_fixdtype(gridglq.real), lmax_calc)
     alm = _apply_norm(alm, lmax_calc, norm, csphase, True)
     _addRealpart(res, alm)
-    alm = _analyze_GLQ(_fixdtype(grid.imag), lmax_calc)
+    alm = _analyze_GLQ(_fixdtype(gridglq.imag), lmax_calc)
     alm = _apply_norm(alm, lmax_calc, norm, csphase, True)
     _addImagpart(res, alm)
     return res
