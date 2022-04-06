@@ -61,22 +61,22 @@ def _get_norm(lmax, norm):
 
 def _rcilm2alm(cilm, lmax):
     alm = _np.empty((_nalm(lmax, lmax),), dtype=_np.complex128)
-    alm[0 : lmax + 1] = cilm[0, :, 0]
+    alm[0: lmax + 1] = cilm[0, :, 0]
     ofs = lmax + 1
     for m in range(1, lmax + 1):
-        alm[ofs : ofs + lmax + 1 - m].real = cilm[0, m:, m]
-        alm[ofs : ofs + lmax + 1 - m].imag = cilm[1, m:, m]
+        alm[ofs: ofs + lmax + 1 - m].real = cilm[0, m:, m]
+        alm[ofs: ofs + lmax + 1 - m].imag = cilm[1, m:, m]
         ofs += lmax + 1 - m
     return alm
 
 
 def _ralm2cilm(alm, lmax):
     cilm = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.float64)
-    cilm[0, :, 0] = alm[0 : lmax + 1].real
+    cilm[0, :, 0] = alm[0: lmax + 1].real
     ofs = lmax + 1
     for m in range(1, lmax + 1):
-        cilm[0, m:, m] = alm[ofs : ofs + lmax + 1 - m].real
-        cilm[1, m:, m] = alm[ofs : ofs + lmax + 1 - m].imag
+        cilm[0, m:, m] = alm[ofs: ofs + lmax + 1 - m].real
+        cilm[1, m:, m] = alm[ofs: ofs + lmax + 1 - m].imag
         ofs += lmax + 1 - m
     return cilm
 
@@ -85,37 +85,37 @@ def _apply_norm(alm, lmax, norm, csphase, reverse):
     lnorm = _get_norm(lmax, norm)
     if reverse:
         lnorm = 1.0 / lnorm
-    alm[0 : lmax + 1] *= lnorm[0 : lmax + 1]
+    alm[0: lmax + 1] *= lnorm[0: lmax + 1]
     lnorm *= _np.sqrt(2.0) if reverse else (1.0 / _np.sqrt(2.0))
     mlnorm = -lnorm
     ofs = lmax + 1
     for m in range(1, lmax + 1):
         if csphase == 1:
             if m & 1:
-                alm[ofs : ofs + lmax + 1 - m].real *= mlnorm[m:]
-                alm[ofs : ofs + lmax + 1 - m].imag *= lnorm[m:]
+                alm[ofs: ofs + lmax + 1 - m].real *= mlnorm[m:]
+                alm[ofs: ofs + lmax + 1 - m].imag *= lnorm[m:]
             else:
-                alm[ofs : ofs + lmax + 1 - m].real *= lnorm[m:]
-                alm[ofs : ofs + lmax + 1 - m].imag *= mlnorm[m:]
+                alm[ofs: ofs + lmax + 1 - m].real *= lnorm[m:]
+                alm[ofs: ofs + lmax + 1 - m].imag *= mlnorm[m:]
         else:
-            alm[ofs : ofs + lmax + 1 - m].real *= lnorm[m:]
-            alm[ofs : ofs + lmax + 1 - m].imag *= mlnorm[m:]
+            alm[ofs: ofs + lmax + 1 - m].real *= lnorm[m:]
+            alm[ofs: ofs + lmax + 1 - m].imag *= mlnorm[m:]
         ofs += lmax + 1 - m
     if norm == 3:  # special treatment for unnormalized a_lm
         r = _np.arange(lmax + 1)
         fct = _np.ones(lmax + 1)
         ofs = lmax + 1
         if reverse:
-            alm[0 : lmax + 1] /= _np.sqrt(2)
+            alm[0: lmax + 1] /= _np.sqrt(2)
             for m in range(1, lmax + 1):
                 fct[m:] *= _np.sqrt((r[m:] + m) * (r[m:] - m + 1))
-                alm[ofs : ofs + lmax + 1 - m] /= fct[m:]
+                alm[ofs: ofs + lmax + 1 - m] /= fct[m:]
                 ofs += lmax + 1 - m
         else:
-            alm[0 : lmax + 1] *= _np.sqrt(2)
+            alm[0: lmax + 1] *= _np.sqrt(2)
             for m in range(1, lmax + 1):
                 fct[m:] *= _np.sqrt((r[m:] + m) * (r[m:] - m + 1))
-                alm[ofs : ofs + lmax + 1 - m] *= fct[m:]
+                alm[ofs: ofs + lmax + 1 - m] *= fct[m:]
                 ofs += lmax + 1 - m
     return alm
 
@@ -203,14 +203,14 @@ def _ccilm2almr(cilm):
     lmax = cilm.shape[1] - 1
     alm = _np.empty((_nalm(lmax, lmax),), dtype=_np.complex128)
     fct = (-1) ** _np.arange(lmax + 1)
-    alm[0 : lmax + 1] = cilm[0, :, 0].real
+    alm[0: lmax + 1] = cilm[0, :, 0].real
     ofs = lmax + 1
     for m in range(1, lmax + 1):
         tmp = _np.conj(cilm[1, m:, m])
         tmp *= fct[m]
         tmp += cilm[0, m:, m]
         tmp *= 1.0 / _np.sqrt(2.0)
-        alm[ofs : ofs + lmax + 1 - m] = _np.conj(tmp)
+        alm[ofs: ofs + lmax + 1 - m] = _np.conj(tmp)
         ofs += lmax + 1 - m
     return alm
 
@@ -219,24 +219,24 @@ def _ccilm2almi(cilm):
     lmax = cilm.shape[1] - 1
     alm = _np.empty((_nalm(lmax, lmax),), dtype=_np.complex128)
     fct = (-1) ** _np.arange(lmax + 1)
-    alm[0 : lmax + 1] = cilm[0, :, 0].imag
+    alm[0: lmax + 1] = cilm[0, :, 0].imag
     ofs = lmax + 1
     for m in range(1, lmax + 1):
         tmp = _np.conj(cilm[1, m:, m])
         tmp *= -fct[m]
         tmp += cilm[0, m:, m]
         tmp *= 1.0 / _np.sqrt(2.0)
-        alm[ofs : ofs + lmax + 1 - m] = tmp.imag + 1j * tmp.real
+        alm[ofs: ofs + lmax + 1 - m] = tmp.imag + 1j * tmp.real
         ofs += lmax + 1 - m
     return alm
 
 
 def _addRealpart(cilm, alm):
     lmax = cilm.shape[1] - 1
-    cilm[0, :, 0].real += alm[0 : lmax + 1].real
+    cilm[0, :, 0].real += alm[0: lmax + 1].real
     ofs = lmax + 1
     for m in range(1, lmax + 1):
-        tmp = alm[ofs : ofs + lmax + 1 - m] / _np.sqrt(2.0)
+        tmp = alm[ofs: ofs + lmax + 1 - m] / _np.sqrt(2.0)
         cilm[0, m:, m].real += tmp.real
         cilm[0, m:, m].imag -= tmp.imag
         if m & 1:
@@ -249,10 +249,10 @@ def _addRealpart(cilm, alm):
 
 def _addImagpart(cilm, alm):
     lmax = cilm.shape[1] - 1
-    cilm[0, :, 0].imag += alm[0 : lmax + 1].real
+    cilm[0, :, 0].imag += alm[0: lmax + 1].real
     ofs = lmax + 1
     for m in range(1, lmax + 1):
-        tmp = alm[ofs : ofs + lmax + 1 - m] / _np.sqrt(2.0)
+        tmp = alm[ofs: ofs + lmax + 1 - m] / _np.sqrt(2.0)
         cilm[0, m:, m].real += tmp.imag
         cilm[0, m:, m].imag += tmp.real
         if m & 1:
@@ -353,10 +353,11 @@ def SHRotateRealCoef(cilm, x, dj=None):
     defined in terms of the "x convention", where the second rotation was with
     respect to the new x axis, the Euler angles according to the y convention would
     be alpha_y=alpha_x-pi/2, beta_x=beta_y, and gamma_y=gamma_x+pi/2.
-    """
+    """ # noqa
     lmax = cilm.shape[1] - 1
     alm = _make_alm(cilm, lmax, 1, 1)
-    alm = ducc0.sht.rotate_alm(alm, lmax, -x[0], -x[1], -x[2], nthreads=nthreads)
+    alm = ducc0.sht.rotate_alm(alm, lmax, -x[0], -x[1], -x[2],
+                               nthreads=nthreads)
     return _extract_alm(alm, lmax, 1, 1)
 
 
@@ -432,17 +433,19 @@ def SHRotateComplexCoef(cilm, x, dj=None):
     defined in terms of the "x convention", where the second rotation was with
     respect to the new x axis, the Euler angles according to the y convention would
     be alpha_y=alpha_x-pi/2, beta_x=beta_y, and gamma_y=gamma_x+pi/2.
-    """
+    """ # noqa
     lmax = cilm.shape[1] - 1
     alm = _ccilm2almr(cilm)
     alm = _apply_norm(alm, lmax, 1, 1, False)
-    alm = ducc0.sht.rotate_alm(alm, lmax, -x[0], -x[1], -x[2], nthreads=nthreads)
+    alm = ducc0.sht.rotate_alm(alm, lmax, -x[0], -x[1], -x[2],
+                               nthreads=nthreads)
     alm = _apply_norm(alm, lmax, 1, 1, True)
     res = _np.zeros((2, lmax + 1, lmax + 1), dtype=_np.complex128)
     _addRealpart(res, alm)
     alm = _ccilm2almi(cilm)
     alm = _apply_norm(alm, lmax, 1, 1, False)
-    alm = ducc0.sht.rotate_alm(alm, lmax, -x[0], -x[1], -x[2], nthreads=nthreads)
+    alm = ducc0.sht.rotate_alm(alm, lmax, -x[0], -x[1], -x[2],
+                               nthreads=nthreads)
     alm = _apply_norm(alm, lmax, 1, 1, True)
     _addImagpart(res, alm)
     return res
@@ -538,10 +541,11 @@ def MakeGridDH(
     the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
     Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
-    """
+    """ # noqa
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
-    out = _np.empty([2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend])
+    out = _np.empty([2 * lmax + 2 + extend,
+                     sampling * (2 * lmax + 2) + extend])
     return _synthesize_DH(alm, lmax_calc, extend, out)
 
 
@@ -637,7 +641,7 @@ def MakeGridDHC(
     the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
     Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
-    """
+    """ # noqa
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _ccilm2almi(cilm)
     alm = _apply_norm(alm, lmax, norm, csphase, False)
@@ -725,7 +729,7 @@ def SHExpandDH(griddh, norm=1, sampling=1, csphase=1, lmax_calc=None):
     the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
     Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
-    """
+    """ # noqa
 
     griddh = _fixdtype(griddh)
     if griddh.shape[1] != sampling * griddh.shape[0]:
@@ -811,7 +815,7 @@ def SHExpandDHC(griddh, norm=1, sampling=1, csphase=1, lmax_calc=None):
     the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
 
     Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
-    """
+    """ # noqa
     if griddh.shape[1] != sampling * griddh.shape[0]:
         raise RuntimeError("grid resolution mismatch")
     if lmax_calc is None:
@@ -902,7 +906,7 @@ def MakeGridGLQ(
     Bogaert, I.: SIAM Journal on Scientific Computing, 36, A1008-A1026, 2014
 
     Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
-    """
+    """ # noqa
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _make_alm(cilm, lmax_calc, norm, csphase)
     out = _np.empty([lmax + 1, (2 * lmax + 1) + extend])
@@ -983,7 +987,7 @@ def MakeGridGLQC(
     Bogaert, I.: SIAM Journal on Scientific Computing, 36, A1008-A1026, 2014
 
     Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
-    """
+    """ # noqa
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _ccilm2almi(cilm)
     alm = _apply_norm(alm, lmax, norm, csphase, False)
@@ -1063,7 +1067,7 @@ def SHExpandGLQ(gridglq, w=None, zero=None, norm=1, csphase=1, lmax_calc=None):
     Bogaert, I.: SIAM Journal on Scientific Computing, 36, A1008-A1026, 2014
 
     Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
-    """
+    """ # noqa
     gridglq = _fixdtype(gridglq)
     if lmax_calc is None:
         lmax_calc = gridglq.shape[0] - 1
@@ -1074,7 +1078,8 @@ def SHExpandGLQ(gridglq, w=None, zero=None, norm=1, csphase=1, lmax_calc=None):
 
 
 # weights and zeros are ignored (they are computed internally)
-def SHExpandGLQC(gridglq, w=None, zero=None, norm=1, csphase=1, lmax_calc=None):
+def SHExpandGLQC(gridglq, w=None, zero=None, norm=1, csphase=1,
+                 lmax_calc=None):
     """Expand a 2D grid sampled on the Gauss-Legendre quadrature nodes into spherical
     harmonics.
 
@@ -1141,7 +1146,7 @@ def SHExpandGLQC(gridglq, w=None, zero=None, norm=1, csphase=1, lmax_calc=None):
     Bogaert, I.: SIAM Journal on Scientific Computing, 36, A1008-A1026, 2014
 
     Ishioka, K.: Journal of the Meteorological Society of Japan, 96, 241−249, 2018
-    """
+    """ # noqa
     if lmax_calc is None:
         lmax_calc = gridglq.shape[0] - 1
     if lmax_calc > (gridglq.shape[0] - 1):
@@ -1231,10 +1236,11 @@ def MakeGradientDH(
     ---------
     Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on
     the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
-    """
+    """ # noqa
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _make_alm(cilm, lmax_calc, norm=1, csphase=1)
-    res = _np.empty((2, 2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend))
+    res = _np.empty((2, 2 * lmax + 2 + extend,
+                     sampling * (2 * lmax + 2) + extend))
     res = _synthesize_DH_deriv1(alm, lmax_calc, extend, res)
     if radius is not None:
         res *= 1.0 / radius
