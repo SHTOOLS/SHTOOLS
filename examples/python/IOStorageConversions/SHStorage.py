@@ -1,14 +1,11 @@
-#!/usr/bin/env python3
 """
 This script tests the conversions between real and complex spherical harmonics
 coefficients
 """
 import numpy as np
+import pyshtools as pysh
 
-import pyshtools
-from pyshtools import shio
-
-pyshtools.utils.figstyle()
+pysh.utils.figstyle()
 
 
 def main():
@@ -27,8 +24,8 @@ def test_SHStorage():
     coeffs[np.invert(mask)] = 0.
 
     print('\n---- testing SHCilmToCindex and SHCindexToCilm ----')
-    coeffs_indexed = shio.SHCilmToCindex(coeffs)
-    coeffs_recomp = shio.SHCindexToCilm(coeffs_indexed)
+    coeffs_indexed = pysh.shio.SHCilmToCindex(coeffs)
+    coeffs_recomp = pysh.shio.SHCindexToCilm(coeffs_indexed)
     print('input coeffs (l={:d}):'.format(lmax))
     print(coeffs)
     print('indexed coeffs:')
@@ -37,8 +34,8 @@ def test_SHStorage():
     print(coeffs_recomp)
 
     print('\n---- testing SHCilmToVector and SHVectorToCilm ----')
-    coeffs_indexed = shio.SHCilmToVector(coeffs)
-    coeffs_recomp = shio.SHVectorToCilm(coeffs_indexed)
+    coeffs_indexed = pysh.shio.SHCilmToVector(coeffs)
+    coeffs_recomp = pysh.shio.SHVectorToCilm(coeffs_indexed)
     print('\ninput coeffs (l={:d}):'.format(lmax))
     print(coeffs)
     print('\nindexed coeffs:')

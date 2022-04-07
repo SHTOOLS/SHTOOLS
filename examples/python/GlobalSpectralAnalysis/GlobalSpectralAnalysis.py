@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 This script tests the different Spherical Harmonics Transforms on the Mars
 topography data set
@@ -6,13 +5,9 @@ topography data set
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+import pyshtools as pysh
 
-import pyshtools
-from pyshtools import spectralanalysis
-from pyshtools import shio
-from pyshtools import expand
-
-pyshtools.utils.figstyle()
+pysh.utils.figstyle()
 
 
 # ==== MAIN FUNCTION ====
@@ -29,17 +24,17 @@ def example():
     # --- input data filename ---
     infile = os.path.join(os.path.dirname(__file__),
                           '../../ExampleDataFiles/MarsTopo719.shape')
-    coeffs, lmax = shio.shread(infile)
+    coeffs, lmax = pysh.shio.shread(infile)
 
     # --- plot grid ---
-    grid = expand.MakeGridDH(coeffs, csphase=-1)
+    grid = pysh.expand.MakeGridDH(coeffs, csphase=-1)
     fig_map = plt.figure()
     plt.imshow(grid)
 
     # ---- compute spectrum ----
     ls = np.arange(lmax + 1)
-    pspectrum = spectralanalysis.spectrum(coeffs, unit='per_l')
-    pdensity = spectralanalysis.spectrum(coeffs, unit='per_lm')
+    pspectrum = pysh.spectralanalysis.spectrum(coeffs, unit='per_l')
+    pdensity = pysh.spectralanalysis.spectrum(coeffs, unit='per_lm')
 
     # ---- plot spectrum ----
     fig_spectrum, ax = plt.subplots(1, 1)

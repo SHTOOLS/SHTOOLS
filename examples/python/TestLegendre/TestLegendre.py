@@ -1,15 +1,12 @@
-#!/usr/bin/env python3
 """
 This script tests and plots all Geodesy normalized Legendre functions.
 Parameters can be changed in the main function.
 """
 import numpy as np
 import matplotlib.pyplot as plt
+import pyshtools as pysh
 
-import pyshtools
-from pyshtools import legendre
-
-pyshtools.utils.figstyle()
+pysh.utils.figstyle()
 
 
 # ==== MAIN FUNCTION ====
@@ -33,11 +30,11 @@ def test_legendre(lmax, normalization):
     print('testing Pl{0} and Pl{0}_d1...'.format(normalization))
     # --- import function from shtools ---
     if normalization == '':
-        Pl = legendre.PLegendre
-        Pl_d1 = legendre.PLegendre_d1
+        Pl = pysh.legendre.PLegendre
+        Pl_d1 = pysh.legendre.PLegendre_d1
     else:
-        Pl = getattr(legendre, 'Pl' + normalization)
-        Pl_d1 = getattr(legendre, 'Pl' + normalization + '_d1')
+        Pl = getattr(pysh.legendre, 'Pl' + normalization)
+        Pl_d1 = getattr(pysh.legendre, 'Pl' + normalization + '_d1')
 
     # --- derived parameters ---
     npoints = 5 * lmax
@@ -81,11 +78,11 @@ def test_associatedlegendre(lmax, mplot, normalization):
     print('testing Plm{0} and Plm{0}_d1...'.format(normalization))
     # --- import function from shtools ---
     if normalization == '':
-        Plm = legendre.PLegendreA
-        Plm_d1 = legendre.PLegendreA_d1
+        Plm = pysh.legendre.PLegendreA
+        Plm_d1 = pysh.legendre.PLegendreA_d1
     else:
-        Plm = getattr(legendre, 'Plm' + normalization)
-        Plm_d1 = getattr(legendre, 'Plm' + normalization + '_d1')
+        Plm = getattr(pysh.legendre, 'Plm' + normalization)
+        Plm_d1 = getattr(pysh.legendre, 'Plm' + normalization + '_d1')
 
     # --- derived parameters ---
     npoints = 5 * lmax
@@ -104,7 +101,7 @@ def test_associatedlegendre(lmax, mplot, normalization):
         Plm2_buf, dPlm2_buf = Plm_d1(lmax, z)
         for l in ls:
             for m in np.arange(l):
-                ind = legendre.PlmIndex(l, m) - 1  # Fortran indexing
+                ind = pysh.legendre.PlmIndex(l, m) - 1  # Fortran indexing
                 Plm1[iz, l, m] = Plm1_buf[ind]
                 Plm2[iz, l, m] = Plm2_buf[ind]
                 dPlm2[iz, l, m] = dPlm2_buf[ind]

@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
 """Test the phaseonly keyword."""
 
 import matplotlib.pyplot as plt
-import pyshtools
+import pyshtools as pysh
 import numpy as np
 
 
@@ -13,8 +12,8 @@ def example():
     degrees[0] = np.inf
     power = degrees**(-1)
 
-    clm1 = pyshtools.SHCoeffs.from_random(power, exact_power=False)
-    clm2 = pyshtools.SHCoeffs.from_random(power, exact_power=True)
+    clm1 = pysh.SHCoeffs.from_random(power, exact_power=False)
+    clm2 = pysh.SHCoeffs.from_random(power, exact_power=True)
 
     fig, ax = plt.subplots()
     ax.plot(clm1.spectrum(unit='per_l'), label='Normal distributed power')
