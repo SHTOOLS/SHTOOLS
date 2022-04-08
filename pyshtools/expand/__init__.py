@@ -61,63 +61,39 @@ from ..shtools import MakeGrid2D
 from ..shtools import MakeGridPoint
 from ..shtools import MakeGridPointC
 from ..shtools import SHMultiply
-from ..shtools import MakeGradientDH
 
 from .spharm_functions import spharm
 from .spharm_functions import spharm_lm
 
-from ..backends import backend_module
+from ..backends import backend_module, select_preferred_backend
 
 del spharm_functions  # noqa: F821
 
 
-def MakeGridGLQ(cilm, zero=None, lmax=None, norm=1, csphase=1, lmax_calc=None,
-                extend=False, backend=None):
-    return backend_module(backend).MakeGridGLQ(cilm, zero, lmax, norm, csphase,
-                                               lmax_calc, extend)
+def inject_backend_specific_functions_for_expand():
+    mod = backend_module()
+    global SHExpandGLQ
+    SHExpandGLQ = mod.SHExpandGLQ
+    global SHExpandGLQC
+    SHExpandGLQC = mod.SHExpandGLQC
+    global SHExpandDH
+    SHExpandDH = mod.SHExpandDH
+    global SHExpandDHC
+    SHExpandDHC = mod.SHExpandDHC
+    global MakeGridGLQ
+    MakeGridGLQ = mod.MakeGridGLQ
+    global MakeGridGLQC
+    MakeGridGLQC = mod.MakeGridGLQC
+    global MakeGridDH
+    MakeGridDH = mod.MakeGridDH
+    global MakeGridDHC
+    MakeGridDHC = mod.MakeGridDHC
+    global MakeGradientDH
+    MakeGradientDH = mod.MakeGradientDH
 
 
-def MakeGridGLQC(cilm, zero=None, lmax=None, norm=1, csphase=1, lmax_calc=None,
-                 extend=False, backend=None):
-    return backend_module(backend).MakeGridGLQC(cilm, zero, lmax, norm,
-                                                csphase, lmax_calc, extend)
-
-
-def SHExpandGLQ(grid, weights=None, zeros=None, norm=1, csphase=1,
-                lmax_calc=None, backend=None):
-    return backend_module(backend).SHExpandGLQ(grid, weights, zeros, norm,
-                                               csphase, lmax_calc)
-
-
-def SHExpandGLQC(grid, weights=None, zeros=None, norm=1, csphase=1,
-                 lmax_calc=None, backend=None):
-    return backend_module(backend).SHExpandGLQC(grid, weights, zeros, norm,
-                                                csphase, lmax_calc)
-
-
-def MakeGridDH(cilm, lmax=None, norm=1, sampling=1, csphase=1, lmax_calc=None,
-               extend=False, backend=None):
-    return backend_module(backend).MakeGridDH(cilm, lmax, norm, sampling,
-                                              csphase, lmax_calc, extend)
-
-
-def MakeGridDHC(cilm, lmax=None, norm=1, sampling=1, csphase=1, lmax_calc=None,
-                extend=False, backend=None):
-    return backend_module(backend).MakeGridDHC(cilm, lmax, norm, sampling,
-                                               csphase, lmax_calc, extend)
-
-
-def SHExpandDH(grid, norm=1, sampling=1, csphase=1, lmax_calc=None,
-               backend=None):
-    return backend_module(backend).SHExpandDH(grid, norm, sampling, csphase,
-                                              lmax_calc)
-
-
-def SHExpandDHC(grid, norm=1, sampling=1, csphase=1, lmax_calc=None,
-                backend=None):
-    return backend_module(backend).SHExpandDHC(grid, norm, sampling, csphase,
-                                               lmax_calc)
-
+# trigger the injection of the backend-specific functions
+select_preferred_backend()
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['SHExpandDH', 'MakeGridDH', 'SHExpandDHC', 'MakeGridDHC',
