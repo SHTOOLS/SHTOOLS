@@ -11,6 +11,8 @@ folder: mydoc
 
 **Enhancements**
 
+* Change the preferred backend from 'shtools' to 'ducc' (when both are available).
+* Link routines in top level modules `pyshtools.expand` and `pyshtools.rotate` to the corresponding backend routines.
 * Add historical lunar topography dataset GLTM-2B.
 * Add historical martian magnetic field models FSU50 and FSU90.
 * Add new Mars gravity model MRO120F as well as several historical Mars gravity models.
@@ -19,7 +21,6 @@ folder: mydoc
 * Update urls for databases hosted at GSFC.
 * Reorder optional arguments in docs for `makegravgradgriddh` and `makemaggravgradgrid` for consistency with code.
 * Allow shtools and dov file formats to contain floats for degree and order.
-* Change the preferred backend from 'shtools' to 'ducc'.
 * Minor changes and enhancements to the documentation.
 
 **Bug fixes**
@@ -33,6 +34,10 @@ folder: mydoc
 * Fix bug with `SHWindow.multitaper_cross_spectrum()` when using arbitrary localization regions.
 * Fix bug with the c-wrapper for `cMakeGradientDH` regarding the optional `radius` parameters.
 * Minor changes to remove deprecation warnings.
+
+**Future deprecation**
+
+The module `pyshtools.shtools` will be deprecated in the v4.11 release. This module represents 1 of 2 possible backends for pyshtools, and has been located at `pyshtools.backends.shtools` since version 4.9. Unless explicitly required, the user should avoid using the `backends` modules directly, and should instead call the routines that are located in the top level modules such as `pyshtools.expand` and `pyshtools.rotate`. Setting the backend by use of the routine `pyshtools.backends.selected_preferred_backend()` determines which backed to use when calling the routines in the top level modules.
 
 M. A. Wieczorek, M. Meschede, T. Brugere, A. Corbin, A. Hattori, K. Leinweber, I. Oshchepkov, M. Reinecke, E. Sales de Andrade, E. Schnetter, S. Schröder, A. Vasishta, A. Walker, B. Xu, J. Sierra (2022). SHTOOLS: Version 4.10, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
 
