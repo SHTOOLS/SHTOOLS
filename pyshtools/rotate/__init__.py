@@ -12,8 +12,18 @@ SHRotateRealCoef  Determine the spherical harmonic coefficients of a real
 """
 from ..shtools import djpi2
 from ..shtools import SHRotateCoef
-from ..shtools import SHRotateRealCoef
 
+from ..backends import backend_module, select_preferred_backend
+
+
+def inject_backend_specific_functions_for_rotate():
+    mod = backend_module()
+    global SHRotateRealCoef
+    SHRotateRealCoef = mod.SHRotateRealCoef
+
+
+# trigger the injection of the backend-specific functions
+select_preferred_backend()
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['djpi2', 'SHRotateCoef', 'SHRotateRealCoef']

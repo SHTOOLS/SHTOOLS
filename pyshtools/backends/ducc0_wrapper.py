@@ -362,7 +362,7 @@ def SHRotateRealCoef(cilm, x, dj=None):
 
 
 def SHRotateComplexCoef(cilm, x, dj=None):
-    """Determine the spherical harmonic coefficients of a complex-alued function
+    """Determine the spherical harmonic coefficients of a complex-valued function
     rotated by three Euler angles.
 
     Usage
