@@ -86,7 +86,7 @@ def backend_module(backend=None, nthreads=None):
     return _available_backends[backend]
 
 
-def select_preferred_backend(backend="ducc", nthreads=None):
+def select_preferred_backend(backend=_preferred_backend, nthreads=None):
     """
     Select the preferred backend module used for the spherical harmonic
     transforms in pyshtools.
