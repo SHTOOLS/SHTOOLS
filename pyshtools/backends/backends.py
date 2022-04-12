@@ -86,7 +86,7 @@ def backend_module(backend=None, nthreads=None):
     return _available_backends[backend]
 
 
-def select_preferred_backend(backend="ducc", nthreads=None):
+def select_preferred_backend(backend=_preferred_backend, nthreads=None):
     """
     Select the preferred backend module used for the spherical harmonic
     transforms in pyshtools.
@@ -110,6 +110,11 @@ def select_preferred_backend(backend="ducc", nthreads=None):
         _preferred_backend = backend
         if backend == "ducc" and nthreads is not None:
             ducc0_wrapper.set_nthreads(nthreads)
+        # inject functions
+        from ..expand import inject_backend_specific_functions_for_expand
+        inject_backend_specific_functions_for_expand()
+        from ..rotate import inject_backend_specific_functions_for_rotate
+        inject_backend_specific_functions_for_rotate()
     else:
         print("Requested backend '{}' not available.".format(backend))
         raise RuntimeError

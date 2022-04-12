@@ -53,15 +53,7 @@ spharm         Compute all the spherical harmonic functions up to a maximum
 spharm_lm      Compute the spherical harmonic function for a specific degree l
                and order m.
 """
-from ..shtools import SHExpandDH
-from ..shtools import MakeGridDH
-from ..shtools import SHExpandDHC
-from ..shtools import MakeGridDHC
 from ..shtools import SHGLQ
-from ..shtools import SHExpandGLQ
-from ..shtools import MakeGridGLQ
-from ..shtools import SHExpandGLQC
-from ..shtools import MakeGridGLQC
 from ..shtools import GLQGridCoord
 from ..shtools import SHExpandLSQ
 from ..shtools import SHExpandWLSQ
@@ -69,13 +61,39 @@ from ..shtools import MakeGrid2D
 from ..shtools import MakeGridPoint
 from ..shtools import MakeGridPointC
 from ..shtools import SHMultiply
-from ..shtools import MakeGradientDH
 
 from .spharm_functions import spharm
 from .spharm_functions import spharm_lm
 
+from ..backends import backend_module, select_preferred_backend
+
 del spharm_functions  # noqa: F821
 
+
+def inject_backend_specific_functions_for_expand():
+    mod = backend_module()
+    global SHExpandGLQ
+    SHExpandGLQ = mod.SHExpandGLQ
+    global SHExpandGLQC
+    SHExpandGLQC = mod.SHExpandGLQC
+    global SHExpandDH
+    SHExpandDH = mod.SHExpandDH
+    global SHExpandDHC
+    SHExpandDHC = mod.SHExpandDHC
+    global MakeGridGLQ
+    MakeGridGLQ = mod.MakeGridGLQ
+    global MakeGridGLQC
+    MakeGridGLQC = mod.MakeGridGLQC
+    global MakeGridDH
+    MakeGridDH = mod.MakeGridDH
+    global MakeGridDHC
+    MakeGridDHC = mod.MakeGridDHC
+    global MakeGradientDH
+    MakeGradientDH = mod.MakeGradientDH
+
+
+# trigger the injection of the backend-specific functions
+select_preferred_backend()
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['SHExpandDH', 'MakeGridDH', 'SHExpandDHC', 'MakeGridDHC',
