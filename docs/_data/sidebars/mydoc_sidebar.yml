@@ -120,6 +120,10 @@ entries:
       url: /how-to-contribute.html
       output: web, pdf
 
+    - title: Chat
+      url: /chat.html
+      output: web, pdf
+
   - title: Release Notes
     output: web, pdf
     folderitems:

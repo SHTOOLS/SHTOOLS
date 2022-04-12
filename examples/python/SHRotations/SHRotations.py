@@ -1,13 +1,10 @@
-#!/usr/bin/env python3
 """
 This script tests the rotation of spherical harmonic coefficients
 """
 import numpy as np
+import pyshtools as pysh
 
-import pyshtools
-from pyshtools import rotate
-
-pyshtools.utils.figstyle()
+pysh.utils.figstyle()
 
 
 def main():
@@ -31,14 +28,14 @@ def test_SHRotations():
     print('computing rotation matrix for Euler angles: ' +
           '({:2.2f},{:2.2f},{:2.2f})'
           .format(alpha, beta, gamma))
-    dj_matrix = rotate.djpi2(lmax)
+    dj_matrix = pysh.rotate.djpi2(lmax)
 
     print('\n---- testing SHRotateRealCoef ----')
     print('generating normal distributed complex coefficients with ' +
           'variance 1...')
     rcoeffs = np.random.normal(size=(2, lmax + 1, lmax + 1))
     rcoeffs[np.invert(mask)] = 0.
-    rcoeffs_rot = rotate.SHRotateRealCoef(rcoeffs, angles, dj_matrix)
+    rcoeffs_rot = pysh.rotate.SHRotateRealCoef(rcoeffs, angles, dj_matrix)
     print(rcoeffs_rot)
 
     print('\n---- testing SHRotateCoef ----')
@@ -46,7 +43,7 @@ def test_SHRotations():
           'variance 1...')
     ccoeffs = np.random.normal(loc=0., scale=1.,
                                size=(2, (lmax + 1) * (lmax + 2) // 2))
-    ccoeffs_rot = rotate.SHRotateCoef(angles, ccoeffs, dj_matrix)
+    ccoeffs_rot = pysh.rotate.SHRotateCoef(angles, ccoeffs, dj_matrix)
     print(ccoeffs_rot)
 
 

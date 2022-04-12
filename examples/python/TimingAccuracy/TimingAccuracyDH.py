@@ -1,13 +1,10 @@
-#!/usr/bin/env python3
 """
 This script is a python version of TimingAccuracy. We use some numpy functions
 to simplify the creation of random coefficients.
 """
 import time
 import numpy as np
-
-from pyshtools import expand
-from pyshtools import spectralanalysis
+import pyshtools as pysh
 
 
 # ==== MAIN FUNCTION ====
@@ -35,7 +32,7 @@ def TimingAccuracyDH(sampling=1):
                                                      (maxdeg + 1)))
     np.random.seed(0)
     cilm = np.random.normal(loc=0., scale=1., size=(2, maxdeg + 1, maxdeg + 1))
-    old_power = spectralanalysis.spectrum(cilm)
+    old_power = pysh.spectralanalysis.spectrum(cilm)
     new_power = 1. / (1. + ls)**beta  # initialize degrees > 0 to power-law
     cilm[:, :, :] *= np.sqrt(new_power / old_power)[None, :, None]
     cilm[~mask] = 0.
@@ -51,13 +48,13 @@ def TimingAccuracyDH(sampling=1):
 
         # synthesis / inverse
         tstart = time.time()
-        grid = expand.MakeGridDH(cilm_trim, sampling=sampling)
+        grid = pysh.expand.MakeGridDH(cilm_trim, sampling=sampling)
         tend = time.time()
         tinverse = tend - tstart
 
         # analysis / forward
         tstart = time.time()
-        cilm2_trim = expand.SHExpandDH(grid, sampling=sampling)
+        cilm2_trim = pysh.expand.SHExpandDH(grid, sampling=sampling)
         tend = time.time()
         tforward = tend - tstart
 

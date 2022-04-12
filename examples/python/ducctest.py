@@ -2,7 +2,6 @@ import numpy as np
 import pyshtools as pysh
 from time import time
 
-
 nthreads = 1
 
 

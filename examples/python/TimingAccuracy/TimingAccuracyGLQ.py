@@ -1,13 +1,10 @@
-#!/usr/bin/env python3
 """
 This script is a python version of TimingAccuracyGLQ. We use numpy functions to
 simplify the creation of random coefficients.
 """
 import time
 import numpy as np
-
-from pyshtools import expand
-from pyshtools import spectralanalysis
+import pyshtools as pysh
 
 
 # ==== MAIN FUNCTION ====
@@ -37,7 +34,7 @@ def TimingAccuracyGLQ():
     cilm = np.random.normal(loc=0., scale=1., size=(2, maxdeg + 1, maxdeg + 1))
     cilm[:, 1:, :] *= np.sqrt((ls[1:]**beta) /
                               (2. * ls[1:] + 1.))[None, :, None]
-    old_power = spectralanalysis.spectrum(cilm)
+    old_power = pysh.spectralanalysis.spectrum(cilm)
     new_power = 1. / (1. + ls)**beta  # initialize degrees > 0 to power-law
     cilm[:, :, :] *= np.sqrt(new_power / old_power)[None, :, None]
     cilm[~mask] = 0.
@@ -53,19 +50,19 @@ def TimingAccuracyGLQ():
 
         # precompute grid nodes and associated Legendre functions
         tstart = time.time()
-        zeros, weights = expand.SHGLQ(lmax)
+        zeros, weights = pysh.expand.SHGLQ(lmax)
         tend = time.time()
         tprecompute = tend - tstart
 
         # synthesis / inverse
         tstart = time.time()
-        grid = expand.MakeGridGLQ(cilm_trim, zeros)
+        grid = pysh.expand.MakeGridGLQ(cilm_trim, zeros)
         tend = time.time()
         tinverse = tend - tstart
 
         # analysis / forward
         tstart = time.time()
-        cilm2_trim = expand.SHExpandGLQ(grid, weights, zeros)
+        cilm2_trim = pysh.expand.SHExpandGLQ(grid, weights, zeros)
         tend = time.time()
         tforward = tend - tstart
 
