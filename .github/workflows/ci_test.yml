@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - name: Cancel Previous Runs
-      uses: styfle/cancel-workflow-action@0.7.0
+      uses: styfle/cancel-workflow-action@0.9.1
       with:
         access_token: ${{ github.token }}
 
@@ -38,7 +38,6 @@ jobs:
     - name: Set up Conda environment
       shell: bash -l {0}
       run: |
-        mamba install -n ci_test setuptools=62.0.0
         mamba list -n ci_test
 
     - name: Install gcc for macOS
