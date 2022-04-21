@@ -111,6 +111,7 @@ The following is the list of implemented datasets:
 | Dataset | Description |
 | ---------- | ----------- |
 | MarsTopo2600 | 2600 degree and order spherical harmonic model of the shape of the planet Mars (Wieczorek 2015). |
+| MarsTopo719 | 719 degree and order spherical harmonic model of the shape of the planet Mars (Wieczorek 2015). |
 | GMM3 | GSFC 120 degree and order spherical harmonic model of the gravitational potential of Mars (Genova et al. 2016). This model applies a Kaula constraint for degrees greater than 90. |
 | GMM3_RM1_1E0 | GSFC 150 degree and order spherical harmonic model of the gravitational potential of Mars (Goossens et al. 2017). This model uses the same data as GMM3, but with a rank-minus-1 constraint based on gravity from surface topography for degrees greater than 50 with a value of lambda equal to 1.|
 | MRO120D |JPL 120 degree and order spherical harmonic model of the gravitational potential of Mars (Konopliv et al. 2016). This model applies a Kaula constraint for degrees greater than 80. |

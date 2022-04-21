@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - name: Cancel Previous Runs
-      uses: styfle/cancel-workflow-action@0.7.0
+      uses: styfle/cancel-workflow-action@0.9.1
       with:
         access_token: ${{ github.token }}
 
@@ -27,18 +27,18 @@ jobs:
       uses: conda-incubator/setup-miniconda@v2
       with:
         python-version: ${{ matrix.python-version }}
+        mamba-version: "*"
         channels: conda-forge
+        channel-priority: strict
         auto-update-conda: true
         miniconda-version: "latest"
         activate-environment: ci_test
+        environment-file: environment.yml
 
     - name: Set up Conda environment
       shell: bash -l {0}
       run: |
-        conda config --set always_yes yes --set changeps1 no
-        conda install -q -n ci_test python=${{ matrix.python-version }}
-        conda env update -q -n ci_test -f environment.yml
-        conda list -n ci_test
+        mamba list -n ci_test
 
     - name: Install gcc for macOS
       shell: bash -l {0}
@@ -49,13 +49,13 @@ jobs:
     - name: Build using pip
       shell: bash -l {0}
       run: |
-        conda env list
+        mamba env list
         pip install --no-deps .
 
     - name: Run tests
       shell: bash -l {0}
       run: |
-        conda env list
+        mamba env list
         python examples/notebooks/test_notebooks.py
         export MPLBACKEND=Agg
         make -C examples/python -f Makefile no-timing

@@ -148,6 +148,14 @@ class install(_install):
         _install.run(self)
 
 
+def distutils_dir_name(dname):
+    """Returns the name of a distutils build directory"""
+    f = "{dirname}.{platform}-{cache_tag}"
+    return f.format(dirname=dname,
+                    platform=sysconfig.get_platform(),
+                    cache_tag=sys.implementation.cache_tag)
+
+
 # configure python extension to be compiled with f2py
 def configuration(parent_package='', top_path=None):
     """Configure all packages that need to be built."""
@@ -172,13 +180,7 @@ def configuration(parent_package='', top_path=None):
                file.lower().endswith(('.f95', '.c')) and file not in
                exclude_sources]
 
-    # (from http://stackoverflow.com/questions/14320220/
-    #              testing-python-c-libraries-get-build-path)):
-    build_lib_dir = "{dirname}.{platform}-{version[0]}.{version[1]}"
-    dirparams = {'dirname': 'temp',
-                 'platform': sysconfig.get_platform(),
-                 'version': sys.version_info}
-    libdir = os.path.join('build', build_lib_dir.format(**dirparams))
+    libdir = os.path.join('build', distutils_dir_name('temp'))
     print('searching SHTOOLS in:', libdir)
 
     # Fortran compilation
