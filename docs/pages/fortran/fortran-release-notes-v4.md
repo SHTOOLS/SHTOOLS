@@ -18,6 +18,7 @@ folder: fortran
 * Add new Mars gravity model MRO120F as well as several historical Mars gravity models.
 * Add historical Venus topography datasets SHTJV360A01 and SHTJV360A02.
 * Add Thebault2021 Earth magnetic field dataset.
+* Add Mars topography dataset MarsTopo719, which is a truncated version of MarsTopo2600.
 * Update urls for databases hosted at GSFC.
 * Reorder optional arguments in docs for `makegravgradgriddh` and `makemaggravgradgrid` for consistency with code.
 * Allow shtools and dov file formats to contain floats for degree and order.

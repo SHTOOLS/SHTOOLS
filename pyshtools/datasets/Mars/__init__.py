@@ -4,6 +4,7 @@ Datasets related to the planet Mars.
 Topography
 ----------
 MarsTopo2600     :  Wieczorek (2015)
+MarsTopo719      :  Wieczorek (2015)
 
 Gravity
 -------
@@ -50,6 +51,33 @@ def MarsTopo2600(lmax=2600):
         path=_os_cache('pyshtools'),
     )
     return _SHCoeffs.from_file(fname, lmax=lmax, name='MarsTopo2600',
+                               units='m', encoding='utf-8')
+
+
+def MarsTopo719(lmax=719):
+    '''
+    MarsTopo719 is a 719 degree and order spherical harmonic model of the
+    shape of the planet Mars. The coefficients are in units of meters. This
+    dataset is a truncated version of MarsTopo2600.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    Wieczorek, M.A. (2015). Gravity and Topography of the Terrestrial Planets,
+        Treatise on Geophysics, 2nd edition, Oxford, 153-193,
+        doi:10.1016/B978-0-444-53802-4.00169-X.
+    '''
+    fname = _retrieve(
+        url="https://zenodo.org/record/6475460/files/MarsTopo719.shape.gz",
+        known_hash="sha256:37a98efae5eab7c85260f4b43315fe9fcf44247a61581bed1b6f7f10f79adea0",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='MarsTopo719',
                                units='m', encoding='utf-8')
 
 
@@ -204,4 +232,4 @@ def Morschhauser2014(lmax=110):
 
 
 __all__ = ['MarsTopo2600', 'GMM3', 'GMM3_RM1_1E0', 'MRO120F', 'Langlais2019',
-           'Morschhauser2014', 'historical']
+           'Morschhauser2014', 'historical', 'MarsTopo719']
