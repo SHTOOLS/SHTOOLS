@@ -150,10 +150,17 @@ class install(_install):
 
 def distutils_dir_name(dname):
     """Returns the name of a distutils build directory"""
-    f = "{dirname}.{platform}-{cache_tag}"
-    return f.format(dirname=dname,
-                    platform=sysconfig.get_platform(),
-                    cache_tag=sys.implementation.cache_tag)
+    parse_version = setuptools.version.pkg_resources.packaging.version.parse
+    if parse_version(setuptools.__version__) < parse_version('62.1.0'):
+        f = "{dirname}.{platform}-{version[0]}.{version[1]}"
+        return f.format(dirname=dname,
+                        platform=sysconfig.get_platform(),
+                        version=sys.version_info)
+    else:
+        f = "{dirname}.{platform}-{cache_tag}"
+        return f.format(dirname=dname,
+                        platform=sysconfig.get_platform(),
+                        cache_tag=sys.implementation.cache_tag)
 
 
 # configure python extension to be compiled with f2py
