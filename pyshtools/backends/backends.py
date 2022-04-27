@@ -6,9 +6,9 @@ the backends used for the spherical harmonic transforms in pyshtools.
 
 Supported backends
 ------------------
-shtools (default)            Spherical Harmonic Tools (Fortran 95), installed
+shtools (fallback)           Spherical Harmonic Tools (Fortran 95), installed
                              as part of pyshtools.
-ducc0                        Distinctly Useful Code Collection (C++17).
+ducc0 (default)              Distinctly Useful Code Collection (C++17).
 
 Functions
 ---------
@@ -20,9 +20,17 @@ backend_module()             Return a reference to the specified backend
                              module.
 """
 
+
+from . import ducc0_wrapper
+from .. import shtools
+
 # defaults
-from .. import shtools as _preferred_backend_module
 _preferred_backend = "shtools"
+_available_backends = {"shtools": shtools}
+
+if ducc0_wrapper.available():
+    _preferred_backend = "ducc"
+    _available_backends["ducc"] = ducc0_wrapper
 
 
 def preferred_backend():
@@ -46,7 +54,7 @@ def preferred_backend_module():
     -----
     module = preferred_backend_module()
     """
-    return _preferred_backend_module
+    return _available_backends[_preferred_backend]
 
 
 def backend_module(backend=None, nthreads=None):
@@ -67,74 +75,48 @@ def backend_module(backend=None, nthreads=None):
         to 0 will use as many threads as there are hardware threads on the
         system.
     """
-    backend = backend.lower()
-    if backend == "shtools":
-        from .. import shtools
-
-        return shtools
-    elif backend == "ducc":
-        from . import ducc0_wrapper
-        if not ducc0_wrapper.available():
-            raise ImportError('"ducc" backend requested, but not installed.')
-        if nthreads is not None:
-            ducc0_wrapper.set_nthreads(nthreads)
-        return ducc0_wrapper
-    elif backend is None:
+    if backend is None:
         return preferred_backend_module()
-    else:
-        print("Unknown backend '{}' requested.".format(backend))
+    backend = backend.lower()
+    if backend not in _available_backends:
+        print("Requested backend '{}' not available.".format(backend))
         raise RuntimeError
+    if backend == "ducc" and nthreads is not None:
+        ducc0_wrapper.set_nthreads(nthreads)
+    return _available_backends[backend]
 
 
-def select_preferred_backend(backend="shtools", nthreads=None):
+def select_preferred_backend(backend=_preferred_backend, nthreads=None):
     """
     Select the preferred backend module used for the spherical harmonic
     transforms in pyshtools.
 
     Usage
     -----
-    select_preferred_backend_module([backend, nthreads])
+    select_preferred_backend([backend, nthreads])
 
     Parameters
     ----------
-    backend : str, optional, default = 'shtools'
+    backend : str, optional, default = 'ducc'
         Name of the preferred backend, either 'shtools' or 'ducc'.
     nthreads : int, optional, default = 1
         Number of threads to use for the 'ducc' backend. Setting this parameter
         to 0 will use as many threads as there are hardware threads on the
         system.
     """
-    global _preferred_backend, _preferred_backend_module
+    global _preferred_backend
     backend = backend.lower()
-    if backend == "shtools":
+    if backend in _available_backends:
         _preferred_backend = backend
-        from .. import shtools
-
-        _preferred_backend_module = shtools
-    elif backend == "ducc":
-        try:
-            import ducc0
-
-            major, minor, patch = ducc0.__version__.split(".")
-            if int(major) < 1 and int(minor) < 15:
-                print(
-                    "ducc0 installation found, but it is too old. "
-                    "Need at least version 0.15"
-                )
-                raise RuntimeError
-        except:
-            print(
-                "DUCC backend requested, but the relevant package cannot be "
-                "imported. Leaving backend unchanged."
-            )
-        _preferred_backend = backend
-        from . import ducc0_wrapper
-
-        _preferred_backend_module = ducc0_wrapper
-        if nthreads is not None:
+        if backend == "ducc" and nthreads is not None:
             ducc0_wrapper.set_nthreads(nthreads)
+        # inject functions
+        from ..expand import inject_backend_specific_functions_for_expand
+        inject_backend_specific_functions_for_expand()
+        from ..rotate import inject_backend_specific_functions_for_rotate
+        inject_backend_specific_functions_for_rotate()
     else:
-        print("Unknown backend '{}' requested.".format(backend))
+        print("Requested backend '{}' not available.".format(backend))
         raise RuntimeError
 
 

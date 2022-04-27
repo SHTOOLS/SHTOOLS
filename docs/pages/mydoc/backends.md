@@ -24,8 +24,8 @@ The following software packages are supported as numerical backends to *pysthool
 
 | Class name | Description |
 | ---------- | ----------- |
-| [shtools](index-fortran.html) (default) | Spherical Harmonic Tools (Fortran 95, installed as part of pyshtools) |
-| [ducc](https://gitlab.mpcdf.mpg.de/mtr/ducc) | Distinctly Useful Code Collection (C++17) |
+| [shtools](index-fortran.html) (fallback) | Spherical Harmonic Tools (Fortran 95, installed as part of pyshtools) |
+| [ducc](https://gitlab.mpcdf.mpg.de/mtr/ducc) (default) | Distinctly Useful Code Collection (C++17) |
 
 The *shtools* package (written in Fortran 95) suppports all the functionality of *pyshtools*. Other packages only implement a subset of the *shtools* routines, and whenever an implementation of a function does not exist, the *shtools* function is used as a fallback.
 

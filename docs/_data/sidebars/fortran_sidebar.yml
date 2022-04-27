@@ -3,7 +3,7 @@
 entries:
 - title: sidebar
   product: SHTOOLS
-  version: 4.9
+  version: 4.10
   folders:
 
   - title:
@@ -114,6 +114,10 @@ entries:
 
     - title: How to contribute
       url: /fortran-how-to-contribute.html
+      output: web, pdf
+
+    - title: Chat
+      url: /fortran-chat.html
       output: web, pdf
 
   - title: Release Notes

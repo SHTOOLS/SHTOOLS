@@ -3,7 +3,7 @@
 entries:
 - title: sidebar
   product: pyshtools
-  version: 4.9
+  version: 4.10
   folders:
 
   - title:
@@ -118,6 +118,10 @@ entries:
 
     - title: How to contribute
       url: /how-to-contribute.html
+      output: web, pdf
+
+    - title: Chat
+      url: /chat.html
       output: web, pdf
 
   - title: Release Notes

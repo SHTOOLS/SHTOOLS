@@ -586,7 +586,7 @@ class SHGrid(object):
 
     def to_netcdf(self, filename=None, title=None, description=None,
                   comment='pyshtools grid', name='data',
-                  long_name=None, units=None, dtype=None):
+                  long_name=None, units=None, dtype='d'):
         """
         Return the gridded data as a netcdf formatted file or object.
 
@@ -611,9 +611,9 @@ class SHGrid(object):
             A long descriptive name of the gridded data.
         units : str, optional, default = None
             Units of the gridded data.
-        dtype : str, optional, default = None
-            If 'f', convert the grid to single precision 32-bit floating
-            point numbers.
+        dtype : str, optional, default = 'd'
+            Data type of the output array. Either 'f' or 'd' for single or
+            double precision floating point, respectively.
         """
         if self.kind == 'complex':
             raise RuntimeError('netcdf files do not support complex data '
@@ -624,6 +624,9 @@ class SHGrid(object):
 
         if dtype == 'f':
             _data.values = _data.values.astype(_np.float32)
+        elif dtype != 'd':
+            raise ValueError("dtype must be either 'f' or 'd' for single or "
+                             "double precision floating point.")
 
         attrs = {}
         if title is not None:
@@ -2311,6 +2314,10 @@ class DHRealGrid(SHGrid):
                                                        shading_amplitude)
         else:
             shading_str = None
+
+        # Necessary to fix bug in pygmt 0.4+
+        if shading_str is None:
+            shading_str = False
 
         with _pygmt.config(FONT_TITLE=titlesize, FONT_LABEL=axes_labelsize,
                            FONT_ANNOT=tick_labelsize):

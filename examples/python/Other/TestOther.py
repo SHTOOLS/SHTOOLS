@@ -1,14 +1,11 @@
-#!/usr/bin/env python3
 """
 This script tests the gravity and magnetics routines.
 """
 import numpy as np
 import matplotlib.pyplot as plt
+import pyshtools as pysh
 
-import pyshtools
-from pyshtools import utils
-
-pyshtools.utils.figstyle()
+pysh.utils.figstyle()
 
 
 # ==== MAIN FUNCTION ====
@@ -22,27 +19,27 @@ def main():
 # ==== TEST FUNCTIONS ====
 
 def TestCircle():
-    coord = utils.MakeCircleCoord(30, 10, 30)
+    coord = pysh.utils.MakeCircleCoord(30, 10, 30)
     lat = coord[:, 0]
     lon = coord[:, 1]
     fig = plt.figure()
     plt.axis([-180, 180, -90, 90])
     plt.plot(lon, lat, 'r-', 10, 30, 'r.')
-    coord = utils.MakeCircleCoord(-75, -45, 10)
+    coord = pysh.utils.MakeCircleCoord(-75, -45, 10)
     plt.plot(coord[:, 1], coord[:, 0], 'b-', -45, -75, 'b.')
-    coord = utils.MakeEllipseCoord(0, 45, 20, 30, 10)
+    coord = pysh.utils.MakeEllipseCoord(0, 45, 20, 30, 10)
     plt.plot(coord[:, 1], coord[:, 0], 'g-', 45, 0, 'g.')
 
     fig.savefig('Circles.png')
 
 
 def TestWigner():
-    w3j, jmin, jmax = utils.Wigner3j(4, 2, 0, 0, 0)
+    w3j, jmin, jmax = pysh.utils.Wigner3j(4, 2, 0, 0, 0)
     print("< J, 4, 2 / 0, 0, 0 >")
     print("jmin = ", jmin)
     print("jmax = ", jmax)
     print(w3j)
-    w3j, jmin, jmax = utils.Wigner3j(10, 14, -1, -4, 5)
+    w3j, jmin, jmax = pysh.utils.Wigner3j(10, 14, -1, -4, 5)
     print("< J, 10, 14 / -1, -4, 5 >")
     print("jmin = ", jmin)
     print("jmax = ", jmax)
@@ -51,7 +48,7 @@ def TestWigner():
 
 def TestSHExpandWLSQ():
     file = "../../ExampleDataFiles/MarsTopo719.shape"
-    clm = pyshtools.SHCoeffs.from_file(file, lmax=9)
+    clm = pysh.SHCoeffs.from_file(file, lmax=9)
     nmax = 100
     np.random.seed(seed=123456)
     x = 2*np.random.random_sample(nmax)-1
@@ -67,10 +64,10 @@ def TestSHExpandWLSQ():
     print('Least squares inversion misit: chi2, chi2' +
           '(weighted, uniform weights),')
     for l in range(10):
-        hilm, chi2 = pyshtools.expand.SHExpandLSQ(d, lat, lon, l)
+        hilm, chi2 = pysh.expand.SHExpandLSQ(d, lat, lon, l)
         # hlm = pyshtools.SHCoeffs.from_array(hilm)
 
-        hilmw, chi2w = pyshtools.expand.SHExpandWLSQ(d, w, lat, lon, l)
+        hilmw, chi2w = pysh.expand.SHExpandWLSQ(d, w, lat, lon, l)
         # hlmw = pyshtools.SHCoeffs.from_array(hilmw)
 
         print('L = {:d}, chi2 = {:e}, chi2w = {:e}'

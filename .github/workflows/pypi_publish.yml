@@ -19,8 +19,10 @@ jobs:
     - name: Setup Miniconda
       uses: conda-incubator/setup-miniconda@v2
       with:
-        python-version: 3.8
+        python-version: 3.9
+        mamba-version: "*"
         channels: conda-forge
+        channel-priority: strict
         auto-update-conda: true
         miniconda-version: "latest"
         activate-environment: pypi
@@ -28,9 +30,8 @@ jobs:
     - name: Set up Conda environment
       shell: bash -l {0}
       run: |
-        conda config --set always_yes yes --set changeps1 no
-        conda install -q -n pypi python=3.8 \
-                                 fftw \
+        mamba config --set always_yes yes --set changeps1 no
+        mamba install -q -n pypi fftw \
                                  liblapack \
                                  openblas \
                                  numpy \
@@ -38,7 +39,7 @@ jobs:
                                  pypandoc \
                                  versioneer \
                                  twine
-        conda list -n pypi
+        mamba list -n pypi
 
     - name: Build and publish
       env:
@@ -51,7 +52,7 @@ jobs:
         # TWINE_REPOSITORY_URL: 'https://test.pypi.org/legacy/'
       shell: bash -l {0}
       run: |
-        conda env list
+        mamba env list
         python setup.py sdist
         twine upload dist/*
 
