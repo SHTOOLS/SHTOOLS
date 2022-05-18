@@ -234,7 +234,7 @@ class SHMagGrid(object):
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,
                    title=None, titlesize=None, colorbar='right',
                    cmap='viridis', cmap_limits=None, cmap_reverse=False,
-                   cb_triangles='neither', cb_label='$B_\\theta$, nT',
+                   cb_triangles='neither', cb_label=r'$B_\theta$, nT',
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    tick_labelsize=None, show=True, ax=None, cb_offset=None,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
@@ -288,7 +288,7 @@ class SHMagGrid(object):
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
-        cb_label : str, optional, default = '$B_\\theta$, nT'
+        cb_label : str, optional, default = r'$B_\theta$, nT'
             Text label for the colorbar.
         cb_ylabel : str, optional, default = None
             Text label for the y axis of the colorbar
@@ -339,7 +339,7 @@ class SHMagGrid(object):
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
                  title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
-                 cb_triangles='neither', cb_label='$B_\phi$, nT',
+                 cb_triangles='neither', cb_label=r'$B_\phi$, nT',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
                  tick_labelsize=None, show=True, ax=None, cb_offset=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
@@ -393,7 +393,7 @@ class SHMagGrid(object):
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
-        cb_label : str, optional, default = '$B_\phi$, nT'
+        cb_label : str, optional, default = r'$B_\phi$, nT'
             Text label for the colorbar.
         cb_ylabel : str, optional, default = None
             Text label for the y axis of the colorbar
@@ -849,9 +849,9 @@ class SHMagGrid(object):
         _rad = self.rad.to_xarray(title='magnetic field (radial)',
                                   long_name='$B_r$', units=mag_units)
         _theta = self.theta.to_xarray(title='magnetic field (theta)',
-                                      long_name='$B_\\theta$', units=mag_units)
+                                      long_name=r'$B_\theta$', units=mag_units)
         _phi = self.phi.to_xarray(title='magnetic field (phi)',
-                                  long_name='$B_\\phi$', units=mag_units)
+                                  long_name=r'$B_\phi$', units=mag_units)
         _pot = self.pot.to_xarray(title='magnetic field potential',
                                   long_name='potential', units=pot_units)
 
