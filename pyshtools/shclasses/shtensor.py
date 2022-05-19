@@ -1913,7 +1913,7 @@ class Tensor(object):
                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                   cb_offset=None, cb_width=None, show=True, ax=None,
                   fname=None):
-        """
+        r"""
         Plot the first eigenvalue of the tensor.
 
         Usage
@@ -2024,7 +2024,7 @@ class Tensor(object):
                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                   cb_offset=None, cb_width=None, show=True, ax=None,
                   fname=None):
-        """
+        r"""
         Plot the second eigenvalue of the tensor.
 
         Usage
@@ -2135,7 +2135,7 @@ class Tensor(object):
                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                   cb_offset=None, cb_width=None, show=True, ax=None,
                   fname=None):
-        """
+        r"""
         Plot the third eigenvalue of the tensor.
 
         Usage
@@ -2385,7 +2385,7 @@ class Tensor(object):
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                    cb_offset=None, cb_width=None, tick_labelsize=None,
                    show=True, ax=None, fname=None):
-        """
+        r"""
         Plot the first eigenvalue of the horizontal tensor.
 
         Usage
@@ -2496,7 +2496,7 @@ class Tensor(object):
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                    cb_offset=None, cb_width=None, tick_labelsize=None,
                    show=True, ax=None, fname=None):
-        """
+        r"""
         Plot the second eigenvalue of the horizontal tensor.
 
         Usage
@@ -2607,7 +2607,7 @@ class Tensor(object):
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                    cb_offset=None, cb_width=None, tick_labelsize=None,
                    show=True, ax=None, fname=None):
-        """
+        r"""
         Plot the maximum absolute value eigenvalue of the horizontal tensor.
 
         Usage

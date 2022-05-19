@@ -256,7 +256,7 @@ class SHGravGrid(object):
                    tick_labelsize=None, show=True, ax=None, cb_offset=None,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                    fname=None, cb_width=None):
-        """
+        r"""
         Plot the theta component of the gravity field.
 
         Usage
@@ -361,7 +361,7 @@ class SHGravGrid(object):
                  tick_labelsize=None, show=True, ax=None, cb_offset=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                  cb_width=None, fname=None):
-        """
+        r"""
         Plot the phi component of the gravity field.
 
         Usage
