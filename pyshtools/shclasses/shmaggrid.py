@@ -214,6 +214,9 @@ class SHMagGrid(object):
             If present, and if ax is not specified, save the image to the
             specified file.
         """
+        if self.units.lower() == 't':
+            cb_label = '$B_r$, T'
+
         return self.rad.plot(projection=projection,
                              tick_interval=tick_interval,
                              minor_tick_interval=minor_tick_interval,
@@ -319,6 +322,9 @@ class SHMagGrid(object):
             If present, and if ax is not specified, save the image to the
             specified file.
         """
+        if self.units.lower() == 't':
+            cb_label = r'$B_\theta$, T'
+
         return self.theta.plot(projection=projection,
                                tick_interval=tick_interval,
                                minor_tick_interval=minor_tick_interval,
@@ -424,6 +430,9 @@ class SHMagGrid(object):
             If present, and if ax is not specified, save the image to the
             specified file.
         """
+        if self.units.lower() == 't':
+            cb_label = r'$B_\phi$, T'
+
         return self.phi.plot(projection=projection,
                              tick_interval=tick_interval,
                              minor_tick_interval=minor_tick_interval,
@@ -529,6 +538,9 @@ class SHMagGrid(object):
             If present, and if ax is not specified, save the image to the
             specified file.
         """
+        if self.units.lower() == 't':
+            cb_label = '$|B|$, T'
+
         return self.total.plot(projection=projection,
                                tick_interval=tick_interval,
                                minor_tick_interval=minor_tick_interval,
@@ -634,6 +646,9 @@ class SHMagGrid(object):
             If present, and if ax is not specified, save the image to the
             specified file.
         """
+        if self.units.lower() == 't':
+            cb_label = 'Potential, T m'
+
         return self.pot.plot(projection=projection,
                              tick_interval=tick_interval,
                              minor_tick_interval=minor_tick_interval,
