@@ -3,7 +3,7 @@ title: "Spherical Harmonic Tools"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Slepian functions, fortran, Python, gravity, magnetic field
 sidebar: fortran_sidebar
 permalink: index-fortran.html
-summary: SHTOOLS is an archive of Fortran 95 software that can be used to perform spherical harmonic transforms, multitaper spectral analyses, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
+summary: SHTOOLS is an archive of Fortran 95 software that can be used to perform spherical harmonic transforms, multitaper spectral analyses, expansions of functions into Slepian basis, and standard operations on global gravitational and magnetic field data.
 toc: false
 folder: fortran
 ---
@@ -18,7 +18,7 @@ folder: fortran
 
 * Spherical harmonic transforms proven to be accurate up to about degree 2800.
 
-* Perform localized multitaper spectral analyses, or expand functions in terms of localized Slepian bases.
+* Perform localized multitaper spectral analyses, or expand functions in terms of localized Slepian basis.
 
 * Perform basic operations on global gravity and magnetic field data.
 

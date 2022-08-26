@@ -9,7 +9,7 @@
 [![Twitter](https://img.shields.io/twitter/follow/pyshtools.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=pyshtools)
 
 SHTOOLS/pyshtools is a Fortran-95/Python library that can be used to perform
-spherical harmonic transforms, multitaper spectral analyses, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
+spherical harmonic transforms, multitaper spectral analyses, expansions of functions into Slepian basis, and standard operations on global gravitational and magnetic field data.
 
 ### FEATURES ###
 
@@ -21,7 +21,7 @@ spherical harmonic transforms, multitaper spectral analyses, expansions of funct
 
 * Spherical harmonic transforms proven to be accurate up to about degree 2800.
 
-* Perform localized multitaper spectral analyses, or expand functions in terms of localized Slepian bases.
+* Perform localized multitaper spectral analyses, or expand functions in terms of localized Slepian basis.
 
 * Support for standard data and file formats, including *xarray* and *netcdf*.
 
