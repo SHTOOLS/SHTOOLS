@@ -2947,8 +2947,8 @@ class SHMagRealCoeffs(SHMagCoeffs):
                 if f == 0.:
                     r = a
                 else:
-                    r = _np.cos(_np.deg2rad(latin))**2 + \
-                        _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                    r = _np.cos(_np.deg2rad(latitude))**2 + \
+                        _np.sin(_np.deg2rad(latitude))**2 / (1.0 - f)**2
                     r = a * _np.sqrt(1. / r)
 
                 values[i, :] = _MakeMagGridPoint(coeffs, a=self.r0, r=r,
@@ -2961,8 +2961,8 @@ class SHMagRealCoeffs(SHMagCoeffs):
                 if f == 0.:
                     r = a
                 else:
-                    r = _np.cos(_np.deg2rad(latin))**2 + \
-                        _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                    r = _np.cos(_np.deg2rad(latitude))**2 + \
+                        _np.sin(_np.deg2rad(latitude))**2 / (1.0 - f)**2
                     r = a * _np.sqrt(1. / r)
                 values.append(
                     _MakeMagGridPoint(coeffs, a=self.r0, r=r, lat=latitude,
