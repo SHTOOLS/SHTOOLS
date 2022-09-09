@@ -7,6 +7,25 @@ summary:
 toc: true
 folder: fortran
 ---
+## Version 4.10.1
+
+**Bug fixes and minor enhancements**
+
+* Simplify the code for backend management and improve handing of the default backend when `ducc0` isn't installed.
+* Changing the backend now changes which functions are referenced in the `expand` and `rotate` submodules.
+* Fix `setup.py` to work with all versions of `setuptools`.
+* Add the MarsTopo719 dataset for use in CI checks (using MarsTopo2600 often would timeout during download).
+* Fix a bug in `SHGravRealCoeffs.expand` and `SHGravRealCoeffs.expand` that did not correctly compute the radius of the flattened ellipsoid when an array of latitudes was provided.
+* Remove `-static` option from compiler options.
+* Convert some strings to raw format when they contain latex backslashes.
+* And other minor changes...
+
+**Future deprecation**
+
+The module `pyshtools.shtools` will be deprecated in the v4.11 release. This module represents 1 of 2 possible backends for pyshtools, and has been located at `pyshtools.backends.shtools` since version 4.9. Unless explicitly required, the user should avoid using the `backends` modules directly, and should instead call the routines that are located in the top level modules such as `pyshtools.expand` and `pyshtools.rotate`. Setting the backend by use of the routine `pyshtools.backends.selected_preferred_backend()` determines which backend to use when calling the routines in these top level modules.
+
+M. A. Wieczorek, M. Meschede, T. Brugere, A. Corbin, A. Hattori, K. Leinweber, I. Oshchepkov, M. Reinecke, E. Sales de Andrade, E. Schnetter, S. Schröder, A. Vasishta, A. Walker, B. Xu, J. Sierra (2022). SHTOOLS: Version 4.10.1, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+
 ## Version 4.10
 
 **Enhancements**
@@ -38,7 +57,7 @@ folder: fortran
 
 **Future deprecation**
 
-The module `pyshtools.shtools` will be deprecated in the v4.11 release. This module represents 1 of 2 possible backends for pyshtools, and has been located at `pyshtools.backends.shtools` since version 4.9. Unless explicitly required, the user should avoid using the `backends` modules directly, and should instead call the routines that are located in the top level modules such as `pyshtools.expand` and `pyshtools.rotate`. Setting the backend by use of the routine `pyshtools.backends.selected_preferred_backend()` determines which backed to use when calling the routines in the top level modules.
+The module `pyshtools.shtools` will be deprecated in the v4.11 release. This module represents 1 of 2 possible backends for pyshtools, and has been located at `pyshtools.backends.shtools` since version 4.9. Unless explicitly required, the user should avoid using the `backends` modules directly, and should instead call the routines that are located in the top level modules such as `pyshtools.expand` and `pyshtools.rotate`. Setting the backend by use of the routine `pyshtools.backends.selected_preferred_backend()` determines which backend to use when calling the routines in these top level modules.
 
 M. A. Wieczorek, M. Meschede, T. Brugere, A. Corbin, A. Hattori, K. Leinweber, I. Oshchepkov, M. Reinecke, E. Sales de Andrade, E. Schnetter, S. Schröder, A. Vasishta, A. Walker, B. Xu, J. Sierra (2022). SHTOOLS: Version 4.10, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
 
