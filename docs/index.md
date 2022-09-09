@@ -3,7 +3,7 @@ title: "Spherical Harmonic Tools"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, Slepian functions, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
 permalink: index.html
-summary: pyshtools is an archive of Python software that can be used to perform spherical harmonic transforms, multitaper spectral analyses, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data.
+summary: pyshtools is an archive of Python software that can be used for spherical harmonic transforms, multitaper spectral analyses, expansions of gridded data into Slepian basis functions, and standard operations on global gravitational and magnetic field data.
 toc: false
 ---
 
@@ -17,11 +17,11 @@ toc: false
 
 * Use of both regularly sampled geographic grids and grids appropriate for Gauss-Legendre quadrature.
 
-* Spherical harmonic transforms proven to be fast and accurate.
+* Spherical harmonic transforms proven to be fast and accurate to high degrees.
 
 * Supports multiple backends for performing basic mathematical operations, including [shtools](index-fortran.html) and the [Distinctly Useful Code Collection (DUCC)](https://gitlab.mpcdf.mpg.de/mtr/ducc).
 
-* Perform localized multitaper spectral analyses, or expand functions in terms of localized Slepian bases.
+* Perform localized multitaper spectral analyses, or expand gridded data in terms of localized Slepian basis functions.
 
 * Supports standard data and file formats, including *xarray* and *netcdf*.
 

@@ -1,13 +1,13 @@
 # SHTOOLS
 
-SHTOOLS is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms and reconstructions, rotations of data expressed in spherical harmonics, and multitaper spectral analyses on the sphere.
+SHTOOLS is a Fortran-95 library that can be used for spherical harmonic transforms, multitaper spectral analyses, expansions of gridded data into Slepian basis functions, and standard operations on global gravitational and magnetic field data.
 
 # Features
 
 * Supports all standard normalizations and phase conventions of the spherical harmonic functions.
 * Use of both regularly sampled geographic grids and grids appropriate for Gauss-Legendre quadrature.
 * Spherical harmonic transforms proven to be accurate up to about degree 2800.
-* Perform localized multitaper spectral analyses, or expand functions in terms of localized Slepian bases.
+* Perform localized multitaper spectral analyses, or expand gridded data in terms of localized Slepian basis functions.
 * Perform basic operations on global gravity and magnetic field data.
 * OpenMP compatible and OpenMP thread-safe versions of the Fortran routines.
 
