@@ -162,7 +162,8 @@ SYSMODPATH = $(PREFIX)/include
 SYSINCPATH = $(PREFIX)/include
 SYSSHAREPATH = $(PREFIX)/share
 
-FFTW = -L$(SYSLIBPATH) -lfftw3 -lm
+FFTLIBPATH = /usr/local
+FFTW = -L$(FFTLIBPATH) -lfftw3 -lm
 LAPACK_UNDERSCORE = 0
 
 FLAKE8_FILES = setup.py pyshtools examples/python
@@ -194,7 +195,7 @@ else ifeq ($(findstring ifort,$(F95)),ifort)
 	SYSMODFLAG = -I$(SYSMODPATH)
 	OPENMPFLAGS ?= -qopenmp
 	LAPACK ?= -mkl
-	BLAS ?= 
+	BLAS ?=
 else ifeq ($(findstring g95,$(F95)),g95)
 	# Default g95 flags.
 	F95FLAGS ?= -O3 -fno-second-underscore
@@ -205,7 +206,7 @@ else ifeq ($(findstring g95,$(F95)),g95)
 	LAPACK ?= -llapack
 else ifeq ($(findstring pgf90,$(F95)),pgf90)
 	# Default pgf90 flags
-	F95FLAGS ?= -fast 
+	F95FLAGS ?= -fast
 	MODFLAG = -Imodpath
 	SYSMODFLAG = -Imodpath
 	OPENMPFLAGS ?=
@@ -343,7 +344,7 @@ clean-fortran-tests:
 clean-python-tests:
 	@$(MAKE) -C $(PEXDIR) -f Makefile clean
 	@echo "--> Removed Python test suite executables and files"
-	
+
 clean-cpp-tests:
 	@$(MAKE) -C $(CPPDIR) -f Makefile clean
 	@echo "--> Removed cpp test suite executables and files"

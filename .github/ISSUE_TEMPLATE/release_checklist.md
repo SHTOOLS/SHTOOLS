@@ -55,11 +55,6 @@ Update the MacPorts installation by editing the file `Portfile` in the [macports
 ### Update conda-forge ###
 - [ ] Go to [pyshtools-feedstock](https://github.com/conda-forge/pyshtools-feedstock) and check that the `recipe/meta.yaml` file has been updated. This is usually done automatically by conda-forge's bot. If necessary, merge changes into the feedstock.
 
-### Update web documentation ###
-Update the web documentation at shtools.oca.eu.
-- [ ] Push the branch `master` to the private repo at gitlab.oca.eu.
-- [ ] Execute `gitlab-runner run` locally to build and upload the web documentation.
-
 ### Post release ###
 - [ ] Build a new Binder image by running one of the tutorials.
 - [ ] Advertise on Twitter and Element/Matrix.

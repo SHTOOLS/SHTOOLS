@@ -34,7 +34,7 @@ main namespace:
 
 For further information, consult the web documentation at
 
-   https://shtools.oca.eu/
+   https://shtools.github.io/SHTOOLS/
 
 and the GitHub project page at
 

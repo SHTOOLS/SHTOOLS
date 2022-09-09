@@ -19,7 +19,6 @@ SHELL = /bin/sh
 PROG = $(LIBPATH)/lib$(LIBNAME).a
 
 LIBTOOL = libtool
-LIBTOOLFLAGS = -static
 AR = ar
 ARFLAGS = -r
 RLIB = ranlib

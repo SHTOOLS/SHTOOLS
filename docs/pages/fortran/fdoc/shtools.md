@@ -34,4 +34,4 @@ The SHTOOLS software package is entirely free and open source. It can be modifie
 
 ## See also
 
-[SHTOOLS](shtools.oca.eu)
+[SHTOOLS](shtools.github.io/SHTOOLS/)

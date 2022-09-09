@@ -179,7 +179,8 @@ class SHMagCoeffs(object):
         name : str, optional, default = None
             The name of the dataset.
         units : str, optional, default = 'nT'
-            The units of the spherical harmonic coefficients.
+            The units of the spherical harmonic coefficients, which can be
+            either 'T' or 'nT'.
         year : float, default = None.
             The year of the time-variable spherical harmonic coefficients.
         copy : bool, optional, default = True
@@ -288,7 +289,8 @@ class SHMagCoeffs(object):
         name : str, optional, default = None
             The name of the dataset.
         units : str, optional, default = 'nT'
-            The units of the spherical harmonic coefficients.
+            The units of the spherical harmonic coefficients, which can be
+            either 'T' or 'nT'.
         year : float, default = None.
             The year of the time-variable spherical harmonic coefficients.
         """
@@ -408,7 +410,8 @@ class SHMagCoeffs(object):
         name : str, optional, default = None
             The name of the dataset.
         units : str, optional, default = 'nT'
-            The units of the spherical harmonic coefficients.
+            The units of the spherical harmonic coefficients, which can be
+            either 'T' or 'nT'.
         normalization : str, optional, default = 'schmidt'
             '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
             orthonormalized, Schmidt semi-normalized, or unnormalized
@@ -656,7 +659,8 @@ class SHMagCoeffs(object):
         name : str, optional, default = None
             The name of the dataset.
         units : str, optional, default = 'nT'
-            The units of the spherical harmonic coefficients.
+            The units of the spherical harmonic coefficients, which can be
+            either 'T' or 'nT'.
         year : float, default = None.
             The year of the time-variable spherical harmonic coefficients.
         exact_power : bool, optional, default = False
@@ -823,7 +827,8 @@ class SHMagCoeffs(object):
         name : str, optional, default = None
             The name of the dataset.
         units : str, optional, default = 'nT'
-            The units of the spherical harmonic coefficients.
+            The units of the spherical harmonic coefficients, which can be
+            either 'T' or 'nT'.
         year : float, default = None.
             The year of the time-variable spherical harmonic coefficients.
 
