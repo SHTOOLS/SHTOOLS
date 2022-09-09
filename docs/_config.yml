@@ -21,10 +21,10 @@ github_fdoc_editme_path: SHTOOLS/SHTOOLS/tree/develop/src/fdoc
 github_pydoc_editme_path: SHTOOLS/SHTOOLS/tree/develop/src/pydoc
 # These are the paths for the origin Fortran and Python documentation files.
 
-disqus_shortname: 
+disqus_shortname:
 # if you're using disqus for comments, add the shortname here. if not, leave this value blank.
 
-google_analytics: 
+google_analytics:
 # if you have google-analytics ID, put it in. if not, edit this value to blank.
 
 host: 127.0.0.1
@@ -87,7 +87,7 @@ sidebars:
 - mydoc_sidebar
 - fortran_sidebar
 
-description: "SHTOOLS/pyshtools is an archive of Fortran 95 and Python software that can be used to perform spherical harmonic transforms, multitaper spectral analyses on the sphere, expansions of functions into Slepian bases, and standard operations on global gravitational and magnetic field data."
+description: "SHTOOLS/pyshtools is a Fortran-95/Python library that can be used for spherical harmonic transforms, multitaper spectral analyses, expansions of gridded data into Slepian basis functions, and standard operations on global gravitational and magnetic field data."
 # the description is used in the feed.xml file
 
 encoding: utf-8

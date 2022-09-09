@@ -5,7 +5,7 @@ from scipy.special import factorial as _factorial
 def mag_spectrum(clm, a, r, potential=False, normalization='schmidt',
                  degrees=None, lmax=None, convention='power', unit='per_l',
                  base=10.):
-    """
+    r"""
     Return the spectrum of the magnetic field as a function of spherical
     harmonic degree.
 

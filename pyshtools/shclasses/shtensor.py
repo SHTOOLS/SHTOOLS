@@ -1913,7 +1913,7 @@ class Tensor(object):
                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                   cb_offset=None, cb_width=None, show=True, ax=None,
                   fname=None):
-        """
+        r"""
         Plot the first eigenvalue of the tensor.
 
         Usage
@@ -1962,7 +1962,7 @@ class Tensor(object):
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
-        cb_label : str, optional, default = '$\lambda_1$'
+        cb_label : str, optional, default = r'$\lambda_1$'
             Text label for the colorbar.
         cb_ylabel : str, optional, default = None
             Text label for the y axis of the colorbar
@@ -2024,7 +2024,7 @@ class Tensor(object):
                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                   cb_offset=None, cb_width=None, show=True, ax=None,
                   fname=None):
-        """
+        r"""
         Plot the second eigenvalue of the tensor.
 
         Usage
@@ -2073,7 +2073,7 @@ class Tensor(object):
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
-        cb_label : str, optional, default = '$\lambda_2$'
+        cb_label : str, optional, default = r'$\lambda_2$'
             Text label for the colorbar.
         cb_ylabel : str, optional, default = None
             Text label for the y axis of the colorbar
@@ -2135,7 +2135,7 @@ class Tensor(object):
                   cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                   cb_offset=None, cb_width=None, show=True, ax=None,
                   fname=None):
-        """
+        r"""
         Plot the third eigenvalue of the tensor.
 
         Usage
@@ -2184,7 +2184,7 @@ class Tensor(object):
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
-        cb_label : str, optional, default = '$\lambda_3$'
+        cb_label : str, optional, default = r'$\lambda_3$'
             Text label for the colorbar.
         cb_ylabel : str, optional, default = None
             Text label for the y axis of the colorbar
@@ -2385,7 +2385,7 @@ class Tensor(object):
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                    cb_offset=None, cb_width=None, tick_labelsize=None,
                    show=True, ax=None, fname=None):
-        """
+        r"""
         Plot the first eigenvalue of the horizontal tensor.
 
         Usage
@@ -2434,7 +2434,7 @@ class Tensor(object):
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
-        cb_label : str, optional, default = '$\lambda_{h1}$'
+        cb_label : str, optional, default = r'$\lambda_{h1}$'
             Text label for the colorbar.
         cb_ylabel : str, optional, default = None
             Text label for the y axis of the colorbar
@@ -2496,7 +2496,7 @@ class Tensor(object):
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                    cb_offset=None, cb_width=None, tick_labelsize=None,
                    show=True, ax=None, fname=None):
-        """
+        r"""
         Plot the second eigenvalue of the horizontal tensor.
 
         Usage
@@ -2545,7 +2545,7 @@ class Tensor(object):
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
-        cb_label : str, optional, default = '$\lambda_{h2}$'
+        cb_label : str, optional, default = r'$\lambda_{h2}$'
             Text label for the colorbar.
         cb_ylabel : str, optional, default = None
             Text label for the y axis of the colorbar
@@ -2607,7 +2607,7 @@ class Tensor(object):
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                    cb_offset=None, cb_width=None, tick_labelsize=None,
                    show=True, ax=None, fname=None):
-        """
+        r"""
         Plot the maximum absolute value eigenvalue of the horizontal tensor.
 
         Usage
@@ -2656,7 +2656,7 @@ class Tensor(object):
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
-        cb_label : str, optional, default = '$\lambda_{hh}$'
+        cb_label : str, optional, default = r'$\lambda_{hh}$'
             Text label for the colorbar.
         cb_ylabel : str, optional, default = None
             Text label for the y axis of the colorbar
@@ -2956,13 +2956,13 @@ class Tensor(object):
                 desc3 = 'Third eigenvalue of the magnetic field tensor'
 
             _eig1 = self.eig1.to_xarray(title=desc1,
-                                        long_name='${\lambda}_1$',
+                                        long_name=r'${\lambda}_1$',
                                         units=self._vii_units)
             _eig2 = self.eig2.to_xarray(title=desc2,
-                                        long_name='${\lambda}_2$',
+                                        long_name=r'${\lambda}_2$',
                                         units=self._vii_units)
             _eig3 = self.eig3.to_xarray(title=desc3,
-                                        long_name='${\lambda}_3$',
+                                        long_name=r'${\lambda}_3$',
                                         units=self._vii_units)
 
             dataset['eig1'] = _eig1
@@ -2983,13 +2983,13 @@ class Tensor(object):
                         + 'field tensor'
 
             _eigh1 = self.eigh1.to_xarray(title=desc1,
-                                          long_name='${\lambda}_{h1}$',
+                                          long_name=r'${\lambda}_{h1}$',
                                           units=self._vii_units)
             _eigh2 = self.eigh2.to_xarray(title=desc2,
-                                          long_name='${\lambda}_{h2}$',
+                                          long_name=r'${\lambda}_{h2}$',
                                           units=self._vii_units)
             _eighh = self.eighh.to_xarray(title=desc3,
-                                          long_name='${\lambda}_{hh}$',
+                                          long_name=r'${\lambda}_{hh}$',
                                           units=self._vii_units)
 
             dataset['eigh1'] = _eigh1
@@ -3128,13 +3128,13 @@ class SHGravTensor(Tensor):
         self._i2_label = 'det $V_{ij}$, ' + self.units + '$^3$'
         self._i_label = '$-(I_2/2)^{2} / (I_1/3)^{3}$'
 
-        self._eig1_label = '$\lambda_1$, ' + self.units
-        self._eig2_label = '$\lambda_2$, ' + self.units
-        self._eig3_label = '$\lambda_3$, ' + self.units
+        self._eig1_label = r'$\lambda_1$, ' + self.units
+        self._eig2_label = r'$\lambda_2$, ' + self.units
+        self._eig3_label = r'$\lambda_3$, ' + self.units
 
-        self._eigh1_label = '$\lambda_{h1}$, ' + self.units
-        self._eigh2_label = '$\lambda_{h2}$, ' + self.units
-        self._eighh_label = '$\lambda_{hh}$, ' + self.units
+        self._eigh1_label = r'$\lambda_{h1}$, ' + self.units
+        self._eigh2_label = r'$\lambda_{h2}$, ' + self.units
+        self._eighh_label = r'$\lambda_{hh}$, ' + self.units
 
     def __repr__(self):
         str = ('grid = {:s}\n'
@@ -3291,13 +3291,13 @@ class SHMagTensor(Tensor):
         self._i2_label = 'det $V_{ij}$, ' + self._i2_units
         self._i_label = '$-(I_2/2)^{2} / (I_1/3)^{3}$'
 
-        self._eig1_label = '$\lambda_1$, ' + self._units_formatted
-        self._eig2_label = '$\lambda_2$, ' + self._units_formatted
-        self._eig3_label = '$\lambda_3$, ' + self._units_formatted
+        self._eig1_label = r'$\lambda_1$, ' + self._units_formatted
+        self._eig2_label = r'$\lambda_2$, ' + self._units_formatted
+        self._eig3_label = r'$\lambda_3$, ' + self._units_formatted
 
-        self._eigh1_label = '$\lambda_{h1}$, ' + self._units_formatted
-        self._eigh2_label = '$\lambda_{h2}$, ' + self._units_formatted
-        self._eighh_label = '$\lambda_{hh}$, ' + self._units_formatted
+        self._eigh1_label = r'$\lambda_{h1}$, ' + self._units_formatted
+        self._eigh2_label = r'$\lambda_{h2}$, ' + self._units_formatted
+        self._eighh_label = r'$\lambda_{hh}$, ' + self._units_formatted
 
     def __repr__(self):
         str = ('grid = {:s}\n'

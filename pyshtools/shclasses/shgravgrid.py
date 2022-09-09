@@ -251,12 +251,12 @@ class SHGravGrid(object):
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,
                    title=None, titlesize=None, colorbar='right',
                    cmap='viridis', cmap_limits=None, cmap_reverse=False,
-                   cb_triangles='neither', cb_label='$g_\\theta$, m s$^{-2}$',
+                   cb_triangles='neither', cb_label=r'$g_\theta$, m s$^{-2}$',
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    tick_labelsize=None, show=True, ax=None, cb_offset=None,
                    cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                    fname=None, cb_width=None):
-        """
+        r"""
         Plot the theta component of the gravity field.
 
         Usage
@@ -305,7 +305,7 @@ class SHGravGrid(object):
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
-        cb_label : str, optional, default = '$g_r$, m s$^{-2}$'
+        cb_label : str, optional, default = r'$g_\theta$, m s$^{-2}$'
             Text label for the colorbar.
         cb_ylabel : str, optional, default = None
             Text label for the y axis of the colorbar
@@ -356,12 +356,12 @@ class SHGravGrid(object):
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
                  title=None, titlesize=None, colorbar='right',
                  cmap='viridis', cmap_limits=None, cmap_reverse=False,
-                 cb_triangles='neither', cb_label='$g_\phi$, m s$^{-2}$',
+                 cb_triangles='neither', cb_label=r'$g_\phi$, m s$^{-2}$',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
                  tick_labelsize=None, show=True, ax=None, cb_offset=None,
                  cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
                  cb_width=None, fname=None):
-        """
+        r"""
         Plot the phi component of the gravity field.
 
         Usage
@@ -410,7 +410,7 @@ class SHGravGrid(object):
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
-        cb_label : str, optional, default = '$g_\phi$, m s$^{-2}$'
+        cb_label : str, optional, default = r'$g_\phi$, m s$^{-2}$'
             Text label for the colorbar.
         cb_ylabel : str, optional, default = None
             Text label for the y axis of the colorbar
@@ -876,10 +876,10 @@ class SHGravGrid(object):
         _rad = self.rad.to_xarray(title='gravity (radial)',
                                   long_name='$g_r$', units='$m s^{-2}$')
         _theta = self.theta.to_xarray(title='gravity (theta)',
-                                      long_name='$g_\\theta$',
+                                      long_name=r'$g_\theta$',
                                       units='$m s^{-2}$')
         _phi = self.phi.to_xarray(title='gravity (phi)',
-                                  long_name='$g_\\phi$', units='$m s^{-2}$')
+                                  long_name=r'$g_\phi$', units='$m s^{-2}$')
         _pot = self.pot.to_xarray(title='gravitational potential',
                                   long_name='potential', units='$m^2 s^{-2}$')
 
