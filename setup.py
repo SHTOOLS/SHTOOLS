@@ -16,7 +16,10 @@ if sys.version_info < min_version:
     raise SystemError(error)
 
 import os  # noqa: E402
+from pathlib import Path  # noqa: E402
+from subprocess import check_call  # noqa: E402
 import sysconfig  # noqa: E402
+
 import setuptools  # noqa: E402
 import numpy  # noqa: E402
 import versioneer  # noqa: E402
@@ -29,22 +32,6 @@ from numpy.distutils.fcompiler import FCompiler  # noqa: E402
 from numpy.distutils.fcompiler import get_default_fcompiler  # noqa: E402
 from numpy.distutils.misc_util import Configuration  # noqa: E402
 from numpy.distutils.system_info import get_info, dict_append  # noqa: E402
-from subprocess import check_call  # noqa: E402
-
-
-# Convert markdown README.md to restructured text (.rst) for PyPi, and
-# remove the first 5 lines that contain a reference to the shtools logo.
-# pandoc can be installed either by conda or pip:
-#     conda install -c conda-forge pypandoc
-#     pip install pypandoc
-try:
-    import pypandoc
-    rst = pypandoc.convert_file('README.md', 'rst')
-    long_description = rst.split('\n', 5)[5]
-except(IOError, ImportError):
-    print('*** pypandoc is not installed. PYPI long_description will not be '
-          'formatted correctly. ***')
-    long_description = open('README.md').read()
 
 
 CLASSIFIERS = [
@@ -231,7 +218,8 @@ metadata = dict(
     name='pyshtools',
     version=VERSION,
     description='SHTOOLS - Spherical Harmonic Tools',
-    long_description=long_description,
+    long_description=Path('README.md').read_text(encoding='utf-8'),
+    long_description_content_type='text/markdown',
     url='https://shtools.github.io/SHTOOLS/',
     download_url='https://github.com/SHTOOLS/SHTOOLS/zipball/master',
     author='The SHTOOLS developers',

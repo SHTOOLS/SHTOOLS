@@ -1,7 +1,6 @@
 ipython
 palettable>=3.3
 jupyter
-pypandoc
 cython
 pyshp
 six
