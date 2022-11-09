@@ -27,26 +27,55 @@ program TestSHRotate
         stop
     end if
 
-    infile = "../../ExampleDataFiles/MarsTopo719.shape"
+    ! Path to example data files may be passed as first argument, or use a default.
+    if (command_argument_count() > 0) then
+        call get_command_argument(1, infile)
+    else
+        infile = "../../ExampleDataFiles"
+    end if
+    infile = trim(infile) // "/MarsTopo719.shape"
     print*, "Input file = ", infile
     call SHRead(infile, cilm1, lmax)
     print*, "Lmax of input file = ", lmax
 
-    print*, "Maximum degree to be used with rotations > "
-    read(*,*) lmax
+    ! A data input file may be passed as second argument, or else prompt for required settings.
+    if (command_argument_count() > 1) then
+        call get_command_argument(2, infile)
+        open(unit=20, file=infile, action="read")
+        read(20,*) lmax
+        read(20,*) alpha
+        read(20,*) beta
+        read(20,*) gamma
+        read(20,*) bodycoord
+        read(20,*) outsh
+        read(20,*) interval
+        read(20,*) outgrid
+        close(20)
+    else
+        print*, "Maximum degree to be used with rotations > "
+        read(*,*) lmax
 
-    print*, "Input Euler Angles"
-    print*, "Alpha (deg) = "
-    read(*,*) alpha
-    print*, "Beta (deg) = "
-    read(*,*) beta
-    print*, "Gamma (deg) = "
-    read(*,*) gamma
+        print*, "Input Euler Angles"
+        print*, "Alpha (deg) = "
+        read(*,*) alpha
+        print*, "Beta (deg) = "
+        read(*,*) beta
+        print*, "Gamma (deg) = "
+        read(*,*) gamma
 
-    print*, "Do these correspond to "
-    print*, "(1) Rotation of the coordinate system without rotation of the physical body, or"
-    print*, "(2) Rotation of the physical body without rotation of the coordinate system."
-    read(*,*) bodycoord
+        print*, "Do these correspond to "
+        print*, "(1) Rotation of the coordinate system without rotation of the physical body, or"
+        print*, "(2) Rotation of the physical body without rotation of the coordinate system."
+        read(*,*) bodycoord
+
+        print*, "Output file name of rotated spherical harmonics > "
+        read(*,*) outsh
+
+        print*, "Grid spacing for output grid (deg) > "
+        read(*,*) interval
+        print*, "File name of gridded rotated field > "
+        read(*,*) outgrid
+    end if
 
     if (bodycoord ==1) then
         x(1) = alpha ; x(2) = beta ; x(3) = gamma
@@ -58,14 +87,6 @@ program TestSHRotate
     end if
 
     x = x * pi / 180.0_dp
-
-    print*, "Output file name of rotated spherical harmonics > "
-    read(*,*) outsh
-
-    print*, "Grid spacing for output grid (deg) > "
-    read(*,*) interval
-    print*, "File name of gridded rotated field > "
-    read(*,*) outgrid
 
     allocate(cilm2(2, lmax+1, lmax+1), stat = astat(2))
     allocate(dj(lmax+1, lmax+1, lmax+1), stat = astat(3))

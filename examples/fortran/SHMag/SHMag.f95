@@ -25,7 +25,13 @@ program SHMag
                              total(:,:), pot(:,:)
     integer(int32) :: lmax, lmaxp, n, n_out, nlong, nlat, i, j, astat(6), sampling
 
-    infile = "../../ExampleDataFiles/FSU_mars90.sh"
+    ! Path to example data files may be passed as first argument, or use a default.
+    if (command_argument_count() > 0) then
+        call get_command_argument(1, infile)
+    else
+        infile = "../../ExampleDataFiles"
+    end if
+    infile = trim(infile) // "/FSU_mars90.sh"
 
     f = 1.0_dp / 169.864881_dp    ! Mars flattening = (R_eq - R_p)/R_eq
     mpr = 3389.508e3_dp           ! Mean radius of mars
