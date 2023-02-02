@@ -1281,7 +1281,7 @@ class SHGravCoeffs(object):
         ls = _np.array(ls)
         ms = _np.array(ms)
 
-        mneg_mask = (ms < 0).astype(_np.int)
+        mneg_mask = (ms < 0).astype(_np.int_)
         self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
 
     # ---- IO routines ----
