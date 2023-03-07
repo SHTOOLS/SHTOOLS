@@ -16,6 +16,7 @@ if sys.version_info < min_version:
     raise SystemError(error)
 
 import os  # noqa: E402
+import pkg_resources  # noqa: E402
 import sysconfig  # noqa: E402
 import setuptools  # noqa: E402
 import numpy  # noqa: E402
@@ -150,7 +151,7 @@ class install(_install):
 
 def distutils_dir_name(dname):
     """Returns the name of a distutils build directory"""
-    parse_version = setuptools.version.pkg_resources.packaging.version.parse
+    parse_version = pkg_resources.packaging.version.parse
     if parse_version(setuptools.__version__) < parse_version('62.1.0'):
         f = "{dirname}.{platform}-{version[0]}.{version[1]}"
         return f.format(dirname=dname,
