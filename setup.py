@@ -42,7 +42,7 @@ try:
     import pypandoc
     rst = pypandoc.convert_file('README.md', 'rst')
     long_description = rst.split('\n', 5)[5]
-except(IOError, ImportError):
+except (IOError, ImportError):
     print('*** pypandoc is not installed. PYPI long_description will not be '
           'formatted correctly. ***')
     long_description = open('README.md').read()
