@@ -1,3 +1,8 @@
+python_sources = [
+  '__init__.py',
+  '_version.py',
+]
+
 pymod = import('python')
 python = pymod.find_installation(pure: false)
 
@@ -54,3 +59,17 @@ pyshtool = python.extension_module('_SHTOOLS',
   dependencies: python.dependency(),
   install: true,
   subdir: 'pyshtools')
+
+python.install_sources(python_sources, subdir: 'pyshtools')
+
+subdir('backends')
+subdir('constants')
+subdir('datasets')
+subdir('expand')
+subdir('gravmag')
+subdir('legendre')
+subdir('rotate')
+subdir('shclasses')
+subdir('shio')
+subdir('spectralanalysis')
+subdir('utils')
