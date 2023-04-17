@@ -16,6 +16,7 @@ if sys.version_info < min_version:
     raise SystemError(error)
 
 import os  # noqa: E402
+import pkg_resources  # noqa: E402
 import sysconfig  # noqa: E402
 import setuptools  # noqa: E402
 import numpy  # noqa: E402
@@ -41,7 +42,7 @@ try:
     import pypandoc
     rst = pypandoc.convert_file('README.md', 'rst')
     long_description = rst.split('\n', 5)[5]
-except(IOError, ImportError):
+except (IOError, ImportError):
     print('*** pypandoc is not installed. PYPI long_description will not be '
           'formatted correctly. ***')
     long_description = open('README.md').read()
@@ -150,7 +151,7 @@ class install(_install):
 
 def distutils_dir_name(dname):
     """Returns the name of a distutils build directory"""
-    parse_version = setuptools.version.pkg_resources.packaging.version.parse
+    parse_version = pkg_resources.packaging.version.parse
     if parse_version(setuptools.__version__) < parse_version('62.1.0'):
         f = "{dirname}.{platform}-{version[0]}.{version[1]}"
         return f.format(dirname=dname,
