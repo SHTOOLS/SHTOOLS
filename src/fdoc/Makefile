@@ -18,7 +18,7 @@ SHELL=/bin/sh
 PREFIX=/usr/local
 
 PANDOC = pandoc
-MANDIR = ../../man/man1
+MANDIR = ../../man/man3
 PYTHON = python3
 
 MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md \
@@ -53,35 +53,35 @@ MDFILES = shtools.md planetsconstants.md plmbar.md plmbar_d1.md plbar.md \
 	shscouplingmatrixcap.md makegravgridpoint.md makemaggridpoint.md \
 	makegradientdh.md
 
-MANFILES = $(addprefix $(MANDIR)/, shtools.1 planetsconstants.1 plmbar.1 \
-	plmbar_d1.1 plbar.1 plbar_d1.1 plon.1 plmon.1 plmon_d1.1 plon_d1.1 \
-	plmschmidt.1 plschmidt.1 plmschmidt_d1.1 plschmidt_d1.1 plegendrea.1 \
-	plegendrea_d1.1 plegendre.1 plegendre_d1.1 plmindex.1 shexpanddh.1 \
-	makegriddh.1 shexpanddhc.1 makegriddhc.1 glqgridcoord.1 shexpandglq.1 \
-	makegridglq.1 shexpandglqc.1 makegridglqc.1 shexpandlsq.1 makegrid2d.1 \
-	makegridpoint.1 makegridpointc.1 shmultiply.1 shread.1 shread2.1 \
-	shreadjpl.1 shcilmtocindex.1 shcindextocilm.1 shcilmtovector.1 \
-	shvectortocilm.1 yilmindexvector.1 shrtoc.1 shctor.1 shpowerl.1 \
-	shpowerdensityl.1 shcrosspowerl.1 shcrosspowerdensityl.1 \
-	shpowerspectrum.1 shpowerspectrumdensity.1 shcrosspowerspectrum.1 \
-	shcrosspowerspectrumdensity.1 shadmitcorr.1 shconfidence.1 shpowerlc.1 \
-	shpowerdensitylc.1 shcrosspowerlc.1 shcrosspowerdensitylc.1 \
-	shpowerspectrumc.1 shpowerspectrumdensityc.1 shcrosspowerspectrumc.1 \
-	shcrosspowerspectrumdensityc.1 shmultitaperse.1 shmultitapercse.1 \
-	shlocalizedadmitcorr.1 shreturntapers.1 shreturntapersm.1 computedm.1 \
-	computedg82.1 shfindlwin.1 shbiask.1 shbiasadmitcorr.1 shmtdebias.1 \
-	shmtvaropt.1 shsjkpg.1 shreturntapersmap.1 computedmap.1 curve2mask.1 \
-	shbias.1 sphericalcapcoef.1 djpi2.1 shrotatecoef.1 shrotaterealcoef.1 \
-	makecirclecoord.1 makeellipsecoord.1 randomn.1 randomgaussian.1 preglq.1 \
-	eigvalvecsym.1 eigvalvecsymtri.1 eigvalsym.1 wigner3j.1 makegravgriddh.1 \
-	makegravgradgriddh.1 makegeoidgrid.1 cilmplus.1 cilmminus.1 \
-	cilmplusrhoh.1 cilmminusrhoh.1 batohilm.1 batohilmrhoh.1 \
-	downcontfilterma.1 downcontfiltermc.1 normalgravity.1 makemaggriddh.1 \
-	shmagpowerspectrum.1 shmagpowerl.1 shmtcouplingmatrix.1 \
-	shmultitapermaskcse.1 shmultitapermaskse.1 shbiaskmask.1 dhaj.1 shglq.1 \
-	makemaggradgriddh.1 shrotatetapers.1 slepiancoeffs.1 slepiancoeffstosh.1 \
-	shscouplingmatrix.1 shslepianvar.1 shscouplingmatrixcap.1 \
-	makegravgridpoint.1 makemaggridpoint.1 makegradientdh.1)
+MANFILES = $(addprefix $(MANDIR)/, shtools.3 planetsconstants.3 plmbar.3 \
+	plmbar_d1.3 plbar.3 plbar_d1.3 plon.3 plmon.3 plmon_d1.3 plon_d1.3 \
+	plmschmidt.3 plschmidt.3 plmschmidt_d1.3 plschmidt_d1.3 plegendrea.3 \
+	plegendrea_d1.3 plegendre.3 plegendre_d1.3 plmindex.3 shexpanddh.3 \
+	makegriddh.3 shexpanddhc.3 makegriddhc.3 glqgridcoord.3 shexpandglq.3 \
+	makegridglq.3 shexpandglqc.3 makegridglqc.3 shexpandlsq.3 makegrid2d.3 \
+	makegridpoint.3 makegridpointc.3 shmultiply.3 shread.3 shread2.3 \
+	shreadjpl.3 shcilmtocindex.3 shcindextocilm.3 shcilmtovector.3 \
+	shvectortocilm.3 yilmindexvector.3 shrtoc.3 shctor.3 shpowerl.3 \
+	shpowerdensityl.3 shcrosspowerl.3 shcrosspowerdensityl.3 \
+	shpowerspectrum.3 shpowerspectrumdensity.3 shcrosspowerspectrum.3 \
+	shcrosspowerspectrumdensity.3 shadmitcorr.3 shconfidence.3 shpowerlc.3 \
+	shpowerdensitylc.3 shcrosspowerlc.3 shcrosspowerdensitylc.3 \
+	shpowerspectrumc.3 shpowerspectrumdensityc.3 shcrosspowerspectrumc.3 \
+	shcrosspowerspectrumdensityc.3 shmultitaperse.3 shmultitapercse.3 \
+	shlocalizedadmitcorr.3 shreturntapers.3 shreturntapersm.3 computedm.3 \
+	computedg82.3 shfindlwin.3 shbiask.3 shbiasadmitcorr.3 shmtdebias.3 \
+	shmtvaropt.3 shsjkpg.3 shreturntapersmap.3 computedmap.3 curve2mask.3 \
+	shbias.3 sphericalcapcoef.3 djpi2.3 shrotatecoef.3 shrotaterealcoef.3 \
+	makecirclecoord.3 makeellipsecoord.3 randomn.3 randomgaussian.3 preglq.3 \
+	eigvalvecsym.3 eigvalvecsymtri.3 eigvalsym.3 wigner3j.3 makegravgriddh.3 \
+	makegravgradgriddh.3 makegeoidgrid.3 cilmplus.3 cilmminus.3 \
+	cilmplusrhoh.3 cilmminusrhoh.3 batohilm.3 batohilmrhoh.3 \
+	downcontfilterma.3 downcontfiltermc.3 normalgravity.3 makemaggriddh.3 \
+	shmagpowerspectrum.3 shmagpowerl.3 shmtcouplingmatrix.3 \
+	shmultitapermaskcse.3 shmultitapermaskse.3 shbiaskmask.3 dhaj.3 shglq.3 \
+	makemaggradgriddh.3 shrotatetapers.3 slepiancoeffs.3 slepiancoeffstosh.3 \
+	shscouplingmatrix.3 shslepianvar.3 shscouplingmatrixcap.3 \
+	makegravgridpoint.3 makemaggridpoint.3 makegradientdh.3)
 
 
 all: install-man
@@ -98,12 +98,12 @@ clean:
 	-rm -f $(MANFILES)
 
 uninstall:
-	-cd $(PREFIX)/share/man/man1/ ; rm $(MANFILES)
+	-cd $(PREFIX)/share/man/man3/ ; rm $(MANFILES)
 
 
-.SUFFIXES: $(SUFFIXES) .md .1
+.SUFFIXES: $(SUFFIXES) .md .3
 
-$(MANDIR)/%.1 : %.md
+$(MANDIR)/%.3 : %.md
 	printf "%% $(basename $<)(1) Fortran 95 | SHTOOLS $(VERSION)\n%%\n%% %s" > temp.md
 	stat -t "%F" -f "%Sm" $< >> temp.md
 	cat $< >> temp.md
