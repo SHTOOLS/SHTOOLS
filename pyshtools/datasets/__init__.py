@@ -23,6 +23,8 @@ from . import Moon
 from . import Mars
 from . import Vesta
 from . import Ceres
+from . import Ganymede
 
 
-__all__ = ['Mercury', 'Venus', 'Earth', 'Moon', 'Mars', 'Vesta', 'Ceres']
+__all__ = ['Mercury', 'Venus', 'Earth', 'Moon', 'Mars', 'Vesta', 'Ceres',
+           'Ganymede']

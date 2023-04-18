@@ -1,14 +1,13 @@
 <p align="center">
     <img alt="SHTOOLS LOGO" src="misc/logo.png" width="100%">
-    <img alt="Documentation" src="https://img.shields.io/badge/documentation-shtools.github.io%2FSHTOOLS%2F-yellow.svg">
-    <img alt="DOI" src="https://zenodo.org/badge/doi/10.5281/zenodo.592762.svg">
-    <img alt="Paper" src="https://img.shields.io/badge/paper-10.1029/2018GC007529-orange.svg">
-    <img alt="Binder" src="https://mybinder.org/badge_logo.svg">
-    <img alt="Chat on matrix" src="https://img.shields.io/badge/chat-on_[matrix]-4bb596.svg">
-    <img alt="Chat at gitter" src="https://badges.gitter.im/SHTOOLS/SHTOOLS.svg">
+    <a href="https://shtools.github.io/SHTOOLS/"><img alt="Documentation" src="https://img.shields.io/badge/documentation-shtools.github.io%2FSHTOOLS%2F-yellow.svg"></a>
+    <a href="https://doi.org/10.5281/zenodo.592762"><img alt="DOI" src="https://zenodo.org/badge/doi/10.5281/zenodo.592762.svg"></a>
+    <a href="https://doi.org/10.1029/2018GC007529"><img alt="Paper" src="https://img.shields.io/badge/paper-10.1029/2018GC007529-orange.svg"></a>
+    <a href="https://mybinder.org/v2/gh/SHTOOLS/SHTOOLS/master?filepath=examples%2Fnotebooks%2F"><img alt="Binder" src="https://mybinder.org/badge_logo.svg"></a>
+    <a href="https://matrix.to/#/%23pyshtools:matrix.org"><img alt="Chat on matrix" src="https://img.shields.io/badge/chat-on_[matrix]-4bb596.svg"></a>
+    <a href="https://app.gitter.im/#/room/#pyshtools:matrix.org"><img alt="Chat at gitter" src="https://badges.gitter.im/SHTOOLS/SHTOOLS.svg"></a>
     <img alt="License" src="https://img.shields.io/badge/License-BSD_3--Clause-brightgreen.svg">
-    <img alt="Twitter" src="https://img.shields.io/twitter/follow/pyshtools.svg?style=social&label=Follow">
-    <img alt="Mastodon Follow" src="https://img.shields.io/mastodon/follow/108112567255227248?domain=https%3A%2F%2Ffosstodon.org&style=social">
+    <a href="https://fosstodon.org/@shtools"><img alt="Mastodon Follow" src="https://img.shields.io/mastodon/follow/108112567255227248?domain=https%3A%2F%2Ffosstodon.org&style=social"></a>
 </p>
 
 SHTOOLS/pyshtools is a Fortran-95/Python library that can be used for spherical harmonic transforms, multitaper spectral analyses, expansions of gridded data into Slepian basis functions, standard operations on global gravitational and magnetic field data.
@@ -36,23 +35,23 @@ SHTOOLS/pyshtools is a Fortran-95/Python library that can be used for spherical 
 
 ### FEATURES
 
-* Support a set of [standard normalizations](https://shtools.oca.eu/shtools/public/fortran-real-spherical-harmonics.html#supported-normalizations) and [phase conventions](https://shtools.oca.eu/shtools/public/fortran-real-spherical-harmonics.html#condon-shortley-phase-factor) for spherical harmonic functions.
+* Supports all standard normalizations and phase conventions of the spherical harmonic functions.
 
-* Run high-performance conversion between real and complex harmonics as well as phase conventions. Also, it effortlessly interchanges between standard normalizations for associated Legendre Functions.
+* Effortless conversion between real and complex harmonics, and between different normalization and phase conventions.
 
-* Deliver equally sampled, equally spaced, and Gauss-Legendre quadrature grids.
+* Use of both regularly sampled geographic grids and grids appropriate for Gauss-Legendre quadrature.
 
-* Suport accurate and fast harmonic spherical transformations up to approximately degree 2800 for Fortran 95 and beyond using the [DUCC0](https://gitlab.mpcdf.mpg.de/mtr/ducc) backend.
+* Spherical harmonic transforms proven to be accurate up to about degree 2800 for the native Fortran 95 backend and beyond using the [DUCC0](https://gitlab.mpcdf.mpg.de/mtr/ducc) backend.
 
 * Perform localized multitaper spectral analyses, or expand gridded data in terms of localized Slepian basis functions.
 
-* Provide support for standard data and file formats, including *xarray* and *netcdf*.
+* Support for standard data and file formats, including *xarray* and *netcdf*.
 
 * Import research-grade gravity, topography, and magnetic field datasets with a single command.
 
-* Publish quality maps using [Cartopy](https://scitools.org.uk/cartopy) and [PyGMT](https://scitools.org.uk/cartopy/docs/latest).
+* Creation of publication quality maps using [Cartopy](https://scitools.org.uk/cartopy) and [PyGMT](https://scitools.org.uk/cartopy/docs/latest).
 
-* Support multithreaded programming using [OpenMP](https://www.openmp.org) API.
+* Support multithreaded programming using the [OpenMP](https://www.openmp.org) API.
 
 ### HOW TO USE
 
@@ -125,15 +124,15 @@ Further installation instructions and options can be found in the [web documenta
 
 ### CONTRIBUTING
 
-We work on the `develop` branch and only push releases to `master`. Please base all pull requests on `develop`. You can access aditional guidelines by visiting the [TEMPLATE](./.github/pull_request_template.md) file.
-### MAINTAINERS AND CONTRIBUTORS
+We work on the `develop` branch and only push releases to `master`. Please base all pull requests on `develop`.
 
-SHTOOLS is currently maintained by [Mark Wieczorek](https://github.com/MarkWieczorek) and [Matthias Meschede](https://github.com/MMesch). For the full list of contributors, see the [AUTHORS](./AUTHORS.md) file.
+### CONTRIBUTORS
+
+For the full list of contributors, see the [AUTHORS](./AUTHORS.md) file.
 
 ### LICENSE
-This project is a BSD 3-Clause licensed, as found in the [LICENSE](./LICENSE.txt) file.
+This project uses the BSD 3-Clause license, as found in the [LICENSE](./LICENSE.txt) file.
 
 ### REFERENCES
 - Mark A. Wieczorek and Matthias Meschede (2018). SHTools --- Tools for working with spherical harmonics, *Geochemistry, Geophysics, Geosystems*, 19, 2574-2592, doi:[10.1029/2018GC007529](https://doi.org/10.1029/2018GC007529).
 - Mark Wieczorek, *et al*. (2019). SHTOOLS/SHTOOLS. Zenodo, doi:[10.5281/zenodo.3457861](https://doi.org/10.5281/zenodo.3457861)
-
