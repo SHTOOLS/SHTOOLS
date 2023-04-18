@@ -36,7 +36,6 @@ jobs:
                                  openblas \
                                  numpy \
                                  setuptools \
-                                 pypandoc \
                                  versioneer \
                                  twine
         mamba list -n pypi

@@ -18,5 +18,4 @@ dependencies:
     - jupyter
     - pip
     - ducc0>=0.15
-    - pypandoc
     - flake8
