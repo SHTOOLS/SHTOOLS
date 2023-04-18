@@ -287,8 +287,8 @@ install:
 	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/examples/shtools
 	cp -R examples/fortran $(DESTDIR)$(SYSSHAREPATH)/examples/shtools/
 	cp -R examples/ExampleDataFiles $(DESTDIR)$(SYSSHAREPATH)/examples/shtools/
-	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man1
-	cp -R man/man1/ $(DESTDIR)$(SYSSHAREPATH)/man/man1/
+	mkdir -pv $(DESTDIR)$(SYSSHAREPATH)/man/man3
+	cp -R man/man3/ $(DESTDIR)$(SYSSHAREPATH)/man/man3/
 	@echo
 	@echo "Compile your Fortran code with the following flags:"
 	@echo "---------------------------------------------------"
@@ -312,7 +312,7 @@ doc:
 	@echo "--> Documentation created successfully"
 
 remove-doc:
-	@-rm -f man/man1/*.1
+	@-rm -f man/man3/*.3
 	@-rm -f doc/pages/fortran/fdoc/*.md
 	@-rm -f doc/pages/mydoc/pydoc/*.md
 	@echo "--> Removed man files and web site source md files"
