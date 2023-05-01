@@ -79,10 +79,10 @@ $(PROG): $(OBJS)
 	@echo "--> Compilation of source files successful"
 	@echo
 	@rm -f $(PROG)
-	$(LIBTOOL) $(LIBTOOLFLAGS) -o $(PROG) $(OBJS)
+#	$(LIBTOOL) $(LIBTOOLFLAGS) -o $(PROG) $(OBJS)
 #	If you prefer to use libtool, uncomment the above line, and comment the two lines below (AR and RLIB)
-#	$(AR) $(ARFLAGS) $(PROG) $(OBJS)
-#	$(RLIB) $(RLIBFLAGS) $(PROG)
+	$(AR) $(ARFLAGS) $(PROG) $(OBJS)
+	$(RLIB) $(RLIBFLAGS) $(PROG)
 	@echo
 	@echo "--> Creation of static library successful"
 #	@rm -f $(OBJS)
