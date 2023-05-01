@@ -151,10 +151,9 @@ PEXDIR = examples/python
 NBDIR = examples/notebooks
 WWWSRC = docs
 WWWDEST = www
-LIBPATH = $(PWD)/$(LIBDIR)
-MODPATH = $(PWD)/$(MODDIR)
-INCPATH = $(PWD)/$(INCDIR)
-PYPATH = $(PWD)
+LIBPATH = $(CURDIR)/$(LIBDIR)
+MODPATH = $(CURDIR)/$(MODDIR)
+INCPATH = $(CURDIR)/$(INCDIR)
 
 PREFIX = /usr/local
 SYSLIBPATH = $(PREFIX)/lib
