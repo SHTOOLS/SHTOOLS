@@ -14,7 +14,7 @@ Program LocalizedAdmitCorr
 
     implicit none
 
-    character(120) :: topography_file, potential_file, outfile
+    character(120) :: infile, topography_file, potential_file, outfile
     real(dp) :: header(8), mpr,  r0_pot, gm, mass, lat, lon, pi, theta0, &
                 alpha, sn, r
     real(dp), allocatable :: grav(:,:,:), admit(:), corr(:), admit_error(:), &
@@ -28,8 +28,14 @@ Program LocalizedAdmitCorr
 
     degmax = 360
 
-    topography_file = "../../ExampleDataFiles/MarsTopo719.shape"
-    potential_file = "../../ExampleDataFiles/gmm3_120_sha.tab"
+    ! Path to example data files may be passed as first argument, or use a default.
+    if (command_argument_count() > 0) then
+        call get_command_argument(1, infile)
+    else
+        infile = "../../ExampleDataFiles"
+    end if
+    topography_file = trim(infile) // "/MarsTopo719.shape"
+    potential_file = trim(infile) // "/gmm3_120_sha.tab"
 
     !--------------------------------------------------------------------------
     !
@@ -78,42 +84,59 @@ Program LocalizedAdmitCorr
     !
     !--------------------------------------------------------------------------
 
-    print*, "Number of tapers to use > "
-    read(*,*) K
-
-    print*, "Latitude of feature of interest (degrees) > "
-    read(*,*) lat
-    print*, "Longitude (degrees) > "
-    read(*,*) lon
-    print*, "Angular radius of localization window (degrees) > "
-    read(*,*) theta0
-    theta0 = theta0*pi / 180.0_dp
-
-    print*, "Create localization window using"
-    print*, "(1) Desired concentration factor, alpha"
-    print*, "(2) Desired (approximate) Shannon number; (Lwin+1) Theta0 / pi)"
-    print*, "(3) Desired Spectral bandwidth (Lwin)"
-    read(*,*) option1
-
-    if (option1==1) then
-        print*, "Input desired concentration factor of the Kth taper > "
-        read(*,*) alpha
-        lwin = SHFindLWin(theta0, 0, alpha, K)
-        print*, "Corresponding spherical harmonic bandwidth = ", lwin
-        print*, "Corresponding approximate Shannon number = ", &
-                (lwin+1) * theta0 / pi
-    else if (option1==2) then
-        print*, "Input Shannon number > "
-        read(*,*) sn
-        lwin = nint(sn * pi / theta0) - 1
-        print*, "Corresponding spherical harmonic bandwidth = ", lwin
-    else if (option1==3) then
-        print*, "Input Lwin > "
-        read(*,*) lwin
-        print*, "Corresponding approximate Shannon number = ", &
-                (lwin+1) * theta0 / pi
+    ! A data input file may be passed as second argument, or else prompt for required settings.
+    if (command_argument_count() > 1) then
+        call get_command_argument(2, infile)
+        open(unit=20, file=infile, action="read")
+        read(20,*) K
+        read(20,*) lat
+        read(20,*) lon
+        read(20,*) theta0
+        read(20,*) option1
+        if (option1==1) then
+            read(20,*) alpha
+        else if (option1==2) then
+            read(20,*) sn
+        else if (option1==3) then
+            read(20,*) lwin
+        else
+            stop
+        end if
+        read(20,*) outfile
+        close(20)
     else
-        stop
+        print*, "Number of tapers to use > "
+        read(*,*) K
+
+        print*, "Latitude of feature of interest (degrees) > "
+        read(*,*) lat
+        print*, "Longitude (degrees) > "
+        read(*,*) lon
+        print*, "Angular radius of localization window (degrees) > "
+        read(*,*) theta0
+        theta0 = theta0*pi / 180.0_dp
+
+        print*, "Create localization window using"
+        print*, "(1) Desired concentration factor, alpha"
+        print*, "(2) Desired (approximate) Shannon number; (Lwin+1) Theta0 / pi)"
+        print*, "(3) Desired Spectral bandwidth (Lwin)"
+        read(*,*) option1
+
+        if (option1==1) then
+            print*, "Input desired concentration factor of the Kth taper > "
+            read(*,*) alpha
+        else if (option1==2) then
+            print*, "Input Shannon number > "
+            read(*,*) sn
+        else if (option1==3) then
+            print*, "Input Lwin > "
+            read(*,*) lwin
+        else
+            stop
+        end if
+
+        print*, "Name of output admittance and correlation file > "
+        read(*,*) outfile
     end if
 
     allocate(tapers(lwin+1, (lwin+1)**2), stat = astat(1))
@@ -137,8 +160,21 @@ Program LocalizedAdmitCorr
 
     print*, "Gravity field evaluated at R = (km) ", r0_pot / 1.e3_dp
 
-    print*, "Name of output admittance and correlation file > "
-    read(*,*) outfile
+    if (option1==1) then
+        lwin = SHFindLWin(theta0, 0, alpha, K)
+        print*, "Corresponding spherical harmonic bandwidth = ", lwin
+        print*, "Corresponding approximate Shannon number = ", &
+                (lwin+1) * theta0 / pi
+    else if (option1==2) then
+        lwin = nint(sn * pi / theta0) - 1
+        print*, "Corresponding spherical harmonic bandwidth = ", lwin
+    else if (option1==3) then
+        print*, "Corresponding approximate Shannon number = ", &
+                (lwin+1) * theta0 / pi
+    else
+        stop
+    end if
+
     open(12, file=outfile)
 
     !--------------------------------------------------------------------------

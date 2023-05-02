@@ -14,13 +14,19 @@ Program TestExpandDH
 
     implicit none
     integer(int32), parameter :: maxdeg = 120, maxgrid = 800
-    character(80) :: infile
+    character(120) :: infile
     real(dp) :: cilm(2, maxdeg+1, maxdeg+1), grid(maxgrid, maxgrid), &
                 griddh(maxgrid, maxgrid), cilm2(2, maxdeg+1, maxdeg+1), &
                 interval, error, maxerror
     integer(int32) :: lmax, n, nlat, nlong, lmax2, l, m, i
 
-    infile = "../../ExampleDataFiles/MarsTopo719.shape"
+    ! Path to example data files may be passed as first argument, or use a default.
+    if (command_argument_count() > 0) then
+        call get_command_argument(1, infile)
+    else
+        infile = "../../ExampleDataFiles"
+    end if
+    infile = trim(infile) // "/MarsTopo719.shape"
 
     call SHRead(infile, cilm, lmax)
     print*, "Lmax of data file = ", lmax

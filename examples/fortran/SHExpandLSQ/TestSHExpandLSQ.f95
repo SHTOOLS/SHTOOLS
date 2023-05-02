@@ -22,7 +22,7 @@ program TestSHExpandLSQ
                 x, y, z, pi, maxerror, cilm1(2,degmax+1, degmax+1), &
                 dd(dmax), misfit
     integer(int32) :: nmax, lmax, l, i, seed, lmaxfile
-    character(80) :: infile
+    character(120) :: infile
 
     d = 0.0_dp
     dd = 0.0_dp
@@ -30,13 +30,28 @@ program TestSHExpandLSQ
     lat = 0.0_dp
     pi = acos(-1.0_dp)
 
-    infile = "../../ExampleDataFiles/MarsTopo719.shape"
+    ! Path to example data files may be passed as first argument, or use a default.
+    if (command_argument_count() > 0) then
+        call get_command_argument(1, infile)
+    else
+        infile = "../../ExampleDataFiles"
+    end if
+    infile = trim(infile) // "/MarsTopo719.shape"
 
     call SHRead(infile, cilm, lmaxfile)
     print*, "Maximum degree of spherical harmonic file = ", lmaxfile
 
-    print*, "Number of random data points to use > "
-    read(*,*) nmax
+    ! A data input file may be passed as second argument, or else prompt for required settings.
+    if (command_argument_count() > 1) then
+        call get_command_argument(2, infile)
+        open(unit=20, file=infile, action="read")
+        read(20,*) nmax
+        close(20)
+    else
+        print*, "Number of random data points to use > "
+        read(*,*) nmax
+    end if
+
     lmax = floor(sqrt(dble(nmax)) - 1)
     print*, "Maximum spherical harmonic degree for overdetermined least-squares inversion = ", lmax
 

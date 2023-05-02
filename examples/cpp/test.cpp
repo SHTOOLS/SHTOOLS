@@ -26,7 +26,7 @@ int
 main(int argc, char** argv)
 {
 
-  std::string infile = "../ExampleDataFiles/MarsTopo719.shape";
+  std::string infile;
 
   int lmax = 15;
   int cilm_dim = lmax + 1;
@@ -37,6 +37,12 @@ main(int argc, char** argv)
   
   int exitstatus;
 
+  if( argc > 1 ){
+    infile = argv[1];
+  } else {
+    infile = "../ExampleDataFiles";
+  }
+  infile += "/MarsTopo719.shape";
   shtools::SHRead(infile.c_str(),
                    infile.size(),
                    &cilm[0],
