@@ -1520,7 +1520,8 @@ class SHGravCoeffs(object):
         coeffs : ndarry, shape (2, lmax+1, lmax+1)
             numpy ndarray of the spherical harmonic coefficients. This is a
             three-dimensional array formatted as coeffs[i, degree, order],
-            where i=0 corresponds to positive orders and i=1 to negative orders.
+            where i=0 corresponds to positive orders and i=1 to negative
+            orders.
         errors : ndarry, shape (2, lmax+1, lmax+1)
             numpy ndarray of the errors of the spherical harmonic
             coefficients if they are not None.

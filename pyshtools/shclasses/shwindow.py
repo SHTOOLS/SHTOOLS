@@ -373,7 +373,8 @@ class SHWindow(object):
         return SHCoeffs.from_array(coeffs, normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
 
-    def to_shgrid(self, itaper, grid='DH2', lmax=None, zeros=None, extend=True):
+    def to_shgrid(self, itaper, grid='DH2', lmax=None, zeros=None,
+                  extend=True):
         """
         Evaluate the coefficients of taper i on a spherical grid and return
         a SHGrid class instance.
