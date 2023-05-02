@@ -202,7 +202,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, gilm, &
     else if (size(tilm(:,1,1)) < 2 .or. size(tilm(1,:,1)) < lmax+1 .or. &
              size(tilm(1,1,:)) < lmax+1) then
         print*, "Error --- SHLocalizedAdmitCorr"
-        print*, "TILM must be dimensioned as (2, LMAX+1, LMAX+1) " // & 
+        print*, "TILM must be dimensioned as (2, LMAX+1, LMAX+1) " // &
                 "where LMAX is ", lmax
         print*, "Input array is dimensioned ", size(tilm(:,1,1)), &
                 size(tilm(1,:,1)), size(tilm(1,1,:))
@@ -329,16 +329,16 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, gilm, &
     x(1) = 0.0_dp
     x(2) = -(90.0_dp - lat) * pi / 180.0_dp
     x(3) = -lon * pi / 180.0_dp
-        
+
     if (first == 1) then
         lwin_last = lwin
         lmaxwin_last = lmaxwin
         first = 0
- 
+
         allocate (zero(lmaxwin+1), stat = astat(1))
         allocate (w(lmaxwin+1), stat = astat(2))
         allocate (dj(lwin+1,lwin+1,lwin+1), stat = astat(3))
-        
+
         if (sum(astat(1:3)) /= 0) then
             print*, "Error --- SHLocalizedAdmitCorr"
             print*, "Problem allocating arrays ZERO, W and DJ", &
@@ -403,7 +403,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, gilm, &
         deallocate (w)
         allocate (zero(lmaxwin+1), stat = astat(1))
         allocate (w(lmaxwin+1), stat = astat(2))
-        
+
         if (sum(astat(1:2)) /= 0) then
             print*, "Error --- SHLocalizedAdmitCorr"
             print*, "Problem allocating arrays ZERO and W", astat(1), astat(2)
@@ -527,7 +527,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, gilm, &
                                           sgt(:,i))
                 call SHPowerSpectrum(shloc_g, lmax-lwin, sgg(:,i))
                 call SHPowerSpectrum(shloc_t, lmax-lwin, stt(:,i))
-        end if
+            end if
 
             if (present(taper_wt)) then
                 factor = sum(taper_wt(1:K))**2 - sum(taper_wt(1:K)**2)
@@ -720,7 +720,7 @@ subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, gilm, &
         if (present(admit_error) .or. present(corr_error)) then
             do l = 0, lmax-lwin, 1
                 if (present(admit_error)) then
-                    if (K > 1) then 
+                    if (K > 1) then
                         admit_error(l+1) = sum( ( admit_k(l+1,1:K) &
                                            - admit(l+1) )**2 ) / dble(K-1) &
                                            / dble(K) ! standard error!

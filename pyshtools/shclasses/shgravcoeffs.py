@@ -75,7 +75,9 @@ class SHGravCoeffs(object):
 
     lmax          : The maximum spherical harmonic degree of the coefficients.
     coeffs        : The raw coefficients with the specified normalization and
-                    csphase conventions.
+                    csphase conventions. This is a three-dimensional array
+                    formatted as coeffs[i, degree, order], where i=0
+                    corresponds to positive orders and i=1 to negative orders.
     errors        : The uncertainties of the spherical harmonic coefficients.
     error_kind    : An arbitrary string describing the kind of errors, such as
                     'unknown', 'unspecified', 'calibrated', 'formal' or None.
@@ -188,7 +190,9 @@ class SHGravCoeffs(object):
         Parameters
         ----------
         array : ndarray, shape (2, lmaxin+1, lmaxin+1).
-            The input spherical harmonic coefficients.
+            The input spherical harmonic coefficients. This is a three-
+            dimensional array formatted as coeffs[i, degree, order], where i=0
+            corresponds to positive orders and i=1 to negative orders.
         gm : float
             The gravitational constant times the mass that is associated with
             the gravitational potential coefficients.
@@ -1281,7 +1285,7 @@ class SHGravCoeffs(object):
         ls = _np.array(ls)
         ms = _np.array(ms)
 
-        mneg_mask = (ms < 0).astype(_np.int)
+        mneg_mask = (ms < 0).astype(_np.int_)
         self.coeffs[mneg_mask, ls, _np.abs(ms)] = values
 
     # ---- IO routines ----
@@ -1514,7 +1518,10 @@ class SHGravCoeffs(object):
         Returns
         -------
         coeffs : ndarry, shape (2, lmax+1, lmax+1)
-            numpy ndarray of the spherical harmonic coefficients.
+            numpy ndarray of the spherical harmonic coefficients. This is a
+            three-dimensional array formatted as coeffs[i, degree, order],
+            where i=0 corresponds to positive orders and i=1 to negative
+            orders.
         errors : ndarry, shape (2, lmax+1, lmax+1)
             numpy ndarray of the errors of the spherical harmonic
             coefficients if they are not None.
