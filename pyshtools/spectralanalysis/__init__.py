@@ -89,41 +89,40 @@ Other
 SphericalCapCoef       Calculate the spherical harmonic coefficients of a
                        spherical cap.
 """
-from ..shtools import SHAdmitCorr
-from ..shtools import SHConfidence
+from ..backends.shtools import SHAdmitCorr
+from ..backends.shtools import SHConfidence
+from ..backends.shtools import SHMultiTaperSE
+from ..backends.shtools import SHMultiTaperCSE
+from ..backends.shtools import SHLocalizedAdmitCorr
+from ..backends.shtools import SHReturnTapers
+from ..backends.shtools import SHReturnTapersM
+from ..backends.shtools import ComputeDm
+from ..backends.shtools import ComputeDG82
+from ..backends.shtools import SHFindLWin
+from ..backends.shtools import SHBiasK
+from ..backends.shtools import SHMTCouplingMatrix
+from ..backends.shtools import SHBiasAdmitCorr
+from ..backends.shtools import SHMTDebias
+from ..backends.shtools import SHMTVarOpt
+from ..backends.shtools import SHMTVar
+from ..backends.shtools import SHSjkPG
+from ..backends.shtools import SHMultiTaperMaskSE
+from ..backends.shtools import SHMultiTaperMaskCSE
+from ..backends.shtools import SHReturnTapersMap
+from ..backends.shtools import SHBiasKMask
+from ..backends.shtools import ComputeDMap
+from ..backends.shtools import Curve2Mask
+from ..backends.shtools import SHBias
+from ..backends.shtools import SphericalCapCoef
+from ..backends.shtools import SHRotateTapers
+from ..backends.shtools import SlepianCoeffs
+from ..backends.shtools import SlepianCoeffsToSH
+from ..backends.shtools import SHSCouplingMatrix
+from ..backends.shtools import SHSlepianVar
+from ..backends.shtools import SHSCouplingMatrixCap
 
 from .spectrum import spectrum
 from .cross_spectrum import cross_spectrum
-
-from ..shtools import SHMultiTaperSE
-from ..shtools import SHMultiTaperCSE
-from ..shtools import SHLocalizedAdmitCorr
-from ..shtools import SHReturnTapers
-from ..shtools import SHReturnTapersM
-from ..shtools import ComputeDm
-from ..shtools import ComputeDG82
-from ..shtools import SHFindLWin
-from ..shtools import SHBiasK
-from ..shtools import SHMTCouplingMatrix
-from ..shtools import SHBiasAdmitCorr
-from ..shtools import SHMTDebias
-from ..shtools import SHMTVarOpt
-from ..shtools import SHMTVar
-from ..shtools import SHSjkPG
-from ..shtools import SHMultiTaperMaskSE
-from ..shtools import SHMultiTaperMaskCSE
-from ..shtools import SHReturnTapersMap
-from ..shtools import SHBiasKMask
-from ..shtools import ComputeDMap
-from ..shtools import Curve2Mask
-from ..shtools import SHBias
-from ..shtools import SphericalCapCoef
-from ..shtools import SHRotateTapers
-from ..shtools import SlepianCoeffs
-from ..shtools import SlepianCoeffsToSH
-from ..shtools import SHSCouplingMatrix
-from ..shtools import SHSlepianVar
-from ..shtools import SHSCouplingMatrixCap
 
 
 # ---- Define __all__ for use with: from pyshtools import * ----

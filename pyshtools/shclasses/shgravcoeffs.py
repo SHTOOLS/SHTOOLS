@@ -31,13 +31,13 @@ from ..shio import read_bshc as _read_bshc
 from ..shio import write_bshc as _write_bshc
 from ..shio import read_icgem_gfc as _read_icgem_gfc
 from ..shio import write_icgem_gfc as _write_icgem_gfc
-from ..shtools import CilmPlusRhoHDH as _CilmPlusRhoHDH
-from ..shtools import CilmPlusDH as _CilmPlusDH
-from ..shtools import MakeGravGridDH as _MakeGravGridDH
-from ..shtools import MakeGravGradGridDH as _MakeGravGradGridDH
-from ..shtools import MakeGeoidGridDH as _MakeGeoidGridDH
-from ..shtools import djpi2 as _djpi2
-from ..shtools import MakeGravGridPoint as _MakeGravGridPoint
+from ..backends.shtools import CilmPlusRhoHDH as _CilmPlusRhoHDH
+from ..backends.shtools import CilmPlusDH as _CilmPlusDH
+from ..backends.shtools import MakeGravGridDH as _MakeGravGridDH
+from ..backends.shtools import MakeGravGradGridDH as _MakeGravGradGridDH
+from ..backends.shtools import MakeGeoidGridDH as _MakeGeoidGridDH
+from ..backends.shtools import djpi2 as _djpi2
+from ..backends.shtools import MakeGravGridPoint as _MakeGravGridPoint
 from ..backends import backend_module
 from ..backends import preferred_backend
 
@@ -75,7 +75,9 @@ class SHGravCoeffs(object):
 
     lmax          : The maximum spherical harmonic degree of the coefficients.
     coeffs        : The raw coefficients with the specified normalization and
-                    csphase conventions.
+                    csphase conventions. This is a three-dimensional array
+                    formatted as coeffs[i, degree, order], where i=0
+                    corresponds to positive orders and i=1 to negative orders.
     errors        : The uncertainties of the spherical harmonic coefficients.
     error_kind    : An arbitrary string describing the kind of errors, such as
                     'unknown', 'unspecified', 'calibrated', 'formal' or None.
@@ -188,7 +190,9 @@ class SHGravCoeffs(object):
         Parameters
         ----------
         array : ndarray, shape (2, lmaxin+1, lmaxin+1).
-            The input spherical harmonic coefficients.
+            The input spherical harmonic coefficients. This is a three-
+            dimensional array formatted as coeffs[i, degree, order], where i=0
+            corresponds to positive orders and i=1 to negative orders.
         gm : float
             The gravitational constant times the mass that is associated with
             the gravitational potential coefficients.
@@ -1514,7 +1518,10 @@ class SHGravCoeffs(object):
         Returns
         -------
         coeffs : ndarry, shape (2, lmax+1, lmax+1)
-            numpy ndarray of the spherical harmonic coefficients.
+            numpy ndarray of the spherical harmonic coefficients. This is a
+            three-dimensional array formatted as coeffs[i, degree, order],
+            where i=0 corresponds to positive orders and i=1 to negative
+            orders.
         errors : ndarry, shape (2, lmax+1, lmax+1)
             numpy ndarray of the errors of the spherical harmonic
             coefficients if they are not None.

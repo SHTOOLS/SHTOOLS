@@ -53,14 +53,14 @@ spharm         Compute all the spherical harmonic functions up to a maximum
 spharm_lm      Compute the spherical harmonic function for a specific degree l
                and order m.
 """
-from ..shtools import SHGLQ
-from ..shtools import GLQGridCoord
-from ..shtools import SHExpandLSQ
-from ..shtools import SHExpandWLSQ
-from ..shtools import MakeGrid2D
-from ..shtools import MakeGridPoint
-from ..shtools import MakeGridPointC
-from ..shtools import SHMultiply
+from ..backends.shtools import SHGLQ
+from ..backends.shtools import GLQGridCoord
+from ..backends.shtools import SHExpandLSQ
+from ..backends.shtools import SHExpandWLSQ
+from ..backends.shtools import MakeGrid2D
+from ..backends.shtools import MakeGridPoint
+from ..backends.shtools import MakeGridPointC
+from ..backends.shtools import SHMultiply
 
 from .spharm_functions import spharm
 from .spharm_functions import spharm_lm

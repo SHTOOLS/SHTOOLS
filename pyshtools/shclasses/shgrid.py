@@ -10,7 +10,7 @@ import xarray as _xr
 import tempfile as _tempfile
 from ..backends import backend_module
 from ..backends import preferred_backend
-from .. import shtools as _shtools
+from ..backends import shtools as _shtools
 
 try:
     import cartopy.crs as _ccrs

@@ -13,7 +13,6 @@ import warnings as _warnings
 from scipy.special import factorial as _factorial
 import xarray as _xr
 
-from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
 from ..spectralanalysis import cross_spectrum as _cross_spectrum
 from ..shio import convert as _convert
@@ -25,6 +24,7 @@ from ..shio import read_bshc as _read_bshc
 from ..shio import write_bshc as _write_bshc
 from ..backends import backend_module
 from ..backends import preferred_backend
+from ..backends import shtools as _shtools
 
 
 class SHCoeffs(object):
@@ -60,7 +60,9 @@ class SHCoeffs(object):
 
     lmax          : The maximum spherical harmonic degree of the coefficients.
     coeffs        : The raw coefficients with the specified normalization and
-                    csphase conventions.
+                    csphase conventions. This is a three-dimensional array
+                    formatted as coeffs[i, degree, order], where i=0
+                    corresponds to positive orders and i=1 to negative orders.
     errors        : The uncertainties of the spherical harmonic coefficients.
     error_kind    : An arbitrary string describing the kind of errors, such as
                     'unknown', 'unspecified', 'calibrated', 'formal' or None.
@@ -162,7 +164,9 @@ class SHCoeffs(object):
         Parameters
         ----------
         array : ndarray, shape (2, lmaxin+1, lmaxin+1).
-            The input spherical harmonic coefficients.
+            The input spherical harmonic coefficients. This is a three-
+            dimensional array formatted as coeffs[i, degree, order], where i=0
+            corresponds to positive orders and i=1 to negative orders.
         errors : ndarray, optional, default = None
             The uncertainties of the spherical harmonic coefficients.
         error_kind : str, optional, default = None
@@ -1145,7 +1149,10 @@ class SHCoeffs(object):
         Returns
         -------
         coeffs : ndarry, shape (2, lmax+1, lmax+1)
-            numpy ndarray of the spherical harmonic coefficients.
+            numpy ndarray of the spherical harmonic coefficients. This is a
+            three-dimensional array formatted as coeffs[i, degree, order],
+            where i=0 corresponds to positive orders and i=1 to negative
+            orders.
         errors : ndarry, shape (2, lmax+1, lmax+1)
             numpy ndarray of the errors of the spherical harmonic
             coefficients if they are not None and errors is True.

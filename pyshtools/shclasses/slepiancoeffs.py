@@ -6,7 +6,7 @@ import copy as _copy
 
 from ..backends import backend_module
 from ..backends import preferred_backend
-from .. import shtools as _shtools
+from ..backends import shtools as _shtools
 
 from .shcoeffs import SHCoeffs
 from .shgrid import SHGrid

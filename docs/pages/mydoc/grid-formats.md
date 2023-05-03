@@ -17,7 +17,7 @@ table:nth-of-type(n) {
 
 ## Supported grid formats
 
-pyshtools makes use of grid formats that accommodate exact quadrature. These include regularly spaced grids that satisfy the *Driscoll and Healy* (1994) sampling theorem, and grids for exact quadrature using Gauss-Legendre quadrature [e.g., Press et al. 1992].
+pyshtools makes use of grid formats that accommodate exact quadrature. These include regularly spaced grids that satisfy the *Driscoll and Healy* (1994) sampling theorem, and grids for exact quadrature using Gauss-Legendre quadrature [e.g., Press et al. 1992]. The grids are input as arrays where the rows and columns correspond to equal values of latitude and longitude, respectively. The first row corresponds to the latitude band closest to the north pole, and the first column corresponds to 0 degrees E.
 
 ### Gauss-Legendre Quadrature
 

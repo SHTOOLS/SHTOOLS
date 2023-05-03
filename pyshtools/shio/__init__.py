@@ -54,16 +54,16 @@ convert          Convert an array of spherical harmonic coefficients to a
 SHrtoc           Convert real spherical harmonics to complex form.
 SHctor           Convert complex spherical harmonics to real form.
 """
-from ..shtools import SHRead2
-from ..shtools import SHRead2Error
-from ..shtools import SHReadJPL
-from ..shtools import SHReadJPLError
-from ..shtools import SHCilmToCindex
-from ..shtools import SHCindexToCilm
-from ..shtools import SHCilmToVector
-from ..shtools import SHVectorToCilm
-from ..shtools import SHrtoc
-from ..shtools import SHctor
+from ..backends.shtools import SHRead2
+from ..backends.shtools import SHRead2Error
+from ..backends.shtools import SHReadJPL
+from ..backends.shtools import SHReadJPLError
+from ..backends.shtools import SHCilmToCindex
+from ..backends.shtools import SHCindexToCilm
+from ..backends.shtools import SHCilmToVector
+from ..backends.shtools import SHVectorToCilm
+from ..backends.shtools import SHrtoc
+from ..backends.shtools import SHctor
 
 from .convert import convert
 from .shtools import shread

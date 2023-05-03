@@ -9,7 +9,7 @@ import matplotlib.pyplot as _plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 
-from .. import shtools as _shtools
+from ..backends import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
 
 from .shcoeffs import SHCoeffs
@@ -373,14 +373,15 @@ class SHWindow(object):
         return SHCoeffs.from_array(coeffs, normalization=normalization.lower(),
                                    csphase=csphase, copy=False)
 
-    def to_shgrid(self, itaper, grid='DH2', zeros=None, extend=True):
+    def to_shgrid(self, itaper, grid='DH2', lmax=None, zeros=None,
+                  extend=True):
         """
         Evaluate the coefficients of taper i on a spherical grid and return
         a SHGrid class instance.
 
         Usage
         -----
-        f = x.to_shgrid(itaper, [grid, zeros, extend])
+        f = x.to_shgrid(itaper, [grid, lmax, zeros, extend])
 
         Returns
         -------
@@ -394,6 +395,9 @@ class SHWindow(object):
             'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon, 'DH2'
             for an equidistant lat/lon grid with nlon=2*nlat, or 'GLQ' for a
             Gauss-Legendre quadrature grid.
+        lmax : int, optional, default = x.lwin
+            The maximum spherical harmonic degree, which determines the grid
+            spacing of the output grid.
         zeros : ndarray, optional, default = None
             The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
             grids.
@@ -407,23 +411,28 @@ class SHWindow(object):
         the properties of the output grids, see the documentation for
         SHExpandDH and SHExpandGLQ.
         """
+        if lmax is None:
+            lmax = self.lwin
         if type(grid) != str:
             raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
         if grid.upper() in ('DH', 'DH1'):
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=1,
-                                          norm=1, csphase=1, extend=extend)
+                                          lmax=lmax, norm=1, csphase=1,
+                                          extend=extend)
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'DH2':
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
-                                          norm=1, csphase=1, extend=extend)
+                                          lmax=lmax, norm=1, csphase=1,
+                                          extend=extend)
             return SHGrid.from_array(gridout, grid='DH', copy=False)
         elif grid.upper() == 'GLQ':
             if zeros is None:
-                zeros, weights = _shtools.SHGLQ(self.lwin)
+                zeros, weights = _shtools.SHGLQ(self.lmax)
             gridout = _shtools.MakeGridGLQ(self.to_array(itaper), zeros,
-                                           norm=1, csphase=1, extend=extend)
+                                           lmax=lmax, norm=1, csphase=1,
+                                           extend=extend)
             return SHGrid.from_array(gridout, grid='GLQ', copy=False)
         else:
             raise ValueError(

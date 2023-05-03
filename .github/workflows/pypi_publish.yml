@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set env
       run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
@@ -19,7 +19,7 @@ jobs:
     - name: Setup Miniconda
       uses: conda-incubator/setup-miniconda@v2
       with:
-        python-version: 3.9
+        python-version: 3.11
         mamba-version: "*"
         channels: conda-forge
         channel-priority: strict
@@ -64,13 +64,13 @@ jobs:
         --data '{"event_type": "New pyshtools release", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
 
     - name: Download tarball archive
-      uses: carlosperate/download-file-action@v1.1.1
+      uses: carlosperate/download-file-action@v2.0.0
       id: download-tarball
       with:
         file-url: 'https://github.com/SHTOOLS/SHTOOLS/archive/${{ env.RELEASE_VERSION }}.tar.gz'
 
     - name: Upload tarball as release asset
-      uses: alexellis/upload-assets@0.3.0
+      uses: alexellis/upload-assets@0.4.0
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:

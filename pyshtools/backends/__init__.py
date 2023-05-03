@@ -24,7 +24,7 @@ from .backends import preferred_backend
 from .backends import preferred_backend_module
 from .backends import backend_module
 from . import ducc0_wrapper  # noqa: F401
-from .. import shtools  # noqa: F401
+from . import shtools  # noqa: F401
 
 del backends  # noqa: F821
 
