@@ -43,7 +43,7 @@ and the GitHub project page at
 from ._version import get_versions as _get_versions
 
 # ---- Import shtools subpackages ----
-from . import shtools
+from . import backends
 from . import constants
 from . import datasets
 from . import shclasses
@@ -54,7 +54,7 @@ from . import spectralanalysis
 from . import rotate
 from . import gravmag
 from . import utils
-from . import backends
+from .backends import shtools
 
 # ---- Import principal classes into pyshtools namespace
 from .shclasses import SHCoeffs

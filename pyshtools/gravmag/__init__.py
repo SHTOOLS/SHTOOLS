@@ -55,22 +55,22 @@ MakeMagGradGridDH   Calculate the components of the magnetic field tensor
 mag_spectrum        Compute the spectrum of either the magnetic potential
                     or magnetic field strength.
 """
-from ..shtools import MakeGravGridDH
-from ..shtools import MakeGravGridPoint
-from ..shtools import MakeGravGradGridDH
-from ..shtools import MakeGeoidGridDH
-from ..shtools import CilmPlusDH
-from ..shtools import CilmMinusDH
-from ..shtools import CilmPlusRhoHDH
-from ..shtools import CilmMinusRhoHDH
-from ..shtools import BAtoHilmDH
-from ..shtools import BAtoHilmRhoHDH
-from ..shtools import DownContFilterMA
-from ..shtools import DownContFilterMC
-from ..shtools import NormalGravity
-from ..shtools import MakeMagGridDH
-from ..shtools import MakeMagGridPoint
-from ..shtools import MakeMagGradGridDH
+from ..backends.shtools import MakeGravGridDH
+from ..backends.shtools import MakeGravGridPoint
+from ..backends.shtools import MakeGravGradGridDH
+from ..backends.shtools import MakeGeoidGridDH
+from ..backends.shtools import CilmPlusDH
+from ..backends.shtools import CilmMinusDH
+from ..backends.shtools import CilmPlusRhoHDH
+from ..backends.shtools import CilmMinusRhoHDH
+from ..backends.shtools import BAtoHilmDH
+from ..backends.shtools import BAtoHilmRhoHDH
+from ..backends.shtools import DownContFilterMA
+from ..backends.shtools import DownContFilterMC
+from ..backends.shtools import NormalGravity
+from ..backends.shtools import MakeMagGridDH
+from ..backends.shtools import MakeMagGridPoint
+from ..backends.shtools import MakeMagGradGridDH
 
 from .mag_spectrum import mag_spectrum
 

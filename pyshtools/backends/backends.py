@@ -19,10 +19,8 @@ preferred_backend_module()   Return a reference to the preferred backend
 backend_module()             Return a reference to the specified backend
                              module.
 """
-
-
 from . import ducc0_wrapper
-from .. import shtools
+from . import shtools
 
 # defaults
 _preferred_backend = "shtools"

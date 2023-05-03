@@ -26,10 +26,10 @@ from ..shio import write_dov as _write_dov
 from ..shio import read_bshc as _read_bshc
 from ..shio import write_bshc as _write_bshc
 from ..shio import read_igrf as _read_igrf
-from ..shtools import MakeMagGridDH as _MakeMagGridDH
-from ..shtools import MakeMagGradGridDH as _MakeMagGradGridDH
-from ..shtools import djpi2 as _djpi2
-from ..shtools import MakeMagGridPoint as _MakeMagGridPoint
+from ..backends.shtools import MakeMagGridDH as _MakeMagGridDH
+from ..backends.shtools import MakeMagGradGridDH as _MakeMagGradGridDH
+from ..backends.shtools import djpi2 as _djpi2
+from ..backends.shtools import MakeMagGridPoint as _MakeMagGridPoint
 from ..backends import backend_module
 from ..backends import preferred_backend
 
