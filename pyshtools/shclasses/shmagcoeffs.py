@@ -103,6 +103,8 @@ class SHMagCoeffs(object):
     set_coeffs()          : Set coefficients in-place to specified values.
     change_ref()          : Return a new class instance referenced to a
                             different reference radius.
+    change_units()        : Return a new class instance with the internal
+                            coefficients converted to either nT or T.
     rotate()              : Rotate the coordinate system used to express the
                             spherical harmonic coefficients and return a new
                             class instance.
@@ -1849,6 +1851,50 @@ class SHMagCoeffs(object):
                 if self.errors is not None:
                     clm.errors[:, l, :l+1] *= (self.r0 / r0)**(l+2)
             clm.r0 = r0
+
+        return clm
+
+    def change_units(self, units=None, lmax=None):
+        """
+        Return a new SHMagCoeffs class instance with the internal coefficients
+        converted to either nT or T.
+
+        Usage
+        -----
+        clm = x.change_units([units, lmax])
+
+        Returns
+        -------
+        clm : SHMagCoeffs class instance.
+
+        Parameters
+        ----------
+        units : str, optional, default = self.units
+            The new units of the spherical harmonic coefficients, which can be
+            either 'T' or 'nT'.
+        lmax : int, optional, default = self.lmax
+            Maximum spherical harmonic degree to output.
+        """
+        if lmax is None:
+            lmax = self.lmax
+        if units is None:
+            units = self.units
+
+        clm = self.pad(lmax)
+
+        if units != self.units:
+            if units.lower() == 't' and self.units.lower() == 'nt':
+                factor = 1.e-9
+            elif units.lower() == 'nt' and self.units.lower() == 't':
+                factor = 1.e9
+            else:
+                raise ValueError("units must be either 'nT' or 'T'. "
+                                 "Input value is {:s}".format(repr(units)))
+
+            clm.coeffs *= factor
+            clm.units = units
+            if clm.errors is not None:
+                clm.errors *= factor
 
         return clm
 
