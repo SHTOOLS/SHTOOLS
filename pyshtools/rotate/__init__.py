@@ -10,9 +10,8 @@ SHRotateCoef      Determine the spherical harmonic coefficients of a complex
 SHRotateRealCoef  Determine the spherical harmonic coefficients of a real
                   function rotated by three Euler angles.
 """
-from ..shtools import djpi2
-from ..shtools import SHRotateCoef
-
+from ..backends.shtools import djpi2
+from ..backends.shtools import SHRotateCoef
 from ..backends import backend_module, select_preferred_backend
 
 

@@ -13,7 +13,6 @@ import warnings as _warnings
 from scipy.special import factorial as _factorial
 import xarray as _xr
 
-from .. import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
 from ..spectralanalysis import cross_spectrum as _cross_spectrum
 from ..shio import convert as _convert
@@ -25,6 +24,7 @@ from ..shio import read_bshc as _read_bshc
 from ..shio import write_bshc as _write_bshc
 from ..backends import backend_module
 from ..backends import preferred_backend
+from ..backends import shtools as _shtools
 
 
 class SHCoeffs(object):

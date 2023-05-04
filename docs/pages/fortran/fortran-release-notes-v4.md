@@ -7,6 +7,29 @@ summary:
 toc: true
 folder: fortran
 ---
+## Version 4.10.2
+
+**Bug fixes and minor enhancements**
+
+* Add the optional parameter `lmax` to `pysh.SHWindow.to_shgrid()`.
+* Replace `libtool` by `ar` and `ranlib` in the fortran makefile.
+* Replace `PWD` by `CURDIR` in the main makefile.
+* Add method `.change_units` to the `SHMagCoeffs` class.
+* Copy all routines from the `shtools` module to `backends.shtools` (the top-level shtools module will be deprecated in v4.11).
+* Use `pkg_resources` instead of `setuptools.version.pkg_resources` in `setup.py`.
+* Fix a couple bugs where `_np.int_` was mistakenly `_np.int`.
+* Move unix man pages from section 1 to section 3.
+* Modify fortran test programs to accept command line arguments, such as the location of the example data files and program input files.
+* Remove `pypandoc` as a dependency in `setup.py` and don't convert the readme to reST format for pypi.
+* Add a Ganymede gravity model to the `datasets` module.
+* Minor updates to documentation and refactoring of the project `README`.
+
+**Future deprecation**
+
+The module `pyshtools.shtools` will be deprecated in the v4.11 release. This module represents 1 of 2 possible backends for pyshtools, and has been located at `pyshtools.backends.shtools` since version 4.9. Unless explicitly required, the user should avoid using the `backends` modules directly, and should instead call the routines that are located in the top level modules such as `pyshtools.expand` and `pyshtools.rotate`. Setting the backend by use of the routine `pyshtools.backends.selected_preferred_backend()` determines which backend to use when calling the routines in these top level modules.
+
+M. A. Wieczorek, M. Meschede, T. Brugere, A. Corbin, A. Hattori, A. Kalinin, J. Kohler, D. Kutra, K. Leinweber, P. Lobo, I. Oshchepkov, P.-L. Phan, O. Poplawski, M. Reinecke, E. Sales de Andrade, E. Schnetter, S. Schröder, J. Sierra, A. Vasishta, A. Walker, xoviat, B. Xu (2023). SHTOOLS: Version 4.10.2, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+
 ## Version 4.10.1
 
 **Bug fixes and minor enhancements**

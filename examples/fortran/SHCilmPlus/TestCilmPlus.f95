@@ -76,7 +76,13 @@ program TestCilmPlus
 
     !print*, "Spherical Harmonic file > "
     !read(*,*) infile
-    infile = "../../ExampleDataFiles/MarsTopo719.shape"
+    ! Path to example data files may be passed as first argument, or use a default.
+    if (command_argument_count() > 0) then
+        call get_command_argument(1, infile)
+    else
+        infile = "../../ExampleDataFiles"
+    end if
+    infile = trim(infile) // "/MarsTopo719.shape"
 
     !print*, "Maximum degree to read > "
     !read(*,*) lmax

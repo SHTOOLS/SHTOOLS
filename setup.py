@@ -70,7 +70,7 @@ INSTALL_REQUIRES = [
 
 EXTRAS_REQUIRE = {
     'cartopy': ['cython', 'pyshp', 'six', 'shapely', 'cartopy>=0.18.0'],
-    'pygmt': ['pygmt==0.3'],
+    'pygmt': ['pygmt>=0.3'],
     'palettable': ['palettable>=3.3'],
     'ducc': ['ducc0>=0.15']
 }

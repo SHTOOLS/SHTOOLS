@@ -9,7 +9,7 @@ import matplotlib.pyplot as _plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 
-from .. import shtools as _shtools
+from ..backends import shtools as _shtools
 from ..spectralanalysis import spectrum as _spectrum
 
 from .shcoeffs import SHCoeffs

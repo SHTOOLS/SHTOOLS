@@ -13,10 +13,10 @@ DHaj               Compute the latitudinal weights used in the Driscoll and
 figstyle           Set Matplotlib parameters for creating publication quality
                    graphics.
 """
-from ..shtools import MakeCircleCoord
-from ..shtools import MakeEllipseCoord
-from ..shtools import Wigner3j
-from ..shtools import DHaj
+from ..backends.shtools import MakeCircleCoord
+from ..backends.shtools import MakeEllipseCoord
+from ..backends.shtools import Wigner3j
+from ..backends.shtools import DHaj
 from .figstyle import figstyle
 
 

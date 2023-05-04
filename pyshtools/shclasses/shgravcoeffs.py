@@ -31,13 +31,13 @@ from ..shio import read_bshc as _read_bshc
 from ..shio import write_bshc as _write_bshc
 from ..shio import read_icgem_gfc as _read_icgem_gfc
 from ..shio import write_icgem_gfc as _write_icgem_gfc
-from ..shtools import CilmPlusRhoHDH as _CilmPlusRhoHDH
-from ..shtools import CilmPlusDH as _CilmPlusDH
-from ..shtools import MakeGravGridDH as _MakeGravGridDH
-from ..shtools import MakeGravGradGridDH as _MakeGravGradGridDH
-from ..shtools import MakeGeoidGridDH as _MakeGeoidGridDH
-from ..shtools import djpi2 as _djpi2
-from ..shtools import MakeGravGridPoint as _MakeGravGridPoint
+from ..backends.shtools import CilmPlusRhoHDH as _CilmPlusRhoHDH
+from ..backends.shtools import CilmPlusDH as _CilmPlusDH
+from ..backends.shtools import MakeGravGridDH as _MakeGravGridDH
+from ..backends.shtools import MakeGravGradGridDH as _MakeGravGradGridDH
+from ..backends.shtools import MakeGeoidGridDH as _MakeGeoidGridDH
+from ..backends.shtools import djpi2 as _djpi2
+from ..backends.shtools import MakeGravGridPoint as _MakeGravGridPoint
 from ..backends import backend_module
 from ..backends import preferred_backend
 

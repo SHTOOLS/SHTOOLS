@@ -44,12 +44,67 @@ program MarsCrustalThickness
                       n_out, iter, j, r1, lmaxp, lmaxt, filter_type, half, &
                       degmax, sampling
     character(120) :: grav_file, moho_out, thick_grid_out, topo_file, &
-                      misfit_file
+                      misfit_file, infile
 
-    print*,  "rho_crust (kg/m3) > "
-    read(*,*) rho_crust
-    print*, "rho_mantle (kg/m3) > "
-    read(*,*) rho_mantle
+    ! Path to example data files may be passed as first argument, or use a default.
+    if (command_argument_count() > 0) then
+        call get_command_argument(1, infile)
+    else
+        infile = "../../ExampleDataFiles"
+    end if
+
+    grav_file = trim(infile) // "/gmm3_120_sha.tab"
+    topo_file = trim(infile) // "/MarsTopo719.shape"
+
+    ! A data input file may be passed as second argument, or else prompt for required settings.
+    if (command_argument_count() > 1) then
+        call get_command_argument(2, infile)
+        open(unit=20, file=infile, action="read")
+        read(20,*) rho_crust
+        read(20,*) rho_mantle
+        read(20,*) filter_type
+        if (filter_type /= 0 ) then
+            read(20,*) half
+        end if
+        read(20,*) r1
+        read(20,*) degmax
+        read(20,*) t0
+        read(20,*) moho_out
+        read(20,*) interval
+        read(20,*) thick_grid_out
+        read(20,*) misfit_file
+        close(20)
+    else
+        print*,  "rho_crust (kg/m3) > "
+        read(*,*) rho_crust
+        print*, "rho_mantle (kg/m3) > "
+        read(*,*) rho_mantle
+
+        print*, "Input filter type (1) Minimum amplitude, (2) minimum curvature, (0) no filter "
+        read(*,*) filter_type
+        if (filter_type /= 0 ) then
+            print*, "Degree at which the filter is 1/2 "
+            read(*,*) half
+        end if
+
+        print*, "Remove degree 1 topo coefficients from Bouguer Correction? (0:no, 1:yes) > "
+        read(*,*) r1
+
+        print*, "maximum degree to compute Moho relief to >"
+        read(*,*) degmax
+
+        print*, "Minimum assumed crustal thickness (km) > "
+        read(*,*) t0
+
+        print*, "Moho spherical harmonic coeficient output filename > "
+        read(*,*) moho_out
+        print*, "Grid spacing for output crustal thickness map (degrees) > "
+        read(*,*) interval
+        print*, "gridded crustal thickness output filename >"
+        read(*,*) thick_grid_out
+        print*, "Gravity misfit spherical harmonic filename >"
+        read(*,*) misfit_file
+    end if
 
     pi = acos(-1.0_dp)
     delta_max = 5.0_dp
@@ -66,38 +121,11 @@ program MarsCrustalThickness
 
     nmax = 7    ! nmax of Wieczorek and Phillips (1998)
 
-    print*, "Input filter type (1) Minimum amplitude, (2) minimum curvature, (0) no filter "
-    read(*,*) filter_type
-    if (filter_type /= 0 ) then
-        print*, "Degree at which the filter is 1/2 " 
-        read(*,*) half
-    end if
-
-    grav_file = "../../ExampleDataFiles/gmm3_120_sha.tab"
-    topo_file = "../../ExampleDataFiles/MarsTopo719.shape"
-
-    print*, "Remove degree 1 topo coefficients from Bouguer Correction? (0:no, 1:yes) > "
-    read(*,*) r1
-
-    print*, "maximum degree to compute Moho relief to >"
-    read(*,*) degmax
-
     lmax = 2 * degmax ! this partially takes into account aliasing problems. Technically, it should be nmax*degmax
 
     nlat = 2 * lmax + 2
     nlong = 2 * nlat
-    print*, "Minimum assumed crustal thickness (km) > "
-    read(*,*) t0
     t0 = t0 * 1.0e3_dp
-
-    print*, "Moho spherical harmonic coeficient output filename > "
-    read(*,*) moho_out
-    print*, "Grid spacing for output crustal thickness map (degrees) > "
-    read(*,*) interval
-    print*, "gridded crustal thickness output filename >"
-    read(*,*) thick_grid_out
-    print*, "Gravity misfit spherical harmonic filename >"
-    read(*,*) misfit_file
 
     call cpu_time(timein)
 

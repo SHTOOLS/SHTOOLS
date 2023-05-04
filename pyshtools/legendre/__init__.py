@@ -51,22 +51,22 @@ Other
 PlmIndex      Compute the index of an array of Legendre function corresponding
               to degree L and angular order M.
 """
-from ..shtools import PlmBar
-from ..shtools import PlmBar_d1
-from ..shtools import PlBar
-from ..shtools import PlBar_d1
-from ..shtools import PlmON
-from ..shtools import PlmON_d1
-from ..shtools import PlON
-from ..shtools import PlON_d1
-from ..shtools import PlmSchmidt
-from ..shtools import PlmSchmidt_d1
-from ..shtools import PlSchmidt
-from ..shtools import PlSchmidt_d1
-from ..shtools import PLegendreA
-from ..shtools import PLegendreA_d1
-from ..shtools import PLegendre
-from ..shtools import PLegendre_d1
+from ..backends.shtools import PlmBar
+from ..backends.shtools import PlmBar_d1
+from ..backends.shtools import PlBar
+from ..backends.shtools import PlBar_d1
+from ..backends.shtools import PlmON
+from ..backends.shtools import PlmON_d1
+from ..backends.shtools import PlON
+from ..backends.shtools import PlON_d1
+from ..backends.shtools import PlmSchmidt
+from ..backends.shtools import PlmSchmidt_d1
+from ..backends.shtools import PlSchmidt
+from ..backends.shtools import PlSchmidt_d1
+from ..backends.shtools import PLegendreA
+from ..backends.shtools import PLegendreA_d1
+from ..backends.shtools import PLegendre
+from ..backends.shtools import PLegendre_d1
 
 from .legendre_functions import legendre
 from .legendre_functions import legendre_lm
