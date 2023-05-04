@@ -59,7 +59,7 @@ lmax : optional, integer, default = min(lmaxgin, lmaxtin)
 :   The maximum spherical harmonic degree of the input functions corresponding to gilm and tilm.
 
 taper_wt : optional, float, dimension (k), default = -1 (not used)
-:   The weights to be applied to the spectral estimates when calculating the admittance, correlation, and their associated errors. This must sum to unity. The default value specifies that taper weights will not be used.
+:   The weights to be applied to the spectral estimates when calculating the admittance, correlation, and their associated errors. This must sum to unity, and is only implemented for the case of mtdef=1. The default value specifies that taper weights will not be used.
 
 mtdef : optional, integer, default = 1
 :   1 (default): Calculate the multitaper spectral estimates Sgt, Sgg and Stt first, and then use these to calculate the admittance and correlation functions. 2: Calculate admittance and correlation spectra using each individual taper, and then average these to obtain the multitaper admittance and correlation functions.
@@ -73,7 +73,7 @@ SHLocalizedAdmitCorr will calculate the localized admittance and degree correlat
 
 The admittance is defined as Sgt/Stt, where Sgt is the localized cross-power spectrum of two functions G and T expressed in spherical harmonics. The localized degree-correlation spectrum is defined as Sgt/sqrt(Sgg Stt), which can possess values between -1 and 1. Two methods are available for calculating the multitaper admittance and correlation functions. When mtdef is 1 (default), the multitaper estimates and errors of Sgt, Stt, and Sgg are calculated by calls to SHMultiTaperSE and SHMultiTaperCSE, and these results are then used to calculate the final admittance and correlation functions. When mtdef is 2, the admitance and correlation are calculated invidivually for each individual taper, and these results are then averaged.
 
-If the optional parameter k1linsig is specified, and only a single taper is being used, the uncertainty in the admittance function will be calculated by assuming the two sets of coefficients are related by a linear degree-dependent transfer function and that the lack of correlation is a result of uncorrelated noise. 
+If the optional parameter k1linsig is specified, and only a single taper is being used, the uncertainty in the admittance function will be calculated by assuming the two sets of coefficients are related by a linear degree-dependent transfer function and that the lack of correlation is a result of uncorrelated noise.
 
 When mtdef is 1, by default, the multitaper spectral estimates are calculated as an unweighted average of the individual tapered estimates. However, if the optional argument taper_wt is specified, a weighted average will be employed using the weights in this array. Minimum variance optimal weights can be obtained from the routines SHMTVarOpt if the form of the underlying global power spectrum is known. Taper weights can not be used when mtdef is 2
 
@@ -83,9 +83,9 @@ This routine assumes that the input functions and tapers are expressed using geo
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
 
-Simons, F. J., F. A. Dahlen and M. A. Wieczorek, Spatiospectral concentration on the sphere, SIAM Review, 48, 504-536, doi:10.1137/S0036144504445765, 2006. 
+Simons, F. J., F. A. Dahlen and M. A. Wieczorek, Spatiospectral concentration on the sphere, SIAM Review, 48, 504-536, doi:10.1137/S0036144504445765, 2006.
 
-Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
+Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere,
 Geophys. J. Int., 162, 655-675, 2005.
 
 Simons, M., S. C. Solomon and B. H. Hager, Localization of gravity and topography: constrains on the tectonics and mantle dynamics of Venus, Geophys. J. Int., 131, 24-44, 1997.
