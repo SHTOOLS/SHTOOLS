@@ -9,7 +9,7 @@ toc: false
 editdoc: pydoc
 ---
 
-Calculate the theoretical minimum variance of a localized multitaper spectral estimate and the corresponding optimal weights to apply to each localized spectrum.
+Calculate the theoretical minimum variance of a localized multitaper spectral estimate and the corresponding optimal weights to apply to each localized spectrum. This routine only works using the tapers of the spherical cap concentration problem.
 
 ## Usage
 
