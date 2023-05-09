@@ -62,16 +62,16 @@ def main():
 # ===== PROCESS MD DOCUMENTATION FILE ====
 def process_mddoc(fname_mddoc):
     # ---- md file search patterns ----
-    revalue = re.compile('## Value\n\n', re.DOTALL)
-    retail = re.compile('# See (.*)', re.DOTALL)
-    reh2 = re.compile('## (.*?)\n', re.DOTALL)
-    reh1 = re.compile('\A# (.*?)\n', re.DOTALL)
-    reh1b = re.compile('\n# (.*?)\n', re.DOTALL)
-    recode = re.compile('`(.*?)`', re.DOTALL)
+    revalue = re.compile(r'## Value\n\n', re.DOTALL)
+    retail = re.compile(r'# See (.*)', re.DOTALL)
+    reh2 = re.compile(r'## (.*?)\n', re.DOTALL)
+    reh1 = re.compile(r'\A# (.*?)\n', re.DOTALL)
+    reh1b = re.compile(r'\n# (.*?)\n', re.DOTALL)
+    recode = re.compile(r'`(.*?)`', re.DOTALL)
     restaresc = re.compile(r'(\\\*)', re.DOTALL)
     repycodestart = re.compile(r'```python\n', re.DOTALL)
     repycodeend = re.compile(r'```\n', re.DOTALL)
-    # rebold = re.compile('(?![\])[*](.*?)(?![\])[*]',re.DOTALL)
+    # rebold = re.compile(r'(?![\])[*](.*?)(?![\])[*]',re.DOTALL)
 
     # ---- open md file and search for patterns ----
     with open(fname_mddoc, 'r') as mdfile:
@@ -159,7 +159,7 @@ def process_f2pydoc(f2pydoc):
     # 1=Parameters
     # 2=Other (optional) Parameters (only if present)
     # 3=Returns
-    docparts = re.split('\n--', f2pydoc)
+    docparts = re.split(r'\n--', f2pydoc)
 
     if len(docparts) == 4:
         doc_has_optionals = True
@@ -171,12 +171,12 @@ def process_f2pydoc(f2pydoc):
 
     # ---- replace arguments with _d suffix with empty string in ----
     # ---- function signature (remove them): ----
-    docparts[0] = re.sub('[\[(,]\w+_d\d', '', docparts[0])
+    docparts[0] = re.sub(r'[\[(,]\w+_d\d', '', docparts[0])
 
     # ---- replace _d arguments of the return arrays with their default value:
     if doc_has_optionals:
 
-        returnarray_dims = re.findall('[\[(,](\w+_d\d)', docparts[3])
+        returnarray_dims = re.findall(r'[\[(,](\w+_d\d)', docparts[3])
         for arg in returnarray_dims:
             searchpattern = arg + ' : input.*\n.*Default: (.*)\n'
             match = re.search(searchpattern, docparts[2])
@@ -187,7 +187,7 @@ def process_f2pydoc(f2pydoc):
 
     # ---- remove all optional _d# from optional argument list:
     if doc_has_optionals:
-        searchpattern = '\w+_d\d : input.*\n.*Default: (.*)\n'
+        searchpattern = r'\w+_d\d : input.*\n.*Default: (.*)\n'
         docparts[2] = re.sub(searchpattern, '', docparts[2])
 
     # ---- combine doc parts to a single string
