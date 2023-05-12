@@ -1,0 +1,34 @@
+Compute the latitudinal weights used in the Driscoll and Healy (1994) spherical
+harmonic transform.
+
+Usage
+-----
+aj = DHaj (n, [extend])
+
+Returns
+-------
+aj : float, dimension (n) or (n+1)
+    The latitudinal weights used in the spherical harmonic transform.
+
+Parameters
+----------
+n : integer
+    The number of samples in latitude used in the spherical harmonic transform.
+    This must be even.
+extend : input, optional, bool, default = False
+    If True, include the latitudinal band for 90 S, which increases the
+    dimension of aj by 1.
+
+Description
+-----------
+DHaj will calculate the latitudinal weights used in the spherical harmonic
+transform of Driscoll and Healy (1994; equation 9). The number of samples n must
+be even, and the transform and its inverse are implemented as SHExpandDH and
+MakeGridDH, respectively. It is noted that the first element, corresponding to
+the north pole, is always zero. The element corresponding to the south pole is
+not included by default, but can be returned by specifying extend.
+
+Reference
+---------
+Driscoll, J.R. and D.M. Healy, Computing Fourier transforms and convolutions on
+the 2-sphere, Adv. Appl. Math., 15, 202-250, 1994.
