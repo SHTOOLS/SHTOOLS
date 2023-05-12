@@ -6,6 +6,8 @@ include versioneer.py
 include pyshtools/_version.py
 
 graft examples/ExampleDataFiles
+graft pyshtools/doc
+exclude pyshtools/doc/*.py
 recursive-include examples/fortran *.f95 input* Makefile
 recursive-include examples/python *.py Makefile
 recursive-include examples/notebooks *.ipynb
