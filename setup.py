@@ -170,6 +170,7 @@ metadata = dict(
     extras_require=EXTRAS_REQUIRE,
     platforms='OS Independent',
     packages=setuptools.find_packages(),
+    package_data={'pyshtools': ['doc/*.doc']},
     classifiers=CLASSIFIERS,
     configuration=configuration,
     cmdclass=CMDCLASS
