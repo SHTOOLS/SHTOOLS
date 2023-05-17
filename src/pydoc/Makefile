@@ -13,5 +13,7 @@ SHELL=/bin/sh
 PYTHON = python3
 
 all:
+	@echo "--> Building python web documention"
 	$(PYTHON) doc2md.py
 	$(PYTHON) make_www_doc.py
+	@echo "python web documention created successfully"
