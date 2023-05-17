@@ -7,6 +7,18 @@ summary:
 toc: true
 folder: mydoc
 ---
+## Version 4.10.3
+
+**Minor packaging enhancement**
+
+* The release modifies the way that the python doc strings are generated for the wrapped fortran functions. In previous releases the doc strings were generated at the time the package was built. Now, the doc strings are included directly in the repo, similar to the unix man pages. This minor change will help in making the macOS ARM conda builds, as well as in our transition from distutils to meson.
+
+**Future deprecation**
+
+The module `pyshtools.shtools` will be deprecated in the v4.11 release. This module represents 1 of 2 possible backends for pyshtools, and has been located at `pyshtools.backends.shtools` since version 4.9. Unless explicitly required, the user should avoid using the `backends` modules directly, and should instead call the routines that are located in the top level modules such as `pyshtools.expand` and `pyshtools.rotate`. Setting the backend by use of the routine `pyshtools.backends.selected_preferred_backend()` determines which backend to use when calling the routines in these top level modules.
+
+M. A. Wieczorek, M. Meschede, T. Brugere, A. Corbin, A. Hattori, A. Kalinin, J. Kohler, D. Kutra, K. Leinweber, P. Lobo, I. Oshchepkov, P.-L. Phan, O. Poplawski, M. Reinecke, E. Sales de Andrade, E. Schnetter, S. Schröder, J. Sierra, A. Vasishta, A. Walker, xoviat, B. Xu (2023). SHTOOLS: Version 4.10.3, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+
 ## Version 4.10.2
 
 **Bug fixes and minor enhancements**

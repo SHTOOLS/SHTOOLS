@@ -8,7 +8,6 @@ NONE/
 build/
 dist/
 docs/vendor/
-pyshtools/doc/
 examples/notebooks/.ipynb_checkpoints/
 pyshtools.egg-info/
 src/_SHTOOLS-f2pywrappers.f

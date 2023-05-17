@@ -9,16 +9,16 @@ import os
 import re
 import textwrap
 
-import _SHTOOLS
-
 
 def main():
     # ---- input/output folders ----
-    docfolder = os.path.abspath(sys.argv[1])
-    libfolder = os.path.abspath(sys.argv[2])
-    mddocfolder = os.path.join(docfolder, 'src', 'pydoc')
-    pydocfolder = os.path.join(libfolder, 'pyshtools', 'doc')
-    print('-- searching documentation in folder: {} --'.format(mddocfolder))
+    pydocfolder = os.path.dirname(os.path.abspath(__file__))
+    sys.path.append(os.path.join(pydocfolder, '..'))
+    import _SHTOOLS  # noqa: E402
+
+    mddocfolder = os.path.join(pydocfolder, '../../src/pydoc')
+    print('--> Building python doc strings')
+    print('searching documentation in folder: {} --'.format(mddocfolder))
 
     # ---- loop through the f2py _SHTOOLS functions and make docstrings ----
     for name, func in _SHTOOLS.__dict__.items():
@@ -55,6 +55,8 @@ def main():
 
         except IOError as msg:
             print(msg)
+
+    print('python doc strings created successfully')
 
 
 # ===== PROCESS MD DOCUMENTATION FILE ====

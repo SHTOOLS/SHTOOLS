@@ -86,9 +86,7 @@ MANFILES = $(addprefix $(MANDIR)/, shtools.3 planetsconstants.3 plmbar.3 \
 
 all: install-man
 	$(PYTHON) make_www_doc.py
-	@echo
-	@echo "--> Fortran 95 man pages created successfully"
-	@echo
+	@echo "Fortran 95 man pages created successfully"
 
 install-man: $(MANFILES)
 

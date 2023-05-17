@@ -17,7 +17,6 @@ if sys.version_info < min_version:
 
 import os  # noqa: E402
 from pathlib import Path  # noqa: E402
-from subprocess import check_call  # noqa: E402
 import pkg_resources  # noqa: E402
 import sysconfig  # noqa: E402
 
@@ -26,9 +25,6 @@ import numpy  # noqa: E402
 import versioneer  # noqa: E402
 from numpy.distutils.core import setup  # noqa: E402
 from numpy.distutils.core import numpy_cmdclass  # noqa: E402
-from numpy.distutils.command.build import build as _build  # noqa: E402
-from numpy.distutils.command.install import install as _install  # noqa: E402
-from numpy.distutils.command.develop import develop as _develop  # noqa: E402
 from numpy.distutils.fcompiler import FCompiler  # noqa: E402
 from numpy.distutils.fcompiler import get_default_fcompiler  # noqa: E402
 from numpy.distutils.misc_util import Configuration  # noqa: E402
@@ -77,63 +73,6 @@ EXTRAS_REQUIRE = {
 
 VERSION = versioneer.get_version()
 print('INSTALLING SHTOOLS {}'.format(VERSION))
-
-
-# Custom build class
-class build(_build):
-    """This overrides the standard build class to include the doc build."""
-
-    description = "builds python documentation"
-
-    def run(self):
-        """Build the Fortran library, all python extensions and the docs."""
-        print('---- BUILDING ----')
-        _build.run(self)
-
-        # build documentation
-        print('---- BUILDING DOCS ----')
-        docdir = os.path.join(self.build_lib, 'pyshtools', 'doc')
-        self.mkpath(docdir)
-        doc_builder = os.path.join(self.build_lib, 'pyshtools', 'make_docs.py')
-        doc_source = '.'
-        check_call([sys.executable, doc_builder, doc_source, self.build_lib])
-
-        print('---- ALL DONE ----')
-
-
-# Custom develop classs
-class develop(_develop):
-    """This overrides the standard develop class to include the doc build."""
-
-    description = "builds python documentation"
-
-    def run(self):
-        """Build the Fortran library, all python extensions and the docs."""
-        print('---- CUSTOM DEVELOP ----')
-        _develop.run(self)
-
-        # build documentation
-        print('---- BUILDING DOCS ----')
-        docdir = os.path.join(self.setup_path, 'pyshtools', 'doc')
-        self.mkpath(docdir)
-        doc_builder = os.path.join(self.setup_path, 'pyshtools',
-                                   'make_docs.py')
-        doc_source = '.'
-        check_call([sys.executable, doc_builder, doc_source, self.setup_path])
-
-        print('---- ALL DONE ----')
-
-
-# Custom install class
-class install(_install):
-    """This overrides the standard install class to include the doc build."""
-
-    description = "builds python documentation"
-
-    def run(self):
-        """Build the Fortran library, all python extensions and the docs."""
-        print('---- CUSTOM INSTALL ----')
-        _install.run(self)
 
 
 def distutils_dir_name(dname):
@@ -212,7 +151,6 @@ def configuration(parent_package='', top_path=None):
 
 
 CMDCLASS = numpy_cmdclass
-CMDCLASS.update({'build': build, 'install': install, 'develop': develop})
 CMDCLASS = versioneer.get_cmdclass(CMDCLASS)
 
 metadata = dict(
@@ -232,6 +170,7 @@ metadata = dict(
     extras_require=EXTRAS_REQUIRE,
     platforms='OS Independent',
     packages=setuptools.find_packages(),
+    package_data={'pyshtools': ['doc/*.doc']},
     classifiers=CLASSIFIERS,
     configuration=configuration,
     cmdclass=CMDCLASS
