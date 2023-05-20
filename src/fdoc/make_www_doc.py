@@ -9,7 +9,7 @@ import re
 
 fdocfiles = os.listdir('.')
 
-reh1 = re.compile('\A# (.*?)\n', re.DOTALL)
+reh1 = re.compile(r'\A# (.*?)\n', re.DOTALL)
 
 for fn in fdocfiles:
     name, ext = os.path.splitext(fn)
