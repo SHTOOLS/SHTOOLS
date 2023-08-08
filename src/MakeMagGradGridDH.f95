@@ -802,11 +802,10 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
             ! dpl2 is the second derivative with respect to THETA. Must
             ! multiply dpl by -sin(theta) in the recurrence relation
-            ! note that the first term is symmetric about the equator according
-            ! the fsymsign, whereas the second term differs
-            ! by -1.
+            ! Note that dpl2 is symmetric about the equator according
+            ! the fsymsign.
             dpl2 = -2 * pm1 + z * dpl
-            dpl2s = 2 * pm1 + z * dpl
+            dpl2s = - dpl2
             tempr = cilm(1,2,1) * prefactor(1)
             coeftt0 = coeftt0 + tempr * dpl2
             coeftts0 = coeftts0 + tempr * dpl2s
@@ -834,7 +833,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             coefrts0 = coefrts0 - tempr * fsymsign(l1,1)
 
             dpl2 = -l * l1 * p + z * dpl
-            dpl2s = -l * l1 * p * fsymsign(l1,1) - z * dpl * fsymsign(l1,1)
+            dpl2s = dpl2 * fsymsign(l1,1)
             tempr = cilm(1,l1,1) * prefactor(l)
             coeftt0 = coeftt0 + tempr * dpl2
             coeftts0 = coeftts0 + tempr * dpl2s
@@ -898,7 +897,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             coeftps(m1) = coeftps(m1) - tempc ! reverse fsymsign
 
             dpl2 = -(m*m1 - (m**2)/u**2) * pm2 + z * dpl
-            dpl2s = -(m*m1 - (m**2)/u**2) * pm2 - z * dpl
+            dpl2s = dpl2
             tempc = cmplx(cilm(1,m1,m1), - cilm(2,m1,m1), dp) &
                     * prefactor(m)   ! (m,m)
             coeftt(m1) = coeftt(m1) + tempc * dpl2
@@ -947,7 +946,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
             coeftps(m1) = coeftps(m1) + tempc ! reverse fsymsign
 
             dpl2 = -(m1*(m1+1) - (m**2)/u**2) * pm1 + z * dpl
-            dpl2s = (m1*(m1+1) - (m**2)/u**2) * pm1 + z * dpl
+            dpl2s = - dpl2
             tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) &
                     * prefactor(m+1) ! (m+1,m)
             coeftt(m1) = coeftt(m1) + tempc  * dpl2
@@ -1001,12 +1000,11 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 coeftps(m1) = coeftps(m1) - tempc * fsymsign(l1,m1)
 
                 dpl2 = -(l * l1 -(m**2)/u**2) * p + z * dpl
-                dpl2s = -(l * l1 -(m**2)/u**2) * p * fsymsign(l1,m1) &
-                       - z * dpl * fsymsign(l1,m1) 
+                dpl2s = dpl2 * fsymsign(l1,m1) 
                 tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) &
                         * prefactor(l)
                 coeftt(m1) = coeftt(m1) + tempc * dpl2
-                coeftts(m1) = coeftts(m1) +  tempc * dpl2s
+                coeftts(m1) = coeftts(m1) + tempc * dpl2s
 
                 pm2 = pm1
                 pm1 = p
@@ -1064,7 +1062,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                             cilm(1,lmax_comp+1,lmax_comp+1), dp) * pmm &
                             * prefactor(lmax_comp) * lmax_comp
             coefp(lmax_comp+1) = coefp(lmax_comp+1) + tempc
-            coefps(lmax_comp+1) = coefps(lmax_comp+1) + tempc   ! fsymsign = 1
+            coefps(lmax_comp+1) = coefps(lmax_comp+1) + tempc ! fsymsign = 1
 
             tempc = - cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                             - cilm(2,lmax_comp+1,lmax_comp+1), dp) * pmm &
@@ -1101,8 +1099,7 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
             dpl2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)/u**2) * pmm + z &
                    * dpl
-            dpl2s = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)/u**2) * pmm - z &
-                    * dpl
+            dpl2s = dpl2
             tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                             - cilm(2,lmax_comp+1,lmax_comp+1), dp) &
                             * prefactor(lmax_comp)
@@ -1283,11 +1280,11 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
 
             if (i == 1) then
                 ! These derivatives are undefined at the pole
-                vxx(1,1:nlong) = 0.0_dp
-                vyy(1,1:nlong) = 0.0_dp
-                vxy(1,1:nlong) = 0.0_dp
-                vxz(1,1:nlong) = 0.0_dp
-                vyz(1,1:nlong) = 0.0_dp
+                vxx(i_s,1:nlong) = 0.0_dp
+                vyy(i_s,1:nlong) = 0.0_dp
+                vxy(i_s,1:nlong) = 0.0_dp
+                vxz(i_s,1:nlong) = 0.0_dp
+                vyz(i_s,1:nlong) = 0.0_dp
 
             else
                 ! Vxx = 1/r Vr + 1/r^2 Vtt
@@ -1305,10 +1302,11 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 vxx(i_s,1:nlong) = grid(1:nlong)
 
                 ! Vyy = 1/r Vr + 1/r^2 /tan(t) Vt + 1/r^2 /sin(t)^2 Vpp
-                coef(1) = cmplx(coefrs0/r_ex + coefts0/(r_ex**2)/tan(theta) &
+                ! Note that tan(t) changes sign in the southern hemisphere
+                coef(1) = cmplx(coefrs0/r_ex - coefts0/(r_ex**2)/tan(theta) &
                                 + coefpps0/(r_ex**2)/u**2, 0.0_dp, dp)
                 coef(2:lmax+1) = (coefrs(2:lmax+1)/r_ex &
-                                  + coefts(2:lmax+1)/(r_ex**2)/tan(theta) + &
+                                  - coefts(2:lmax+1)/(r_ex**2)/tan(theta) + &
                                   coefpps(2:lmax+1)/(r_ex**2)/u**2 ) / 2.0_dp
 
                 if (present(sampling)) then
@@ -1321,10 +1319,11 @@ subroutine MakeMagGradGridDH(cilm, lmax, r0, a, f, vxx, vyy, vzz, vxy, &
                 vyy(i_s,1:nlong) = grid(1:nlong)
 
                 ! Vxy = 1/r^2 /sin(t) Vtp - cos(t)/sin(t)^2 /r^2 Vp
+                ! Note that cos(t) changes sign in the southern hemisphere
                 coef(1) = cmplx(coeftps0/sint/r_ex**2 &
-                                - coefps0/(r_ex**2)*z/u**2, 0.0_dp, dp)
+                                + coefps0/(r_ex**2)*z/u**2, 0.0_dp, dp)
                 coef(2:lmax+1) = (coeftps(2:lmax+1)/sint/r_ex**2 &
-                                  - coefps(2:lmax+1)/(r_ex**2)*z/u**2 ) &
+                                  + coefps(2:lmax+1)/(r_ex**2)*z/u**2 ) &
                                   / 2.0_dp
 
                 if (present(sampling)) then
