@@ -45,10 +45,10 @@ def surface(lmax=2160):
         and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
     if lmax <= 2160:
-        file_url = "http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_5min/shcs_to2160/Earth2014.SUR2014.degree2160.bshc"  # noqa: E501
+        file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_5min/shcs_to2160/Earth2014.SUR2014.degree2160.bshc"  # noqa: E501
         file_hash = "sha256:5694260d135c17427270ed18d48af23f4788e5fbc1dfb9dcb19f1cf9b401c9ce"  # noqa: E501
     else:
-        file_url = "http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_1min/shcs_to10800/Earth2014.SUR2014.degree10800.bshc"  # noqa: E501
+        file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_1min/shcs_to10800/Earth2014.SUR2014.degree10800.bshc"  # noqa: E501
         file_hash = "sha256:f9cc0209cffeb1faef58ec9d03886941448bfffd9e36f5ee56c51063c3f778f9"  # noqa: E501
 
     fname = _retrieve(
@@ -79,10 +79,10 @@ def bedrock(lmax=2160):
         and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
     if lmax <= 2160:
-        file_url = "http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_5min/shcs_to2160/Earth2014.BED2014.degree2160.bshc"  # noqa: E501
+        file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_5min/shcs_to2160/Earth2014.BED2014.degree2160.bshc"  # noqa: E501
         file_hash = "sha256:146dcc80f17d201352d391aa90f487f5ed16006a6a3966add2d023b998727af7"  # noqa: E501
     else:
-        file_url = "http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_1min/shcs_to10800/Earth2014.BED2014.degree10800.bshc"  # noqa: E501
+        file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_1min/shcs_to10800/Earth2014.BED2014.degree10800.bshc"  # noqa: E501
         file_hash = "sha256:6a2976484d1b62b89e4bb55b484adcd037c9bf2f03a5272a1dffb3c644e0e6ec"  # noqa: E501
 
     fname = _retrieve(
@@ -113,10 +113,10 @@ def tbi(lmax=2160):
         and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
     if lmax <= 2160:
-        file_url = "http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_5min/shcs_to2160/Earth2014.TBI2014.degree2160.bshc"  # noqa: E501
+        file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_5min/shcs_to2160/Earth2014.TBI2014.degree2160.bshc"  # noqa: E501
         file_hash = "sha256:84a72ef25fe26fd746d2c6988c01840a12e9e414ee266e9357acb81faaaa6d5f"  # noqa: E501
     else:
-        file_url = "http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_1min/shcs_to10800/Earth2014.TBI2014.degree10800.bshc"  # noqa: E501
+        file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_1min/shcs_to10800/Earth2014.TBI2014.degree10800.bshc"  # noqa: E501
         file_hash = "sha256:72ffb432d268ae6972d3251ef395b980b38e3313627c6c981a0197882efb4f4c"  # noqa: E501
 
     fname = _retrieve(
@@ -148,10 +148,10 @@ def ret(lmax=2160):
         and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
     if lmax <= 2160:
-        file_url = "http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_5min/shcs_to2160/Earth2014.RET2014.degree2160.bshc"  # noqa: E501
+        file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_5min/shcs_to2160/Earth2014.RET2014.degree2160.bshc"  # noqa: E501
         file_hash = "sha256:1fa87749532811614c00e9723dae1aa312e5511570d101bccb74bc40cb7dd5d1"  # noqa: E501
     else:
-        file_url = "http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_1min/shcs_to10800/Earth2014.RET2014.degree10800.bshc"  # noqa: E501
+        file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_1min/shcs_to10800/Earth2014.RET2014.degree10800.bshc"  # noqa: E501
         file_hash = "sha256:717245367018f68aee9ebdb4bb76a2d9c8e64c9c8fc74d0b673186a35dfadac2"  # noqa: E501
 
     fname = _retrieve(
@@ -182,10 +182,10 @@ def ice(lmax=2160):
         and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
     if lmax <= 2160:
-        file_url = "http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_5min/shcs_to2160/Earth2014.ICE2014.degree2160.bshc"  # noqa: E501
+        file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_5min/shcs_to2160/Earth2014.ICE2014.degree2160.bshc"  # noqa: E501
         file_hash = "sha256:04cd185cc668eba6f9bd1db527c4985703cce8d1a9fb993509e625e2bbecc78e"  # noqa: E501
     else:
-        file_url = "http://ddfe.curtin.edu.au/gravitymodels/Earth2014/data_1min/shcs_to10800/Earth2014.ICE2014.degree10800.bshc"  # noqa: E501
+        file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_1min/shcs_to10800/Earth2014.ICE2014.degree10800.bshc"  # noqa: E501
         file_hash = "sha256:7c08342326c9a3843b80ca759e9b78e3c2f30bc227039c7e4ffd5c0fee70a74f"  # noqa: E501
 
     fname = _retrieve(
