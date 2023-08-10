@@ -45,8 +45,8 @@ from ._version import get_versions as _get_versions
 # ---- Import shtools subpackages ----
 from . import backends
 from . import constants
-from . import datasets
 from . import shclasses
+from . import datasets
 from . import legendre
 from . import expand
 from . import shio
