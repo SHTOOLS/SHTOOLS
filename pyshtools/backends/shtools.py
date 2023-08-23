@@ -1,6 +1,7 @@
 """
 pyshtools subpackage that includes all Python wrapped Fortran routines.
 """
+import functools as _functools
 import os as _os
 import numpy as _np
 
@@ -204,6 +205,7 @@ def _shtools_status_message(status):
 
 
 def _raise_errors(func):
+    @_functools.wraps(func)
     def wrapped_func(*args, **kwargs):
         returned_values = func(*args, **kwargs)
         if returned_values[0] != 0:
@@ -212,7 +214,10 @@ def _raise_errors(func):
             return returned_values[1]
         else:
             return returned_values[1:]
-    wrapped_func.__doc__ = func.__doc__
+    # f2py's fortranobject.c adds this extra type prefix, but that's not needed
+    # for this wrapper, which Python knows is a function already.
+    if wrapped_func.__name__.startswith('function '):
+        wrapped_func.__name__ = wrapped_func.__name__[len('function '):]
     return wrapped_func
 
 
