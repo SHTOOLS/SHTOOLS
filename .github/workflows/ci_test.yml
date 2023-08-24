@@ -38,7 +38,7 @@ jobs:
     - name: Set up Conda environment
       shell: bash -l {0}
       run: |
-        mamba list -n ci_test
+        conda list -n ci_test
 
     - name: Install gcc for macOS
       shell: bash -l {0}
@@ -49,13 +49,13 @@ jobs:
     - name: Build using pip
       shell: bash -l {0}
       run: |
-        mamba env list
+        conda env list
         pip install --no-deps .
 
     - name: Run tests
       shell: bash -l {0}
       run: |
-        mamba env list
+        conda env list
         python examples/notebooks/test_notebooks.py
         export MPLBACKEND=Agg
         make -C examples/python -f Makefile no-timing
