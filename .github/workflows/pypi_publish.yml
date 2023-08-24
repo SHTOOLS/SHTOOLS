@@ -31,12 +31,11 @@ jobs:
       shell: bash -l {0}
       run: |
         mamba config --set always_yes yes --set changeps1 no
-        mamba install -q -n pypi fftw \
-                                 liblapack \
-                                 openblas \
+        mamba install -q -n pypi blas-devel \
+                                 fftw \
+                                 meson-python \
                                  numpy \
-                                 setuptools \
-                                 versioneer \
+                                 pkg-config \
                                  twine
         mamba list -n pypi
 
