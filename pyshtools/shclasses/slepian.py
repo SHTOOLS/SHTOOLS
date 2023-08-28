@@ -363,7 +363,7 @@ class Slepian(object):
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
         """
-        if type(normalization) != str:
+        if type(normalization) is not str:
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -409,7 +409,7 @@ class Slepian(object):
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
         """
-        if type(normalization) != str:
+        if type(normalization) is not str:
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -466,7 +466,7 @@ class Slepian(object):
         the properties of the output grids, see the documentation for
         SHExpandDH and SHExpandGLQ.
         """
-        if type(grid) != str:
+        if type(grid) is not str:
             raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
@@ -844,19 +844,19 @@ class Slepian(object):
         """
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) == str:
+            if type(axes_labelsize) is str:
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) == str:
+            if type(tick_labelsize) is str:
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) == str:
+            if type(titlesize) is str:
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -1008,19 +1008,19 @@ class Slepian(object):
         """
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) == str:
+            if type(axes_labelsize) is str:
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) == str:
+            if type(tick_labelsize) is str:
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) == str:
+            if type(titlesize) is str:
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
