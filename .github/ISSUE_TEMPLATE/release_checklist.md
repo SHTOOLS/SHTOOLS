@@ -48,7 +48,7 @@ Update the documentation files and man pages
 - Commit and push changes.
 
 ### Update MacPorts ###
-- [] Update the MacPorts installation by editing the file `science/shtools/Portfile` in the [macports-ports](https://github.com/macports/macports-ports) repo:
+- [ ] Update the MacPorts installation. If this doesn't happen automatically, editing the file `science/shtools/Portfile` in the [macports-ports](https://github.com/macports/macports-ports) repo and change the following:
 - Change the version number in `github.setup`.
 - Update the sha256, rmd160 and file size of the release asset.
 - Commit and push changes.

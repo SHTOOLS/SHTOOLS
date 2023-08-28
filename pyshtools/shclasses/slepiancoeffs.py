@@ -120,7 +120,7 @@ class SlepianCoeffs(object):
             parameter to 0 will use as many threads as there are hardware
             threads on the system.
         """
-        if type(grid) != str:
+        if type(grid) is not str:
             raise ValueError('grid must be a string. ' +
                              'Input type was {:s}'
                              .format(str(type(grid))))
@@ -188,7 +188,7 @@ class SlepianCoeffs(object):
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
         """
-        if type(normalization) != str:
+        if type(normalization) is not str:
             raise ValueError('normalization must be a string. ' +
                              'Input type was {:s}'
                              .format(str(type(normalization))))

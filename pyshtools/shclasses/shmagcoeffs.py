@@ -196,7 +196,7 @@ class SHMagCoeffs(object):
         if _np.iscomplexobj(coeffs):
             raise TypeError('The input array must be real.')
 
-        if type(normalization) != str:
+        if type(normalization) is not str:
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -474,7 +474,7 @@ class SHMagCoeffs(object):
             r0_index = None
         header2_list = None
 
-        if type(normalization) != str:
+        if type(normalization) is not str:
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -696,7 +696,7 @@ class SHMagCoeffs(object):
         of the random realization can be fixed exactly to the input spectrum by
         setting exact_power to True.
         """
-        if type(normalization) != str:
+        if type(normalization) is not str:
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -850,7 +850,7 @@ class SHMagCoeffs(object):
         except:
             pass
 
-        if type(normalization) != str:
+        if type(normalization) is not str:
             raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
@@ -1655,7 +1655,7 @@ class SHMagCoeffs(object):
         True. This rotation is accomplished by performing the inverse rotation
         using the angles (-gamma, -beta, -alpha).
         """
-        if type(convention) != str:
+        if type(convention) is not str:
             raise ValueError('convention must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(convention))))
@@ -1737,7 +1737,7 @@ class SHMagCoeffs(object):
             lmax = self.lmax
 
         # check argument consistency
-        if type(normalization) != str:
+        if type(normalization) is not str:
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -2228,13 +2228,13 @@ class SHMagCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) == str:
+            if type(axes_labelsize) is str:
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) == str:
+            if type(tick_labelsize) is str:
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
@@ -2420,19 +2420,19 @@ class SHMagCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) == str:
+            if type(axes_labelsize) is str:
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) == str:
+            if type(tick_labelsize) is str:
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) == str:
+            if type(titlesize) is str:
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -2841,13 +2841,13 @@ class SHMagCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) == str:
+            if type(axes_labelsize) is str:
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) == str:
+            if type(tick_labelsize) is str:
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()

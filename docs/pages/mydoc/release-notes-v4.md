@@ -7,6 +7,18 @@ summary:
 toc: true
 folder: mydoc
 ---
+## Version 4.10.4
+
+**Bug fixes, minor enhancements, and deprecations**
+
+* The module `pyshtools.shtools` has been removed, and is now accessible at `pyshtools.backends.shtools`.
+* Fixed a bug in the Fortran source code of `MakeGravGradGridDH` and `MakeMagGradGridDH`, both of which are used in the pyshtools `tensor` method of the classes `SHGravCoeffs` and `SHMagCoeffs`. This bug only affected the southern hemisphere, and is most noticeable close to the south pole.
+* Updated the urls for the Earth 2012/2014 datasets.
+* Changed the order of the imports in `pyshtools/__init__.py` that led to a circular import problem on some systems.
+* Updated how the `shtools` routines were wrapped using `functools.wraps`.
+
+M. A. Wieczorek, M. Meschede, A. Broquet, T. Brugere, A. Corbin, EricAtORS, A. Hattori, A. Kalinin, J. Kohler, D. Kutra, K. Leinweber, P. Lobo, I. Oshchepkov, P.-L. Phan, O. Poplawski, M. Reinecke, E. Sales de Andrade, E. Schnetter, S. Schröder, J. Sierra, A. Vasishta, A. Walker, xoviat, B. Xu (2023). SHTOOLS: Version 4.10.4, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+
 ## Version 4.10.3
 
 **Minor packaging enhancement**

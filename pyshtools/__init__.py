@@ -45,8 +45,8 @@ from ._version import get_versions as _get_versions
 # ---- Import shtools subpackages ----
 from . import backends
 from . import constants
-from . import datasets
 from . import shclasses
+from . import datasets
 from . import legendre
 from . import expand
 from . import shio
@@ -54,7 +54,6 @@ from . import spectralanalysis
 from . import rotate
 from . import gravmag
 from . import utils
-from .backends import shtools
 
 # ---- Import principal classes into pyshtools namespace
 from .shclasses import SHCoeffs

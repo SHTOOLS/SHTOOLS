@@ -96,7 +96,7 @@ def main():
         wrapperlines.insert(iline, newline)
         
     print('add bind statment...')
-    p = re.compile('\s*(subroutine|function)')
+    p = re.compile(r'\s*(subroutine|function)')
     # search for the indices of 'subroutine'
     isubroutine = [iline for iline, line in enumerate(wrapperlines)
                       if p.match(line) is not None]

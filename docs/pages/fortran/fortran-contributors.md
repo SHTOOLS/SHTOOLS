@@ -33,3 +33,5 @@ folder: fortran
 * Pierre-Louis Phan / [pl-phan](https://github.com/pl-phan), [pphan-imcce](https://github.com/pphan-imcce)
 * Dominik Kutra / [k-dominik](https://github.com/k-dominik)
 * Orion Poplawski / [opoplawski](https://github.com/opoplawski)
+* Adrien Broquet / [AB-Ares](https://github.com/AB-Ares)
+* [EricAtORS](https://github.com/EricAtORS)

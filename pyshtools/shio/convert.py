@@ -62,7 +62,7 @@ def convert(coeffs_in, normalization_in=None, normalization_out=None,
 
     # check argument consistency
     if normalization_in is not None:
-        if type(normalization_in) != str:
+        if type(normalization_in) is not str:
             raise ValueError('normalization_in must be a string. ' +
                              'Input type was {:s}'
                              .format(str(type(normalization_in))))
@@ -77,7 +77,7 @@ def convert(coeffs_in, normalization_in=None, normalization_out=None,
             raise ValueError("normalization_in and normalization_out " +
                              "must both be specified.")
     if normalization_out is not None:
-        if type(normalization_out) != str:
+        if type(normalization_out) is not str:
             raise ValueError('normalization_out must be a string. ' +
                              'Input type was {:s}'
                              .format(str(type(normalization_out))))
