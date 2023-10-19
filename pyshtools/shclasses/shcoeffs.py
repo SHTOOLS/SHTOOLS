@@ -1833,6 +1833,8 @@ class SHCoeffs(object):
             lmax = min(3*lmax, 2800)
 
         r0 = self.coeffs[0, 0, 0]
+        if self.normalization == 'ortho':
+            r0 = r0 / _np.sqrt(4 * _np.pi)
         grid = self.expand(lmax=lmax, backend=backend,
                            nthreads=nthreads) - r0
         h200 = (grid**2).expand(lmax_calc=0, backend=backend,
