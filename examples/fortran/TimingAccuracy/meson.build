@@ -26,5 +26,6 @@ foreach name, args : BENCHS
     timing_tests[test_name],
     args: [
       meson.current_source_dir() / input,
-    ])
+    ],
+    timeout: 0)
 endforeach

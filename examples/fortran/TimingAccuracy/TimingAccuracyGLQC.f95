@@ -16,7 +16,7 @@ Program TimingAccuracyGLQC
     implicit none
 
     integer(int32), parameter :: maxdeg = 2800
-    character(200) :: outfile1, outfile2, outfile3, outfile4, outfile
+    character(200) :: outfile1, outfile2, outfile3, outfile4, outfile, infile
     complex(dp), allocatable :: cilm(:,:,:), cilm2(:,:,:), gridglq(:,:)
     real(dp), allocatable :: zero(:), w(:)
     real(dp) :: maxerror, err1, err2, beta, rms, timein(3), timeout(3)
@@ -34,11 +34,19 @@ Program TimingAccuracyGLQC
         stop
     end if
 
-    print*, "Value of beta for power law Sff = l^(-beta) > "
-    read(*,*) beta
+    ! A data input file may be passed as the first argument. Otherwise prompt for required settings.
+    if (command_argument_count() > 0) then
+        call get_command_argument(1, infile)
+        open(unit=20, file=infile, action="read")
+        read(20,*) beta, outfile
+        close(20)
+    else
+        print*, "Value of beta for power law Sff = l^(-beta) > "
+        read(*,*) beta
 
-    print*, "output file name > "
-    read(*,*) outfile
+        print*, "output file name > "
+        read(*,*) outfile
+    end if
 
     outfile1 = trim(outfile) // ".timef"
     outfile2 = trim(outfile) // ".timei"
