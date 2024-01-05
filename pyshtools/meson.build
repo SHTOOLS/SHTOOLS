@@ -1,6 +1,5 @@
 python_sources = [
   '__init__.py',
-  '_version.py',
 ]
 
 pymod = import('python')
