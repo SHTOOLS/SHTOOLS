@@ -23,7 +23,7 @@ def example():
     ax.grid(which='both')
     ax.legend()
 
-    plt.show()
+    plt.savefig('exact_power.png')
 
 
 def main():

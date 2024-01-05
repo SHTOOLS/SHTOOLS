@@ -1,6 +1,8 @@
 """
 This script tests the gravity and magnetics routines.
 """
+import sys
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pyshtools as pysh
@@ -21,8 +23,13 @@ def main():
 # ==== TEST FUNCTIONS ====
 
 def TestMakeGravGrid():
-    infile = '../../ExampleDataFiles/gmm3_120_sha.tab'
-    clm, lmax, header = pysh.shio.shread(infile, header=True)
+    gravfile = 'gmm3_120_sha.tab'
+    if len(sys.argv) > 1:
+        gravfile = os.path.join(sys.argv[1], gravfile)
+    else:
+        gravfile = os.path.join('../../ExampleDataFiles', gravfile)
+
+    clm, lmax, header = pysh.shio.shread(gravfile, header=True)
     r0 = float(header[0]) * 1.e3
     gm = float(header[1]) * 1.e9
     clm[0, 0, 0] = 1.0
@@ -128,8 +135,13 @@ def TestFilter():
 
 
 def TestMakeMagGrid():
-    infile = '../../ExampleDataFiles/FSU_mars90.sh'
-    clm, lmax, header = pysh.shio.shread(infile, header=True, skip=1)
+    magfile = 'FSU_mars90.sh'
+    if len(sys.argv) > 1:
+        magfile = os.path.join(sys.argv[1], magfile)
+    else:
+        magfile = os.path.join('../../ExampleDataFiles/', magfile)
+
+    clm, lmax, header = pysh.shio.shread(magfile, header=True, skip=1)
     r0 = float(header[0]) * 1.e3
     a = pysh.constants.Mars.mean_radius.value + 145.0e3
     # radius to evaluate the field

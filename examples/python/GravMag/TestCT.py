@@ -1,6 +1,8 @@
 """
 This script creates a crustal thickness map of Mars.
 """
+import sys
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pyshtools as pysh
@@ -29,14 +31,24 @@ def TestCrustalThickness():
     filter_type = 0
     half = 0
 
-    gravfile = '../../ExampleDataFiles/gmm3_120_sha.tab'
+    gravfile = 'gmm3_120_sha.tab'
+    if len(sys.argv) > 1:
+        gravfile = os.path.join(sys.argv[1], gravfile)
+    else:
+        gravfile = os.path.join('../../ExampleDataFiles', gravfile)
+
     pot, lmaxp, header = pysh.shio.shread(gravfile, lmax=degmax, header=True)
     gm = float(header[1]) * 1.e9
     mass = gm / pysh.constants.G.value
     r_grav = float(header[0]) * 1.e3
     print(r_grav, gm, mass, lmaxp)
 
-    topofile = '../../ExampleDataFiles/MarsTopo719.shape'
+    topofile = 'MarsTopo719.shape'
+    if len(sys.argv) > 1:
+        topofile = os.path.join(sys.argv[1], topofile)
+    else:
+        topofile = os.path.join('../../ExampleDataFiles', topofile)
+
     hlm, lmaxt = pysh.shio.shread(topofile)
     r0 = hlm[0, 0, 0]
     d = r0 - 45.217409924028445e3

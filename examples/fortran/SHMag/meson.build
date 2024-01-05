@@ -8,4 +8,6 @@ test(
   TestSHMag,
   args: [
     meson.current_source_dir() / '../../ExampleDataFiles',
-  ])
+  ],
+  timeout: 60,
+  suite: 'fortran')
