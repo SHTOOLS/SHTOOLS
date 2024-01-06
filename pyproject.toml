@@ -54,8 +54,14 @@ build-backend = 'mesonpy'
 requires = [
   'meson-python>=0.13.1',
   'oldest-supported-numpy',
+  'setuptools>=64',
+  'setuptools_scm>=8',
 ]
 
 [tool.meson-python.args]
 setup = ['--default-library=static']
 install = ['--tags=doc,python-runtime,runtime']
+
+[tool.setuptools_scm]
+version_scheme =  'no-guess-dev'
+local_scheme =  'dirty-tag'

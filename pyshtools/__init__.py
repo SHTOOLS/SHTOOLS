@@ -40,7 +40,7 @@ and the GitHub project page at
 
    https://github.com/SHTOOLS/SHTOOLS
 """
-from ._version import get_versions as _get_versions
+from importlib.metadata import version, PackageNotFoundError
 
 # ---- Import shtools subpackages ----
 from . import backends
@@ -63,8 +63,12 @@ from .shclasses import Slepian
 from .shclasses import SHGravCoeffs
 from .shclasses import SHMagCoeffs
 
-__version__ = _get_versions()["version"]
-__commit__ = _get_versions()["full-revisionid"]
+try:
+    __version__ = version('pyshtools')
+except PackageNotFoundError:
+    # package is not installed
+    pass
+
 __author__ = 'SHTOOLS developers'
 
 # ---- Define __all__ for use with: from pyshtools import * ----
