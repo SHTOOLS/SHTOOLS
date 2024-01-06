@@ -27,6 +27,6 @@ foreach name, args : BENCHS
     args: [
       meson.current_source_dir() / input,
     ],
-    timeout: 0)
+    timeout: 0,
     suite: 'fortran')
 endforeach
