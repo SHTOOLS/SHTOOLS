@@ -36,6 +36,8 @@ jobs:
                                  meson-python \
                                  numpy \
                                  pkg-config \
+                                 setuptools_scm \
+                                 build \
                                  twine
         mamba list -n pypi
 
@@ -51,7 +53,7 @@ jobs:
       shell: bash -l {0}
       run: |
         mamba env list
-        python setup.py sdist
+        python -m build -s
         twine upload dist/*
 
     - name: Trigger a build on the SHTOOLS/build-shtools repo

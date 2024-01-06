@@ -12,14 +12,13 @@ folder: mydoc
 
 The binary pre-compiled pyshtools library, with all required dependencies, can be installed with the conda package manager using the command:
 ```bash
-conda install -c conda-forge pyshtools  # Linux and macOS only
+conda install -c conda-forge pyshtools
 conda update -c conda-forge pyshtools  # to upgrade a pre-existing installation
 ```
-The conda packages do not support Windows architectures at the present time.
 
 ## Python package installer (pip)
 
-On Linux, macOS and Windows architectures, the binary wheels can be installed using `pip` by executing one of the following commands:
+The binary wheels can be installed using `pip` by executing one of the following commands:
 ```bash
 pip install pyshtools
 pip install --upgrade pyshtools  # to upgrade a pre-existing installation
@@ -28,52 +27,62 @@ In order to use the map projection routines, it will be necessary to install eit
 
 ## Build from source
 
-If you wish to compile the archive yourself, first make sure that you have the required dependencies installed for the Fortran-95 components, which inlcude FFTW3 and LAPACK compatible libraries (see [these instructions](fortran-installing.html)). This can be accomplished on most Linux distributions using
+If you wish to compile the archive yourself, you will need to make sure that you have the required dependencies installed, which include a fortran and C compiler, and FFTW3, BLAS and LAPACK compatible libraries. First, ensure that the relevant build utilities and compilers are installed:
 ```bash
-sudo apt-get install gcc gfortran libfftw3-dev libblas-dev liblapack-dev
+# Debian, Ubuntu and derivatives
+sudo apt-get install build-essential cmake gfortran
+# Fedora, Centos, RHEL and derivatives
+sudo dnf group install "C Development Tools and Libraries" "Development Tools"
+sudo dnf install cmake gcc-fortran
+# macOS
+xcode-select --install
 ```
-or on macOS by using one of the following
-```bash
-brew install fftw  # using brew
-sudo port install fftw-3  # using macports
-conda install fftw  # using conda
-```
-Alternatively, all dependencies (with the exception of the fortran compiler) can be installed using the conda `environment.yml` file found in the main shtools Github repository:
-```bash
-conda env create -n your_env_name -f environment.yml
-conda activate your_env_name
-```
-Then build from source using the command
-```bash
-pip install pyshtools --no-binary pyshtools
-```
-Note that pyshtools supports the use of any FFTW3-compatible library, such as Intel's [MKL](https://software.intel.com/en-us/mkl).
-
-If you would like to modify the source code, you should clone the SHTOOLS repo:
+Next, clone the SHTOOLS repo and enter the directory
 ```bash
 git clone https://github.com/SHTOOLS/SHTOOLS.git
+cd shtools
 ```
-Once the repo is cloned, enter the directory, and use either the command
+All dependencies can be then be installed using the conda `environment.yml` file that is found in the top level directory:
+```bash
+conda create -n your_env_name python=3.xx  # create a new conda environment, if desired
+conda env update -n your_env_name -f environment.yml
+conda activate your_env_name  # activate the new environment
+```
+To build pyshtools from source and install in the active Python environment lib folder, use the command
 ```bash
 pip install .
 ```
-to install pyshtools in the active Python environment lib folder, or
+To instead install the files in the current working directory in editable mode and link them to the system Python directory, use the command
 ```bash
-pip install -e .
+pip install --no-build-isolation -e .
 ```
-to install the files in the current working directory and link them to the system Python directory.
+
+When pyshtools is installed in editable mode, a number of tests and benchmarks can be run from within the repo. First, you will need to find out the name of the build directory by typing
+```bash
+ls build
+```
+which should return something like `cp312`. Then, the tests and benchmarks can be run by executing the following commands in the top level directory
+```bash
+meson test -C build/cp312 --suite python
+meson test -C build/cp312 --suite python-notebooks
+meson test -C build/cp312 --suite fortran
+meson test -C build/cp312 --benchmark --suite python
+meson test -C build/cp312 --benchmark --suite fortran
+```
 
 To uninstall pyshtools from your system directory, use the command
 ```bash
 pip uninstall pyshtools
 ```
-Note that these commands will install only the Python version that corresponds to the version of `pip` being used. On some systems, it may be necessary to specify explicitly `pip3` or `pip3.x`.
+Note that on some systems, it may be necessary to specify explicitly `pip3` or `pip3.x` for the `pip` command.
 
 ## Python dependencies {#dependencies}
 
 When installing pyshtools using `pip` or `conda`, the following packages should be installed automatically:
 
-* [numpy](https://numpy.org/): required for all numerical calculations
+* [numpy](https://numpy.org/): required for all numerical calculations.
+* [meson-python](https://meson-python.readthedocs.io/en/latest/#): required to build pyshtools.
+* [setuptools_scm](https://setuptools-scm.readthedocs.io/en/latest/): required to obtain the pyshtools version number.
 * [scipy](https://www.scipy.org/): required for a few specialized functions.
 * [matplotlib](https://matplotlib.org/): required for most plotting functions.
 * [astropy](https://www.astropy.org/): required for the constants module.
@@ -84,12 +93,28 @@ When installing pyshtools using `pip` or `conda`, the following packages should 
 
 When installing pyshtools using `conda`, the following will also be installed automatically:
 
+* [fftw](https://www.fftw.org/): required for the fortran library.
+* [blas-devel](https://anaconda.org/conda-forge/blas-devel): required for the fortran components.
 * [cartopy](https://scitools.org.uk/cartopy/docs/latest/): required for Cartopy map projections. Cartopy requires (see below) *proj*, *geos*, *cython*, *pyshp*, *six*, and *shapely*.
 * [pygmt](https://www.pygmt.org) (>=0.3): required for pygmt map projections. pygmt requires (see below) *gmt (>=6.1.1)*.
 * [ducc0](https://gitlab.mpcdf.mpg.de/mtr/ducc) (>=0.15): required for using the 'ducc' backend for spherical harmonic transforms.
 * [palettable](https://jiffyclub.github.io/palettable/): scientific color maps required by one of the tutorials.
 
-The above four packages will need to be installed separately when installing pyshtools with `pip`, as described in the following subsections.
+Thus, when installing pyshtools with `pip`, it will be necessary to install compatible versions of BLAS, LAPACK and FFTW3, as well as Cartopy, pygmt, and ducc0.
+
+### How to install BLAS, LAPACK and FFTW3
+
+The easiest way to install BLAS, LAPACK and FFTW is with `conda`:
+```bash
+conda install -c conda-forge blas-devel>=3.8 fftw>=3.3.8
+```
+If it is not possible to use conda, these can instead be installed using the system package manager:
+```bash
+sudo apt-get install libfftw3-dev libblas-dev liblapack-dev  # Debian, Ubuntu and derivatives
+sudo dnf install blas-devel lapack-devel fftw-devel  # Fedora, Centos, RHEL and derivatives
+brew install fftw  # macOS
+```
+Note that pyshtools supports the use of any FFTW3-compatible library, such as Intel's [MKL](https://software.intel.com/en-us/mkl).
 
 ### How to install Cartopy
 
@@ -109,6 +134,7 @@ pip install cartopy
 See [these instructions](https://scitools.org.uk/cartopy/docs/latest/installing.html#installing) for further details.
 
 ### How to install pygmt
+
 In order to use the *pygmt* plotting routines, it will be necessary to install both *pygmt (>=0.3)* and the *gmt (>=6.1.1)* library. This is most easily achieved using conda with
 ```bash
 conda install -c conda-forge pygmt gmt
@@ -116,20 +142,23 @@ conda install -c conda-forge pygmt gmt
 Alternatively, *pygmt* can be installed using `pip`
 ```bash
 pip install pyshtools[pygmt]  # installs pygmt at the same time as pyshtools
-pip install pygmt  # if pyshtools is already installed
+pip install pygmt  # install pygmt with pip
 ```
-For this case, the *gmt* library will then need to be installed using other means, such as with brew, macports or apt-get:
+For this case, however, the *gmt* library will need to be installed using other means, such as with your system package manager:
 ```bash
-brew install gmt  # using brew on macOS
-sudo port install gmt6  # using macports on macOS
-sudo apt-get install gmt  # using apt-get on linux
+sudo apt-get install gmt  # Debian, Ubuntu and derivatives
+sudo dnf install gmt-devel  # Fedora, Centos, RHEL and derivatives
+brew install gmt  # macOS using brew
+sudo port install gmt6  # macOS using macports
 ```
 
 ### How to install ducc
-To make use of the 'ducc' backend for the spherical harmonic transforms, it will be necessary to install the *ducc0 (>=0.15)* package, preferably via `pip`:
+
+To make use of the 'ducc' backend for the spherical harmonic transforms, it will be necessary to install the *ducc0 (>=0.15)* package using either `pip` or `conda`:
 ```bash
+conda install -c conda-forge ducc0>=0.15  # install using conda
+pip install ducc0>=0.15  # install using pip
 pip install pyshtools[ducc]  # installs ducc at the same time as pyshtools
-pip install ducc0>=0.15  # if pyshtools is already installed
 pip install ducc0>=0.15 -no-binary ducc0  # install ducc from source
 ```
-Note: By installing *ducc0* from source, it might be possible to benefit from the use of AVX instructions which can improve execution speeds by a factor of about 2.
+Note: By installing *ducc0* from source, it might be possible to benefit from the use of AVX instructions that can improve execution speeds by a factor of about 2.

@@ -52,7 +52,7 @@ ducc = ['ducc0>=0.15']
 [build-system]
 build-backend = 'mesonpy'
 requires = [
-  'meson-python>=0.13.1',
+  'meson-python>=0.14',
   'oldest-supported-numpy',
   'setuptools>=64',
   'setuptools_scm>=8',
