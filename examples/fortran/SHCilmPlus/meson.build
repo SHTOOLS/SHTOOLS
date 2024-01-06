@@ -8,4 +8,6 @@ test(
   TestCilmPlus,
   args: [
     meson.current_source_dir() / '../../ExampleDataFiles',
-  ])
+  ],
+  timeout: 120,
+  suite: 'fortran')

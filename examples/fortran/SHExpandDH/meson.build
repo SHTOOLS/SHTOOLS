@@ -8,4 +8,5 @@ test(
   TestExpandDH,
   args: [
     meson.current_source_dir() / '../../ExampleDataFiles',
-  ])
+  ],
+  suite: 'fortran')

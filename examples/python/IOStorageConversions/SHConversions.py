@@ -2,6 +2,8 @@
 This script tests the conversions between real and complex spherical harmonics
 coefficients
 """
+import sys
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pyshtools as pysh
@@ -31,8 +33,13 @@ def test_SHConversions():
 def example():
     print('---- SHrtoc example ----')
     # --- input data filename ---
-    infile = '../../ExampleDataFiles/MarsTopo719.shape'
-    coeffs1, lmax = pysh.shio.shread(infile)
+    topofile = 'MarsTopo719.shape'
+    if len(sys.argv) > 1:
+        topofile = os.path.join(sys.argv[1], topofile)
+    else:
+        topofile = os.path.join('../../ExampleDataFiles', topofile)
+
+    coeffs1, lmax = pysh.shio.shread(topofile)
     coeffs1 = coeffs1[:, :lmax + 1, :lmax + 1]
 
     # --- convert to complex coefficients, fill negative order coefficients ---

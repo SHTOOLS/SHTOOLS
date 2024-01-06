@@ -9,4 +9,5 @@ test(
   args: [
     meson.current_source_dir() / '../../ExampleDataFiles',
     meson.current_source_dir() / 'input.txt',
-  ])
+  ],
+  suite: 'fortran')
