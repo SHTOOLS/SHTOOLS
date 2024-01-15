@@ -14,7 +14,7 @@ program MarsCrustalThickness
 !   approximation is probably ok, espeically considering that the iterations
 !   are filtered.
 !
-!   In order to improve stability when iterating for the Moho relief, the 
+!   In order to improve stability when iterating for the Moho relief, the
 !   following iterative scheme is used:
 !
 !       h3 = (h2+h1)/2
@@ -43,7 +43,7 @@ program MarsCrustalThickness
     integer(int32) :: l, m, lmax, i, nmax, nlat, nlong, gridtype, astat(12), &
                       n_out, iter, j, r1, lmaxp, lmaxt, filter_type, half, &
                       degmax, sampling
-    character(120) :: grav_file, moho_out, thick_grid_out, topo_file, &
+    character(240) :: grav_file, moho_out, thick_grid_out, topo_file, &
                       misfit_file, infile
 
     ! Path to example data files may be passed as first argument, or use a default.
@@ -149,7 +149,7 @@ program MarsCrustalThickness
 
     !--------------------------------------------------------------------------
     !
-    !    Read topo and grav files 
+    !    Read topo and grav files
     !
     !--------------------------------------------------------------------------
 
@@ -184,7 +184,7 @@ program MarsCrustalThickness
     !--------------------------------------------------------------------------
 
     print*, "Creating Bouger anomaly"
-    
+
     call MakeGridDH(topo_grid, n_out, topo_c, lmax, norm = 1, &
                     sampling = sampling, csphase = 1, lmax_calc = degmax)
 

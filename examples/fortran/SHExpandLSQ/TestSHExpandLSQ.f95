@@ -22,7 +22,7 @@ program TestSHExpandLSQ
                 x, y, z, pi, maxerror, cilm1(2,degmax+1, degmax+1), &
                 dd(dmax), misfit
     integer(int32) :: nmax, lmax, l, i, seed, lmaxfile
-    character(120) :: infile
+    character(240) :: infile
 
     d = 0.0_dp
     dd = 0.0_dp

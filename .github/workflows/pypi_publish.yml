@@ -11,13 +11,16 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+        fetch-tags: true
 
     - name: Set env
       run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
     - name: Setup Miniconda
-      uses: conda-incubator/setup-miniconda@v2
+      uses: conda-incubator/setup-miniconda@v3
       with:
         python-version: 3.11
         mamba-version: "*"
@@ -31,12 +34,13 @@ jobs:
       shell: bash -l {0}
       run: |
         mamba config --set always_yes yes --set changeps1 no
-        mamba install -q -n pypi fftw \
-                                 liblapack \
-                                 openblas \
+        mamba install -q -n pypi blas-devel \
+                                 fftw \
+                                 meson-python \
                                  numpy \
-                                 setuptools \
-                                 versioneer \
+                                 pkg-config \
+                                 setuptools_scm \
+                                 build \
                                  twine
         mamba list -n pypi
 
@@ -52,7 +56,7 @@ jobs:
       shell: bash -l {0}
       run: |
         mamba env list
-        python setup.py sdist
+        python -m build -s
         twine upload dist/*
 
     - name: Trigger a build on the SHTOOLS/build-shtools repo
@@ -64,7 +68,7 @@ jobs:
         --data '{"event_type": "New pyshtools release", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
 
     - name: Download tarball archive
-      uses: carlosperate/download-file-action@v2.0.0
+      uses: carlosperate/download-file-action@v2
       id: download-tarball
       with:
         file-url: 'https://github.com/SHTOOLS/SHTOOLS/archive/${{ env.RELEASE_VERSION }}.tar.gz'

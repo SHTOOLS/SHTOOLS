@@ -14,7 +14,7 @@ Program LocalizedAdmitCorr
 
     implicit none
 
-    character(120) :: infile, topography_file, potential_file, outfile
+    character(240) :: infile, topography_file, potential_file, outfile
     real(dp) :: header(8), mpr,  r0_pot, gm, mass, lat, lon, pi, theta0, &
                 alpha, sn, r
     real(dp), allocatable :: grav(:,:,:), admit(:), corr(:), admit_error(:), &

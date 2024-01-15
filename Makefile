@@ -168,7 +168,7 @@ FFTLIBPATH = /usr/local
 FFTW = -L$(FFTLIBPATH) -lfftw3 -lm
 LAPACK_UNDERSCORE = 0
 
-FLAKE8_FILES = setup.py pyshtools examples/python
+FLAKE8_FILES = pyshtools examples/python
 
 # Set default compiler flags based on the name of the F95 compiler by searching
 # if the short name of the compiler is in $(F95).

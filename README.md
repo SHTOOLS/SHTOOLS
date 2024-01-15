@@ -70,7 +70,7 @@ SHTOOLS can be invoked in any Fortran 95 or Python program. The core software is
 
 ##### Install using `conda`:
 ```bash
-conda install -c conda-forge pyshtools  # Linux and macOS only
+conda install -c conda-forge pyshtools
 conda update -c conda-forge pyshtools  # to upgrade a pre-existing installation
 ```
 
@@ -83,22 +83,22 @@ pip install git+https://github.com/SHTOOLS/SHTOOLS@develop  # install the develo
 ```
 
 ##### For developers:
-Install the requirements:
+Install the system level build requirements:
 ```bash
-# Linux: install gfortran, fftw3, blas, and lapack
-sudo apt-get install g++ gfortran libfftw3-dev libblas-dev liblapack-dev
-# macOS: install fftw using brew or macports
-brew install fftw
-sudo port install fftw-3
-# macOS: for LAPACK, link to the system '-framework Accelerate' or install openblas
+sudo apt-get install build-essential cmake gfortran  # Debian, Ubuntu and derivatives
+sudo dnf group install "C Development Tools and Libraries" "Development Tools"  # Fedora, Centos, RHEL and derivatives
+sudo dnf install cmake gcc-fortran  # Fedora, Centos, RHEL and derivatives
+xcode-select --install  # macOS
 ```
 
-Then clone the shtools repo and install manually:
+Then clone the shtools repo, install the other dependencies, and install manually in a conda environment:
 ```bash
 git clone https://github.com/SHTOOLS/SHTOOLS.git
 cd shtools
-git checkout develop
-pip install -e .  # install into the shtools folder and link to the active python environment
+conda create -n your_env_name python=3.xx  # create a new conda environment, if desired
+conda env update -n your_env_name -f environment.yml
+conda activate your_env_name  # activate the new conda environment
+pip install --no-build-isolation -e .  # install into the shtools folder and link to the active python environment
 ```
 
 #### SHTOOLS (for Fortran 95)
