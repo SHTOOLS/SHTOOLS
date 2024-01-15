@@ -3144,7 +3144,7 @@ class SHGravCoeffs(object):
         if cmap_limits is None and cmap_rlimits is None:
             if cmap_scale.lower() == 'log':
                 _temp = spectrum
-                _temp[_temp == 0] = _np.NaN
+                _temp[_temp == 0] = _np.nan
                 vmin = _np.nanmin(_temp)
             else:
                 vmin = _np.nanmin(spectrum)
@@ -3853,7 +3853,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
                              'Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float or type(lat) is _np.float_:
+        if type(lat) is int or type(lat) is float or type(lat) is _np.float64:
             if f == 0.:
                 r = a
             else:

@@ -33,7 +33,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !           nmax    Number of data points.
 !           lmax    Maximum degree of spherical harmonic expansion.
 !
-!       OUT 
+!       OUT
 !           cilm    The spherical harmonic coefficients.
 !
 !       OPTIONAL (IN)
@@ -84,6 +84,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
                              din(:)
 #ifdef LAPACK_UNDERSCORE
 #define dgels dgels_
+#define dggglm dggglm_
 #endif
     external :: dgels, dggglm
 
