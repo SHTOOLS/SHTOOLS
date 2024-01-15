@@ -61,7 +61,7 @@ program TestCilmPlus
     real(dp), allocatable :: plxn(:,:),  plx(:,:)
     integer(int32) :: lmax, i, j, l, m, nlat, nlong, nmax, n, astat, &
                       lmaxfile, lmaxn, nlatn, nlongn, precomputeplx
-    character(200) :: infile, outfile
+    character(240) :: infile, outfile
 
     call cpu_time(timein)
 
@@ -192,7 +192,7 @@ program TestCilmPlus
 
     !--------------------------------------------------------------------------
     !
-    !    Next, compute the maximum error in the space domain 
+    !    Next, compute the maximum error in the space domain
     !    at the gauss points.
     !
     !--------------------------------------------------------------------------

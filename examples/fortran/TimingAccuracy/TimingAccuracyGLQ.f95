@@ -16,7 +16,7 @@ Program TimingAccuracyGLQ
     implicit none
 
     integer(int32), parameter :: maxdeg = 2800
-    character(200) :: outfile1, outfile2, outfile3, outfile4, outfile, infile
+    character(240) :: outfile1, outfile2, outfile3, outfile4, outfile, infile
     real(dp), allocatable :: cilm(:,:,:), cilm2(:,:,:), zero(:), &
                              gridglq(:,:), w(:)
     real(dp) :: maxerror, err1, err2, beta, rms, timein(3), timeout(3)
