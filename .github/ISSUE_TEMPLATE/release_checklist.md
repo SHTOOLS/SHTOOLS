@@ -17,7 +17,6 @@ Make all changes on the branch `develop`. Verify that the version numbers and ot
 - [ ] `docs/pages/mydoc/release-notes-v4.md` : update release notes
 - [ ] `docs/pages/fortran/fortran-release-notes-v4.md` : update release notes
 - [ ] `requirements.txt` : update version numbers of the python dependencies, if necessary
-- [ ] `requirements-dev.txt` : update version numbers of the python developer dependencies, if necessary
 - [ ] `environment.yml` : update version numbers of the conda environment, if necesseary
 - [ ] `binder/environment.yml` : update version number of pyshtools and other dependencies
 - [ ] `fpm.toml` : update shtools version number
@@ -26,7 +25,7 @@ Make all changes on the branch `develop`. Verify that the version numbers and ot
 Update the documentation files and man pages
 - [ ] `cd docs; bundle update; cd ..` : update the Gemfile for the jekyll web documentation
 - [ ] `make remove-doc` : this ensures that the correct version number will be written to the fortran man pages
-- [ ] `make doc` : make the fortran man pages, create markdown files from the python docstrings, create web documentation, and create python docstrings for wrapped functions.
+- [ ] `make doc` : make the fortran man pages, create markdown files from the python docstrings, and create web documentation.
 
 ### Release ###
 - [ ] Commit all changes to the `develop` branch and then merge all changes to the `master` branch.

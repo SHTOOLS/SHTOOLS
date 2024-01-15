@@ -98,21 +98,19 @@
 #       Remove html notebooks.
 #
 #   make doc
-#       Create the man pages from input markdown files, reformat md files for
-#			  use with the static web site, and create python docstrings for the
-#	      wrapped functions. These files are PRE-MADE in the distribution and
-# 			need to be rebuilt manually before each release. To remake these files
-#       for a new release, it will be necessary to install "pandoc", "ghc" and
-#       "cabal-install" (all using brew on macOS), and then execute
-#       "cabal update" and "cabal install --lib pandoc-types". If errors are
-#			  encountered, determine which version of pandoc-types was used to
-#       compile pandoc using "pandoc --version", delete ~/.cabal, run cabal
-#       update, and then reinstall pandoc-types
+#       Create the man pages from input markdown files, and reformat md files
+#       for use with the static web site. These files are PRE-MADE in the
+#       distribution and need to be rebuilt manually before each release.
+#       To remake these files for a new release, it will be necessary to
+#       install "pandoc", "ghc" and "cabal-install" (using brew on macOS), and
+#       then execute "cabal update" and "cabal install --lib pandoc-types".
+#       If errors are encountered, determine which version of pandoc-types was
+#       used to compile pandoc using "pandoc --version", delete ~/.cabal, run
+#       cabal update, and then reinstall pandoc-types
 #       "cabal install --lib pandoc-types-1.22".
 #
 #   make remove-doc
-#       Remove the man, html-man pages, and python docstrings for wrapped
-#		    functions.
+#       Remove the man and html-man pages.
 #
 #   make www
 #       Make the static html web documention in the directory www using Jekyll.
@@ -128,7 +126,7 @@
 ###############################################################################
 
 # The VERSION number is used only for generating the man pages
-VERSION = 4.10
+VERSION = 4.11
 
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
@@ -309,7 +307,6 @@ uninstall:
 	$(MAKE) -C $(FDOCDIR) -f Makefile uninstall PREFIX=$(PREFIX)
 
 doc:
-	@$(PYTHON) pyshtools/doc/make_docs.py
 	@echo "--> Building Fortran 95 man pages"
 	@$(MAKE) -C $(FDOCDIR) -f Makefile VERSION=$(VERSION)
 	@$(MAKE) -C $(PYDOCDIR) -f Makefile
@@ -319,8 +316,7 @@ remove-doc:
 	@-rm -f man/man3/*.3
 	@-rm -f doc/pages/fortran/fdoc/*.md
 	@-rm -f doc/pages/mydoc/pydoc/*.md
-	@-rm -f pyshtools/doc/*.doc
-	@echo "--> Removed man files, web site source md files, and python docstrings"
+	@echo "--> Removed man files and web site source md files"
 
 www:
 	@cd $(WWWSRC) ; bundle update ; $(JEKYLL) build -d ../$(WWWDEST)
