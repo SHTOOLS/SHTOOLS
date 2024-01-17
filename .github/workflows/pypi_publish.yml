@@ -48,7 +48,6 @@ jobs:
         mamba list -n pypi
 
     - name: Build
-      env:
       shell: bash -l {0}
       run: |
         mamba env list
@@ -56,6 +55,8 @@ jobs:
 
     - name: Upload release to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
 
     - name: Trigger a build on the SHTOOLS/build-shtools repo
       run: |
