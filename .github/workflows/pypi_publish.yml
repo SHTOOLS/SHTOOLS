@@ -39,6 +39,7 @@ jobs:
                                  numpy \
                                  pkg-config \
                                  setuptools_scm \
+                                 jupyter \
                                  build \
                                  twine
         mamba list -n pypi
