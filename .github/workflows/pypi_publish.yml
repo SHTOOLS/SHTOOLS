@@ -44,20 +44,20 @@ jobs:
                                  twine
         mamba list -n pypi
 
-    - name: Build and publish
+    - name: Build
       env:
-        # PYPI repository
-        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        # PYPITEST repository
-        # TWINE_USERNAME: ${{ secrets.PYPITEST_USERNAME }}
-        # TWINE_PASSWORD: ${{ secrets.PYPITEST_PASSWORD }}
-        # TWINE_REPOSITORY_URL: 'https://test.pypi.org/legacy/'
       shell: bash -l {0}
       run: |
         mamba env list
         python -m build -s
-        twine upload dist/*
+
+    - name: Upload release to PyPI
+      environment: release
+      permissions:
+        id-token: write
+      steps:
+        - name: Publish package distributions to PyPI
+          uses: pypa/gh-action-pypi-publish@release/v1
 
     - name: Trigger a build on the SHTOOLS/build-shtools repo
       run: |
