@@ -8,6 +8,9 @@ jobs:
   deploy:
 
     runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write
 
     steps:
     - name: Checkout
@@ -53,9 +56,6 @@ jobs:
 
     - name: Upload release to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      environment: release
-      permissions:
-        id-token: write
 
     - name: Trigger a build on the SHTOOLS/build-shtools repo
       run: |
