@@ -52,12 +52,10 @@ jobs:
         python -m build -s
 
     - name: Upload release to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
       environment: release
       permissions:
         id-token: write
-      steps:
-        - name: Publish package distributions to PyPI
-          uses: pypa/gh-action-pypi-publish@release/v1
 
     - name: Trigger a build on the SHTOOLS/build-shtools repo
       run: |
