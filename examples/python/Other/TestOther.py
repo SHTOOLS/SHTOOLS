@@ -1,6 +1,8 @@
 """
 This script tests the gravity and magnetics routines.
 """
+import sys
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pyshtools as pysh
@@ -47,8 +49,13 @@ def TestWigner():
 
 
 def TestSHExpandWLSQ():
-    file = "../../ExampleDataFiles/MarsTopo719.shape"
-    clm = pysh.SHCoeffs.from_file(file, lmax=9)
+    topofile = 'MarsTopo719.shape'
+    if len(sys.argv) > 1:
+        topofile = os.path.join(sys.argv[1], topofile)
+    else:
+        topofile = os.path.join('../../ExampleDataFiles', topofile)
+
+    clm = pysh.SHCoeffs.from_file(topofile, lmax=9)
     nmax = 100
     np.random.seed(seed=123456)
     x = 2*np.random.random_sample(nmax)-1

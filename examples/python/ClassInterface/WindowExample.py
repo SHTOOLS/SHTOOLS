@@ -1,6 +1,8 @@
 """
 This script tests the python class interface
 """
+import sys
+import os
 import pyshtools as pysh
 
 pysh.utils.figstyle()
@@ -31,8 +33,13 @@ def example2():
     lmax = 15
     nwins = 15
 
-    coeffs = pysh.SHCoeffs.from_file(
-        '../../ExampleDataFiles/srtmp300.msl')
+    topofile = 'srtmp300.msl'
+    if len(sys.argv) > 1:
+        topofile = os.path.join(sys.argv[1], topofile)
+    else:
+        topofile = os.path.join('../../ExampleDataFiles', topofile)
+
+    coeffs = pysh.SHCoeffs.from_file(topofile)
     topo = coeffs.expand(grid='DH2')
     dh_mask = topo.data > 0.
     print(dh_mask.shape)

@@ -19,7 +19,7 @@ program SHMag
 
     implicit none
 
-    character(200) :: infile, radf, thetaf, phif, totalf, potf
+    character(240) :: infile, radf, thetaf, phif, totalf, potf
     real(dp) :: header(4), interval, r0, a, f, mpr, z, timein, timeout, temp
     real(dp), allocatable :: glm(:,:,:), rad(:,:), phi(:,:), theta(:,:), &
                              total(:,:), pot(:,:)
@@ -126,7 +126,7 @@ program SHMag
         write(16,*) pot(i,1)
     end do
 
-    ! write out values at 90 S, which are not calculated in the Driscoll and 
+    ! write out values at 90 S, which are not calculated in the Driscoll and
     ! Healy routine, and which are just the average of the values of the last row.
     temp = sum(rad(nlat,1:nlong)) / dble(nlong)
     do j = 1, nlong + 1

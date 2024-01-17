@@ -1833,6 +1833,8 @@ class SHCoeffs(object):
             lmax = min(3*lmax, 2800)
 
         r0 = self.coeffs[0, 0, 0]
+        if self.normalization == 'ortho':
+            r0 = r0 / _np.sqrt(4 * _np.pi)
         grid = self.expand(lmax=lmax, backend=backend,
                            nthreads=nthreads) - r0
         h200 = (grid**2).expand(lmax_calc=0, backend=backend,
@@ -2902,7 +2904,7 @@ class SHCoeffs(object):
         if cmap_limits is None and cmap_rlimits is None:
             if cmap_scale.lower() == 'log':
                 _temp = spectrum
-                _temp[_temp == 0] = _np.NaN
+                _temp[_temp == 0] = _np.nan
                 vmin = _np.nanmin(_temp)
             else:
                 vmin = _np.nanmin(spectrum)
@@ -3401,7 +3403,7 @@ class SHCoeffs(object):
         if cmap_limits is None and cmap_rlimits is None:
             if cmap_scale.lower() == 'log':
                 _temp = spectrum
-                _temp[_temp == 0] = _np.NaN
+                _temp[_temp == 0] = _np.nan
                 vmin = _np.nanmin(_temp)
             else:
                 vmin = _np.nanmin(spectrum)
@@ -4161,7 +4163,7 @@ class SHRealCoeffs(SHCoeffs):
                              'Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float or type(lat) is _np.float_:
+        if type(lat) is int or type(lat) is float or type(lat) is _np.float64:
             return _shtools.MakeGridPoint(self.coeffs, lat=latin, lon=lonin,
                                           lmax=lmax_calc, norm=norm,
                                           csphase=self.csphase)
@@ -4447,7 +4449,7 @@ class SHComplexCoeffs(SHCoeffs):
                              'Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float or type(lat) is _np.float_:
+        if type(lat) is int or type(lat) is float or type(lat) is _np.float64:
             return _shtools.MakeGridPointC(self.coeffs, lat=latin, lon=lonin,
                                            lmax=lmax_calc, norm=norm,
                                            csphase=self.csphase)

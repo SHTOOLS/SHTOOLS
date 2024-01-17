@@ -14,7 +14,7 @@ Program TestExpandDH
 
     implicit none
     integer(int32), parameter :: maxdeg = 120, maxgrid = 800
-    character(120) :: infile
+    character(240) :: infile
     real(dp) :: cilm(2, maxdeg+1, maxdeg+1), grid(maxgrid, maxgrid), &
                 griddh(maxgrid, maxgrid), cilm2(2, maxdeg+1, maxdeg+1), &
                 interval, error, maxerror

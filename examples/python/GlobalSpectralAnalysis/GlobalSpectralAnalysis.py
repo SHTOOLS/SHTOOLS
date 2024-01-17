@@ -2,6 +2,7 @@
 This script tests the different Spherical Harmonics Transforms on the Mars
 topography data set
 """
+import sys
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,9 +23,13 @@ def example():
     example that plots the power spectrum of Mars topography data
     """
     # --- input data filename ---
-    infile = os.path.join(os.path.dirname(__file__),
-                          '../../ExampleDataFiles/MarsTopo719.shape')
-    coeffs, lmax = pysh.shio.shread(infile)
+    topofile = 'MarsTopo719.shape'
+    if len(sys.argv) > 1:
+        topofile = os.path.join(sys.argv[1], topofile)
+    else:
+        topofile = os.path.join('../../ExampleDataFiles', topofile)
+
+    coeffs, lmax = pysh.shio.shread(topofile)
 
     # --- plot grid ---
     grid = pysh.expand.MakeGridDH(coeffs, csphase=-1)
