@@ -7,6 +7,25 @@ summary:
 toc: true
 folder: fortran
 ---
+## Version 4.11
+
+**Support for Python 3.12 using Meson**
+
+This version no longer relies on `distutils` (which was deprecated in python 3.12) and instead makes use of [Meson](https://mesonbuild.com/) and [Meson-Python](https://meson-python.readthedocs.io) to build and test the pyshtools package. The package can be built from source using pip as before, however, if you need to create an editable install, it will be necessary to use the slightly modified command
+```bash
+pip install --no-build-isolation -e .
+```
+Please see the online documentation for instructions on how to run the test suites and benchmarks.
+
+**Other changes**
+
+* We no longer use `versioneer` to determine the package version, but instead set the version in the main `meson.build` file using `setuptools_scm`. At the present time, it is not possible to determine the version when using a source tarball, and for this case, the build will fail. Please ensure that when building from source that you are doing so from a git versioned repository.
+* Fixed a problem with `SHCoeffs.volume()` when the coefficient normalization was `ortho`.
+* Fixed a potential LAPACK underscore problem when compiling with `LAPACK_UNDERSCORE` specified.
+* Minor changes were made to the python source files to ensure numpy v2 compatibility.
+
+M. A. Wieczorek, M. Meschede, A. Broquet, T. Brugere, A. Corbin, EricAtORS, A. Hattori, A. Kalinin, J. Kohler, D. Kutra, K. Leinweber, P. Lobo, I. Oshchepkov, P.-L. Phan, O. Poplawski, M. Reinecke, E. Sales de Andrade, E. Schnetter, S. Schröder, J. Sierra, A. Vasishta, A. Walker, xoviat, B. Xu (2024). SHTOOLS: Version 4.11, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+
 ## Version 4.10.4
 
 **Bug fixes, minor enhancements, and deprecations**
