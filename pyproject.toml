@@ -61,6 +61,7 @@ requires = [
 [tool.meson-python.args]
 setup = ['--default-library=static']
 install = ['--tags=doc,python-runtime,runtime']
+dist = ['--no-tests']
 
 [tool.setuptools_scm]
 version_scheme =  'no-guess-dev'
