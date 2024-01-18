@@ -12,13 +12,13 @@ main_incdir = include_directories('include')
 
 blas = get_option('blas')
 if blas == ''
-  blas = dependency('openblas', 'BLAS')
+  blas = dependency('openblas', 'OpenBLAS', 'BLAS')
 else
   blas = dependency(blas)
 endif
 lapack = get_option('lapack')
 if lapack == ''
-  lapack = dependency('lapack')
+  lapack = dependency('openblas', 'OpenBLAS', 'lapack')
 else
   lapack = dependency(lapack)
 endif
