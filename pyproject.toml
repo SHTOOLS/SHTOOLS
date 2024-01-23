@@ -54,8 +54,6 @@ build-backend = 'mesonpy'
 requires = [
   'meson-python>=0.14',
   'oldest-supported-numpy',
-  'setuptools>=64',
-  'setuptools_scm>=8',
 ]
 
 [tool.meson-python.args]
@@ -63,6 +61,10 @@ setup = ['--default-library=static']
 install = ['--tags=doc,python-runtime,runtime']
 dist = ['--no-tests']
 
-[tool.setuptools_scm]
-version_scheme =  'no-guess-dev'
-local_scheme =  'dirty-tag'
+[tool.versioneer]
+VCS = 'git'
+style = 'pep440'
+versionfile_source = 'pyshtools/_version.py'
+versionfile_build = 'pyshtools/_version.py'
+tag_prefix = 'v'
+parentdir_prefix = 'SHTOOLS-'

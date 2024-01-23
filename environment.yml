@@ -3,7 +3,6 @@ channels:
 dependencies:
     - pkg-config
     - meson-python>=0.14
-    - setuptools_scm>=8
     - fftw>=3.3.8
     - blas-devel>=3.8
     - numpy
