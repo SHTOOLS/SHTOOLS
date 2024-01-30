@@ -1,9 +1,7 @@
 TestMarsCrustalThickness = executable(
   'MarsCrustalThickness',
   'MarsCrustalThickness.f95',
-  link_with: shtools,
-  build_by_default: false,
-  install: false)
+  link_with: shtools)
 
 test(
   'MarsCrustalThickness',
