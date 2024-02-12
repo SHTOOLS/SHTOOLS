@@ -196,6 +196,14 @@ else ifeq ($(findstring ifort,$(F95)),ifort)
 	OPENMPFLAGS ?= -qopenmp
 	LAPACK ?= -mkl
 	BLAS ?=
+else ifeq ($(findstring ifx,$(F95)),ifx)
+	# Default intel fortran flags
+	F95FLAGS ?= -m64 -fpp -free -O3 -Tf
+	MODFLAG = -I$(MODPATH)
+	SYSMODFLAG = -I$(SYSMODPATH)
+	OPENMPFLAGS ?= -qopenmp
+	LAPACK ?= -qmkl
+	BLAS ?=	
 else ifeq ($(findstring g95,$(F95)),g95)
 	# Default g95 flags.
 	F95FLAGS ?= -O3 -fno-second-underscore
