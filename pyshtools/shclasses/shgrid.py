@@ -451,7 +451,11 @@ class SHGrid(object):
         except:
             pass
 
-        return self.from_array(data_array.values, grid=grid, units=units)
+        array = data_array.values
+        if data_array.coords[data_array.dims[0]].values[0] == -90.:
+            array = _np.flipud(array)
+
+        return self.from_array(array, grid=grid, units=units)
 
     @classmethod
     def from_netcdf(self, netcdf, grid='DH', units=None):
