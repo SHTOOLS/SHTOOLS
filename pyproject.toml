@@ -6,7 +6,7 @@ dynamic = [
 description = 'SHTOOLS - Spherical Harmonic Tools'
 readme = 'README.md'
 license = { text = 'BSD-3-Clause' }
-requires-python = '>=3.6'
+requires-python = '>=3.9'
 keywords = ['Spherical Harmonics', 'Spectral Estimation', 'Slepian Functions',
             'Legendre Functions', 'Gravity Field', 'Magnetic Field']
 classifiers = [
@@ -54,6 +54,7 @@ build-backend = 'mesonpy'
 requires = [
   'meson-python>=0.14',
   'oldest-supported-numpy',
+  'jupyter',
   'setuptools>=64',
   'setuptools_scm>=8',
 ]
