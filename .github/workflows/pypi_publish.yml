@@ -41,7 +41,6 @@ jobs:
                                  meson-python \
                                  numpy \
                                  pkg-config \
-                                 setuptools_scm \
                                  jupyter \
                                  build \
                                  twine
