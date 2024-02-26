@@ -5,7 +5,7 @@ subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
 !   This subroutine will return the latitude and longitude
 !   coordinates of a circle of radius theta from a given
 !   point. The first index in the output vectors corresponds
-!   to the point directly north of the central cirlce coordinates,
+!   to the point directly north of the central circle coordinates,
 !   and subsequent points arranged in a clockwise manner.
 !
 !   Calling Parameters
@@ -50,18 +50,6 @@ subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
 
     if (present(exitstatus)) exitstatus = 0
 
-    if (theta0 == 0.0_dp) then
-        coord(1,1) = lat
-        coord(1,2) = lon
-        
-        if (present(cnum)) then
-            cnum = 1
-        end if
-
-        return
-
-    end if
-
     if (present(cinterval)) then
         interval = cinterval
     else
@@ -76,7 +64,7 @@ subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
 
     if (size(coord(:,1)) < num .or. size(coord(1,:)) < 2) then
         print*, "Error --- MakeCircleCoord"
-        print*, "COORD must be dimensioned as (NUM, 2) where NUM is ", NUM
+        print*, "COORD must be dimensioned as (NUM, 2) where NUM is ", num
         print*, "Input array is dimensioned as ", size(coord(:,1)), &
                 size(coord(1,:))
         if (present(exitstatus)) then
@@ -91,7 +79,21 @@ subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum, &
 
     !--------------------------------------------------------------------------
     !
-    !   Calculate grid points. First create a cirlce, then rotate these
+    !   Treat the case where theta0 = 0 separately.
+    !
+    !--------------------------------------------------------------------------
+
+    if (theta0 == 0.0_dp) then
+        coord(1:cnum,1) = lat
+        coord(1:cnum,2) = lon
+
+        return
+
+    end if
+
+    !--------------------------------------------------------------------------
+    !
+    !   Calculate grid points. First create a circle, then rotate these
     !   points.
     !
     !--------------------------------------------------------------------------
