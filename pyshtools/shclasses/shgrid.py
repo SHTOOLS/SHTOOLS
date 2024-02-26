@@ -1446,12 +1446,13 @@ class SHGrid(object):
         fig : pygmt.Figure() class instance, optional, default = None
             If provided, the plot will be placed in a pre-existing figure.
         projection : str, optional, default = 'mollweide'
-            The name of a global or hemispherical projection (see Notes). Only
-            the first three characters are necessary to identify the
-            projection.
+            The name of a projection (see Notes). Only the first three
+            characters are necessary to identify the projection.
         region : str or list, optional, default = 'g'
-            The map region, consisting of a list [West, East, South, North] in
-            degrees. The default 'g' specifies the entire sphere.
+            The map region, which can be the string 'g' for the entire sphere,
+            a bounded region specified by a list [West, East, South, North], or
+            a string that provides the lower-left and upper-right coordinates
+            of a rectangular projection of the form 'lon1/lat1/lon2/lat2+r'.
         width : float, optional, default = mpl.rcParams['figure.figsize'][0]
             The width of the projected image.
         unit : str, optional, default = 'i'
@@ -1460,8 +1461,8 @@ class SHGrid(object):
         central_longitude : float, optional, default = 0
             The central meridian or center of the projection.
         central_latitude : float, optional, default = 0
-            The center of the projection used with hemispheric projections, or
-            the standard parallel used with cylindrical projections.
+            The central latitude of the projection, or the standard parallel
+            used with cylindrical and Mercator projections.
         grid : list, optional, default = [30, 30]
             Grid line interval [longitude, latitude] in degrees. If None, grid
             lines will not be plotted for that axis. If true, gridlines will be
@@ -1548,20 +1549,20 @@ class SHGrid(object):
         Global and hemispherical projections (region='g') with corresponding
         abbreviation used by `projection`:
 
-        Azimuthal projections
+        * Azimuthal projections
             Lambert-azimuthal-equal-area (lam)
             Stereographic-equal-angle (ste)
             Orthographic (ort)
             Azimuthal-equidistant (azi)
             Gnomonic (gno)
 
-        Cylindrical projections (case sensitive)
+        * Cylindrical projections (case sensitive)
             cylindrical-equidistant (cyl)
             Cylindrical-equal-area (Cyl)
             CYLindrical-stereographic (CYL)
             Miller-cylindrical (mil)
 
-        Miscellaneous projections
+        * Miscellaneous projections
             Mollweide (mol)
             Hammer (ham)
             Winkel-Tripel (win)
@@ -1569,6 +1570,29 @@ class SHGrid(object):
             Eckert (eck)
             Sinusoidal (sin)
             Van-der-Grinten (van)
+
+        Rectangular projections using the coordinates of the lower-left and
+        upper-right corners (region='lon1/lat1/lon2/lat2+r') with
+        corresponding abbreviation used by `projection`:
+
+        * Azimuthal projections
+            Lambert-azimuthal-equal-area (lam)
+            Stereographic-equal-angle (ste)
+
+        * Cylindrical projections
+            Transverse Mercator (tra)
+            Cassini cylindrical (cas)
+
+        Rectangular projections using the West, East, South and North bounding
+        coordinates (region=[west, east, south, north]) with corresponding
+        abbreviation used by `projection`:
+
+        * Cylindrical projections (case sensitive)
+            Mercator (mer)
+            cylindrical-equidistant (cyl)
+            Cylindrical-equal-area (Cyl)
+            CYLindrical-stereographic (CYL)
+            Miller-cylindrical (mil)
         """
         if not _pygmt_module:
             raise ImportError('plotgmt() requires installation of the module '
@@ -2209,6 +2233,12 @@ class DHRealGrid(SHGrid):
         elif projection[0:3] == 'CYLindrical-stereographic'[0:3]:
             proj_str = 'Cyl_stere' + '/' + str(center[0]) + '/' \
                 + str(center[1])
+        elif projection[0:3].lower() == 'mercator'[0:3]:
+            proj_str = 'M' + str(center[0]) + '/' + str(center[1])
+        elif projection[0:3].lower() == 'transverse-mercator'[0:3]:
+            proj_str = 'T' + str(center[0]) + '/' + str(center[1])
+        elif projection[0:3].lower() == 'cassini-cylindrical'[0:3]:
+            proj_str = 'C' + str(center[0]) + '/' + str(center[1])
         else:
             raise ValueError('Input projection is not recognized or '
                              'supported. Input projection = {:s}'
