@@ -1205,8 +1205,8 @@ class SHGrid(object):
 
     def plot(self, projection=None, tick_interval=[30, 30], ticks='WSen',
              minor_tick_interval=[None, None], title=None, titlesize=None,
-             colorbar=None, cmap='viridis', cmap_limits=None,
-             cmap_limits_complex=None, cmap_reverse=False,
+             title_offset=None, colorbar=None, cmap='viridis',
+             cmap_limits=None, cmap_limits_complex=None, cmap_reverse=False,
              cb_triangles='neither', cb_label=None, cb_ylabel=None,
              cb_tick_interval=None, cb_minor_tick_interval=None,
              cb_offset=None, cb_width=None, grid=False, axes_labelsize=None,
@@ -1219,8 +1219,8 @@ class SHGrid(object):
         Usage
         -----
         fig, ax = x.plot([projection, tick_interval, minor_tick_interval,
-                          ticks, xlabel, ylabel, title, colorbar, cmap,
-                          cmap_limits, cmap_limits_complex, cmap_reverse,
+                          ticks, xlabel, ylabel, title, title_offset, colorbar,
+                          cmap, cmap_limits, cmap_limits_complex, cmap_reverse,
                           cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
                           cb_minor_tick_interval, cb_offset, cb_width, grid,
                           titlesize, axes_labelsize, tick_labelsize, ax, ax2,
@@ -1250,6 +1250,8 @@ class SHGrid(object):
         title : str or list, optional, default = None
             The title of the plot. If the grid is complex, title should be a
             list of strings for the real and complex components.
+        title_offset : float, optional, default = None
+            The offset between the title and top of the plot in points.
         colorbar : str, optional, default = None
             Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
@@ -1366,9 +1368,9 @@ class SHGrid(object):
                 projection=projection, colorbar=colorbar,
                 cb_triangles=cb_triangles, cb_label=cb_label, grid=grid,
                 axes_labelsize=axes_labelsize, tick_labelsize=tick_labelsize,
-                title=title, titlesize=titlesize, xlabel=xlabel, ylabel=ylabel,
-                tick_interval=tick_interval, ticks=ticks,
-                minor_tick_interval=minor_tick_interval,
+                title=title, titlesize=titlesize, title_offset=title_offset,
+                xlabel=xlabel, ylabel=ylabel, tick_interval=tick_interval,
+                ticks=ticks, minor_tick_interval=minor_tick_interval,
                 cb_tick_interval=cb_tick_interval, cb_ylabel=cb_ylabel,
                 cb_minor_tick_interval=cb_minor_tick_interval, cmap=cmap,
                 cmap_limits=cmap_limits, cb_offset=cb_offset,
@@ -1388,7 +1390,8 @@ class SHGrid(object):
                        xlabel=xlabel, ylabel=ylabel,
                        tick_interval=tick_interval, ticks=ticks,
                        minor_tick_interval=minor_tick_interval,
-                       titlesize=titlesize, cmap=cmap, cb_offset=cb_offset,
+                       titlesize=titlesize, title_offset=title_offset,
+                       cmap=cmap, cb_offset=cb_offset,
                        cb_tick_interval=cb_tick_interval,
                        cb_minor_tick_interval=cb_minor_tick_interval,
                        cmap_limits=cmap_limits, cb_ylabel=cb_ylabel,
@@ -1406,36 +1409,33 @@ class SHGrid(object):
             return fig, axes
 
     def plotgmt(self, fig=None, projection='mollweide', region='g',
-                width=None, unit='i', central_latitude=0, central_longitude=0,
-                grid=[30, 30], tick_interval=[30, 30],
+                rectangle=False, width=None, unit='i', central_latitude=0,
+                central_longitude=0, grid=[30, 30], tick_interval=[30, 30],
                 minor_tick_interval=[None, None], ticks='WSen', title=None,
-                cmap='viridis', cmap_limits=None, cmap_limits_complex=None,
-                cmap_reverse=False, cmap_continuous=False, colorbar=None,
-                cb_triangles='both', cb_label=None, cb_ylabel=None,
-                cb_tick_interval=None, cb_minor_tick_interval=None,
-                cb_offset=None, shading=None, shading_azimuth=-45.,
-                shading_amplitude=1.0, titlesize=None, axes_labelsize=None,
-                tick_labelsize=None, horizon=60, offset=[None, None],
-                fname=None):
+                title_offset=0, cmap='viridis', cmap_limits=None,
+                cmap_limits_complex=None, cmap_reverse=False,
+                cmap_continuous=False, colorbar=None, cb_triangles='both',
+                cb_label=None, cb_ylabel=None, cb_tick_interval=None,
+                cb_minor_tick_interval=None, cb_offset=None, shading=None,
+                shading_azimuth=-45., shading_amplitude=1.0, titlesize=None,
+                axes_labelsize=None, tick_labelsize=None, horizon=60,
+                offset=[None, None], fname=None):
         """
-        Plot projected data using the Generic Mapping Tools (pygmt).
-
-        To display the figure in a jupyter notebook, use
-            fig.show()
-        To display the figure in the terminal environment, use
-            fig.show(method='external')
+        Plot projected data using the Generic Mapping Tools (pygmt). Use
+        fig.show() to display the figure.
 
         Usage
         -----
-        fig = x.plotgmt([fig, projection, region, width, unit,
+        fig = x.plotgmt([fig, projection, region, rectangle, width, unit,
                          central_latitude, central_longitude, grid,
                          tick_interval, minor_tick_interval, ticks, title,
-                         cmap, cmap_limits, cmap_limits_complex, cmap_reverse,
-                         cmap_continuous, colorbar, cb_triangles, cb_label,
-                         cb_ylabel, cb_tick_interval, cb_minor_tick_interval,
-                         cb_offset, shading, shading_azimuth,
-                         shading_amplitude, titlesize, axes_labelsize,
-                         tick_labelsize, horizon, offset, fname])
+                         title_offset cmap, cmap_limits, cmap_limits_complex,
+                         cmap_reverse, cmap_continuous, colorbar, cb_triangles,
+                         cb_label, cb_ylabel, cb_tick_interval,
+                         cb_minor_tick_interval, cb_offset, shading,
+                         shading_azimuth, shading_amplitude, titlesize,
+                         axes_labelsize, tick_labelsize, horizon, offset,
+                         fname])
 
         Returns
         -------
@@ -1450,14 +1450,18 @@ class SHGrid(object):
             characters are necessary to identify the projection.
         region : str or list, optional, default = 'g'
             The map region, which can be the string 'g' for the entire sphere,
-            a bounded region specified by a list [West, East, South, North], or
-            a string that provides the lower-left and upper-right coordinates
-            of a rectangular projection of the form 'lon1/lat1/lon2/lat2+r'.
+            a bounded region specified by the list [west, east, south, north],
+            or, when the argument rectangle is True, a list containing the
+            lower-left and upper-right coordinates of the projection.
+        rectangle : bool, optional, default = False
+            If True, region corresponds to a list containing the lower-left and
+            upper-right coordinates of the projection of the form
+            [lon-lower-left, lat-lower-left, lon-upper-right, lat-upper-right].
         width : float, optional, default = mpl.rcParams['figure.figsize'][0]
             The width of the projected image.
         unit : str, optional, default = 'i'
-            The measurement unit of the figure width and offset: 'i' for
-            inches or 'c' for cm.
+            The measurement unit of the figure width, title_offset and offset:
+            'i' for inches or 'c' for cm.
         central_longitude : float, optional, default = 0
             The central meridian or center of the projection.
         central_latitude : float, optional, default = 0
@@ -1480,6 +1484,8 @@ class SHGrid(object):
             south, east and north boundaries of the plot.
         title : str, optional, default = None
             The title to be displayed above the plot.
+        title_offset : float, optional, default = 0
+            Vertical offset between the upper edge of the plot and the title in
         cmap : str, optional, default = 'viridis'
             The color map to use when plotting the data and colorbar.
         cmap_limits : list, optional, default = [self.min(), self.max()]
@@ -1632,12 +1638,12 @@ class SHGrid(object):
                                  .get_size_in_points()
 
         figure = self._plot_pygmt(
-            fig=fig, projection=projection, region=region, width=width,
-            unit=unit, central_latitude=central_latitude,
+            fig=fig, projection=projection, region=region, rectangle=rectangle,
+            width=width, unit=unit, central_latitude=central_latitude,
             central_longitude=central_longitude, grid=grid,
             tick_interval=tick_interval,
             minor_tick_interval=minor_tick_interval, ticks=ticks, title=title,
-            cmap=cmap, cmap_limits=cmap_limits,
+            title_offset=title_offset, cmap=cmap, cmap_limits=cmap_limits,
             cmap_limits_complex=cmap_limits_complex, cmap_reverse=cmap_reverse,
             cmap_continuous=cmap_continuous, colorbar=colorbar,
             cb_triangles=cb_triangles, cb_label=cb_label, cb_ylabel=cb_ylabel,
@@ -1916,10 +1922,11 @@ class DHRealGrid(SHGrid):
     def _plot(self, projection=None, xlabel=None, ylabel=None, ax=None,
               ax2=None, colorbar=None, cb_triangles=None, cb_label=None,
               grid=False, axes_labelsize=None, tick_labelsize=None, title=None,
-              titlesize=None, cmap=None, tick_interval=None, ticks=None,
-              minor_tick_interval=None, cb_tick_interval=None, cb_ylabel=None,
-              cb_minor_tick_interval=None, cmap_limits=None, cmap_reverse=None,
-              cmap_limits_complex=None, cb_offset=None, cb_width=None):
+              titlesize=None, title_offset=None, cmap=None, tick_interval=None,
+              ticks=None, minor_tick_interval=None, cb_tick_interval=None,
+              cb_ylabel=None, cb_minor_tick_interval=None, cmap_limits=None,
+              cmap_reverse=None, cmap_limits_complex=None, cb_offset=None,
+              cb_width=None):
         """Plot the data as a matplotlib cylindrical projection,
            or with Cartopy when projection is specified."""
         if ax is None:
@@ -2099,7 +2106,7 @@ class DHRealGrid(SHGrid):
                          which='both')
         axes.tick_params(which='major', labelsize=tick_labelsize)
         if title is not None:
-            axes.set_title(title, fontsize=titlesize)
+            axes.set_title(title, fontsize=titlesize, pad=title_offset)
 
         # plot colorbar
         if colorbar is not None:
@@ -2183,10 +2190,11 @@ class DHRealGrid(SHGrid):
         if ax is None:
             return fig, axes
 
-    def _plot_pygmt(self, fig=None, projection=None, region=None, width=None,
-                    unit=None, central_latitude=None, central_longitude=None,
-                    grid=None, tick_interval=None, minor_tick_interval=None,
-                    ticks=None, title=None, cmap=None, cmap_limits=None,
+    def _plot_pygmt(self, fig=None, projection=None, region=None,
+                    rectangle=None, width=None, unit=None,
+                    central_latitude=None, central_longitude=None, grid=None,
+                    tick_interval=None, minor_tick_interval=None, ticks=None,
+                    title=None, title_offset=None, cmap=None, cmap_limits=None,
                     cmap_limits_complex=None, cmap_reverse=None,
                     cmap_continuous=None, colorbar=None, cb_triangles=None,
                     cb_label=None, cb_ylabel=None, cb_tick_interval=None,
@@ -2245,6 +2253,13 @@ class DHRealGrid(SHGrid):
                              .format(repr(projection)))
 
         proj_str += '/' + str(width) + unit
+
+        if rectangle:
+            region = str(region[0]) + '/' + str(region[1]) + '/' + \
+                str(region[2]) + '/' + str(region[3]) + '+r'
+
+        if title_offset is not None:
+            title_offset = str(title_offset) + unit
 
         framex = 'x'
         framey = 'y'
@@ -2354,7 +2369,8 @@ class DHRealGrid(SHGrid):
             shading_str = False
 
         with _pygmt.config(FONT_TITLE=titlesize, FONT_LABEL=axes_labelsize,
-                           FONT_ANNOT=tick_labelsize):
+                           FONT_ANNOT=tick_labelsize,
+                           MAP_TITLE_OFFSET=title_offset):
             _pygmt.makecpt(series=cmap_limits, cmap=cmap, reverse=cmap_reverse,
                            continuous=cmap_continuous)
             figure.shift_origin(xshift=xshift, yshift=yshift)
