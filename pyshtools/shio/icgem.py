@@ -196,7 +196,8 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
 
             value_cs = [float(line[3]), float(line[4]), 0, 0]
             if errors:
-                value_cs[2:] = float(line[err_cols[0]]), float(line[err_cols[1]])
+                value_cs[2:] = float(line[err_cols[0]]), \
+                    float(line[err_cols[1]])
 
             if key == 'gfc':
                 cilm[:, l, m] = value_cs
