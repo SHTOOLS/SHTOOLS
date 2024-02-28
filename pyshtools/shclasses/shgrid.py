@@ -7,7 +7,6 @@ import matplotlib.pyplot as _plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable as _make_axes_locatable
 import copy as _copy
 import xarray as _xr
-import tempfile as _tempfile
 from ..backends import backend_module
 from ..backends import preferred_backend
 from ..backends import shtools as _shtools
@@ -2351,10 +2350,11 @@ class DHRealGrid(SHGrid):
             cmap_limits = [self.min(), self.max()]
 
         if shading is True:
+            # generate shading from self
             shading_str = "+a{:}+nt{:}+m0".format(shading_azimuth,
                                                   shading_amplitude)
         elif type(shading) is str:
-            shading_str = shading
+            shading_str = shading  # external filename
             if shading_azimuth is not None:
                 shading_str += "+a{:}+nt{:}+m0".format(shading_azimuth,
                                                        shading_amplitude)
@@ -2368,18 +2368,14 @@ class DHRealGrid(SHGrid):
                                  .format(shading.data.shape)
                                  )
 
-            f = _tempfile.NamedTemporaryFile(prefix='shtools_', suffix='.nc')
-            shading.to_netcdf(f.name)
-            shading_str = f.name
+            shading_str = shading.to_xarray()
             if shading_azimuth is not None:
-                shading_str += "+a{:}+nt{:}+m0".format(shading_azimuth,
-                                                       shading_amplitude)
+                # create gradient from input SHGrid
+                shading_str = _pygmt.grdgradient(
+                    grid=shading_str, azimuth=shading_azimuth,
+                    normalize='t{:}+o0'.format(shading_amplitude))
         else:
             shading_str = None
-
-        # Necessary to fix bug in pygmt 0.4+
-        if shading_str is None:
-            shading_str = False
 
         with _pygmt.config(FONT_TITLE=titlesize, FONT_LABEL=axes_labelsize,
                            FONT_ANNOT=tick_labelsize,
@@ -2396,9 +2392,6 @@ class DHRealGrid(SHGrid):
                                     shading=shading_amplitude)
                 else:
                     figure.colorbar(position=position, frame=cb_str)
-
-        if isinstance(shading, SHGrid):
-            f.close()
 
         return figure
 
