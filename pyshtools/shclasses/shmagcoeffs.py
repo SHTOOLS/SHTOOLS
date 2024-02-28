@@ -2997,7 +2997,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
                 if _np.isscalar(lat):
                     radius = _np.array(a)
                 else:
-                    radius = _np.empty(len(latin))
+                    radius = _np.empty(len(lat))
                     radius[:] = a
             else:
                 radius = _np.cos(_np.deg2rad(latin))**2 + \
