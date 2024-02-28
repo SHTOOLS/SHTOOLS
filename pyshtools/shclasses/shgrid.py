@@ -1586,7 +1586,7 @@ class SHGrid(object):
             Van-der-Grinten (van)
 
         Rectangular projections using the coordinates of the lower-left and
-        upper-right corners (region='lon1/lat1/lon2/lat2+r') with
+        upper-right corners (region=[lon1, lat1, lon2, lat2]) with
         corresponding abbreviation used by `projection`:
 
         * Azimuthal projections
@@ -1597,7 +1597,7 @@ class SHGrid(object):
             Transverse Mercator (tra)
             Cassini cylindrical (cas)
 
-        Rectangular projections using the West, East, South and North bounding
+        Rectangular projections using the west, east, south and north bounding
         coordinates (region=[west, east, south, north]) with corresponding
         abbreviation used by `projection`:
 
