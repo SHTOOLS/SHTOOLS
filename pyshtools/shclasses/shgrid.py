@@ -1205,7 +1205,8 @@ class SHGrid(object):
     def plot(self, projection=None, tick_interval=[30, 30], ticks='WSen',
              minor_tick_interval=[None, None], title=None, titlesize=None,
              title_offset=None, colorbar=None, cmap='viridis',
-             cmap_limits=None, cmap_limits_complex=None, cmap_reverse=False,
+             cmap_limits=None, cmap_limits_complex=None, cmap_rlimits=None,
+             cmap_rlimits_complex=None, cmap_reverse=False,
              cb_triangles='neither', cb_label=None, cb_ylabel=None,
              cb_tick_interval=None, cb_minor_tick_interval=None,
              cb_offset=None, cb_width=None, grid=False, axes_labelsize=None,
@@ -1219,8 +1220,9 @@ class SHGrid(object):
         -----
         fig, ax = x.plot([projection, tick_interval, minor_tick_interval,
                           ticks, xlabel, ylabel, title, title_offset, colorbar,
-                          cmap, cmap_limits, cmap_limits_complex, cmap_reverse,
-                          cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
+                          cmap, cmap_limits, cmap_limits_complex, cmap_rlimits,
+                          cmap_rlimits_complex, cmap_reverse, cb_triangles,
+                          cb_label, cb_ylabel, cb_tick_interval,
                           cb_minor_tick_interval, cb_offset, cb_width, grid,
                           titlesize, axes_labelsize, tick_labelsize, ax, ax2,
                           show, fname])
@@ -1265,6 +1267,12 @@ class SHGrid(object):
             Set the lower and upper limits of the imaginary component of the
             data used by the colormap, and optionally an interval for each
             color band.
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
+        cmap_rlimits_complex : list, optional, default = None
+            Same as cmap_limits_complex, except the provided upper and lower
+            values are relative with respect to the maximum value of the data.
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
@@ -1372,8 +1380,10 @@ class SHGrid(object):
                 ticks=ticks, minor_tick_interval=minor_tick_interval,
                 cb_tick_interval=cb_tick_interval, cb_ylabel=cb_ylabel,
                 cb_minor_tick_interval=cb_minor_tick_interval, cmap=cmap,
-                cmap_limits=cmap_limits, cb_offset=cb_offset,
-                cb_width=cb_width, cmap_limits_complex=cmap_limits_complex,
+                cmap_limits=cmap_limits, cmap_rlimits=cmap_rlimits,
+                cmap_limits_complex=cmap_limits_complex,
+                cmap_rlimits_complex=cmap_rlimits_complex,
+                cb_offset=cb_offset, cb_width=cb_width,
                 cmap_reverse=cmap_reverse)
         else:
             if self.kind == 'complex':
@@ -1393,9 +1403,10 @@ class SHGrid(object):
                        cmap=cmap, cb_offset=cb_offset,
                        cb_tick_interval=cb_tick_interval,
                        cb_minor_tick_interval=cb_minor_tick_interval,
-                       cmap_limits=cmap_limits, cb_ylabel=cb_ylabel,
-                       cb_width=cb_width,
+                       cmap_limits=cmap_limits, cmap_rlimits=cmap_rlimits,
                        cmap_limits_complex=cmap_limits_complex,
+                       cmap_rlimits_complex=cmap_limits_complex,
+                       cb_width=cb_width, cb_ylabel=cb_ylabel,
                        cmap_reverse=cmap_reverse)
 
         if ax is None:
@@ -1412,7 +1423,8 @@ class SHGrid(object):
                 central_longitude=0, grid=[30, 30], tick_interval=[30, 30],
                 minor_tick_interval=[None, None], ticks='WSen', title=None,
                 title_offset=0, cmap='viridis', cmap_limits=None,
-                cmap_limits_complex=None, cmap_reverse=False,
+                cmap_rlimits=None, cmap_limits_complex=None,
+                cmap_rlimits_complex=None, cmap_reverse=False,
                 cmap_continuous=False, cmap_background_foreground=True,
                 colorbar=None, cb_triangles='both', cb_label=None,
                 cb_ylabel=None, cb_tick_interval=None,
@@ -1429,7 +1441,8 @@ class SHGrid(object):
         fig = x.plotgmt([fig, projection, region, rectangle, width, unit,
                          central_latitude, central_longitude, grid,
                          tick_interval, minor_tick_interval, ticks, title,
-                         title_offset cmap, cmap_limits, cmap_limits_complex,
+                         title_offset cmap, cmap_limits, cmap_rlimits,
+                         cmap_limits_complex, cmap_rlimits_complex,
                          cmap_reverse, cmap_continuous,
                          cmap_background_foreground, colorbar, cb_triangles,
                          cb_label, cb_ylabel, cb_tick_interval,
@@ -1496,6 +1509,12 @@ class SHGrid(object):
             Set the lower and upper limits of the imaginary component of the
             data used by the colormap, and optionally an interval for each
             color band.
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
+        cmap_rlimits_complex : list, optional, default = None
+            Same as cmap_limits_complex, except the provided upper and lower
+            values are relative with respect to the maximum value of the data.
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
@@ -1652,8 +1671,9 @@ class SHGrid(object):
             tick_interval=tick_interval,
             minor_tick_interval=minor_tick_interval, ticks=ticks, title=title,
             title_offset=title_offset, cmap=cmap, cmap_limits=cmap_limits,
-            cmap_limits_complex=cmap_limits_complex, cmap_reverse=cmap_reverse,
-            cmap_continuous=cmap_continuous,
+            cmap_rlimits=cmap_rlimits, cmap_limits_complex=cmap_limits_complex,
+            cmap_rlimits_complex=cmap_rlimits_complex,
+            cmap_reverse=cmap_reverse, cmap_continuous=cmap_continuous,
             cmap_background_foreground=cmap_background_foreground,
             colorbar=colorbar, cb_triangles=cb_triangles, cb_label=cb_label,
             cb_ylabel=cb_ylabel, cb_tick_interval=cb_tick_interval,
@@ -1934,7 +1954,8 @@ class DHRealGrid(SHGrid):
               titlesize=None, title_offset=None, cmap=None, tick_interval=None,
               ticks=None, minor_tick_interval=None, cb_tick_interval=None,
               cb_ylabel=None, cb_minor_tick_interval=None, cmap_limits=None,
-              cmap_reverse=None, cmap_limits_complex=None, cb_offset=None,
+              cmap_rlimits=None, cmap_rlimits_complex=None,
+              cmap_limits_complex=None, cb_offset=None, cmap_reverse=None,
               cb_width=None):
         """Plot the data as a matplotlib cylindrical projection,
            or with Cartopy when projection is specified."""
@@ -1985,8 +2006,13 @@ class DHRealGrid(SHGrid):
                 -90, 90, num=180//minor_tick_interval[1]+1, endpoint=True)
 
         # make colormap
-        if cmap_limits is None:
+        if cmap_limits is None and cmap_rlimits is None:
             cmap_limits = [self.min(), self.max()]
+        elif cmap_rlimits is not None:
+            cmap_limits = [self.max() * cmap_rlimits[0],
+                           self.max() * cmap_rlimits[1]]
+            if len(cmap_rlimits) == 3:
+                cmap_limits.append(cmap_rlimits[2])
         if len(cmap_limits) == 3:
             num = int((cmap_limits[1] - cmap_limits[0]) / cmap_limits[2])
             if isinstance(cmap, _mpl.colors.Colormap):
@@ -2204,7 +2230,8 @@ class DHRealGrid(SHGrid):
                     central_latitude=None, central_longitude=None, grid=None,
                     tick_interval=None, minor_tick_interval=None, ticks=None,
                     title=None, title_offset=None, cmap=None, cmap_limits=None,
-                    cmap_limits_complex=None, cmap_reverse=None,
+                    cmap_rlimits=None, cmap_limits_complex=None,
+                    cmap_rlimits_complex=None, cmap_reverse=None,
                     cmap_continuous=None, cmap_background_foreground=None,
                     colorbar=None, cb_triangles=None, cb_label=None,
                     cb_ylabel=None, cb_tick_interval=None,
@@ -2346,8 +2373,13 @@ class DHRealGrid(SHGrid):
         else:
             figure = fig
 
-        if cmap_limits is None:
+        if cmap_limits is None and cmap_rlimits is None:
             cmap_limits = [self.min(), self.max()]
+        elif cmap_rlimits is not None:
+            cmap_limits = [self.max() * cmap_rlimits[0],
+                           self.max() * cmap_rlimits[1]]
+            if len(cmap_rlimits) == 3:
+                cmap_limits.append(cmap_rlimits[2])
 
         if shading is True:
             # generate shading from self
@@ -2500,8 +2532,9 @@ class DHComplexGrid(SHGrid):
               titlesize=None, title_offset=None, cmap=None, ax=None, ax2=None,
               tick_interval=None, minor_tick_interval=None, cb_ylabel=None,
               cb_tick_interval=None, cb_minor_tick_interval=None,
-              cmap_limits=None, cmap_reverse=None, cmap_limits_complex=None,
-              cb_offset=None, cb_width=None):
+              cmap_limits=None, cmap_rlimits=None, cmap_rlimits_complex=None,
+              cmap_reverse=None, cmap_limits_complex=None, cb_offset=None,
+              cb_width=None):
         """Plot the raw data as a matplotlib simple cylindrical projection,
            or with Cartopy when projection is specified."""
         if ax is None:
@@ -2533,8 +2566,8 @@ class DHComplexGrid(SHGrid):
                             title_offset=title_offset, xlabel=xlabel,
                             ylabel=ylabel, cb_ylabel=cb_ylabel,
                             cb_width=cb_width, cmap=cmap,
-                            cmap_limits=cmap_limits, cmap_reverse=cmap_reverse,
-                            ax=axreal)
+                            cmap_limits=cmap_limits, cmap_rlimits=cmap_rlimits,
+                            cmap_reverse=cmap_reverse, ax=axreal)
 
         self.to_imag().plot(projection=projection, tick_interval=tick_interval,
                             minor_tick_interval=minor_tick_interval,
@@ -2547,6 +2580,7 @@ class DHComplexGrid(SHGrid):
                             title=title[1], titlesize=titlesize,
                             title_offset=title_offset, cmap=cmap,
                             cmap_limits=cmap_limits_complex,
+                            cmap_rlimits=cmap_rlimits_complex,
                             cmap_reverse=cmap_reverse, cb_offset=cb_offset,
                             cb_width=cb_width, xlabel=xlabel, ylabel=ylabel,
                             ax=axcomplex)
@@ -2558,13 +2592,13 @@ class DHComplexGrid(SHGrid):
                     rectangle=None, width=None, unit=None,
                     central_latitude=None, central_longitude=None, grid=None,
                     tick_interval=None, minor_tick_interval=None, ticks=None,
-                    title=None, cmap=None, cmap_limits=None,
-                    cmap_limits_complex=None, cmap_reverse=None,
-                    cmap_continuous=None, cmap_background_foreground=None,
-                    colorbar=None, cb_triangles=None, cb_label=None,
-                    cb_ylabel=None, cb_tick_interval=None,
-                    cb_minor_tick_interval=None, titlesize=None,
-                    title_offset=None, axes_labelsize=None,
+                    title=None, cmap=None, cmap_limits=None, cmap_rlimits=None,
+                    cmap_limits_complex=None, cmap_rlimits_complex=None,
+                    cmap_reverse=None, cmap_continuous=None,
+                    cmap_background_foreground=None, colorbar=None,
+                    cb_triangles=None, cb_label=None, cb_ylabel=None,
+                    cb_tick_interval=None, cb_minor_tick_interval=None,
+                    titlesize=None, title_offset=None, axes_labelsize=None,
                     tick_labelsize=None, horizon=None, offset=None,
                     cb_offset=None):
         """
@@ -2583,6 +2617,7 @@ class DHComplexGrid(SHGrid):
                                minor_tick_interval=minor_tick_interval,
                                ticks=ticks, title=title[1], cmap=cmap,
                                cmap_limits=cmap_limits_complex,
+                               cmap_rlimits=cmap_rlimits_complex,
                                cmap_reverse=cmap_reverse, cb_offset=cb_offset,
                                cmap_continuous=cmap_continuous,
                                cmap_background_foreground=  # noqa E251
@@ -2609,7 +2644,8 @@ class DHComplexGrid(SHGrid):
                                grid=grid, tick_interval=tick_interval,
                                minor_tick_interval=minor_tick_interval,
                                ticks=ticks, title=title[0], cmap=cmap,
-                               cmap_limits=cmap_limits, cb_offset=cb_offset,
+                               cmap_limits=cmap_limits,
+                               cmap_rlimits=cmap_rlimits, cb_offset=cb_offset,
                                cmap_reverse=cmap_reverse,
                                cmap_continuous=cmap_continuous,
                                cmap_background_foreground=  # noqa E251
@@ -2747,10 +2783,10 @@ class GLQRealGrid(SHGrid):
               grid=False, axes_labelsize=None, tick_labelsize=None,
               title=None, titlesize=None, title_offset=None, cmap=None,
               tick_interval=None, minor_tick_interval=None,
-              cb_tick_interval=None, ticks=None,
-              cb_minor_tick_interval=None, cmap_limits=None, cmap_reverse=None,
-              cmap_limits_complex=None, cb_ylabel=None, cb_offset=None,
-              cb_width=None):
+              cb_tick_interval=None, ticks=None, cb_minor_tick_interval=None,
+              cmap_limits=None, cmap_rlimits=None, cmap_limits_complex=None,
+              cmap_rlimits_complex=None, cb_ylabel=None, cb_offset=None,
+              cb_width=None, cmap_reverse=None):
         """Plot the data using a matplotlib cylindrical projection."""
         if ax is None:
             if colorbar is not None:
@@ -2784,8 +2820,13 @@ class GLQRealGrid(SHGrid):
             minor_yticks = _np.arange(0, self.nlat, minor_tick_interval[1])
 
         # make colormap
-        if cmap_limits is None:
+        if cmap_limits is None and cmap_rlimits is None:
             cmap_limits = [self.min(), self.max()]
+        elif cmap_rlimits is not None:
+            cmap_limits = [self.max() * cmap_rlimits[0],
+                           self.max() * cmap_rlimits[1]]
+            if len(cmap_rlimits) == 3:
+                cmap_limits.append(cmap_rlimits[2])
         if len(cmap_limits) == 3:
             num = int((cmap_limits[1] - cmap_limits[0]) / cmap_limits[2])
             if isinstance(cmap, _mpl.colors.Colormap):
@@ -3061,8 +3102,9 @@ class GLQComplexGrid(SHGrid):
               axes_labelsize=None, tick_labelsize=None, title=None,
               titlesize=None, title_offset=None, cmap=None, tick_interval=None,
               cb_ylabel=None, minor_tick_interval=None, cb_tick_interval=None,
-              cb_minor_tick_interval=None, cmap_limits=None, cmap_reverse=None,
-              cmap_limits_complex=None, cb_offset=None, cb_width=None):
+              cb_minor_tick_interval=None, cmap_limits=None, cmap_rlimits=None,
+              cmap_limits_complex=None, cmap_rlimits_complex=None,
+              cmap_reverse=None, cb_offset=None, cb_width=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             if colorbar is not None:
@@ -3093,8 +3135,8 @@ class GLQComplexGrid(SHGrid):
                             title_offset=title_offset, xlabel=xlabel,
                             ylabel=ylabel, cb_ylabel=cb_ylabel,
                             cb_width=cb_width, cmap=cmap,
-                            cmap_limits=cmap_limits, cmap_reverse=cmap_reverse,
-                            ax=axreal)
+                            cmap_limits=cmap_limits, cmap_rlimits=cmap_rlimits,
+                            cmap_reverse=cmap_reverse, ax=axreal)
 
         self.to_imag().plot(projection=projection, tick_interval=tick_interval,
                             minor_tick_interval=minor_tick_interval,
@@ -3107,6 +3149,7 @@ class GLQComplexGrid(SHGrid):
                             title=title[1], titlesize=titlesize,
                             title_offset=title_offset, cmap=cmap,
                             cmap_limits=cmap_limits_complex,
+                            cmap_rlimits=cmap_rlimits_complex,
                             cmap_reverse=cmap_reverse, cb_ylabel=cb_ylabel,
                             cb_width=cb_width, xlabel=xlabel, ylabel=ylabel,
                             ax=axcomplex)
