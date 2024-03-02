@@ -101,7 +101,7 @@ def shread(filename, lmax=None, error=False, header=False, header2=False,
     file are supported. Note that reading '.gz' and '.zip' files will be
     extremely slow if lmax is not specified.
     """
-        
+
     if isinstance(filename, Path):
         filename = str(filename)
 

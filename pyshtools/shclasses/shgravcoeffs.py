@@ -1381,7 +1381,7 @@ class SHGravCoeffs(object):
 
         if isinstance(filename, Path):
             filename = str(filename)
-            
+
         if filename[-3:] == '.gz':
             filebase = filename[:-3]
         else:
