@@ -6,6 +6,7 @@ import os as _os
 import io as _io
 import gzip as _gzip
 import zipfile as _zipfile
+from pathlib import Path
 import numpy as _np
 import requests as _requests
 import shutil as _shutil
@@ -100,6 +101,10 @@ def shread(filename, lmax=None, error=False, header=False, header2=False,
     file are supported. Note that reading '.gz' and '.zip' files will be
     extremely slow if lmax is not specified.
     """
+        
+    if isinstance(filename, Path):
+        filename = str(filename)
+
     if _isurl(filename):
         _response = _requests.get(filename)
         if filename[-4:] == '.zip':

@@ -12,6 +12,7 @@ import shutil as _shutil
 import warnings as _warnings
 from scipy.special import factorial as _factorial
 import xarray as _xr
+from pathlib import Path
 
 from ..spectralanalysis import spectrum as _spectrum
 from ..spectralanalysis import cross_spectrum as _cross_spectrum
@@ -1043,6 +1044,9 @@ class SHCoeffs(object):
         if errors is True and self.errors is None:
             errors = False
 
+        if isinstance(filename, Path):
+            filename = str(filename)
+        
         if filename[-3:] == '.gz':
             filebase = filename[:-3]
         else:

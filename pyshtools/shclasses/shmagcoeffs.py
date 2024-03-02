@@ -11,6 +11,7 @@ import xarray as _xr
 from scipy.special import factorial as _factorial
 import gzip as _gzip
 import shutil as _shutil
+from pathlib import Path
 
 from .shcoeffs import SHCoeffs as _SHCoeffs
 from .shmaggrid import SHMagGrid as _SHMagGrid
@@ -1046,6 +1047,9 @@ class SHMagCoeffs(object):
         if errors is True and self.errors is None:
             errors = False
 
+        if isinstance(filename, Path):
+            filename = str(filename)
+        
         if filename[-3:] == '.gz':
             filebase = filename[:-3]
         else:
