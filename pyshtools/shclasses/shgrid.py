@@ -400,7 +400,8 @@ class SHGrid(object):
             For text files, if the filename ends in '.gz', the file will be
             decompressed using gzip.
         binary : bool, optional, default = False
-            If False, read a text file. If True, read a binary 'npy' file.
+            If False, read a text file using numpy.loadtxt(). If True, read a
+            binary 'npy' file using numpy.load().
         grid : str, optional, default = 'DH'
             'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
             Quadrature grids, respectively.
@@ -426,7 +427,7 @@ class SHGrid(object):
 
         Usage
         -----
-        x = SHGrid.from_xarray(data_array, [grid])
+        x = SHGrid.from_xarray(data_array, [grid, units])
 
         Returns
         -------
@@ -463,7 +464,7 @@ class SHGrid(object):
 
         Usage
         -----
-        x = SHGrid.from_netcdf(netcdf, [grid])
+        x = SHGrid.from_netcdf(netcdf, [grid, units])
 
         Returns
         -------
@@ -480,13 +481,17 @@ class SHGrid(object):
             The units of the gridded data.
         """
         data_array = _xr.open_dataarray(netcdf)
+        if data_array.coords[data_array.dims[0]].values[0] == -90.:
+            array = _np.flipud(data_array.values)
+        else:
+            array = data_array.values
 
         try:
             units = data_array.units
         except:
             pass
 
-        return self.from_array(data_array.values, grid=grid, units=units)
+        return self.from_array(array, grid=grid, units=units)
 
     # ---- I/O methods ----
     def copy(self):
@@ -3162,7 +3167,8 @@ class GLQComplexGrid(SHGrid):
               cb_ylabel=None, minor_tick_interval=None, cb_tick_interval=None,
               cb_minor_tick_interval=None, cmap_limits=None, cmap_rlimits=None,
               cmap_limits_complex=None, cmap_rlimits_complex=None,
-              cmap_reverse=None, cmap_scale=None, cb_offset=None, cb_width=None):
+              cmap_reverse=None, cmap_scale=None, cb_offset=None,
+              cb_width=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             if colorbar is not None:
