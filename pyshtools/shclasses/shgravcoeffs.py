@@ -415,7 +415,7 @@ class SHGravCoeffs(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             File name or URL containing the spherical harmonic coefficients.
             filename will be treated as a URL if it starts with 'http://',
             'https://', or 'ftp://'. For 'shtools', 'icgem' and 'bshc'
@@ -895,7 +895,7 @@ class SHGravCoeffs(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             Name of the file, including path.
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to read.
@@ -1307,7 +1307,7 @@ class SHGravCoeffs(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             Name of the output file. If the filename ends with '.gz', the file
             will be compressed using gzip.
         format : str, optional, default = 'shtools'
@@ -1460,7 +1460,7 @@ class SHGravCoeffs(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             Name of the output file.
         title : str, optional, default = ''
             Title of the dataset

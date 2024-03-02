@@ -391,7 +391,7 @@ class SHGrid(object):
 
         Parameters
         ----------
-        fname : str
+        fname : str or pathlib.Path
             The filename containing the gridded data. For text files (default)
             the file is read using the numpy routine loadtxt(), whereas for
             binary files, the file is read using numpy.load(). For Driscoll and
@@ -468,7 +468,7 @@ class SHGrid(object):
 
         Parameters
         ----------
-        netcdf : str or netcdf object
+        netcdf : str or netcdf object or pathlib.Path
             The name of a netcdf file or object.
         grid : str, optional, default = 'DH'
             'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
@@ -506,7 +506,7 @@ class SHGrid(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             Name of output file. For text files (default), the file will be
             compressed using gzip if filename ends in '.gz.'
         binary : bool, optional, default = False
@@ -597,7 +597,7 @@ class SHGrid(object):
 
         Parameters
         ----------
-        filename : str, optional, default = None
+        filename : str or pathlib.Path, optional, default = None
             Name of output file.
         title : str, optional, default = None
             Title of the dataset.
