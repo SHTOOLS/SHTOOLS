@@ -2381,7 +2381,7 @@ class SHGravCoeffs(object):
         return clm
 
     # ---- Routines that return different gravity-related class instances ----
-    def expand(self, a=None, f=None, colat=None, lat=None, lon=None,
+    def expand(self, a=None, f=None, r=None, colat=None, lat=None, lon=None,
                degrees=True, lmax=None, lmax_calc=None, normal_gravity=True,
                sampling=2, extend=True):
         """
@@ -2394,8 +2394,8 @@ class SHGravCoeffs(object):
         -----
         grids = x.expand([a, f, lmax, lmax_calc, normal_gravity, sampling,
                           extend])
-        g = x.expand(lat, lon, [a, f, lmax, lmax_calc, degrees])
-        g = x.expand(colat, lon, [a, f, lmax, lmax_calc, degrees])
+        g = x.expand(lat, lon, [a, f, r, lmax, lmax_calc, degrees])
+        g = x.expand(colat, lon, [a, f, r, lmax, lmax_calc, degrees])
 
         Returns
         -------
@@ -2410,6 +2410,9 @@ class SHGravCoeffs(object):
             is computed.
         f : optional, float, default = 0
             The flattening of the reference ellipsoid: f=(a-b)/a.
+        r : float, ndarray, or list, optional, default = None
+            The radii where the gravity is to be evaluated. When present, a and
+            f are ignored. r must be the same shape as lat, colat, and lon.
         lat : int, float, ndarray, or list, optional, default = None
             Latitude coordinates where the gravity is to be evaluated.
         colat : int, float, ndarray, or list, optional, default = None
@@ -2500,7 +2503,7 @@ class SHGravCoeffs(object):
                 else:
                     lat = temp - colat
 
-            values = self._expand_coord(a=a, f=f, lat=lat, lon=lon,
+            values = self._expand_coord(a=a, f=f, radius=r, lat=lat, lon=lon,
                                         degrees=degrees, lmax_calc=lmax_calc,
                                         omega=self.omega)
             return values
@@ -3837,7 +3840,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
                                            gm=gm, r0=r0, omega=omega,
                                            epoch=self.epoch, copy=False)
 
-    def _expand_coord(self, a, f, lat, lon, degrees, lmax_calc, omega):
+    def _expand_coord(self, a, f, radius, lat, lon, degrees, lmax_calc, omega):
         """Evaluate the gravity at the coordinates lat and lon."""
         coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
 
@@ -3853,47 +3856,43 @@ class SHGravRealCoeffs(SHGravCoeffs):
                              'Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float or type(lat) is _np.float64:
+        if radius is None:
             if f == 0.:
-                r = a
+                if _np.isscalar(lat):
+                    radius = _np.array(a)
+                else:
+                    radius = _np.empty(len(lat))
+                    radius[:] = a
             else:
-                r = _np.cos(_np.deg2rad(latin))**2 + \
-                    _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
-                r = a * _np.sqrt(1. / r)
+                radius = _np.cos(_np.deg2rad(latin))**2 + \
+                         _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                radius = a * _np.sqrt(1. / radius)
 
+        if _np.isscalar(lat):
             return _MakeGravGridPoint(coeffs, gm=self.gm, r0=self.r0,
-                                      r=r, lat=latin, lon=lonin,
+                                      r=radius, lat=latin, lon=lonin,
                                       lmax=lmax_calc, omega=self.omega)
+
         elif type(lat) is _np.ndarray:
             values = _np.empty((len(lat), 3), dtype=_np.float64)
-            for i, (latitude, longitude) in enumerate(zip(latin, lonin)):
-                if f == 0.:
-                    r = a
-                else:
-                    r = _np.cos(_np.deg2rad(latitude))**2 + \
-                        _np.sin(_np.deg2rad(latitude))**2 / (1.0 - f)**2
-                    r = a * _np.sqrt(1. / r)
-
+            for i, (r, latitude, longitude) in enumerate(zip(radius, latin,
+                                                             lonin)):
                 values[i, :] = _MakeGravGridPoint(coeffs, gm=self.gm,
                                                   r0=self.r0, r=r,
                                                   lat=latitude, lon=longitude,
                                                   lmax=lmax_calc,
                                                   omega=self.omega)
             return values
+
         elif type(lat) is list:
             values = []
-            for latitude, longitude in zip(latin, lonin):
-                if f == 0.:
-                    r = a
-                else:
-                    r = _np.cos(_np.deg2rad(latitude))**2 + \
-                        _np.sin(_np.deg2rad(latitude))**2 / (1.0 - f)**2
-                    r = a * _np.sqrt(1. / r)
+            for r, latitude, longitude in zip(radius, latin, lonin):
                 values.append(
                     _MakeGravGridPoint(coeffs, gm=self.gm, r0=self.r0,
                                        r=r, lat=latitude, lon=longitude,
                                        lmax=lmax_calc, omega=self.omega))
             return values
+
         else:
             raise ValueError('lat and lon must be either an int, float, '
                              'ndarray, or list. Input types are {:s} and {:s}.'

@@ -96,7 +96,7 @@ When installing pyshtools using `conda`, the following will also be installed au
 * [fftw](https://www.fftw.org/): required for the fortran library.
 * [blas-devel](https://anaconda.org/conda-forge/blas-devel): required for the fortran components.
 * [cartopy](https://scitools.org.uk/cartopy/docs/latest/): required for Cartopy map projections.
-* [pygmt](https://www.pygmt.org) (>=0.3): required for pygmt map projections. pygmt requires (see below) *gmt (>=6.1.1)*.
+* [pygmt](https://www.pygmt.org) (>=0.7): required for pygmt map projections. pygmt requires (see below) *gmt (>=6.3.0)*.
 * [ducc0](https://gitlab.mpcdf.mpg.de/mtr/ducc) (>=0.15): required for using the 'ducc' backend for spherical harmonic transforms.
 * [palettable](https://jiffyclub.github.io/palettable/): scientific color maps required by one of the tutorials.
 
@@ -118,7 +118,7 @@ Note that pyshtools supports the use of any FFTW3-compatible library, such as In
 
 ### How to install pygmt
 
-In order to use the *pygmt* plotting routines, it will be necessary to install both *pygmt (>=0.3)* and the *gmt (>=6.1.1)* library. This is most easily achieved using conda with
+In order to use the *pygmt* plotting routines, it will be necessary to install both *pygmt (>=0.7)* and the *gmt (>=6.3.0)* library. This is most easily achieved using conda with
 ```bash
 conda install -c conda-forge pygmt gmt
 ```
