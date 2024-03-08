@@ -53,7 +53,7 @@ When accessing a dataset, the file will first be downloaded from the original so
 
 The coefficients can be read up to a maximum specified degree by providing the optional variable `lmax`. For IGRF magnetic field coefficients, the year of the output coefficients can be specified by the optional argument `year` (the default is 2020).
 
-The following is the list of implemented datasets:
+The following is the list of implemented datasets. Additional older or deprecated datasets can be found in the `historical` module for each body.
 
 ### Mercury
 
@@ -96,7 +96,8 @@ The following is the list of implemented datasets:
 
 | Dataset | Description |
 | ---------- | ----------- |
-| MoonTopo2600p | 2600 degree and order spherical harmonic model of the shape of Earth's Moon in a principal axis coordinate system (Wieczorek 2015). |
+| Moon_shape_pa | 5759 degree and order spherical harmonic model of the shape of Earth's Moon in a principal axis coordinate system (Wieczorek 2024). |
+| Moon_shape | 5759 degree and order spherical harmonic model of the shape of Earth's Moon in mean Earth/polar axis coordinate system (Wieczorek 2024). |
 | GRGM900C | GSFC 900 degree and order spherical harmonic model of the gravitational potential of the Moon. This model applies a Kaula constraint for degrees greater than 600 (Lemoine et al. 2014). |
 | GRGM1200B | GSFC 1200 degree and order spherical harmonic model of the gravitational potential of the Moon (Goossens et al. 2020). This model applies a Kaula constraint for degrees greater than 600. |
 | GRGM1200B_RM1_1E0 | GSFC 1200 degree and order spherical harmonic model of the gravitational potential of the Moon (Goossens et al. 2020). This model uses a rank-minus-1 constraint based on gravity from surface topography for degrees greater than 600 with a value of lambda equal to 1. |
@@ -110,8 +111,7 @@ The following is the list of implemented datasets:
 
 | Dataset | Description |
 | ---------- | ----------- |
-| MarsTopo2600 | 2600 degree and order spherical harmonic model of the shape of the planet Mars (Wieczorek 2015). |
-| MarsTopo719 | 719 degree and order spherical harmonic model of the shape of the planet Mars (Wieczorek 2015). |
+| Mars_shape | 5759 degree and order spherical harmonic model of the shape of the planet Mars (Wieczorek 2024). |
 | GMM3 | GSFC 120 degree and order spherical harmonic model of the gravitational potential of Mars (Genova et al. 2016). This model applies a Kaula constraint for degrees greater than 90. |
 | GMM3_RM1_1E0 | GSFC 150 degree and order spherical harmonic model of the gravitational potential of Mars (Goossens et al. 2017). This model uses the same data as GMM3, but with a rank-minus-1 constraint based on gravity from surface topography for degrees greater than 50 with a value of lambda equal to 1.|
 | MRO120D |JPL 120 degree and order spherical harmonic model of the gravitational potential of Mars (Konopliv et al. 2016). This model applies a Kaula constraint for degrees greater than 80. |
