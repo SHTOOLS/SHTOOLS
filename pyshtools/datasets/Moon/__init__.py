@@ -1,8 +1,8 @@
 '''
 Datasets related to Earth's Moon.
 
-Topography
-----------
+Shape
+-----
 Moon_shape_pa     :  Wieczorek (2024)
 Moon_shape        :  Wieczorek (2024)
 
@@ -78,6 +78,7 @@ def Moon_shape_pa(lmax=719):
     else:
         fname = archive.fetch("Moon_shape_pa_5759.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
+        lmax = min(lmax, 5759)
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='Moon_shape_pa',
                                units='m', format='bshc')
@@ -130,6 +131,7 @@ def Moon_shape(lmax=719):
     else:
         fname = archive.fetch("Moon_shape_5759.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
+        lmax = min(lmax, 5759)
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='Moon_shape',
                                units='m', format='bshc')

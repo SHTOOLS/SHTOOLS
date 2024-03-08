@@ -1,8 +1,8 @@
 '''
 Historical datasets related to the shape of Earth's Moon.
 
-Topography
-----------
+Shape
+-----
 GLTM2B (Clementine)       :  Smith et al. (1997)
 MoonTopo2600p (LRO)       :  Wieczorek (2015)
 '''
