@@ -7,7 +7,7 @@ GANYMEDE2022 :  Gomez Casajus et al. (2022)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
-from pooch import HTTPDownloader as _HTTPDownloader
+from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 
 
@@ -31,9 +31,9 @@ def GANYMEDE2022(lmax=5):
         doi:10.1029/2022GL099475.
     '''
     fname = _retrieve(
-        url="https://zenodo.org/record/7665171/files/Ganymede2022.sh.gz",  # noqa: E501
+        url="doi:10.5281/zenodo.7665171/Ganymede2022.sh.gz",  # noqa: E501
         known_hash="sha256:593b084cf91673a9093fdfdf657016d52246c6b1a9bf297e42cf543f88fb3b97",  # noqa: E501
-        downloader=_HTTPDownloader(progressbar=True),
+        downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',

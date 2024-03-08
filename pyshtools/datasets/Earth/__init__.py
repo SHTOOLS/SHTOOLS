@@ -26,6 +26,7 @@ Thebault2021               :  Thebault et al. (2021); degree 1050
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
+from pooch import DOIDownloader as _DOIDownloader
 from pooch import FTPDownloader as _FTPDownloader
 from pooch import Unzip as _Unzip
 from ...shclasses import SHGravCoeffs as _SHGravCoeffs
@@ -305,9 +306,9 @@ def WDMAM2_800(lmax=800):
         Earth, Planets and Space, 68, 27, doi:10.1186/s40623-016-0404-6.
     '''
     fname = _retrieve(
-        url="https://zenodo.org/record/3902903/files/WDMAM2_800.sh.gz?download=1",  # noqa: E501
+        url="doi:10.5281/zenodo.3902903/WDMAM2_800.sh.gz",  # noqa: E501
         known_hash="sha256:3ddf3d9f37cbfafebf965649c5d3745c52a5127b4c4cd7c2768ad521867e1e2d",  # noqa: E501
-        downloader=_HTTPDownloader(progressbar=True),
+        downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname, r0=6371.2e3, lmax=lmax, header=False,
@@ -367,9 +368,9 @@ def Thebault2021(lmax=1050):
         doi:10.1029/2021GL095147.
     '''
     fname = _retrieve(
-        url="https://zenodo.org/record/5546528/files/Spherical_HarmonicModel_GRL.zip?download=1",  # noqa: E501
+        url="doi:10.5281/zenodo.5546528/Spherical_HarmonicModel_GRL.zip",  # noqa: E501
         known_hash="sha256:d3ce3f049158cb055d1e69efaa39f0618d808d1e01f18efb5058b6ac5fa4e78d",  # noqa: E501
-        downloader=_HTTPDownloader(progressbar=True),
+        downloader=_DOIDownloader(progressbar=True),
         processor=_Unzip(),
         path=_os_cache('pyshtools'),
     )

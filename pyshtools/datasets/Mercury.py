@@ -1,9 +1,9 @@
 '''
 Datasets related to the planet Mercury.
 
-Topography
-----------
-GTMES150           :  Topography constructed using laser altimeter and
+Shape
+-----
+GTMES150           :  Shape model constructed using laser altimeter and
                       occultation data.
 
 Gravity
