@@ -3,7 +3,8 @@ Datasets related to Earth's Moon.
 
 Topography
 ----------
-MoonTopo2600p     :  Wieczorek (2015)
+Moon_shape_pa     :  Wieczorek (2024)
+Moon_shape        :  Wieczorek (2024)
 
 Gravity
 -------
@@ -20,7 +21,9 @@ Ravat2020         :  Ravat et al. (2020)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
+from pooch import create as _create
 from pooch import HTTPDownloader as _HTTPDownloader
+from pooch import DOIDownloader as _DOIDownloader
 from ...shclasses import SHCoeffs as _SHCoeffs
 from ...shclasses import SHGravCoeffs as _SHGravCoeffs
 from ...shclasses import SHMagCoeffs as _SHMagCoeffs
@@ -28,31 +31,108 @@ from ...constants.Moon import omega as _omega
 from . import historical  # noqa: F401
 
 
-def MoonTopo2600p(lmax=2600):
+def Moon_shape_pa(lmax=719):
     '''
-    MoonTopo2600p is a 2600 degree and order spherical harmonic model of the
-    shape of Earth's Moon in a principal axis coordinate system. The
-    coefficients are in units of meters.
+    Moon_shape_pa is a spherical harmonic model of the shape of Earth's Moon in
+    a principal axis coordinate system. The maximum spherical harmonic degree
+    of the model is 5759, which has an effective spatial resolution of 64
+    pixels per degree. Three lower resolution models are available in this
+    archive (with lmax of 719, 1439 and 2879), and only the smallest that is
+    required by the user input lmax will be downloaded. The coefficients are
+    in units of meters.
+
+    This shape model uses the same coordinate system as most lunar gravity
+    models. For a mean Earth/polar axis model, use Moon_shape instead.
 
     Parameters
     ----------
-    lmax : int, optional
+    lmax : int, optional, default=719
         The maximum spherical harmonic degree to return.
 
     Reference
     ---------
-    Wieczorek, M.A. (2015). Gravity and Topography of the Terrestrial Planets,
-        Treatise on Geophysics, 2nd edition, Oxford, 153-193,
-        doi:10.1016/B978-0-444-53802-4.00169-X.
+    Wieczorek, M. (2024). Spherical harmonic models of the shape of the Moon
+        (principal axis coordinate system) (1.0.0) [Data set]. Zenodo.
+        https://doi.org/10.5281/zenodo.10796954
     '''
-    fname = _retrieve(
-        url="https://zenodo.org/record/3870924/files/MoonTopo2600p.shape.gz",
-        known_hash="sha256:193146df894e2fef796df9d6142c78fae6fa5c183fd79d3f79eeb356602af69a",  # noqa: E501
-        downloader=_HTTPDownloader(progressbar=True),
+    archive = _create(
         path=_os_cache('pyshtools'),
-    )
-    return _SHCoeffs.from_file(fname, lmax=lmax, name='MoonTopo2600p',
-                               units='m', encoding='utf-8')
+        base_url="doi:10.5281/zenodo.10796954",
+        registry={
+            "Moon_shape_pa_5759.sh.gz": "sha256:1569338a88475e184ac8b7424327b0e03cb1f8f0a3cec70bd9bfe41635f68671",  # noqa: E501
+            "Moon_shape_pa_2879.sh.gz": "sha256:6ee87880956fdbdf85f9c0b2e9996514735198fbcb19fd0d0c7881bf50c50496",  # noqa: E501
+            "Moon_shape_pa_1439.sh.gz": "sha256:6c4619f845c9902d999879cbf6956c368290a17fc2887d41267800aade386c56",  # noqa: E501
+            "Moon_shape_pa_719.sh.gz": "sha256:71877e8c1dd80205941b6ca0e7df73943abc52be125d1d8cc76bea2dcee5942b",  # noqa: E501
+            },
+        )
+
+    if lmax <= 719:
+        fname = archive.fetch("Moon_shape_pa_719.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    elif lmax <= 1439:
+        fname = archive.fetch("Moon_shape_pa_1439.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    elif lmax <= 2879:
+        fname = archive.fetch("Moon_shape_pa_2879.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    else:
+        fname = archive.fetch("Moon_shape_pa_5759.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='Moon_shape_pa',
+                               units='m', format='bshc')
+
+
+def Moon_shape(lmax=719):
+    '''
+    Moon_shape is a spherical harmonic model of the shape of Earth's Moon in
+    the mean Earth/polar axis coordinate system. The maximum spherical harmonic
+    degree of the model is 5759, which has an effective spatial resolution of
+    64 pixels per degree. Three lower resolution models are available in this
+    archive (with lmax of 719, 1439 and 2879), and only the smallest that is
+    required by the user input lmax will be downloaded. The coefficients are
+    in units of meters.
+
+    This shape model should not be used in conjuction with most lunar gravity
+    models, which use a principal axis coordinate system. For a principal axis
+    model, use Moon_shape_pa instead.
+
+    Parameters
+    ----------
+    lmax : int, optional, default=719
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    Wieczorek, M. (2024). Spherical harmonic models of the shape of the Moon
+        (1.0.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10796823
+    '''
+    archive = _create(
+        path=_os_cache('pyshtools'),
+        base_url="doi:10.5281/zenodo.10796823",
+        registry={
+            "Moon_shape_5759.sh.gz": "sha256:7f1eddfccd007c56e983c43c8dc470fb58f8b23ede655f5bf4bf2208635c66ca",  # noqa: E501
+            "Moon_shape_2879.sh.gz": "sha256:b22c3c71e2c14bc84e85304471c4b583542ee4e8f54ea2501bdc53d86017fe1f",  # noqa: E501
+            "Moon_shape_1439.sh.gz": "sha256:f5e8f1b7acaab626db5828f9dc6f9ea1ce948bb5000e5bfcf1ff69b3141f1845",  # noqa: E501
+            "Moon_shape_719.sh.gz": "sha256:20cafa143fda3e5ba5af6868c9e95054fabf68d0050c4be64a83d44df1333b4c",  # noqa: E501
+            },
+        )
+
+    if lmax <= 719:
+        fname = archive.fetch("Moon_shape_719.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    elif lmax <= 1439:
+        fname = archive.fetch("Moon_shape_1439.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    elif lmax <= 2879:
+        fname = archive.fetch("Moon_shape_2879.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    else:
+        fname = archive.fetch("Moon_shape_5759.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='Moon_shape',
+                               units='m', format='bshc')
 
 
 def T2015_449(lmax=449):
@@ -79,9 +159,9 @@ def T2015_449(lmax=449):
         doi:10.1002/2017JE005418.
     '''
     fname = _retrieve(
-        url="https://zenodo.org/record/3873648/files/T2015_449.sh.gz",
+        url="doi:10.5281/zenodo.3873648/T2015_449.sh.gz",
         known_hash="sha256:4db0b77b3863f38d6fb6e62c5c1116bf7123b77c5aad65df7dae598714edd655",  # noqa: E501
-        downloader=_HTTPDownloader(progressbar=True),
+        downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname, lmax=lmax, header=True,
@@ -274,5 +354,6 @@ def GL1500E(lmax=1500):
                                    name='GL1500E', encoding='utf-8')
 
 
-__all__ = ['MoonTopo2600p', 'T2015_449', 'Ravat2020', 'GRGM900C', 'GRGM1200B',
-           'GRGM1200B_RM1_1E0', 'GL0900D', 'GL1500E', 'historical']
+__all__ = ['Moon_shape_pa', 'Moon_shape', 'T2015_449', 'Ravat2020', 'GRGM900C',
+           'GRGM1200B', 'GRGM1200B_RM1_1E0', 'GL0900D', 'GL1500E',
+           'historical']
