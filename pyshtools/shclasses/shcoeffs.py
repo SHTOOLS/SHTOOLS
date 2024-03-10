@@ -2067,7 +2067,7 @@ class SHCoeffs(object):
                                        csphase=csphase, lmax=lmax)
         else:
             if self.errors is not None:
-                coeffs, error_coeffs = temp.to_array(
+                coeffs, error_coeffs = self.to_array(
                     normalization=normalization.lower(), csphase=csphase,
                     lmax=lmax, errors=True)
             else:
