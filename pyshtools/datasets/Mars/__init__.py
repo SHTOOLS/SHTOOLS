@@ -51,6 +51,9 @@ def Mars_shape(lmax=719):
     ---------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of Mars
         (1.0.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10794059
+    Smith, D., G. Neumann, R. E. Arvidson, E. A. Guinness, and S. Slavney
+        (2003). Mars Global Surveyor Laser Altimeter Mission Experiment Gridded
+        Data Record, NASA Planetary Data System, MGS-M-MOLA-5-MEGDR-L3-V1.0.
     '''
     archive = _create(
         path=_os_cache('pyshtools'),

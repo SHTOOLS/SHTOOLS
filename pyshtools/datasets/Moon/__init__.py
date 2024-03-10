@@ -57,6 +57,7 @@ def Moon_shape_pa(lmax=719):
     Wieczorek, M. (2024). Spherical harmonic models of the shape of the Moon
         (principal axis coordinate system) (1.0.0) [Data set]. Zenodo.
         https://doi.org/10.5281/zenodo.10796954
+    LRO LOLA Team (2013). LRO-L-LOLA-4-GDR-V1.0, NASA Planetary Data System.
     '''
     archive = _create(
         path=_os_cache('pyshtools'),
@@ -116,6 +117,7 @@ def Moon_shape(lmax=719):
     ---------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of the Moon
         (1.0.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10796823
+    LRO LOLA Team (2013). LRO-L-LOLA-4-GDR-V1.0, NASA Planetary Data System.
     '''
     archive = _create(
         path=_os_cache('pyshtools'),
