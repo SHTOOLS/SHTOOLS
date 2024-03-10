@@ -1,20 +1,83 @@
 '''
 Datasets related to the asteroid (4) Vesta.
 
+Shape
+-----
+Vesta_shape  :  Wieczorek (2024)
+
 Gravity
 -------
-VESTA20H :  Konopliv et al. (2014)
+VESTA20H     :  Konopliv et al. (2014)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
+from pooch import create as _create
 from pooch import HTTPDownloader as _HTTPDownloader
+from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
+from ..shclasses import SHCoeffs as _SHCoeffs
+
+
+def Vesta_shape(lmax=719):
+    '''
+    Vesta_shape is a spherical harmonic model of the shape of asteroid (4)
+    Vesta based on stereo photogrammetric data obtained by the Dawn mission.
+    The maximum spherical harmonic degree of the model is 5759, which has an
+    effective spatial resolution of 64 pixels per degree. Three lower
+    resolution models are available in this archive (with lmax of 719, 1439
+    and 2879), and only the smallest that is required by the user input lmax
+    will be downloaded. If lmax is not specified, the lowest resolution model
+    (719) will be returned. If a negative value for lmax is specified, the
+    maximum resolution model will be returned. The coefficients are in units
+    of meters.
+
+    Parameters
+    ----------
+    lmax : int, optional, default=719
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    Wieczorek, M. (2024). Spherical harmonic models of the shape of the
+        asteroid (4) Vesta (1.0.0) [Data set]. Zenodo.
+        https://doi.org/10.5281/zenodo.10800929
+    '''
+    archive = _create(
+        path=_os_cache('pyshtools'),
+        base_url="doi:10.5281/zenodo.10800929",
+        registry={
+            "Vesta_shape_5759.sh.gz": "sha256:3a2486575fc99469bfe243b78c92cc3c0b968cbf1f278436079ef53961a75670",  # noqa: E501
+            "Vesta_shape_2879.sh.gz": "sha256:04deabadc25338cc4de5320447afbcc429baa5715427528641d8e0561521f657",  # noqa: E501
+            "Vesta_shape_1439.sh.gz": "sha256:99eae34532e93a4611be51436de7e3e9be8c3f64a799bc43444013ecf73ca6d3",  # noqa: E501
+            "Vesta_shape_719.sh.gz": "sha256:140532d5ca7070e677ac064b9ff59c60baa21811b0541138e564e94ec8eafec9",  # noqa: E501
+            },
+        )
+
+    if lmax < 0:
+        lmax = 5759
+
+    if lmax >= 0 and lmax <= 719:
+        fname = archive.fetch("Vesta_shape_719.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    elif lmax > 719 and lmax <= 1439:
+        fname = archive.fetch("Vesta_shape_1439.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    elif lmax > 1439 and lmax <= 2879:
+        fname = archive.fetch("Vesta_shape_2879.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    else:
+        fname = archive.fetch("Vesta_shape_5759.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+        lmax = min(lmax, 5759)
+
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='Vesta_shape',
+                               units='m', format='bshc')
 
 
 def VESTA20H(lmax=20):
     '''
     VESTA20H is a JPL 20 degree and order spherical harmonic model of the
-    gravitational potential of (4) Vesta.
+    gravitational potential of asteroid (4) Vesta.
 
     Parameters
     ----------
@@ -41,4 +104,4 @@ def VESTA20H(lmax=20):
                                    name='VESTA20H', encoding='utf-8')
 
 
-__all__ = ['VESTA20H']
+__all__ = ['Vesta_shape', 'VESTA20H']

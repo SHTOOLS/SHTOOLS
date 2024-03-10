@@ -34,12 +34,15 @@ from . import historical  # noqa: F401
 def Moon_shape_pa(lmax=719):
     '''
     Moon_shape_pa is a spherical harmonic model of the shape of Earth's Moon in
-    a principal axis coordinate system. The maximum spherical harmonic degree
-    of the model is 5759, which has an effective spatial resolution of 64
-    pixels per degree. Three lower resolution models are available in this
-    archive (with lmax of 719, 1439 and 2879), and only the smallest that is
-    required by the user input lmax will be downloaded. The coefficients are
-    in units of meters.
+    a principal axis coordinate system based on LOLA laser altimetry data
+    obtained by the Lunar Reconaissance Orbiter mission. The maximum spherical
+    harmonic degree of the model is 5759, which has an effective spatial
+    resolution of 64 pixels per degree. Three lower resolution models are
+    available in this archive (with lmax of 719, 1439 and 2879), and only the
+    smallest that is required by the user input lmax will be downloaded. If
+    lmax is not specified, the lowest resolution model (719) will be returned.
+    If a negative value for lmax is specified, the maximum resolution model
+    will be returned. The coefficients are in units of meters.
 
     This shape model uses the same coordinate system as most lunar gravity
     models. For a mean Earth/polar axis model, use Moon_shape instead.
@@ -66,13 +69,16 @@ def Moon_shape_pa(lmax=719):
             },
         )
 
-    if lmax <= 719:
+    if lmax < 0:
+        lmax = 5759
+
+    if lmax >= 0 and lmax <= 719:
         fname = archive.fetch("Moon_shape_pa_719.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
-    elif lmax <= 1439:
+    elif lmax > 719 and lmax <= 1439:
         fname = archive.fetch("Moon_shape_pa_1439.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
-    elif lmax <= 2879:
+    elif lmax > 1439 and lmax <= 2879:
         fname = archive.fetch("Moon_shape_pa_2879.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
     else:
@@ -87,12 +93,15 @@ def Moon_shape_pa(lmax=719):
 def Moon_shape(lmax=719):
     '''
     Moon_shape is a spherical harmonic model of the shape of Earth's Moon in
-    the mean Earth/polar axis coordinate system. The maximum spherical harmonic
-    degree of the model is 5759, which has an effective spatial resolution of
-    64 pixels per degree. Three lower resolution models are available in this
-    archive (with lmax of 719, 1439 and 2879), and only the smallest that is
-    required by the user input lmax will be downloaded. The coefficients are
-    in units of meters.
+    the mean Earth/polar axis coordinate system based on LOLA laser altimetry
+    data obtained by the Lunar Reconaissance Orbiter mission. The maximum
+    spherical harmonic degree of the model is 5759, which has an effective
+    spatial resolution of 64 pixels per degree. Three lower resolution models
+    are available in this archive (with lmax of 719, 1439 and 2879), and only
+    the smallest that is required by the user input lmax will be downloaded. If
+    lmax is not specified, the lowest resolution model (719) will be returned.
+    If a negative value for lmax is specified, the maximum resolution model
+    will be returned. The coefficients are in units of meters.
 
     This shape model should not be used in conjuction with most lunar gravity
     models, which use a principal axis coordinate system. For a principal axis
@@ -119,19 +128,22 @@ def Moon_shape(lmax=719):
             },
         )
 
-    if lmax <= 719:
+    if lmax >= 0 and lmax <= 719:
         fname = archive.fetch("Moon_shape_719.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
-    elif lmax <= 1439:
+    elif lmax > 719 and lmax <= 1439:
         fname = archive.fetch("Moon_shape_1439.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
-    elif lmax <= 2879:
+    elif lmax > 1439 and lmax <= 2879:
         fname = archive.fetch("Moon_shape_2879.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
     else:
         fname = archive.fetch("Moon_shape_5759.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 5759)
+        if lmax < 0:
+            lmax = 5759
+        else:
+            lmax = min(lmax, 5759)
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='Moon_shape',
                                units='m', format='bshc')

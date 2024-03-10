@@ -31,12 +31,16 @@ from . import historical  # noqa: F401
 
 def Mars_shape(lmax=719):
     '''
-    Mars_shape is a spherical harmonic model of the shape of Mars. The maximum
-    spherical harmonic degree of the model is 5759, which has an effective
-    spatial resolution of 64 pixels per degree. Three lower resolution models
-    are available in this archive (with lmax of 719, 1439 and 2879), and only
-    the smallest that is required by the user input lmax will be downloaded.
-    The coefficients are in units of meters.
+    Mars_shape is a spherical harmonic model of the shape of Mars based on MOLA
+    laser altimetry data obtained by the Mars Global Surveyor mission. The
+    maximum spherical harmonic degree of the model is 5759, which has an
+    effective spatial resolution of 64 pixels per degree. Three lower
+    resolution models are available in this archive (with lmax of 719, 1439
+    and 2879), and only the smallest that is required by the user input lmax
+    will be downloaded. If lmax is not specified, the lowest resolution model
+    (719) will be returned. If a negative value for lmax is specified, the
+    maximum resolution model will be returned. The coefficients are in units
+    of meters.
 
     Parameters
     ----------
@@ -59,13 +63,16 @@ def Mars_shape(lmax=719):
             },
         )
 
-    if lmax <= 719:
+    if lmax < 0:
+        lmax = 5759
+
+    if lmax >= 0 and lmax <= 719:
         fname = archive.fetch("Mars_shape_719.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
-    elif lmax <= 1439:
+    elif lmax > 719 and lmax <= 1439:
         fname = archive.fetch("Mars_shape_1439.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
-    elif lmax <= 2879:
+    elif lmax > 1439 and lmax <= 2879:
         fname = archive.fetch("Mars_shape_2879.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
     else:
