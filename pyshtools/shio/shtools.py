@@ -338,7 +338,7 @@ def shwrite(filename, coeffs, errors=None, header=None, header2=None,
 
     Parameters
     ----------
-    filename : str
+    filename : str or pathlib.Path
         File name of the shtools-formatted spherical harmonic coefficients. If
         filename ends with '.gz' the file will be automatically compressed with
         gzip.
@@ -380,6 +380,9 @@ def shwrite(filename, coeffs, errors=None, header=None, header2=None,
     If the filename ends with '.gz', the file will be automatically compressed
     using gzip.
     """
+    if isinstance(filename, Path):
+        filename = str(filename)
+
     if lmax is None:
         lmax = coeffs.shape[1] - 1
     else:

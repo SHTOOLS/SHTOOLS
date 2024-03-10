@@ -9,6 +9,7 @@ import numpy as _np
 import shutil as _shutil
 import requests as _requests
 from pyshtools.utils.datetime import _yyyymmdd_to_year_fraction
+from pathlib import Path
 
 
 def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
@@ -37,7 +38,7 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
 
     Parameters
     ----------
-    filename : str
+    filename : str or pathlib.Path
         The filename containing the spherical harmonic ICGEM-formatted
         coefficients. filename will be treated as a URL if it starts with
         'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or
@@ -89,6 +90,9 @@ def read_icgem_gfc(filename, errors=None, lmax=None, epoch=None,
 
     Data lines starting with an unknown key are ignored.
     """
+    if isinstance(filename, Path):
+        filename = str(filename)
+
     header = {}
     header_keys = ['modelname', 'product_type', 'earth_gravity_constant',
                    'gravity_constant', 'radius', 'max_degree', 'errors',
@@ -268,7 +272,7 @@ def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
 
     Parameters
     ----------
-    filename : str
+    filename : str or pathlib.Path
         The filename to save the spherical harmonic ICGEM-formatted
         coefficients. If filename ends with '.gz' the file will be compressed
         using gzip.
@@ -304,6 +308,9 @@ def write_icgem_gfc(filename, coeffs, errors=None, header=None, lmax=None,
     encoding : str, optional, default = None
         Encoding of the output file. The default is to use the system default.
     """
+    if isinstance(filename, Path):
+        filename = str(filename)
+
     valid_err = ('unknown', 'calibrated', 'formal', 'calibrated_and_formal')
     valid_tide = ('zero_tide', 'tide_free', 'unknown')
     valid_norm = ('4pi', 'unnorm')
