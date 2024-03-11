@@ -72,7 +72,7 @@ def DLR_SPG_shape(lmax=719):
     else:
         fname = archive.fetch("Ceres_shape_5399.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 5759)
+        lmax = min(lmax, 5399)
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='DLR_SPG_shape (Ceres)',
                                units='m', format='bshc')

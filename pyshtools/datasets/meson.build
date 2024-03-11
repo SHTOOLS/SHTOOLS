@@ -4,6 +4,7 @@ python_sources = [
   'Ganymede.py',
   'Mercury.py',
   'Vesta.py',
+  'Titan.py',
 ]
 
 python.install_sources(python_sources, subdir: 'pyshtools/datasets')
