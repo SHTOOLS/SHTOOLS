@@ -2739,16 +2739,16 @@ class SHGravCoeffs(object):
     def plot_spectrum(self, function='geoid', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
                       legend=None, legend_error='error', legend_loc='best',
-                      axes_labelsize=None, tick_labelsize=None, ax=None,
-                      show=True, fname=None, **kwargs):
+                      axes_labelsize=None, errors=True, tick_labelsize=None,
+                      ax=None, show=True, fname=None, **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
         x.plot_spectrum([function, unit, base, lmax, xscale, yscale, grid,
-                         legend, legend_loc, axes_labelsize, tick_labelsize,
-                         ax, show, fname, **kwargs])
+                         legend, legend_loc, errors, axes_labelsize,
+                         tick_labelsize, ax, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2780,6 +2780,8 @@ class SHGravCoeffs(object):
         legend_loc : str, optional, default = 'best'
             Location of the legend, such as 'upper right' or 'lower center'
             (see pyplot.legend for all options).
+        errors : bool, optional, default = True
+            If the coefficients have errors, plot the error spectrum.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -2877,7 +2879,7 @@ class SHGravCoeffs(object):
         if yscale == 'log':
             axes.set_yscale('log', base=base)
 
-        if self.errors is not None:
+        if self.errors is not None and errors:
             axes.plot(ls[2:lmax + 1], spectrum[2:lmax + 1], label=legend,
                       **kwargs)
             axes.plot(ls[2:lmax + 1], error_spectrum[2:lmax + 1],

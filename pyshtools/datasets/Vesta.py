@@ -33,7 +33,7 @@ def DLR_SPG_shape(lmax=719):
 
     Parameters
     ----------
-    lmax : int, optional, default=719
+    lmax : int, optional, default = 719
         The maximum spherical harmonic degree to return.
 
     References
