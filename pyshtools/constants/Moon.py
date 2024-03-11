@@ -37,13 +37,12 @@ mass = _Constant(
 mean_radius = _Constant(
     abbrev='r_moon',
     name='Mean radius of the Moon',
-    value=1737151.0,
+    value=1737151.,
     unit='m',
-    uncertainty=0.0,
-    reference='LOLA2600p: Wieczorek, M. A. (2015). Gravity and topography '
-    'of the terrestrial planets. In T. Spohn & G. Schubert (Eds.), '
-    'Treatise on Geophysics, 2nd ed., Vol. 10, pp. 153-193). Oxford, '
-    'Elsevier-Pergamon, doi:10.1016/B978-0-444-53802-4.00169-X.')
+    uncertainty=0.,
+    reference='LOLA_shape: Wieczorek, M. A. (2024). Spherical harmonic models'
+    'of the shape of the Moon (1.0.0) [Data set]. Zenodo. '
+    'https://doi.org/10.5281/zenodo.10796823')
 
 r = mean_radius
 

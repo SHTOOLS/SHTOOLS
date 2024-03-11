@@ -9,6 +9,7 @@ from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
+from ..constants.Titan import omega as _omega
 
 
 def Mitri2014_shape(lmax=6):

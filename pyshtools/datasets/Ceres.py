@@ -16,6 +16,7 @@ from pooch import HTTPDownloader as _HTTPDownloader
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..shclasses import SHCoeffs as _SHCoeffs
+from ..constants.Ceres import omega as _omega
 
 
 def DLR_SPG_shape(lmax=719):
@@ -105,7 +106,8 @@ def CERES18D(lmax=18):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True,
-                                   name='CERES18D', encoding='utf-8')
+                                   name='CERES18D', encoding='utf-8',
+                                   omega=_omega.value)
 
 
 __all__ = ['DLR_SPG_shape', 'CERES18D']

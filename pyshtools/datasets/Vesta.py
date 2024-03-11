@@ -16,6 +16,7 @@ from pooch import HTTPDownloader as _HTTPDownloader
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..shclasses import SHCoeffs as _SHCoeffs
+from ..constants.Vesta import omega as _omega
 
 
 def DLR_SPG_shape(lmax=719):
@@ -104,7 +105,8 @@ def VESTA20H(lmax=20):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True,
-                                   name='VESTA20H', encoding='utf-8')
+                                   name='VESTA20H', encoding='utf-8',
+                                   omega=_omega.value)
 
 
 __all__ = ['DLR_SPG_shape', 'VESTA20H']

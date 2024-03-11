@@ -33,13 +33,12 @@ mass = _Constant(
 mean_radius = _Constant(
     abbrev='r_mars',
     name='Mean radius of Mars',
-    value=3389.500e3,
+    value=3389.5e3,
     unit='m',
     uncertainty=0.0,
-    reference='MarsTopo2600: Wieczorek, M. A. (2015). Gravity and '
-    'topography of the terrestrial planets. In T. Spohn & G. Schubert '
-    '(Eds.), Treatise on Geophysics, 2nd ed., Vol. 10, pp. 153-193). '
-    'Oxford, Elsevier-Pergamon, doi:10.1016/B978-0-444-53802-4.00169-X.')
+    reference='MOLA_shape: Wieczorek, M. (2024). Spherical harmonic models of '
+    'the shape of Mars (1.0.0) [Data set]. Zenodo. '
+    'https://doi.org/10.5281/zenodo.10794059')
 
 r = mean_radius
 

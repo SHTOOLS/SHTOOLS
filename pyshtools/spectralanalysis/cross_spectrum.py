@@ -115,8 +115,10 @@ def cross_spectrum(clm1, clm2, normalization='4pi', degrees=None, lmax=None,
                             clm2[1, l, 1:l + 1].conjugate()).real.sum()
             else:
                 conv[1:l + 1] = conv[1:l + 1] / 2.
-                array[i] = (conv[0:l + 1] * clm1[0, l, 0:l+1]**2).sum() + \
-                           (conv[1:l + 1] * clm2[1, l, 1:l+1]**2).sum()
+                array[i] = (conv[0:l + 1] * clm1[0, l, 0:l+1] *
+                            clm2[0, l, 0:l+1]).sum() + \
+                           (conv[1:l + 1] * clm1[1, l, 1:l+1] *
+                            clm2[1, l, 1:l+1]).sum()
 
     else:
         for i, l in enumerate(degrees):
