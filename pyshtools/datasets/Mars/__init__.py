@@ -3,7 +3,7 @@ Datasets related to the planet Mars.
 
 Shape
 -----
-Mars_shape       :  Wieczorek (2024)
+MOLA_shape       :  Wieczorek (2024)
 
 Gravity
 -------
@@ -29,9 +29,9 @@ from ...constants.Mars import omega as _omega
 from . import historical  # noqa: F401
 
 
-def Mars_shape(lmax=719):
+def MOLA_shape(lmax=719):
     '''
-    Mars_shape is a spherical harmonic model of the shape of Mars based on MOLA
+    MOLA_shape is a spherical harmonic model of the shape of Mars based on MOLA
     laser altimetry data obtained by the Mars Global Surveyor mission. The
     maximum spherical harmonic degree of the model is 5759, which has an
     effective spatial resolution of 64 pixels per degree. Three lower
@@ -83,7 +83,7 @@ def Mars_shape(lmax=719):
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 5759)
 
-    return _SHCoeffs.from_file(fname, lmax=lmax, name='Mars_shape',
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='MOLA_shape',
                                units='m', format='bshc')
 
 
@@ -237,5 +237,5 @@ def Morschhauser2014(lmax=110):
                                   encoding='utf-8')
 
 
-__all__ = ['Mars_shape', 'GMM3', 'GMM3_RM1_1E0', 'MRO120F', 'Langlais2019',
+__all__ = ['MOLA_shape', 'GMM3', 'GMM3_RM1_1E0', 'MRO120F', 'Langlais2019',
            'Morschhauser2014', 'historical', 'MarsTopo719']

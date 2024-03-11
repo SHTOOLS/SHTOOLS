@@ -3,7 +3,7 @@ Datasets related to the asteroid (4) Vesta.
 
 Shape
 -----
-Vesta_shape  :  Wieczorek (2024)
+DLR_SPG_shape  :  Wieczorek (2024)
 
 Gravity
 -------
@@ -18,9 +18,9 @@ from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..shclasses import SHCoeffs as _SHCoeffs
 
 
-def Vesta_shape(lmax=719):
+def DLR_SPG_shape(lmax=719):
     '''
-    Vesta_shape is a spherical harmonic model of the shape of asteroid (4)
+    DLR_SPG_shape is a spherical harmonic model of the shape of asteroid (4)
     Vesta based on stereo photogrammetric data obtained by the Dawn mission.
     The maximum spherical harmonic degree of the model is 5759, which has an
     effective spatial resolution of 64 pixels per degree. Three lower
@@ -73,7 +73,7 @@ def Vesta_shape(lmax=719):
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 5759)
 
-    return _SHCoeffs.from_file(fname, lmax=lmax, name='Vesta_shape',
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='DLR_SPG_shape (Vesta)',
                                units='m', format='bshc')
 
 
@@ -107,4 +107,4 @@ def VESTA20H(lmax=20):
                                    name='VESTA20H', encoding='utf-8')
 
 
-__all__ = ['Vesta_shape', 'VESTA20H']
+__all__ = ['DLR_SPG_shape', 'VESTA20H']

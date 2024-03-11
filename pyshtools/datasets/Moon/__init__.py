@@ -3,8 +3,8 @@ Datasets related to Earth's Moon.
 
 Shape
 -----
-Moon_shape_pa     :  Wieczorek (2024)
-Moon_shape        :  Wieczorek (2024)
+LOLA_shape_pa     :  Wieczorek (2024)
+LOLA_shape        :  Wieczorek (2024)
 
 Gravity
 -------
@@ -31,9 +31,9 @@ from ...constants.Moon import omega as _omega
 from . import historical  # noqa: F401
 
 
-def Moon_shape_pa(lmax=719):
+def LOLA_shape_pa(lmax=719):
     '''
-    Moon_shape_pa is a spherical harmonic model of the shape of Earth's Moon in
+    LOLA_shape_pa is a spherical harmonic model of the shape of Earth's Moon in
     a principal axis coordinate system based on LOLA laser altimetry data
     obtained by the Lunar Reconaissance Orbiter mission. The maximum spherical
     harmonic degree of the model is 5759, which has an effective spatial
@@ -45,7 +45,7 @@ def Moon_shape_pa(lmax=719):
     will be returned. The coefficients are in units of meters.
 
     This shape model uses the same coordinate system as most lunar gravity
-    models. For a mean Earth/polar axis model, use Moon_shape instead.
+    models. For a mean Earth/polar axis model, use LOLA_shape instead.
 
     Parameters
     ----------
@@ -87,13 +87,13 @@ def Moon_shape_pa(lmax=719):
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 5759)
 
-    return _SHCoeffs.from_file(fname, lmax=lmax, name='Moon_shape_pa',
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='LOLA_shape_pa',
                                units='m', format='bshc')
 
 
-def Moon_shape(lmax=719):
+def LOLA_shape(lmax=719):
     '''
-    Moon_shape is a spherical harmonic model of the shape of Earth's Moon in
+    LOLA_shape is a spherical harmonic model of the shape of Earth's Moon in
     the mean Earth/polar axis coordinate system based on LOLA laser altimetry
     data obtained by the Lunar Reconaissance Orbiter mission. The maximum
     spherical harmonic degree of the model is 5759, which has an effective
@@ -106,7 +106,7 @@ def Moon_shape(lmax=719):
 
     This shape model should not be used in conjuction with most lunar gravity
     models, which use a principal axis coordinate system. For a principal axis
-    model, use Moon_shape_pa instead.
+    model, use LOLA_shape_pa instead.
 
     Parameters
     ----------
@@ -130,6 +130,9 @@ def Moon_shape(lmax=719):
             },
         )
 
+    if lmax < 0:
+        lmax = 5759
+
     if lmax >= 0 and lmax <= 719:
         fname = archive.fetch("Moon_shape_719.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
@@ -142,12 +145,9 @@ def Moon_shape(lmax=719):
     else:
         fname = archive.fetch("Moon_shape_5759.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
-        if lmax < 0:
-            lmax = 5759
-        else:
-            lmax = min(lmax, 5759)
+        lmax = min(lmax, 5759)
 
-    return _SHCoeffs.from_file(fname, lmax=lmax, name='Moon_shape',
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='LOLA_shape',
                                units='m', format='bshc')
 
 
@@ -370,6 +370,6 @@ def GL1500E(lmax=1500):
                                    name='GL1500E', encoding='utf-8')
 
 
-__all__ = ['Moon_shape_pa', 'Moon_shape', 'T2015_449', 'Ravat2020', 'GRGM900C',
+__all__ = ['LOLA_shape_pa', 'LOLA_shape', 'T2015_449', 'Ravat2020', 'GRGM900C',
            'GRGM1200B', 'GRGM1200B_RM1_1E0', 'GL0900D', 'GL1500E',
            'historical']
