@@ -5,6 +5,7 @@ python_sources = [
   'Mercury.py',
   'Vesta.py',
   'Titan.py',
+  'Enceladus.py'
 ]
 
 python.install_sources(python_sources, subdir: 'pyshtools/datasets')

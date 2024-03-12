@@ -8,6 +8,7 @@ python_sources = [
   'Vesta.py',
   'Ceres.py',
   'Titan.py',
+  'Enceladus.py',
 ]
 
 python.install_sources(python_sources, subdir: 'pyshtools/constants')

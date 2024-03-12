@@ -38,7 +38,7 @@ def DLR_SPG_shape(lmax=719):
         The maximum spherical harmonic degree to return.
 
     References
-    ---------
+    ----------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of the
         asteroid (4) Vesta (1.0.0) [Data set]. Zenodo.
         https://doi.org/10.5281/zenodo.10800929
@@ -85,7 +85,7 @@ def VESTA20H(lmax=20):
 
     Parameters
     ----------
-    lmax : int, optional
+    lmax : int, optional, default = 20
         The maximum spherical harmonic degree to return.
 
     Reference

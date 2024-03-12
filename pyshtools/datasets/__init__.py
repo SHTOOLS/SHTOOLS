@@ -25,7 +25,8 @@ from . import Vesta
 from . import Ceres
 from . import Ganymede
 from . import Titan
+from . import Enceladus
 
 
 __all__ = ['Mercury', 'Venus', 'Earth', 'Moon', 'Mars', 'Vesta', 'Ceres',
-           'Ganymede', 'Titan']
+           'Ganymede', 'Titan', 'Enceladus']

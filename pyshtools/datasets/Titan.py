@@ -3,13 +3,18 @@ Datasets related to Saturn's moon Titan.
 
 Shape
 -----
-Corlies2017_shape  :  Corlies et al. (2017)
-Mitri2014_shape    :  Mitri et al. (2014)
+Corlies2017_shape    :  Corlies et al. (2017)
+Mitri2014_shape      :  Mitri et al. (2014)
+
+Gravity
+-------
+Durante2019_gravity  :  Durante et al. (2019)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
+from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..constants.Titan import omega as _omega
 
 
@@ -26,7 +31,7 @@ def Corlies2017_shape(lmax=8):
     lmax : int, optional, default = 8
         The maximum spherical harmonic degree to return.
 
-    References
+    Reference
     ---------
     Corlies, P., Hayes, A. G., Birch, S. P. D., Lorenz, R., Stiles, B. W.,
         Kirk, R., Poggiali, V., Zebker, H., & Iess, L. (2017). Titan’s
@@ -60,7 +65,7 @@ def Mitri2014_shape(lmax=6):
     lmax : int, optional, default = 6
         The maximum spherical harmonic degree to return.
 
-    References
+    Reference
     ---------
     Mitri, G., Meriggiola, R., Hayes, A., Lefevre, A., Tobie, G., Genova, A.,
         Lunine, J. I., & Zebker, H. (2014). Shape, topography, gravity
@@ -80,4 +85,33 @@ def Mitri2014_shape(lmax=6):
                                csphase=-1)
 
 
-__all__ = ['Corlies2017_shape', 'Mitri2014_shape']
+def Durante2019_gravity(lmax=5):
+    '''
+    Durante2019_gravity is a degree and order 5 spherical harmonic model of the
+    gravitational potential of Saturn's moon Titan.
+
+    Parameters
+    ----------
+    lmax : int, optional, default = 5
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    Durante, D., Hemingway, D. J., Racioppa, P., Iess, L., & Stevenson, D. J.
+        (2019). Titan’s gravity field and interior structure after Cassini.
+        Icarus, 326, 123–132. https://doi.org/10.1016/j.icarus.2019.03.003
+    '''
+    fname = _retrieve(
+        url="doi:10.5281/zenodo.10808302/Durante2019.sh",  # noqa: E501
+        known_hash="sha256:6f82bd3dc0fb8d3db8c934e6a0e9b2ea6941d3568e9e76ad7944e88d15bb2453",  # noqa: E501
+        downloader=_DOIDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
+                                   r0_index=0, gm_index=1, errors=True,
+                                   name='Durante2019_gravity',
+                                   encoding='utf-8', omega=_omega.value,
+                                   normalization='unnorm')
+
+
+__all__ = ['Corlies2017_shape', 'Mitri2014_shape', 'Durante2019_gravity']

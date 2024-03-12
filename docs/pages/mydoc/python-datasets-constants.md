@@ -139,5 +139,14 @@ The following is the list of implemented datasets. Additional older or deprecate
 
 | Dataset | Description |
 | ---------- | ----------- |
-| Corlies2017_shape | 8 degree and order spherical harmonic shape model of Saturn's moon Titan based on radar altimeter, SAR topography, and radar stereo-photogrammetric data from the Cassini mission (Corlies et al. 2014). |
-| Mitri2014_shape | 6 degree and order spherical harmonic shape model of Saturn's moon Titan based on radar altimeter and SAR topography data from the Cassini mission (Mitri et al. 2014). |
+| Corlies2017_shape | Degree and order 8 spherical harmonic shape model of Saturn's moon Titan based on radar altimeter, SAR topography, and radar stereo-photogrammetric data from the Cassini mission (Corlies et al. 2014). |
+| Mitri2014_shape | Degree and order 6 spherical harmonic shape model of Saturn's moon Titan based on radar altimeter and SAR topography data from the Cassini mission (Mitri et al. 2014). |
+| Durante2019_gravity | Degree and order 5 spherical harmonic model of the gravity field of Saturn's moon Titan (Durante et al. 2019). |
+
+
+### Enceladus (Saturn)
+
+| Dataset | Description |
+| ---------- | ----------- |
+| Iess2014_gravity | Degree and order 3 spherical harmonic model of the gravitational field of Saturn's moon Enceladus (Iess et al. 2014). |
+| Park2024_gravity | Degree and order 3 spherical harmonic model of the gravitational field of Saturn's moon Enceladus (Park et al. 2024). |
