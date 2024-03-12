@@ -33,13 +33,14 @@ mass = _Constant(
 mean_radius = _Constant(
     abbrev='r_titan',
     name='Mean radius of Titan',
-    value=2574757.7,
+    value=2574761.2,
     unit='m',
-    uncertainty=22.169,
-    reference='Mitri2014_shape: Mitri, G., Meriggiola, R., Hayes, A., '
-    'Lefevre, A., Tobie, G., Genova, A., Lunine, J. I., & Zebker, H. (2014). '
-    'Shape, topography, gravity anomalies and tidal deformation of Titan. '
-    'Icarus, 236, 169–177. https://doi.org/10.1016/j.icarus.2014.03.018')
+    uncertainty=17.7,
+    reference='Corlies2017_shape: Corlies, P., Hayes, A. G., Birch, S. P. D., '
+    'Lorenz, R., Stiles, B. W., Kirk, R., Poggiali, V., Zebker, H., & Iess, '
+    'L. (2017). Titan’s Topography and Shape at the End of the Cassini '
+    'Mission. Geophysical Research Letters, 44(23), 11,754-11,761. '
+    'https://doi.org/10.1002/2017GL075518')
 
 r = mean_radius
 
