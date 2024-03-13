@@ -7,7 +7,7 @@ DLR_SPG_shape  :  Wieczorek (2024)
 
 Gravity
 -------
-VESTA20H     :  Konopliv et al. (2014)
+VESTA20H       :  Konopliv et al. (2014)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
@@ -105,7 +105,7 @@ def VESTA20H(lmax=20):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True,
-                                   name='VESTA20H', encoding='utf-8',
+                                   name='VESTA20H (Vesta)', encoding='utf-8',
                                    omega=_omega.value)
 
 

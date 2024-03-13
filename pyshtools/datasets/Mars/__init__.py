@@ -83,7 +83,7 @@ def MOLA_shape(lmax=719):
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 5759)
 
-    return _SHCoeffs.from_file(fname, lmax=lmax, name='MOLA_shape',
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='MOLA_shape (Mars)',
                                units='m', format='bshc')
 
 
@@ -113,7 +113,7 @@ def GMM3(lmax=120):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True,
-                                   omega=_omega.value, name='GMM3',
+                                   omega=_omega.value, name='GMM3 (Mars)',
                                    encoding='utf-8')
 
 
@@ -144,7 +144,8 @@ def GMM3_RM1_1E0(lmax=150):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
                                    r0_index=1, gm_index=0, errors=False,
-                                   omega=_omega.value, name='GMM3_RM1_1E0',
+                                   omega=_omega.value,
+                                   name='GMM3_RM1_1E0 (Mars)',
                                    encoding='utf-8')
 
 
@@ -174,7 +175,7 @@ def MRO120F(lmax=120):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True,
-                                   omega=_omega.value, name='MRO120F',
+                                   omega=_omega.value, name='MRO120F (Mars)',
                                    encoding='utf-8')
 
 
@@ -204,7 +205,7 @@ def Langlais2019(lmax=134):
     )
     return _SHMagCoeffs.from_file(fname, lmax=lmax, skip=4, r0=3393.5e3,
                                   header=False, file_units='nT',
-                                  name='Langlais2019', units='nT',
+                                  name='Langlais2019 (Mars)', units='nT',
                                   encoding='utf-8')
 
 
@@ -233,7 +234,7 @@ def Morschhauser2014(lmax=110):
     )
     return _SHMagCoeffs.from_file(fname, r0=3393.5e3, skip=3, header=False,
                                   format='dov', file_units='nT',
-                                  name='Morschhauser2014', units='nT',
+                                  name='Morschhauser2014 (Mars)', units='nT',
                                   encoding='utf-8')
 
 

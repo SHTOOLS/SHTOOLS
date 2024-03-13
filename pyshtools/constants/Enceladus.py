@@ -35,16 +35,15 @@ mass = _Constant(
 mean_radius = _Constant(
     abbrev='r_enceladus',
     name='Mean radius of Enceladus',
-    value=252.1e3,
+    value=251967.3,
     unit='m',
-    uncertainty=0.2e3,
-    reference='Archinal, B. A., Acton, C. H., A’Hearn, M. F., Conrad, A., '
-    'Consolmagno, G. J., Duxbury, T., Hestroffer, D., Hilton, J. L., Kirk, '
-    'R. L., Klioner, S. A., McCarthy, D., Meech, K., Oberst, J., Ping, J., '
-    'Seidelmann, P. K., Tholen, D. J., Thomas, P. C., & Williams, I. P. '
-    '(2018). Report of the IAU Working Group on Cartographic Coordinates and '
-    'Rotational Elements: 2015. Celestial Mechanics and Dynamical Astronomy, '
-    '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
+    uncertainty=0.,
+    reference='Park, R. S., Mastrodemos, N., Jacobson, R. A., Berne, A., '
+    'Vaughan, A. T., Hemingway, D. J., Leonard, E. J., Castillo-Rogez, J. C., '
+    'Cockell, C. S., Keane, J. T., Konopliv, A. S., Nimmo, F., Riedel, J. E., '
+    'Simons, M., & Vance, S. (2024). The Global Shape, Gravity Field, and '
+    'Libration of Enceladus. Journal of Geophysical Research: Planets, '
+    '129(1), e2023JE008054. https://doi.org/10.1029/2023JE008054')
 
 r = mean_radius
 
@@ -75,15 +74,14 @@ g0 = _Constant(
 omega = _Constant(
     abbrev='omega_enceladus',
     name='Angular spin rate of Enceladus',
-    value=262.7318996 * 2. * _np.pi / 360. / (24. * 60. * 60.),
+    value=262.7318870466 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
     uncertainty=0.,
-    reference='Archinal, B. A., Acton, C. H., A’Hearn, M. F., Conrad, A., '
-    'Consolmagno, G. J., Duxbury, T., Hestroffer, D., Hilton, J. L., Kirk, '
-    'R. L., Klioner, S. A., McCarthy, D., Meech, K., Oberst, J., Ping, J., '
-    'Seidelmann, P. K., Tholen, D. J., Thomas, P. C., & Williams, I. P. '
-    '(2018). Report of the IAU Working Group on Cartographic Coordinates and '
-    'Rotational Elements: 2015. Celestial Mechanics and Dynamical Astronomy, '
-    '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
+    reference='Park, R. S., Mastrodemos, N., Jacobson, R. A., Berne, A., '
+    'Vaughan, A. T., Hemingway, D. J., Leonard, E. J., Castillo-Rogez, J. C., '
+    'Cockell, C. S., Keane, J. T., Konopliv, A. S., Nimmo, F., Riedel, J. E., '
+    'Simons, M., & Vance, S. (2024). The Global Shape, Gravity Field, and '
+    'Libration of Enceladus. Journal of Geophysical Research: Planets, '
+    '129(1), e2023JE008054. https://doi.org/10.1029/2023JE008054')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'gm', 'density', 'omega']

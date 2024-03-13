@@ -55,7 +55,7 @@ def LOLA_shape_pa(lmax=719):
     Reference
     ---------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of the Moon
-        (principal axis coordinate system) (1.0.0) [Data set]. Zenodo.
+        (principal axis coordinate system) [LOLA] (1.0.0) [Data set]. Zenodo.
         https://doi.org/10.5281/zenodo.10796954
     LRO LOLA Team (2013). LRO-L-LOLA-4-GDR-V1.0, NASA Planetary Data System.
     '''
@@ -87,7 +87,7 @@ def LOLA_shape_pa(lmax=719):
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 5759)
 
-    return _SHCoeffs.from_file(fname, lmax=lmax, name='LOLA_shape_pa',
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='LOLA_shape_pa (Moon)',
                                units='m', format='bshc')
 
 
@@ -116,7 +116,8 @@ def LOLA_shape(lmax=719):
     Reference
     ---------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of the Moon
-        (1.0.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10796823
+        [LOLA] (1.0.0) [Data set]. Zenodo.
+        https://doi.org/10.5281/zenodo.10796823
     LRO LOLA Team (2013). LRO-L-LOLA-4-GDR-V1.0, NASA Planetary Data System.
     '''
     archive = _create(
@@ -147,7 +148,7 @@ def LOLA_shape(lmax=719):
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 5759)
 
-    return _SHCoeffs.from_file(fname, lmax=lmax, name='LOLA_shape',
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='LOLA_shape (Moon)',
                                units='m', format='bshc')
 
 
@@ -181,8 +182,8 @@ def T2015_449(lmax=449):
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname, lmax=lmax, header=True,
-                                  file_units='T', name='T2015_449', units='nT',
-                                  encoding='utf-8')
+                                  file_units='T', name='T2015_449 (Moon)',
+                                  units='nT', encoding='utf-8')
 
 
 def Ravat2020(lmax=450):
@@ -211,7 +212,7 @@ def Ravat2020(lmax=450):
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname, lmax=lmax, header=True, skip=8,
-                                  header_units='km', name='Ravat2020',
+                                  header_units='km', name='Ravat2020 (Moon)',
                                   encoding='utf-8')
 
 
@@ -242,7 +243,7 @@ def GRGM900C(lmax=900):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    errors=True, omega=_omega.value,
-                                   name='GRGM900C', encoding='utf-8')
+                                   name='GRGM900C (Moon)', encoding='utf-8')
 
 
 def GRGM1200B(lmax=1200):
@@ -273,7 +274,7 @@ def GRGM1200B(lmax=1200):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
                                    r0_index=1, gm_index=0, errors=True,
-                                   omega=_omega.value, name='GRGM1200B',
+                                   omega=_omega.value, name='GRGM1200B (Moon)',
                                    encoding='utf-8')
 
 
@@ -307,7 +308,8 @@ def GRGM1200B_RM1_1E0(lmax=1200):
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='m',
                                    r0_index=1, gm_index=0, errors=True,
                                    omega=_omega.value,
-                                   name='GRGM1200B_RM1_1E0', encoding='utf-8')
+                                   name='GRGM1200B_RM1_1E0 (Moon)',
+                                   encoding='utf-8')
 
 
 def GL0900D(lmax=900):
@@ -337,7 +339,7 @@ def GL0900D(lmax=900):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    errors=True, omega=_omega.value,
-                                   name='GL0900D', encoding='utf-8')
+                                   name='GL0900D (Moon)', encoding='utf-8')
 
 
 def GL1500E(lmax=1500):
@@ -367,7 +369,7 @@ def GL1500E(lmax=1500):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    errors=True, omega=_omega.value,
-                                   name='GL1500E', encoding='utf-8')
+                                   name='GL1500E (Moon)', encoding='utf-8')
 
 
 __all__ = ['LOLA_shape_pa', 'LOLA_shape', 'T2015_449', 'Ravat2020', 'GRGM900C',

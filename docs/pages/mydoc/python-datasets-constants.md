@@ -149,5 +149,6 @@ The following is the list of implemented datasets. Additional older or deprecate
 
 | Dataset | Description |
 | ---------- | ----------- |
+| JPL_SPC_shape | Degree and order 1023 spherical harmonic model of the shape of Saturn's moon Enceladus based on the JPL stereo-photoclinometric DTM (Wieczorek 2024). |
 | Iess2014_gravity | Degree and order 3 spherical harmonic model of the gravitational field of Saturn's moon Enceladus (Iess et al. 2014). |
 | Park2024_gravity | Degree and order 3 spherical harmonic model of the gravitational field of Saturn's moon Enceladus (Park et al. 2024). |

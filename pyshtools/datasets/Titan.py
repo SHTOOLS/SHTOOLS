@@ -47,7 +47,8 @@ def Corlies2017_shape(lmax=8):
         path=_os_cache('pyshtools'),
     )
 
-    return _SHCoeffs.from_file(fname, lmax=lmax, name='Corlies2017_shape',
+    return _SHCoeffs.from_file(fname, lmax=lmax,
+                               name='Corlies2017_shape (Titan)',
                                units='m', errors=True, format='dov',
                                encoding='utf-8', normalization='unnorm',
                                csphase=-1)
@@ -79,7 +80,7 @@ def Mitri2014_shape(lmax=6):
         path=_os_cache('pyshtools'),
     )
 
-    return _SHCoeffs.from_file(fname, lmax=lmax, name='Mitri2014_shape',
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='Mitri2014_shape (Titan)',
                                units='m', errors=True, format='dov',
                                encoding='utf-8', normalization='unnorm',
                                csphase=-1)
@@ -109,7 +110,7 @@ def Durante2019_gravity(lmax=5):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
                                    r0_index=0, gm_index=1, errors=True,
-                                   name='Durante2019_gravity',
+                                   name='Durante2019_gravity (Titan)',
                                    encoding='utf-8', omega=_omega.value,
                                    normalization='unnorm')
 
