@@ -131,7 +131,8 @@ The following is the list of implemented datasets. Additional older or deprecate
 
 | Dataset | Description |
 | ---------- | ----------- |
-| DLR_SPG_shape | 5399 degree and order spherical harmonic shape model of asteroid (1) Ceres based on the DLR stereo-photogrammetric DTM (Wieczorek 2024).m |
+| DLR_SPG_shape | 5399 degree and order spherical harmonic shape model of asteroid (1) Ceres based on the DLR stereo-photogrammetric DTM (Wieczorek 2024). |
+| JPL_SPC_shape | 1023 degree and order spherical harmonic shape model of asteroid (1) Ceres based on the JPL stereo-photoclinometric DTM (Wieczorek 2024). |
 | CERES18D | JPL 18 degree and order spherical harmonic model of the gravitational potential of asteroid (1) Ceres (Konopliv et al. 2018). |
 
 

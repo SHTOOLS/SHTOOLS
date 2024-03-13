@@ -4,6 +4,7 @@ Datasets related to the dwarf planet (1) Ceres.
 Shape
 -----
 DLR_SPG_shape  :  Wieczorek (2024)
+JPL_SPC_shape  :  Wieczorek (2024)
 
 Gravity
 -------
@@ -40,7 +41,7 @@ def DLR_SPG_shape(lmax=719):
     References
     ----------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of the
-        asteroid (1) Ceres (1.0.0) [Data set]. Zenodo.
+        asteroid (1) Ceres [DLR SPG] (1.0.0) [Data set]. Zenodo.
         https://doi.org/10.5281/zenodo.10804157
     Roatsch, T., E. Kersten, K.-D. Matz, F. Preusker, F. Scholten, S. Elgner,
         S.E. Schroeder, R. Jaumann, C.A. Raymond, C.T. Russell (2016). DAWN FC2
@@ -76,6 +77,61 @@ def DLR_SPG_shape(lmax=719):
         lmax = min(lmax, 5399)
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='DLR_SPG_shape (Ceres)',
+                               units='m', format='bshc')
+
+
+def JPL_SPC_shape(lmax=719):
+    '''
+    JPL_SPC_shape is a spherical harmonic model of the shape of asteroid (1)
+    Ceres based on stereo photoclinometric data obtained by the Dawn mission.
+    The maximum spherical harmonic degree of the model is 1023, which has an
+    effective spatial resolution of 11.3 pixels per degree. One lower
+    resolution model is available in this archive with lmax of 719, and only
+    the smallest that is required by the user input lmax will be downloaded.
+    If lmax is not specified, the lowest resolution model (719) will be
+    returned. If a negative value for lmax is specified, the maximum resolution
+    model will be returned. The coefficients are in units of meters.
+
+    Parameters
+    ----------
+    lmax : int, optional, default = 719
+        The maximum spherical harmonic degree to return.
+
+    References
+    ----------
+    JPL_SPC_shape: Wieczorek, M. (2024). Spherical harmonic models of the
+        shape of asteroid (1) Ceres [JPL SPC] (1.0.0) [Data set]. Zenodo.
+        https://doi.org/10.5281/zenodo.10812848
+    Park, R.S. and Buccino, D.R., Ceres SPC Shape Model Dataset V1.0.
+        DAWN-A-FC2-5-CERESSHAPESPC-V1.0. NASA Planetary Data System, 2018
+    Park, R. S., Vaughan, A. T., Konopliv, A. S., Ermakov, A. I., Mastrodemos,
+        N., Castillo-Rogez, J. C., Joy, S. P., Nathues, A., Polanskey, C. A.,
+        Rayman, M. D., Riedel, J. E., Raymond, C. A., Russell, C. T., & Zuber,
+        M. T. (2019). High-resolution shape model of Ceres from
+        stereophotoclinometry using Dawn Imaging Data. Icarus, 319, 812–827.
+        https://doi.org/10.1016/j.icarus.2018.10.024
+    '''
+    archive = _create(
+        path=_os_cache('pyshtools'),
+        base_url="doi:10.5281/zenodo.10812848",
+        registry={
+            "Ceres_JPL_SPC_shape_1023.sh.gz": "sha256:9ca1b3c31760beba01c56ac7f2c1d30d62b1480aad551eebf082f0e34eb19f06",  # noqa: E501
+            "Ceres_JPL_SPC_shape_719.sh.gz": "sha256:5e66eeeb96bfbdfc30e8de7f13f6a48dd8795c7a3f781786bb985bf5c47572b5",  # noqa: E501
+            },
+        )
+
+    if lmax < 0:
+        lmax = 1023
+
+    if lmax >= 0 and lmax <= 719:
+        fname = archive.fetch("Ceres_JPL_SPC_shape_719.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    else:
+        fname = archive.fetch("Ceres_JPL_SPC_shape_1023.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+        lmax = min(lmax, 1023)
+
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='JPL_SPC_shape (Ceres)',
                                units='m', format='bshc')
 
 

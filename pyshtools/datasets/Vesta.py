@@ -40,7 +40,7 @@ def DLR_SPG_shape(lmax=719):
     References
     ----------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of the
-        asteroid (4) Vesta (1.0.0) [Data set]. Zenodo.
+        asteroid (4) Vesta [DLR SPG] (1.0.0) [Data set]. Zenodo.
         https://doi.org/10.5281/zenodo.10800929
     Preusker, F., F. Scholten, K.-D Matz, T. Roatsch, R. Jaumann, C.A. Raymond,
         and C.T. Russell (2016). DAWN FC2 DERIVED VESTA DTM SPG V1.0,

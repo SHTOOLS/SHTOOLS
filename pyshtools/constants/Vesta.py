@@ -39,8 +39,8 @@ mean_radius = _Constant(
     unit='m',
     uncertainty=0.0,
     reference='DLR_SPG_shape: Wieczorek, M. (2024). Spherical harmonic models '
-    'of the shape of the asteroid (4) Vesta (1.0.0) [Data set]. Zenodo. '
-    'https://doi.org/10.5281/zenodo.10800929')
+    'of the shape of the asteroid (4) Vesta [DLR SPG] (1.0.0) [Data set]. '
+    'Zenodo. https://doi.org/10.5281/zenodo.10800929')
 
 r = mean_radius
 

@@ -35,12 +35,12 @@ mass = _Constant(
 mean_radius = _Constant(
     abbrev='r_ceres',
     name='Mean radius of Ceres',
-    value=469471.1,
+    value=469461.8,
     unit='m',
-    uncertainty=0.0,
-    reference='DLR_SPG_shape: Wieczorek, M. (2024). Spherical harmonic models '
-    'of the shape of the asteroid (1) Ceres (1.0.0) [Data set]. Zenodo. '
-    'https://doi.org/10.5281/zenodo.10804157')
+    uncertainty=0.,
+    reference='JPL_SPC_shape: Wieczorek, M. (2024). Spherical harmonic models '
+    'of the shape of asteroid (1) Ceres [JPL SPC] (1.0.0) [Data set]. Zenodo. '
+    'https://doi.org/10.5281/zenodo.10812848')
 
 r = mean_radius
 
@@ -73,7 +73,7 @@ omega = _Constant(
     name='Angular spin rate of Ceres',
     value=952.1532635 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
-    uncertainty=0.,
+    uncertainty=0.000002 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     reference='CERES18D: Konopliv, A.S., Park, R.S., Vaughan, A.T., Bills, '
     'B.G., Asmar, S.W., Ermakov, A.I., Rambaux, N., Raymond, C.A., '
     'Castillo-Rogez, J.C., Russell, C.T., Smith, D.E., Zuber, M.T. (2018). '
