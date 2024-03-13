@@ -3,6 +3,7 @@ Datasets related to the planet Mercury.
 
 Shape
 -----
+USGS_SPG_shape     :  Maia (2024)
 GTMES150           :  Shape model constructed using laser altimeter and
                       occultation data.
 
@@ -15,10 +16,69 @@ GGMES100V08        :  Genova et al. (2019)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
+from pooch import create as _create
 from pooch import HTTPDownloader as _HTTPDownloader
+from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..constants.Mercury import omega as _omega
+
+
+def USGS_SPG_shape(lmax=719):
+    '''
+    USGS_SPG_shape is a spherical harmonic model of the shape of Mercury based
+    on stereo photogrammetric data obtained by the MESSENGER mission. The
+    maximum spherical harmonic degree of the model is 5759, which has an
+    effective spatial resolution of 64 pixels per degree. Three lower
+    resolution models are available in this archive (with lmax of 719, 1439
+    and 2879), and only the smallest that is required by the user input lmax
+    will be downloaded. If lmax is not specified, the lowest resolution model
+    (719) will be returned. If a negative value for lmax is specified, the
+    maximum resolution model will be returned. The coefficients are in units
+    of meters.
+
+    Parameters
+    ----------
+    lmax : int, optional, default = 719
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    Maia, J. (2024). Spherical harmonic models of the shape of Mercury
+        [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10809345
+
+    '''
+    archive = _create(
+        path=_os_cache('pyshtools'),
+        base_url="doi:10.5281/zenodo.10809345",
+        registry={
+            "Mercury_shape_5759.sh.gz": "sha256:333ef33584cec5954933d1993c63c60cf2592298ed2300cb03fbac2037264a0b",  # noqa: E501
+            "Mercury_shape_2879.sh.gz": "sha256:1e9dcfae93e8ba131bd73d1dc9fd31f36aca92004357be4785429cdb670ab5c1",  # noqa: E501
+            "Mercury_shape_1439.sh.gz": "sha256:48d5ee575b5ffe97fd84b1c1dd2a0c1be0b59d476f52df23373bfd9810d59288",  # noqa: E501
+            "Mercury_shape_719.sh.gz": "sha256:c481d89d3205dcda837868b25411f286d7f935a1a1f119a84558d88cb8b8da6b",  # noqa: E501
+            },
+        )
+
+    if lmax < 0:
+        lmax = 5759
+
+    if lmax >= 0 and lmax <= 719:
+        fname = archive.fetch("Mercury_shape_719.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    elif lmax > 719 and lmax <= 1439:
+        fname = archive.fetch("Mercury_shape_1439.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    elif lmax > 1439 and lmax <= 2879:
+        fname = archive.fetch("Mercury_shape_2879.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    else:
+        fname = archive.fetch("Mercury_shape_5759.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+        lmax = min(lmax, 5759)
+
+    return _SHCoeffs.from_file(fname, lmax=lmax,
+                               name='USGS SPG_shape (Mercury)', units='m',
+                               format='bshc')
 
 
 def GTMES150(lmax=150):
@@ -173,5 +233,5 @@ def GGMES100V08(lmax=100):
                                    encoding='utf-8')
 
 
-__all__ = ['GTMES150', 'JGMESS160A', 'JGMESS160A_ACCEL', 'JGMESS160A_TOPOSIG',
-           'GGMES100V08']
+__all__ = ['USGS_SPG_shape', 'GTMES150', 'JGMESS160A', 'JGMESS160A_ACCEL',
+           'JGMESS160A_TOPOSIG', 'GGMES100V08']

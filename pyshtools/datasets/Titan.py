@@ -80,10 +80,10 @@ def Mitri2014_shape(lmax=6):
         path=_os_cache('pyshtools'),
     )
 
-    return _SHCoeffs.from_file(fname, lmax=lmax, name='Mitri2014_shape (Titan)',
-                               units='m', errors=True, format='dov',
-                               encoding='utf-8', normalization='unnorm',
-                               csphase=-1)
+    return _SHCoeffs.from_file(fname, lmax=lmax,
+                               name='Mitri2014_shape (Titan)', units='m',
+                               errors=True, format='dov', encoding='utf-8',
+                               normalization='unnorm', csphase=-1)
 
 
 def Durante2019_gravity(lmax=5):

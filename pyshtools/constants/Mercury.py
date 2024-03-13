@@ -35,15 +35,12 @@ mass = _Constant(
 mean_radius = _Constant(
     abbrev='r_mercury',
     name='Mean radius of Mercury',
-    value=2439.40197456433e3,
+    value=2439472.7,
     unit='m',
     uncertainty=0.0,
-    reference='gtmes_150v05: Smith, D. E., M. T. Zuber, R. J. Phillips, '
-    'S. C. Solomon, S. A. Hauck II, F. G. Lemoine, E. Mazarico, G. A. '
-    'Neumann, S. J. Peale, J.-L. Margot, C. L. Johnson, M. H. Torrence, '
-    'M. E. Perry, D. D. Rowlands, S. Goossens, J. W. Head, A. H. Taylor '
-    '(2012). Gravity field and internal structure of Mercury from '
-    'MESSENGER. Science, 336, 214-217, doi:10.1126/science.1218809.')
+    reference='USGS_SPG_shape: Maia, J. (2024). Spherical harmonic models of '
+    'the shape of Mercury [Data set]. Zenodo. '
+    'https://doi.org/10.5281/zenodo.10809345')
 
 r = mean_radius
 

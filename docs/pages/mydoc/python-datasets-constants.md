@@ -59,6 +59,7 @@ The following is the list of implemented datasets. Additional older or deprecate
 
 | Dataset | Description |
 | ---------- | ----------- |
+| USGS_SPG_shape | 5759 degree and order spherical harmonic shape model of Mercury based on the USGS stereo-photogrammetric DTM (Maia 2024). |
 | GTMES150 | GSFC 150 degree and order spherical harmonic model of the shape of the planet Mercury. |
 | JGMESS160A | JPL 160 degree and order spherical harmonic model of the gravitational potential of Mercury (Konopliv et al. 2020). This model applies a Kaula law constraint to all degrees. |
 | JGMESS160A_ACCEL | JPL 160 degree and order spherical harmonic model of the gravitational potential of Mercury (Konopliv et al. 2020). This model applies a surface acceleration constraint that is based on the degree strength given by the coefficient covariance. |
@@ -113,7 +114,7 @@ The following is the list of implemented datasets. Additional older or deprecate
 | ---------- | ----------- |
 | MOLA_shape | 5759 degree and order spherical harmonic model of the shape of the planet Mars (Wieczorek 2024). |
 | GMM3 | GSFC 120 degree and order spherical harmonic model of the gravitational potential of Mars (Genova et al. 2016). This model applies a Kaula constraint for degrees greater than 90. |
-| GMM3_RM1_1E0 | GSFC 150 degree and order spherical harmonic model of the gravitational potential of Mars (Goossens et al. 2017). This model uses the same data as GMM3, but with a rank-minus-1 constraint based on gravity from surface topography for degrees greater than 50 with a value of lambda equal to 1.|
+| GMM3_RM1_1E0 | GSFC 150 degree and order spherical harmonic model of the gravitational potential of Mars (Goossens et al. 2017). This model uses the same data as GMM3, but with a rank-minus-1 constraint based on gravity from surface topography for degrees greater than 50 with a value of lambda equal to 1. |
 | MRO120D |JPL 120 degree and order spherical harmonic model of the gravitational potential of Mars (Konopliv et al. 2016). This model applies a Kaula constraint for degrees greater than 80. |
 | Langlais2019 | 134 degree and order spherical harmonic model of the magnetic potential of Mars (Langlais et al. 2019). This model makes use of data from MGS MAG, MGS ER and MAVEN MAG. |
 | Morschhauser2014 | 110 degree and order spherical harmonic model of the magnetic potential of Mars (Morschhauser et al. 2014). |
