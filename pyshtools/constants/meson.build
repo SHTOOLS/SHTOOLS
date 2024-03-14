@@ -7,6 +7,10 @@ python_sources = [
   'Venus.py',
   'Vesta.py',
   'Ceres.py',
+  'Io.py',
+  'Europa.py',
+  'Ganymede.py',
+  'Callisto.py',
   'Titan.py',
   'Enceladus.py',
 ]

@@ -1,9 +1,12 @@
 python_sources = [
   '__init__.py',
-  'Ceres.py',
-  'Ganymede.py',
   'Mercury.py',
+  'Ceres.py',
   'Vesta.py',
+  'Io.py',
+  'Europa.py',
+  'Ganymede.py',
+  'Callisto.py',
   'Titan.py',
   'Enceladus.py'
 ]

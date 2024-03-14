@@ -128,6 +128,32 @@ The following is the list of implemented datasets. Additional older or deprecate
 | VESTA20H | JPL 20 degree and order spherical harmonic model of the gravitational potential of asteroid (4) Vesta (Konopliv et al. 2014). |
 
 
+### Io (Jupiter)
+| Dataset | Description |
+| ---------- | ----------- |
+| Anderson2001 | Degree and order 2 spherical harmonic model of the gravitational potential of Io (Anderson et al. 2001). |
+
+
+### Europa (Jupiter)
+| Dataset | Description |
+| ---------- | ----------- |
+| Anderson1998 | Degree and order 2 spherical harmonic model of the gravitational potential of Europa (Anderson et al. 1998). |
+
+
+### Ganymede (Jupiter)
+| Dataset | Description |
+| ---------- | ----------- |
+| Ganymede2022 | Degree and order 5 spherical harmonic model of the gravitational potential of Ganymede (Gomez Casajus et al. 2022). |
+| Anderson1996_1 | Degree and order 2 spherical harmonic model of the gravitational potential of Ganymede from the first Galileo encounter (Anderson et al. 1996). |
+| Anderson1996_2 | Degree and order 2 spherical harmonic model of the gravitational potential of Ganymede from the second Galileo encounter (Anderson et al. 1996). |
+
+
+### Callisto (Jupiter)
+| Dataset | Description |
+| ---------- | ----------- |
+| Anderson2001 | Degree and order 2 spherical harmonic model of the gravitational potential of Callisto (Anderson et al. 2001). |
+
+
 ### (1) Ceres
 
 | Dataset | Description |
