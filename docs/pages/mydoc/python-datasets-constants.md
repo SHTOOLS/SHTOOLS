@@ -120,6 +120,15 @@ The following is the list of implemented datasets. Additional older or deprecate
 | Morschhauser2014 | 110 degree and order spherical harmonic model of the magnetic potential of Mars (Morschhauser et al. 2014). |
 
 
+### (1) Ceres
+
+| Dataset | Description |
+| ---------- | ----------- |
+| DLR_SPG_shape | 5399 degree and order spherical harmonic shape model of asteroid (1) Ceres based on the DLR stereo-photogrammetric DTM (Wieczorek 2024). |
+| JPL_SPC_shape | 1023 degree and order spherical harmonic shape model of asteroid (1) Ceres based on the JPL stereo-photoclinometric DTM (Wieczorek 2024). |
+| CERES18D | JPL 18 degree and order spherical harmonic model of the gravitational potential of asteroid (1) Ceres (Konopliv et al. 2018). |
+
+
 ### (4) Vesta
 
 | Dataset | Description |
@@ -152,15 +161,6 @@ The following is the list of implemented datasets. Additional older or deprecate
 | Dataset | Description |
 | ---------- | ----------- |
 | Anderson2001 | Degree and order 2 spherical harmonic model of the gravitational potential of Callisto (Anderson et al. 2001). |
-
-
-### (1) Ceres
-
-| Dataset | Description |
-| ---------- | ----------- |
-| DLR_SPG_shape | 5399 degree and order spherical harmonic shape model of asteroid (1) Ceres based on the DLR stereo-photogrammetric DTM (Wieczorek 2024). |
-| JPL_SPC_shape | 1023 degree and order spherical harmonic shape model of asteroid (1) Ceres based on the JPL stereo-photoclinometric DTM (Wieczorek 2024). |
-| CERES18D | JPL 18 degree and order spherical harmonic model of the gravitational potential of asteroid (1) Ceres (Konopliv et al. 2018). |
 
 
 ### Titan (Saturn)
