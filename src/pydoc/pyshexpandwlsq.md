@@ -4,7 +4,7 @@ Expand a set of irregularly sampled data points into spherical harmonics using a
 
 # Usage
 
-cilm, chi2 = SHExpandLSQ (d, w, lat, lon, lmax, [norm,  csphase])
+cilm, chi2 = SHExpandWLSQ (d, w, lat, lon, lmax, [norm,  csphase])
 
 # Returns
 
@@ -39,9 +39,6 @@ csphase : optional, integer, default = 1
 
 # Description
 
-SHExpandLSQ will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When there are more data points than spherical harmonic coefficients (i.e., nmax>(lmax+1)**2), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. See the LAPACK documentation concerning DGELS for further information.
-
-A weighted least squares inversion will be performed if the optional vector
-weights is specified. In this case, the problem must be overdetermined, and it is assumed that each measurement is statistically independent (i.e., the weighting matrix is diagonal). The inversion is performed using the LAPACK routine DGGGLM.
+SHExpandWLSQ will expand a set of irregularly sampled data points into spherical harmonics by a weighted least squares inversion. For this problem, there must be more data points than spherical harmonic coefficients (i.e., nmax>(lmax+1)**2). It is assumed that each measurement is statistically independent (i.e., the weighting matrix is diagonal), and the inversion is performed using the LAPACK routine DGGGLM.
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments norm and csphase; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
