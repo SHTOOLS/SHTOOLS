@@ -249,7 +249,7 @@ class SHGeoid(object):
 
         Parameters
         ----------
-        filename : str, optional, default = None
+        filename : str or pathlib.Path, optional, default = None
             Name of output file.
         title : str, optional, default = ''
             Title of the dataset.

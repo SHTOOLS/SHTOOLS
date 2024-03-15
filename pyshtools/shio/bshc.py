@@ -9,6 +9,7 @@ import zipfile as _zipfile
 import numpy as _np
 import requests as _requests
 import shutil as _shutil
+from pathlib import Path
 
 
 def read_bshc(filename, lmax=None):
@@ -28,7 +29,7 @@ def read_bshc(filename, lmax=None):
 
     Parameters
     ----------
-    filename : str
+    filename : str or pathlib.Path
         File name or URL that contains the spherical harmonic coefficients.
         filename will be treated as a URL if it starts with 'http://',
         'https://', or 'ftp://'. If filename ends with '.gz' or '.zip', the
@@ -58,6 +59,9 @@ def read_bshc(filename, lmax=None):
     uncompressed before parsing. For zip files, archives with only a single
     file are supported.
     """
+    if isinstance(filename, Path):
+        filename = str(filename)
+
     if _isurl(filename):
         _response = _requests.get(filename, stream=True)
         if filename[-4:] == '.zip':
@@ -119,7 +123,7 @@ def write_bshc(filename, coeffs, lmax=None):
 
     Parameters
     ----------
-    filename : str
+    filename : str or pathlib.Path
         File name of the binary 'bshc'-formatted spherical harmonic
         coefficients. If filename ends with '.gz' the file will be
         automatically compressed with gzip.
@@ -145,6 +149,9 @@ def write_bshc(filename, coeffs, lmax=None):
     If the filename ends with '.gz', the file will be automatically
     compressed using gzip.
     """
+    if isinstance(filename, Path):
+        filename = str(filename)
+
     if lmax is None:
         lmax = coeffs.shape[1] - 1
     else:
