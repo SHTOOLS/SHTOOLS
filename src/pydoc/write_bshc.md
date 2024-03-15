@@ -8,7 +8,7 @@ write_bshc(filename, coeffs, [lmax])
 
 # Parameters
 
-filename : str
+filename : str or pathlib.Path
 :   File name of the binary 'bshc'-formatted spherical harmonic
     coefficients. If filename ends with '.gz' the file will be
     automatically compressed with gzip.

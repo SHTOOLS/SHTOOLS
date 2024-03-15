@@ -8,6 +8,51 @@ toc: true
 folder: mydoc
 ---
 
+## Version 4.12
+
+**New Datasets!**
+
+* Added new ultra-high degree shape models of the Moon in both principal axis and mean Earth/polar axis coordinate systems (LOLA_shape and LOLA_shape_pa) and moved MoonTopo2600p to historical.
+* Added new ultra-high degree shape model of Mars (MOLA_shape) and moved MarsTopo2600 and MarsTopo719 to historical.
+* Added a new ultra-high degree shape model of Mercury based on the USGS SPG DTM (USGS_SPG_shape).
+* Added a new ultra-high degree shape model of Vesta based on the DLR SPG DTM (DLR_SPG_shape).
+* Added a new ultra-high degree shape model of Ceres based on the DLR SPG DTM (DLR_SPG_shape) and a high-degree shape model based on the JPL SPC DTM (JPL_SPG_shape).
+* Added historical degree-2 gravity models of Io, Europa, Ganymede, and Callisto derived from data collected by the Galileo mission.
+* Added two shape models of Titan (Mitri2014_shape and Corlies2017_shape) and a degree 5 gravity model of Durante et al. 2019 (Durante2019_gravity).
+* Added two gravity models of Enceladus (Iess2014_gravity and Park2024_gravity) and a high-degree shape model based on the JPL SPC DTM (JPL_SPG_shape).
+* Added two shape models of Eros (NLR_shape and SPC_shape) and the JPL gravity model JGE15A01.
+* Updated all constants to reflect the most recent datasets, and added new constant modules for Eros, Io, Europa, Ganymede, Callisto, Titan and Enceladus.
+* Added the property `volume_equivalent_radius` to the constants modules for bodies that have a spherical harmonic shape model.
+* Updated all datasets that download from zenodo to use the Pooch DOIDownloader.
+
+**Bug fixes**
+
+* When importing an xarray grid with `SHGrid.from_xarray()`, check if the first row is 90 or -90 and flip accordingly.
+* Fixed a bug in `SHCoeffs.convert()` when coefficient errors are present.
+* Fixed a bug in `spectralanalysis.cross_spectrum()` when using real unnormalized coefficients.
+
+**Plotting improvements**
+
+* Added the optional parameter `rectangle` to the `SHGrid.plotgmt()` method that allows the use of rectangular projections that are specified by the lower-left and upper-right coordinates.
+* Added the optional parameter `cmap_background_foreground` to `SHGrid.plotgmt()` that controls how data are plotted when they exceed the limits of the colormap.
+* Added the optional parameter `title_offset` to `SHGrid.plotgmt()` and `SHGrid.plot()` that specifies how much space to add between the plot and title.
+* Cleaned up the `SHGrid.plotgmt()` shading options based on changes made in pygmt 0.7, including the use of xarrays directly instead of creating temporary files.
+* Added the optional argument `cmap_rlimits` and `cmap_rlimits_complex` to `SHGrid.plot()`, `SHGrid.plotgmt()` and `SHGrid.plot3d()` to specify colorbar limits with respect to the maximum value of the data.
+* Added the optional argument `cmap_scale` to `SHGrid.plot()` and `SHGrid.plotgmt()` to allow using either a linear or logarithmic color map.
+* Add the optional argument `cb_power` to `SHGrid.plotgmt()` to allow plotting annotations as powers of 10.
+* Added an option to `SHCoeffs.plot_spectrum()` to plot the error spectrum (if present) or not.
+
+**Other changes**
+
+* Added "ifx" to the list of possible Fortran compilers in the Makefile.
+* Added the optional argument `r` to `SHMagCoeffs.expand()` and `SHGravCoeffs.expand()` that allows one to compute the field at an arbitrary list of (r, lat, lon) points.
+* Allow the passing of `pathlib.Path` objects to all methods that require a filename.
+* Added jupyter-core as a build dependency in `pyproject.toml`.
+* Changed the behaviour of the fortan function `MakeCircleCoord` when the angular radius is zero.
+
+M. A. Wieczorek, M. Meschede, A. Broquet, T. Brugere, A. Corbin, EricAtORS, A. Hattori, A. Kalinin, J. Kohler, D. Kutra, K. Leinweber, P. Lobo, J. Maia, D. Minton, I. Oshchepkov, P.-L. Phan, O. Poplawski, M. Reinecke, E. Sales de Andrade, E. Schnetter, S. Schröder, J. Sierra, A. Vasishta, A. Walker, xoviat, B. Xu (2024). SHTOOLS: Version 4.12, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762)
+
+
 ## Version 4.11
 
 **Support for Python 3.12 using Meson**

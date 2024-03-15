@@ -126,7 +126,7 @@
 ###############################################################################
 
 # The VERSION number is used only for generating the man pages
-VERSION = 4.11
+VERSION = 4.12
 
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
@@ -203,7 +203,7 @@ else ifeq ($(findstring ifx,$(F95)),ifx)
 	SYSMODFLAG = -I$(SYSMODPATH)
 	OPENMPFLAGS ?= -qopenmp
 	LAPACK ?= -qmkl
-	BLAS ?=	
+	BLAS ?=
 else ifeq ($(findstring g95,$(F95)),g95)
 	# Default g95 flags.
 	F95FLAGS ?= -O3 -fno-second-underscore

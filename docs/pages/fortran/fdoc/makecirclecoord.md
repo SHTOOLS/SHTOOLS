@@ -18,7 +18,7 @@ call MakeCircleCoord (`coord`, `lat`, `lon`, `theta0`, `cinterval`, `cnum`, `exi
 ## Parameters
 
 `coord` : output, real(dp), dimension(360/`cinterval`, 2)
-:   The latitude (:,1) and longitude (:,2) coordinates of the circle in degrees. If not specified, `cintervaL` is assumed to 1.
+:   The latitude (:,1) and longitude (:,2) coordinates of the circle in degrees. If not specified, `cinterval` is assumed to be 1.
 
 `lat` : input, real(dp)
 :   The latitude of the center of the circle in degrees.
@@ -33,7 +33,7 @@ call MakeCircleCoord (`coord`, `lat`, `lon`, `theta0`, `cinterval`, `cnum`, `exi
 :   Angular spacing in degrees of the output latitude and longitude points. If not present, the default is 1.
 
 `cnum` : optional, output, integer(int32)
-:   Number of elements in the output arrays.
+:   Number of elements in the output arrays, which is equal to 360/`cinterval`.
 
 `exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.

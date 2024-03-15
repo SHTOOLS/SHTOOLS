@@ -35,3 +35,5 @@ folder: fortran
 * Orion Poplawski / [opoplawski](https://github.com/opoplawski)
 * Adrien Broquet / [AB-Ares](https://github.com/AB-Ares)
 * [EricAtORS](https://github.com/EricAtORS)
+* David Minton / [profminton](https://github.com/profminton)
+* Julia Maia / [jschmaia](https://github.com/jschmaia)

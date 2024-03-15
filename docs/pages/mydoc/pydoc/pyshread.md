@@ -38,7 +38,7 @@ header2 : list of type str
 
 ## Parameters
 
-filename : str
+filename : str or pathlib.Path
 :   File name or URL that contains the text-formatted spherical harmonic
     coefficients. filename will be treated as a URL if it starts with
     'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or
