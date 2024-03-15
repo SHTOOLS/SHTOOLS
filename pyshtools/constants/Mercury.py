@@ -44,18 +44,26 @@ mean_radius = _Constant(
 
 r = mean_radius
 
+volume_equivalent_radius = _Constant(
+    abbrev='r_volume_mercury',
+    name='Volume equivalent radius of Mercury',
+    value=2439473.1,
+    unit='m',
+    uncertainty=0.,
+    reference='Computed using USGS_SPG_shape and SHCoeffs.volume()')
+
 density = _Constant(
     abbrev='density_mercury',
     name='Mean density of Mercury',
-    value=3 * mass.value / (_np.pi * 4 * mean_radius.value**3),
+    value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
     uncertainty=_np.sqrt((3 * mass.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**3))**2
+                         (_np.pi * 4 * volume_equivalent_radius.value**3))**2
                          + (3 * 3 * mass.value *
-                         mean_radius.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**4))**2
+                         volume_equivalent_radius.uncertainty /
+                         (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_mercury and r_mercury.')
+    reference='Derived from mass_mercury and r_volume_mercury.')
 
 g0 = _Constant(
     abbrev='g0_mercury',

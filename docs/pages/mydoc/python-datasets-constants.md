@@ -137,6 +137,15 @@ The following is the list of implemented datasets. Additional older or deprecate
 | VESTA20H | JPL 20 degree and order spherical harmonic model of the gravitational potential of asteroid (4) Vesta (Konopliv et al. 2014). |
 
 
+### (433) Eros
+
+| Dataset | Description |
+| ---------- | ----------- |
+| NLR_shape | 719 degree and order spherical harmonic shape model of asteroid (433) Eros based on laser altimeter data (Wieczorek 2024). |
+| SPC_shape | 511 degree and order spherical harmonic shape model of asteroid (433) Eros based on a stereo-photoclinometry shape model (Wieczorek 2024). |
+| JGE15A01 | JPL 15 degree and order spherical harmonic model of the gravitational potential of asteroid (433) Eros (Miller et al. 2002). |
+
+
 ### Io (Jupiter)
 | Dataset | Description |
 | ---------- | ----------- |

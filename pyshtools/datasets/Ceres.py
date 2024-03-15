@@ -41,8 +41,8 @@ def DLR_SPG_shape(lmax=719):
     References
     ----------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of the
-        asteroid (1) Ceres [DLR SPG] (1.0.0) [Data set]. Zenodo.
-        https://doi.org/10.5281/zenodo.10804157
+        asteroid (1) Ceres [DLR SPG] (1.0.1) [Data set]. Zenodo.
+        https://doi.org/10.5281/zenodo.10820608
     Roatsch, T., E. Kersten, K.-D. Matz, F. Preusker, F. Scholten, S. Elgner,
         S.E. Schroeder, R. Jaumann, C.A. Raymond, C.T. Russell (2016). DAWN FC2
         DERIVED CERES HAMO DTM SPG V1.0, DAWN-A-FC2-5-CERESHAMODTMSPG-V1.0,
@@ -50,12 +50,12 @@ def DLR_SPG_shape(lmax=719):
     '''
     archive = _create(
         path=_os_cache('pyshtools'),
-        base_url="doi:10.5281/zenodo.10804157",
+        base_url="doi:10.5281/zenodo.10820608",
         registry={
-            "Ceres_shape_5399.sh.gz": "sha256:a474a8ccc7620673c1516444a815762bbd3cd37f7be4fbe0634cb781c18c355f",  # noqa: E501
-            "Ceres_shape_2879.sh.gz": "sha256:9ec1442275fd6b0a19830766cfe023c672133b060850324cfc36fd445dcf0f9e",  # noqa: E501
-            "Ceres_shape_1439.sh.gz": "sha256:ae3e99187ccfae9c986772f4d0f9e932d51ea292f9d60214589468aae12d8f8e",  # noqa: E501
-            "Ceres_shape_719.sh.gz": "sha256:e3dbbfb7c1cc55b788f2a8ca751f0df727880f463fabfd7ec6ac9cb15b9a2b96",  # noqa: E501
+            "Ceres_DLR_SPG_shape_5399.bshc.gz": "sha256:a474a8ccc7620673c1516444a815762bbd3cd37f7be4fbe0634cb781c18c355f",  # noqa: E501
+            "Ceres_DLR_SPG_shape_2879.bshc.gz": "sha256:9ec1442275fd6b0a19830766cfe023c672133b060850324cfc36fd445dcf0f9e",  # noqa: E501
+            "Ceres_DLR_SPG_shape_1439.bshc.gz": "sha256:ae3e99187ccfae9c986772f4d0f9e932d51ea292f9d60214589468aae12d8f8e",  # noqa: E501
+            "Ceres_DLR_SPG_shape_719.bshc.gz": "sha256:e3dbbfb7c1cc55b788f2a8ca751f0df727880f463fabfd7ec6ac9cb15b9a2b96",  # noqa: E501
             },
         )
 
@@ -63,16 +63,16 @@ def DLR_SPG_shape(lmax=719):
         lmax = 5399
 
     if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Ceres_shape_719.sh.gz",
+        fname = archive.fetch("Ceres_DLR_SPG_shape_719.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Ceres_shape_1439.sh.gz",
+        fname = archive.fetch("Ceres_DLR_SPG_shape_1439.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Ceres_shape_2879.sh.gz",
+        fname = archive.fetch("Ceres_DLR_SPG_shape_2879.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     else:
-        fname = archive.fetch("Ceres_shape_5399.sh.gz",
+        fname = archive.fetch("Ceres_DLR_SPG_shape_5399.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 5399)
 
@@ -115,8 +115,8 @@ def JPL_SPC_shape(lmax=719):
         path=_os_cache('pyshtools'),
         base_url="doi:10.5281/zenodo.10812848",
         registry={
-            "Ceres_JPL_SPC_shape_1023.sh.gz": "sha256:9ca1b3c31760beba01c56ac7f2c1d30d62b1480aad551eebf082f0e34eb19f06",  # noqa: E501
-            "Ceres_JPL_SPC_shape_719.sh.gz": "sha256:5e66eeeb96bfbdfc30e8de7f13f6a48dd8795c7a3f781786bb985bf5c47572b5",  # noqa: E501
+            "Ceres_JPL_SPC_shape_1023.bshc.gz": "sha256:9ca1b3c31760beba01c56ac7f2c1d30d62b1480aad551eebf082f0e34eb19f06",  # noqa: E501
+            "Ceres_JPL_SPC_shape_719.bshc.gz": "sha256:5e66eeeb96bfbdfc30e8de7f13f6a48dd8795c7a3f781786bb985bf5c47572b5",  # noqa: E501
             },
         )
 
@@ -124,10 +124,10 @@ def JPL_SPC_shape(lmax=719):
         lmax = 1023
 
     if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Ceres_JPL_SPC_shape_719.sh.gz",
+        fname = archive.fetch("Ceres_JPL_SPC_shape_719.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     else:
-        fname = archive.fetch("Ceres_JPL_SPC_shape_1023.sh.gz",
+        fname = archive.fetch("Ceres_JPL_SPC_shape_1023.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 1023)
 

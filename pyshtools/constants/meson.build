@@ -7,6 +7,7 @@ python_sources = [
   'Venus.py',
   'Vesta.py',
   'Ceres.py',
+  'Eros.py',
   'Io.py',
   'Europa.py',
   'Ganymede.py',

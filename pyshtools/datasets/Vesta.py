@@ -40,20 +40,20 @@ def DLR_SPG_shape(lmax=719):
     References
     ----------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of the
-        asteroid (4) Vesta [DLR SPG] (1.0.0) [Data set]. Zenodo.
-        https://doi.org/10.5281/zenodo.10800929
+        asteroid (4) Vesta [DLR SPG] (1.0.2) [Data set]. Zenodo.
+        https://doi.org/10.5281/zenodo.10820681
     Preusker, F., F. Scholten, K.-D Matz, T. Roatsch, R. Jaumann, C.A. Raymond,
         and C.T. Russell (2016). DAWN FC2 DERIVED VESTA DTM SPG V1.0,
         DAWN-A-FC2-5-VESTADTMSPG-V1.0, NASA Planetary Data System.
     '''
     archive = _create(
         path=_os_cache('pyshtools'),
-        base_url="doi:10.5281/zenodo.10800929",
+        base_url="doi:10.5281/zenodo.10820681",
         registry={
-            "Vesta_shape_5759.sh.gz": "sha256:3a2486575fc99469bfe243b78c92cc3c0b968cbf1f278436079ef53961a75670",  # noqa: E501
-            "Vesta_shape_2879.sh.gz": "sha256:04deabadc25338cc4de5320447afbcc429baa5715427528641d8e0561521f657",  # noqa: E501
-            "Vesta_shape_1439.sh.gz": "sha256:99eae34532e93a4611be51436de7e3e9be8c3f64a799bc43444013ecf73ca6d3",  # noqa: E501
-            "Vesta_shape_719.sh.gz": "sha256:140532d5ca7070e677ac064b9ff59c60baa21811b0541138e564e94ec8eafec9",  # noqa: E501
+            "Vesta_DLR_SPG_shape_5759.bshc.gz": "sha256:3a2486575fc99469bfe243b78c92cc3c0b968cbf1f278436079ef53961a75670",  # noqa: E501
+            "Vesta_DLR_SPG_shape_2879.bshc.gz": "sha256:04deabadc25338cc4de5320447afbcc429baa5715427528641d8e0561521f657",  # noqa: E501
+            "Vesta_DLR_SPG_shape_1439.bshc.gz": "sha256:99eae34532e93a4611be51436de7e3e9be8c3f64a799bc43444013ecf73ca6d3",  # noqa: E501
+            "Vesta_DLR_SPG_shape_719.bshc.gz": "sha256:140532d5ca7070e677ac064b9ff59c60baa21811b0541138e564e94ec8eafec9",  # noqa: E501
             },
         )
 
@@ -61,16 +61,16 @@ def DLR_SPG_shape(lmax=719):
         lmax = 5759
 
     if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Vesta_shape_719.sh.gz",
+        fname = archive.fetch("Vesta_DLR_SPG_shape_719.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Vesta_shape_1439.sh.gz",
+        fname = archive.fetch("Vesta_DLR_SPG_shape_1439.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Vesta_shape_2879.sh.gz",
+        fname = archive.fetch("Vesta_DLR_SPG_shape_2879.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     else:
-        fname = archive.fetch("Vesta_shape_5759.sh.gz",
+        fname = archive.fetch("Vesta_DLR_SPG_shape_5759.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 5759)
 

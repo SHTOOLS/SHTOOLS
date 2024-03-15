@@ -50,19 +50,19 @@ def MOLA_shape(lmax=719):
     Reference
     ---------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of Mars
-        (1.0.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10794059
+        (1.0.1) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10820719
     Smith, D., G. Neumann, R. E. Arvidson, E. A. Guinness, and S. Slavney
         (2003). Mars Global Surveyor Laser Altimeter Mission Experiment Gridded
         Data Record, NASA Planetary Data System, MGS-M-MOLA-5-MEGDR-L3-V1.0.
     '''
     archive = _create(
         path=_os_cache('pyshtools'),
-        base_url="doi:10.5281/zenodo.10794059",
+        base_url="doi:10.5281/zenodo.10820719",
         registry={
-            "Mars_shape_5759.sh.gz": "sha256:d876aa19d37cf86d9059bd3a97835436fff677695b8037396fb479f1f6f490ad",  # noqa: E501
-            "Mars_shape_2879.sh.gz": "sha256:c00804ee6aa4c87ec4cba5f22aac1b7f4b01c079329e3f947386950969cbb4ef",  # noqa: E501
-            "Mars_shape_1439.sh.gz": "sha256:f12bcd824dcd2118bc2fb540d37985299735f6f57070ee775fc2487b97a5857c",  # noqa: E501
-            "Mars_shape_719.sh.gz": "sha256:d24497a57476bb24c9905886637a9ab53518c4b970c5325858007d72d3e2e79e",  # noqa: E501
+            "Mars_MOLA_shape_5759.bshc.gz": "sha256:d876aa19d37cf86d9059bd3a97835436fff677695b8037396fb479f1f6f490ad",  # noqa: E501
+            "Mars_MOLA_shape_2879.bshc.gz": "sha256:c00804ee6aa4c87ec4cba5f22aac1b7f4b01c079329e3f947386950969cbb4ef",  # noqa: E501
+            "Mars_MOLA_shape_1439.bshc.gz": "sha256:f12bcd824dcd2118bc2fb540d37985299735f6f57070ee775fc2487b97a5857c",  # noqa: E501
+            "Mars_MOLA_shape_719.bshc.gz": "sha256:d24497a57476bb24c9905886637a9ab53518c4b970c5325858007d72d3e2e79e",  # noqa: E501
             },
         )
 
@@ -70,16 +70,16 @@ def MOLA_shape(lmax=719):
         lmax = 5759
 
     if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Mars_shape_719.sh.gz",
+        fname = archive.fetch("Mars_MOLA_shape_719.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Mars_shape_1439.sh.gz",
+        fname = archive.fetch("Mars_MOLA_shape_1439.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Mars_shape_2879.sh.gz",
+        fname = archive.fetch("Mars_MOLA_shape_2879.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     else:
-        fname = archive.fetch("Mars_shape_5759.sh.gz",
+        fname = archive.fetch("Mars_MOLA_shape_5759.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 5759)
 

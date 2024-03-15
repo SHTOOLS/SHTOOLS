@@ -11,7 +11,7 @@ from astropy.constants import G as _G
 
 gm = _Constant(
     abbrev='gm_ceres',
-    name='Gravitational constant times the mass of Ceres',
+    name='Gravitational constant times the mass of (1) Ceres',
     value=62629053612.1,
     unit='m3 / s2',
     uncertainty=350000.0,
@@ -34,7 +34,7 @@ mass = _Constant(
 
 mean_radius = _Constant(
     abbrev='r_ceres',
-    name='Mean radius of Ceres',
+    name='Mean radius of (1) Ceres',
     value=469461.8,
     unit='m',
     uncertainty=0.,
@@ -44,22 +44,30 @@ mean_radius = _Constant(
 
 r = mean_radius
 
+volume_equivalent_radius = _Constant(
+    abbrev='r_volume_ceres',
+    name='Volume equivalent radius of (1) Ceres',
+    value=469725.0,
+    unit='m',
+    uncertainty=0.,
+    reference='Computed using JPL_SPC_shape and SHCoeffs.volume()')
+
 density = _Constant(
     abbrev='density_ceres',
-    name='Mean density of Ceres',
-    value=3 * mass.value / (_np.pi * 4 * mean_radius.value**3),
+    name='Mean density of (1) Ceres',
+    value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
     uncertainty=_np.sqrt((3 * mass.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**3))**2
+                         (_np.pi * 4 * volume_equivalent_radius.value**3))**2
                          + (3 * 3 * mass.value *
-                         mean_radius.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**4))**2
+                         volume_equivalent_radius.uncertainty /
+                         (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_ceres and r_ceres.')
+    reference='Derived from mass_ceres and r_volume_ceres.')
 
 g0 = _Constant(
     abbrev='g0_ceres',
-    name='Surface gravity of Ceres, ignoring rotation',
+    name='Surface gravity of (1) Ceres, ignoring rotation',
     value=gm.value / mean_radius.value**2,
     unit='m / s2',
     uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
@@ -70,7 +78,7 @@ g0 = _Constant(
 
 omega = _Constant(
     abbrev='omega_ceres',
-    name='Angular spin rate of Ceres',
+    name='Angular spin rate of (1) Ceres',
     value=952.1532635 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
     uncertainty=0.000002 * 2. * _np.pi / 360. / (24. * 60. * 60.),

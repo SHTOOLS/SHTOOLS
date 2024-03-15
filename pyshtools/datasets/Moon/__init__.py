@@ -55,18 +55,18 @@ def LOLA_shape_pa(lmax=719):
     Reference
     ---------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of the Moon
-        (principal axis coordinate system) [LOLA] (1.0.0) [Data set]. Zenodo.
-        https://doi.org/10.5281/zenodo.10796954
+        (principal axis coordinate system) [LOLA] (1.0.1) [Data set]. Zenodo.
+        https://doi.org/10.5281/zenodo.10820750
     LRO LOLA Team (2013). LRO-L-LOLA-4-GDR-V1.0, NASA Planetary Data System.
     '''
     archive = _create(
         path=_os_cache('pyshtools'),
-        base_url="doi:10.5281/zenodo.10796954",
+        base_url="doi:10.5281/zenodo.10820750",
         registry={
-            "Moon_shape_pa_5759.sh.gz": "sha256:1569338a88475e184ac8b7424327b0e03cb1f8f0a3cec70bd9bfe41635f68671",  # noqa: E501
-            "Moon_shape_pa_2879.sh.gz": "sha256:6ee87880956fdbdf85f9c0b2e9996514735198fbcb19fd0d0c7881bf50c50496",  # noqa: E501
-            "Moon_shape_pa_1439.sh.gz": "sha256:6c4619f845c9902d999879cbf6956c368290a17fc2887d41267800aade386c56",  # noqa: E501
-            "Moon_shape_pa_719.sh.gz": "sha256:71877e8c1dd80205941b6ca0e7df73943abc52be125d1d8cc76bea2dcee5942b",  # noqa: E501
+            "Moon_LOLA_shape_pa_5759.bshc.gz": "sha256:1569338a88475e184ac8b7424327b0e03cb1f8f0a3cec70bd9bfe41635f68671",  # noqa: E501
+            "Moon_LOLA_shape_pa_2879.bshc.gz": "sha256:6ee87880956fdbdf85f9c0b2e9996514735198fbcb19fd0d0c7881bf50c50496",  # noqa: E501
+            "Moon_LOLA_shape_pa_1439.bshc.gz": "sha256:6c4619f845c9902d999879cbf6956c368290a17fc2887d41267800aade386c56",  # noqa: E501
+            "Moon_LOLA_shape_pa_719.bshc.gz": "sha256:71877e8c1dd80205941b6ca0e7df73943abc52be125d1d8cc76bea2dcee5942b",  # noqa: E501
             },
         )
 
@@ -74,16 +74,16 @@ def LOLA_shape_pa(lmax=719):
         lmax = 5759
 
     if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Moon_shape_pa_719.sh.gz",
+        fname = archive.fetch("Moon_LOLA_shape_pa_719.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Moon_shape_pa_1439.sh.gz",
+        fname = archive.fetch("Moon_LOLA_shape_pa_1439.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Moon_shape_pa_2879.sh.gz",
+        fname = archive.fetch("Moon_LOLA_shape_pa_2879.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     else:
-        fname = archive.fetch("Moon_shape_pa_5759.sh.gz",
+        fname = archive.fetch("Moon_LOLA_shape_pa_5759.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 5759)
 
@@ -116,18 +116,18 @@ def LOLA_shape(lmax=719):
     Reference
     ---------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of the Moon
-        [LOLA] (1.0.0) [Data set]. Zenodo.
-        https://doi.org/10.5281/zenodo.10796823
+        [LOLA] (1.0.1) [Data set]. Zenodo.
+        https://doi.org/10.5281/zenodo.10820774
     LRO LOLA Team (2013). LRO-L-LOLA-4-GDR-V1.0, NASA Planetary Data System.
     '''
     archive = _create(
         path=_os_cache('pyshtools'),
-        base_url="doi:10.5281/zenodo.10796823",
+        base_url="doi:10.5281/zenodo.10820774",
         registry={
-            "Moon_shape_5759.sh.gz": "sha256:7f1eddfccd007c56e983c43c8dc470fb58f8b23ede655f5bf4bf2208635c66ca",  # noqa: E501
-            "Moon_shape_2879.sh.gz": "sha256:b22c3c71e2c14bc84e85304471c4b583542ee4e8f54ea2501bdc53d86017fe1f",  # noqa: E501
-            "Moon_shape_1439.sh.gz": "sha256:f5e8f1b7acaab626db5828f9dc6f9ea1ce948bb5000e5bfcf1ff69b3141f1845",  # noqa: E501
-            "Moon_shape_719.sh.gz": "sha256:20cafa143fda3e5ba5af6868c9e95054fabf68d0050c4be64a83d44df1333b4c",  # noqa: E501
+            "Moon_LOLA_shape_5759.bshc.gz": "sha256:7f1eddfccd007c56e983c43c8dc470fb58f8b23ede655f5bf4bf2208635c66ca",  # noqa: E501
+            "Moon_LOLA_shape_2879.bshc.gz": "sha256:b22c3c71e2c14bc84e85304471c4b583542ee4e8f54ea2501bdc53d86017fe1f",  # noqa: E501
+            "Moon_LOLA_shape_1439.bshc.gz": "sha256:f5e8f1b7acaab626db5828f9dc6f9ea1ce948bb5000e5bfcf1ff69b3141f1845",  # noqa: E501
+            "Moon_LOLA_shape_719.bshc.gz": "sha256:20cafa143fda3e5ba5af6868c9e95054fabf68d0050c4be64a83d44df1333b4c",  # noqa: E501
             },
         )
 
@@ -135,16 +135,16 @@ def LOLA_shape(lmax=719):
         lmax = 5759
 
     if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Moon_shape_719.sh.gz",
+        fname = archive.fetch("Moon_LOLA_shape_719.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Moon_shape_1439.sh.gz",
+        fname = archive.fetch("Moon_LOLA_shape_1439.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Moon_shape_2879.sh.gz",
+        fname = archive.fetch("Moon_LOLA_shape_2879.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     else:
-        fname = archive.fetch("Moon_shape_5759.sh.gz",
+        fname = archive.fetch("Moon_LOLA_shape_5759.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 5759)
 

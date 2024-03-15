@@ -11,7 +11,7 @@ from astropy.constants import G as _G
 
 gm = _Constant(
     abbrev='gm_vesta',
-    name='Gravitational constant times the mass of Vesta',
+    name='Gravitational constant times the mass of (4) Vesta',
     value=317288244969.3,
     unit='m3 / s2',
     uncertainty=4064.9,
@@ -34,7 +34,7 @@ mass = _Constant(
 
 mean_radius = _Constant(
     abbrev='r_vesta',
-    name='Mean radius of Vesta',
+    name='Mean radius of (4) Vesta',
     value=260362.3,
     unit='m',
     uncertainty=0.0,
@@ -44,22 +44,30 @@ mean_radius = _Constant(
 
 r = mean_radius
 
+volume_equivalent_radius = _Constant(
+    abbrev='r_volume_vesta',
+    name='Volume equivalent radius of (4) Vesta',
+    value=261590.3,
+    unit='m',
+    uncertainty=0.,
+    reference='Computed using DLR_SPG_shape and SHCoeffs.volume()')
+
 density = _Constant(
     abbrev='density_vesta',
-    name='Mean density of Vesta',
-    value=3 * mass.value / (_np.pi * 4 * mean_radius.value**3),
+    name='Mean density of (4) Vesta',
+    value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
     uncertainty=_np.sqrt((3 * mass.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**3))**2
+                         (_np.pi * 4 * volume_equivalent_radius.value**3))**2
                          + (3 * 3 * mass.value *
-                         mean_radius.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**4))**2
+                         volume_equivalent_radius.uncertainty /
+                         (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_vesta and r_vesta.')
+    reference='Derived from mass_vesta and r_volume_vesta.')
 
 g0 = _Constant(
     abbrev='g0_vesta',
-    name='Surface gravity of Vesta, ignoring rotation',
+    name='Surface gravity of (4) Vesta, ignoring rotation',
     value=gm.value / mean_radius.value**2,
     unit='m / s2',
     uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
@@ -70,7 +78,7 @@ g0 = _Constant(
 
 omega = _Constant(
     abbrev='omega_vesta',
-    name='Angular spin rate of Vesta',
+    name='Angular spin rate of (4) Vesta',
     value=1617.3331279 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
     uncertainty=0.,

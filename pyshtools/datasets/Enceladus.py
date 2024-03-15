@@ -52,8 +52,8 @@ def JPL_SPC_shape(lmax=719):
         path=_os_cache('pyshtools'),
         base_url="doi:10.5281/zenodo.10813481",
         registry={
-            "Enceladus_JPL_SPC_shape_1023.sh.gz": "sha256:8094ca35956f318c644497c90afc2e31135596128f3dd8eeefdfdc085367b7c6",  # noqa: E501
-            "Enceladus_JPL_SPC_shape_719.sh.gz": "sha256:dd126110b49c28c4a5df466bcc50257ea2e467973320e7ccbffb3900f5a45e41",  # noqa: E501
+            "Enceladus_JPL_SPC_shape_1023.bshc.gz": "sha256:8094ca35956f318c644497c90afc2e31135596128f3dd8eeefdfdc085367b7c6",  # noqa: E501
+            "Enceladus_JPL_SPC_shape_719.bshc.gz": "sha256:dd126110b49c28c4a5df466bcc50257ea2e467973320e7ccbffb3900f5a45e41",  # noqa: E501
             },
         )
 
@@ -61,10 +61,10 @@ def JPL_SPC_shape(lmax=719):
         lmax = 1023
 
     if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Enceladus_JPL_SPC_shape_719.sh.gz",
+        fname = archive.fetch("Enceladus_JPL_SPC_shape_719.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
     else:
-        fname = archive.fetch("Enceladus_JPL_SPC_shape_1023.sh.gz",
+        fname = archive.fetch("Enceladus_JPL_SPC_shape_1023.bshc.gz",
                               downloader=_DOIDownloader(progressbar=True))
         lmax = min(lmax, 1023)
 

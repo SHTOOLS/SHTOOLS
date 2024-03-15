@@ -51,6 +51,7 @@ from . import Moon
 from . import Mars
 from . import Vesta
 from . import Ceres
+from . import Eros
 from . import Io
 from . import Europa
 from . import Ganymede
@@ -62,5 +63,5 @@ from . import Enceladus
 # === Define __all__ ===
 
 __all__ = ['Constant', 'Quantity', 'G', 'mu0', 'codata', 'Mercury', 'Venus',
-           'Earth', 'Moon', 'Mars', 'Vesta', 'Ceres', 'Io', 'Europa',
+           'Earth', 'Moon', 'Mars', 'Vesta', 'Ceres', 'Eros', 'Io', 'Europa',
            'Ganymede', 'Callisto', 'Titan', 'Enceladus']
