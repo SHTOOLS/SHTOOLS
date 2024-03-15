@@ -2071,7 +2071,7 @@ class SHCoeffs(object):
                                        csphase=csphase, lmax=lmax)
         else:
             if self.errors is not None:
-                coeffs, error_coeffs = temp.to_array(
+                coeffs, error_coeffs = self.to_array(
                     normalization=normalization.lower(), csphase=csphase,
                     lmax=lmax, errors=True)
             else:
@@ -2323,8 +2323,8 @@ class SHCoeffs(object):
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
                       legend=None, legend_error='error', legend_loc='best',
-                      axes_labelsize=None, tick_labelsize=None, ax=None,
-                      show=True, fname=None, **kwargs):
+                      errors=True, axes_labelsize=None, tick_labelsize=None,
+                      ax=None, show=True, fname=None, **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
@@ -2332,7 +2332,7 @@ class SHCoeffs(object):
         -----
         x.plot_spectrum([convention, unit, base, lmax, xscale, yscale, grid,
                          axes_labelsize, tick_labelsize, legend, legend_error,
-                         legend_loc, ax, show, fname, **kwargs])
+                         legend_loc, errors, ax, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2364,6 +2364,8 @@ class SHCoeffs(object):
         legend_loc : str, optional, default = 'best'
             Location of the legend, such as 'upper right' or 'lower center'
             (see pyplot.legend for all options).
+        errors : bool, optional, default = True
+            If the coefficients have errors, plot the error spectrum.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -2468,12 +2470,12 @@ class SHCoeffs(object):
 
         if xscale == 'log':
             axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend, **kwargs)
-            if self.errors is not None:
+            if self.errors is not None and errors:
                 axes.plot(ls[1:lmax+1], error_spectrum[1:lmax+1],
                           label='error', **kwargs)
         else:
             axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend, **kwargs)
-            if self.errors is not None:
+            if self.errors is not None and errors:
                 axes.plot(ls[:lmax+1], error_spectrum[:lmax+1],
                           label=legend_error, **kwargs)
             if ax is None:

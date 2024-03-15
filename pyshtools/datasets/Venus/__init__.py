@@ -1,8 +1,8 @@
 '''
 Datasets related to the planet Venus.
 
-Topography
-----------
+Shape
+-----
 VenusTopo719 :  Wieczorek (2015)
 
 Gravity
@@ -12,6 +12,7 @@ MGNP180U     :  Konopliv et al. (1999)
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
+from pooch import DOIDownloader as _DOIDownloader
 from ...shclasses import SHCoeffs as _SHCoeffs
 from ...shclasses import SHGravCoeffs as _SHGravCoeffs
 from ...constants.Venus import omega as _omega
@@ -35,9 +36,9 @@ def VenusTopo719(lmax=719):
         doi:10.1016/B978-0-444-53802-4.00169-X.
     '''
     fname = _retrieve(
-        url="https://zenodo.org/record/3870926/files/VenusTopo719.shape.gz",
+        url="doi:10.5281/zenodo.3870926/VenusTopo719.shape.gz",
         known_hash="sha256:9fcb04fb21eb7090df68e42458f6d7495a27ff62687b46534057ed608786cf3b",  # noqa: E501
-        downloader=_HTTPDownloader(progressbar=True),
+        downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
     return _SHCoeffs.from_file(fname, lmax=lmax, name='VenusTopo719',
@@ -68,7 +69,7 @@ def MGNP180U(lmax=180):
     return _SHGravCoeffs.from_file(fname, lmax=lmax, skip=236, header=True,
                                    r0_index=1, gm_index=2, header_units='km',
                                    errors=True, omega=_omega.value,
-                                   name='MGNP180U', encoding='utf-8')
+                                   name='MGNP180U (Venus)', encoding='utf-8')
 
 
 __all__ = ['VenusTopo719', 'MGNP180U', 'historical']

@@ -1,9 +1,15 @@
 python_sources = [
   '__init__.py',
-  'Ceres.py',
-  'Ganymede.py',
   'Mercury.py',
+  'Eros.py',
+  'Ceres.py',
   'Vesta.py',
+  'Io.py',
+  'Europa.py',
+  'Ganymede.py',
+  'Callisto.py',
+  'Titan.py',
+  'Enceladus.py'
 ]
 
 python.install_sources(python_sources, subdir: 'pyshtools/datasets')

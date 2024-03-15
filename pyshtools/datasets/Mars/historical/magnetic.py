@@ -8,7 +8,7 @@ FSU90 (Mars Global Surveyor)  :  Cain et al. (2003)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
-from pooch import HTTPDownloader as _HTTPDownloader
+from pooch import DOIDownloader as _DOIDownloader
 from ....shclasses import SHMagCoeffs as _SHMagCoeffs
 
 
@@ -31,9 +31,9 @@ def FSU50(lmax=50):
         Geophysical Research: Planets, 108 (E2), doi:10.1029/2000JE001487.
     '''
     fname = _retrieve(
-        url="https://zenodo.org/record/5503849/files/FSU50.sh.gz?download=1",  # noqa: E501
+        url="doi:10.5281/zenodo.5503849/FSU50.sh.gz",  # noqa: E501
         known_hash="sha256:ee53cf52869c6144fdeefde96f91c25f3d391768446a3c7c7da1b258eff79efc",  # noqa: E501
-        downloader=_HTTPDownloader(progressbar=True),
+        downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname, lmax=lmax, header=True,
@@ -60,9 +60,9 @@ def FSU90(lmax=90):
         Geophysical Research: Planets, 108 (E2), doi:10.1029/2000JE001487.
     '''
     fname = _retrieve(
-        url="https://zenodo.org/record/5503849/files/FSU90.sh.gz?download=1",  # noqa: E501
+        url="doi:10.5281/zenodo.5503849/FSU90.sh.gz",  # noqa: E501
         known_hash="sha256:a0c8653c01f06c4af24d011f84ac2f3b119ca19bb79a274f7d5c2536122a4689",  # noqa: E501
-        downloader=_HTTPDownloader(progressbar=True),
+        downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname, lmax=lmax, header=True,

@@ -21,10 +21,17 @@ from . import Venus
 from . import Earth
 from . import Moon
 from . import Mars
+from . import Eros
 from . import Vesta
 from . import Ceres
+from . import Io
+from . import Europa
 from . import Ganymede
+from . import Callisto
+from . import Titan
+from . import Enceladus
 
 
-__all__ = ['Mercury', 'Venus', 'Earth', 'Moon', 'Mars', 'Vesta', 'Ceres',
-           'Ganymede']
+__all__ = ['Mercury', 'Venus', 'Earth', 'Moon', 'Mars', 'Eros', 'Vesta',
+           'Ceres', 'Io', 'Europa', 'Ganymede', 'Callisto', 'Titan',
+           'Enceladus']

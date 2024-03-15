@@ -32,7 +32,7 @@ mass = _Constant(
 mean_radius = _Constant(
     abbrev='r_venus',
     name='Mean radius of Venus',
-    value=6051.878e3,
+    value=6051877.4,
     unit='m',
     uncertainty=0.0,
     reference='VenusTopo719: Wieczorek, M. A. (2015). Gravity and '
@@ -42,18 +42,26 @@ mean_radius = _Constant(
 
 r = mean_radius
 
+volume_equivalent_radius = _Constant(
+    abbrev='r_volume_venus',
+    name='Volume equivalent radius of Venus',
+    value=6051877.5,
+    unit='m',
+    uncertainty=0.,
+    reference='Computed using VenusTopo719 and SHCoeffs.volume()')
+
 density = _Constant(
     abbrev='density_venus',
     name='Mean density of Venus',
-    value=3 * mass.value / (_np.pi * 4 * mean_radius.value**3),
+    value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
     uncertainty=_np.sqrt((3 * mass.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**3))**2
+                         (_np.pi * 4 * volume_equivalent_radius.value**3))**2
                          + (3 * 3 * mass.value *
-                         mean_radius.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**4))**2
+                         volume_equivalent_radius.uncertainty /
+                         (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_venus and r_venus.')
+    reference='Derived from mass_venus and r_volume_venus.')
 
 g0 = _Constant(
     abbrev='g0_venus',
