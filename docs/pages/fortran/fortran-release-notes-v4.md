@@ -22,7 +22,8 @@ folder: fortran
 * Added two gravity models of Enceladus (Iess2014_gravity and Park2024_gravity) and a high-degree shape model based on the JPL SPC DTM (JPL_SPG_shape).
 * Added two shape models of Eros (NLR_shape and SPC_shape) and the JPL gravity model JGE15A01.
 * Updated all constants to reflect the most recent datasets, and added new constant modules for Eros, Io, Europa, Ganymede, Callisto, Titan and Enceladus.
-* Added the property `volume_equivalent_radius` to the constants modules for bodies that have a spherical harmonic shape model.
+* Added the property `volume_equivalent_radius` and `volume` to the constants modules.
+* Renamed the constant attributes `density` to `mean_density` and `g0` to `gravity_mean_radius`.
 * Updated all datasets that download from zenodo to use the Pooch DOIDownloader.
 
 **Bug fixes**
