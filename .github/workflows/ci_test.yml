@@ -7,9 +7,11 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
+      group: CI tests
       cancel-in-progress: true
+
     strategy:
       fail-fast: false
       matrix:
