@@ -43,7 +43,7 @@ jobs:
     - name: Set up Conda environment
       shell: bash -l {0}
       run: |
-        mamba config --set always_yes yes --set changeps1 no
+        conda config --set always_yes yes --set changeps1 no
         mamba install -q -n pypi blas-devel \
                                  fftw \
                                  meson-python \
