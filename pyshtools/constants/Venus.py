@@ -30,9 +30,9 @@ mass = _Constant(
     reference='Derived from gm_venus and G.')
 
 mean_radius = _Constant(
-    abbrev='r_venus',
+    abbrev='mean_radius_venus',
     name='Mean radius of Venus',
-    value=6051.878e3,
+    value=6051877.4,
     unit='m',
     uncertainty=0.0,
     reference='VenusTopo719: Wieczorek, M. A. (2015). Gravity and '
@@ -42,29 +42,46 @@ mean_radius = _Constant(
 
 r = mean_radius
 
-density = _Constant(
-    abbrev='density_venus',
+volume_equivalent_radius = _Constant(
+    abbrev='volume_equivalent_radius_venus',
+    name='Volume equivalent radius of Venus',
+    value=6051877.5,
+    unit='m',
+    uncertainty=0.,
+    reference='Computed using VenusTopo719 and SHCoeffs.volume()')
+
+volume = _Constant(
+    abbrev='volume_venus',
+    name='Volume of Venus',
+    value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
+    unit='m',
+    uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
+    volume_equivalent_radius.uncertainty,
+    reference='Derived from volume_equivalent_radius_venus')
+
+mean_density = _Constant(
+    abbrev='mean_density_venus',
     name='Mean density of Venus',
-    value=3 * mass.value / (_np.pi * 4 * mean_radius.value**3),
+    value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
     uncertainty=_np.sqrt((3 * mass.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**3))**2
+                         (_np.pi * 4 * volume_equivalent_radius.value**3))**2
                          + (3 * 3 * mass.value *
-                         mean_radius.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**4))**2
+                         volume_equivalent_radius.uncertainty /
+                         (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_venus and r_venus.')
+    reference='Derived from mass_venus and volume_equivalent_radius_venus.')
 
-g0 = _Constant(
-    abbrev='g0_venus',
-    name='Surface gravity of Venus, ignoring rotation and tides',
+gravity_mean_radius = _Constant(
+    abbrev='gravity_mean_radius_venus',
+    name='Gravity at the mean radius of Venus, ignoring rotation and tides',
     value=gm.value / mean_radius.value**2,
     unit='m / s2',
     uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
                          + (2 * gm.value * mean_radius.uncertainty
                          / mean_radius.value**3)**2
                          ),
-    reference='Derived from gm_venus and r_venus.')
+    reference='Derived from gm_venus and mean_radius_venus.')
 
 omega = _Constant(
     abbrev='omega_venus',
@@ -77,4 +94,5 @@ omega = _Constant(
     'inertia of Venus (2021), Nature Astronomy, '
     'doi:10.1038/s41550-021-01339-7.')
 
-__all__ = ['gm', 'mass', 'mean_radius', 'r', 'gm', 'density', 'omega']
+__all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
+           'volume', 'gravity_mean_radius', 'mean_density', 'omega']

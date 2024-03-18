@@ -7,6 +7,7 @@ import gzip
 import zipfile
 import numpy as _np
 import requests as _requests
+from pathlib import Path
 
 
 def read_igrf(filename, year=2020., encoding=None):
@@ -25,7 +26,7 @@ def read_igrf(filename, year=2020., encoding=None):
 
     Parameters
     ----------
-    filename : str
+    filename : str or pathlib.Path
         The filename containing the IGRF formatted spherical harmonic
         coefficients. filename will be treated as a URL if it starts with
         'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or
@@ -47,6 +48,9 @@ def read_igrf(filename, year=2020., encoding=None):
     This routine can read the models IGRF-11, 12, and 13. Prior models have a
     different format.
     """
+    if isinstance(filename, Path):
+        filename = str(filename)
+
     lmax = 13
     coeffs = _np.zeros([2, lmax+1, lmax+1])
 

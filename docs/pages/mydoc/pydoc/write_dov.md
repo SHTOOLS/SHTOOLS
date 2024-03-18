@@ -18,7 +18,7 @@ write_dov(filename, coeffs, [errors, header, header2, lmax, encoding])
 
 ## Parameters
 
-filename : str
+filename : str or pathlib.Path
 :   File name of the 'dov'-formatted spherical harmonic coefficients. If
     filename ends with '.gz' the file will be automatically compressed with
     gzip.

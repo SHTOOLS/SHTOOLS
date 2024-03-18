@@ -33,43 +33,58 @@ mass = _Constant(
     reference='Derived from gm_mercury and G.')
 
 mean_radius = _Constant(
-    abbrev='r_mercury',
+    abbrev='mean_radius_mercury',
     name='Mean radius of Mercury',
-    value=2439.40197456433e3,
+    value=2439472.7,
     unit='m',
     uncertainty=0.0,
-    reference='gtmes_150v05: Smith, D. E., M. T. Zuber, R. J. Phillips, '
-    'S. C. Solomon, S. A. Hauck II, F. G. Lemoine, E. Mazarico, G. A. '
-    'Neumann, S. J. Peale, J.-L. Margot, C. L. Johnson, M. H. Torrence, '
-    'M. E. Perry, D. D. Rowlands, S. Goossens, J. W. Head, A. H. Taylor '
-    '(2012). Gravity field and internal structure of Mercury from '
-    'MESSENGER. Science, 336, 214-217, doi:10.1126/science.1218809.')
+    reference='USGS_SPG_shape: Maia, J. (2024). Spherical harmonic models of '
+    'the shape of Mercury [Data set]. Zenodo. '
+    'https://doi.org/10.5281/zenodo.10809345')
 
 r = mean_radius
 
-density = _Constant(
-    abbrev='density_mercury',
+volume_equivalent_radius = _Constant(
+    abbrev='volume_equivalent_radius_mercury',
+    name='Volume equivalent radius of Mercury',
+    value=2439473.1,
+    unit='m',
+    uncertainty=0.,
+    reference='Computed using USGS_SPG_shape and SHCoeffs.volume()')
+
+volume = _Constant(
+    abbrev='volume_mercury',
+    name='Volume of Mercury',
+    value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
+    unit='m',
+    uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
+    volume_equivalent_radius.uncertainty,
+    reference='Derived from volume_equivalent_radius_mercury')
+
+mean_density = _Constant(
+    abbrev='mean_density_mercury',
     name='Mean density of Mercury',
-    value=3 * mass.value / (_np.pi * 4 * mean_radius.value**3),
+    value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
     uncertainty=_np.sqrt((3 * mass.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**3))**2
+                         (_np.pi * 4 * volume_equivalent_radius.value**3))**2
                          + (3 * 3 * mass.value *
-                         mean_radius.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**4))**2
+                         volume_equivalent_radius.uncertainty /
+                         (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_mercury and r_mercury.')
+    reference='Derived from mass_mercury and '
+    'volume_equivalent_radius_mercury.')
 
-g0 = _Constant(
-    abbrev='g0_mercury',
-    name='Surface gravity of Mercury, ignoring rotation and tides',
+gravity_mean_radius = _Constant(
+    abbrev='gravity_mean_radius_mercury',
+    name='Gravity at the mean radius of Mercury, ignoring rotation and tides',
     value=gm.value / mean_radius.value**2,
     unit='m / s2',
     uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
                          + (2 * gm.value * mean_radius.uncertainty
                          / mean_radius.value**3)**2
                          ),
-    reference='Derived from gm_mercury and r_mercury.')
+    reference='Derived from gm_mercury and mean_radius_mercury.')
 
 omega = _Constant(
     abbrev='omega_mercury',
@@ -95,5 +110,6 @@ omega_orbit = _Constant(
     'from MESSENGER observations after three years in orbit, J. Geophys. '
     'Res. Planets, 119, 2417-2436, doi:10.1002/2014JE004675.')
 
-__all__ = ['gm', 'mass', 'mean_radius', 'r', 'density', 'g0', 'omega',
+__all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
+           'volume', 'mean_density', 'gravity_mean_radius', 'omega',
            'omega_orbit']

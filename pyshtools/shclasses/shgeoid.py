@@ -124,8 +124,9 @@ class SHGeoid(object):
 
     def plot(self, projection=None, tick_interval=[30, 30],
              minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-             title=None, titlesize=None, colorbar='right', cmap='viridis',
-             cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
+             title=None, titlesize=None, title_offset=None, colorbar='right',
+             cmap='viridis', cmap_limits=None, cmap_rlimits=None,
+             cmap_reverse=False, cmap_scale='lin', cb_triangles='neither',
              cb_label='geoid, m', cb_tick_interval=None, grid=False,
              axes_labelsize=None, tick_labelsize=None, show=True, ax=None,
              cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
@@ -136,11 +137,11 @@ class SHGeoid(object):
         Usage
         -----
         x.plot([projection, tick_interval, minor_tick_interval, ticks,
-                xlabel, ylabel, title, colorbar, cmap, cmap_limits,
-                cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                cb_tick_interval, cb_minor_tick_interval, cb_offset, cb_width,
-                grid, titlesize, axes_labelsize, tick_labelsize, ax, show,
-                fname])
+                xlabel, ylabel, title, title_offset, colorbar, cmap,
+                cmap_limits, cmap_rlimits, cmap_reverse, cmap_scale,
+                cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
+                cb_minor_tick_interval, cb_offset, cb_width, grid, titlesize,
+                axes_labelsize, tick_labelsize, ax, show, fname])
 
         Parameters
         ----------
@@ -164,6 +165,8 @@ class SHGeoid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
+        title_offset : float, optional, default = None
+            The offset between the title and top of the plot in points.
         colorbar : str, optional, default = 'right'
             Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
@@ -173,9 +176,14 @@ class SHGeoid(object):
             and optionally an interval for each color band. If the interval is
             specified, the number of discrete colors will be
             (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
+        cmap_scale : str, optional, default = 'lin'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
@@ -214,17 +222,20 @@ class SHGeoid(object):
                                tick_interval=tick_interval,
                                minor_tick_interval=minor_tick_interval,
                                xlabel=xlabel, ylabel=ylabel, title=title,
-                               titlesize=titlesize, colorbar=colorbar,
-                               cmap=cmap, cmap_limits=cmap_limits,
-                               cmap_reverse=cmap_reverse, cb_offset=cb_offset,
+                               titlesize=titlesize, title_offset=title_offset,
+                               colorbar=colorbar, cmap=cmap,
+                               cmap_limits=cmap_limits,
+                               cmap_rlimits=cmap_rlimits,
+                               cmap_reverse=cmap_reverse,
+                               cmap_scale=cmap_scale, cb_offset=cb_offset,
                                cb_triangles=cb_triangles, cb_label=cb_label,
                                cb_tick_interval=cb_tick_interval, grid=grid,
                                cb_ylabel=cb_ylabel, ticks=ticks,
                                cb_minor_tick_interval=cb_minor_tick_interval,
                                axes_labelsize=axes_labelsize,
                                cb_width=cb_width,
-                               tick_labelsize=tick_labelsize, ax=ax,
-                               show=show, fname=fname)
+                               tick_labelsize=tick_labelsize, ax=ax, show=show,
+                               fname=fname)
 
     def to_netcdf(self, filename=None, title='', description='',
                   comment='pyshtools grid', name='geoid',
@@ -238,7 +249,7 @@ class SHGeoid(object):
 
         Parameters
         ----------
-        filename : str, optional, default = None
+        filename : str or pathlib.Path, optional, default = None
             Name of output file.
         title : str, optional, default = ''
             Title of the dataset.

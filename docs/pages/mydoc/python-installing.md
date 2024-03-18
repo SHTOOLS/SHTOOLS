@@ -95,8 +95,8 @@ When installing pyshtools using `conda`, the following will also be installed au
 
 * [fftw](https://www.fftw.org/): required for the fortran library.
 * [blas-devel](https://anaconda.org/conda-forge/blas-devel): required for the fortran components.
-* [cartopy](https://scitools.org.uk/cartopy/docs/latest/): required for Cartopy map projections. Cartopy requires (see below) *proj*, *geos*, *cython*, *pyshp*, *six*, and *shapely*.
-* [pygmt](https://www.pygmt.org) (>=0.3): required for pygmt map projections. pygmt requires (see below) *gmt (>=6.1.1)*.
+* [cartopy](https://scitools.org.uk/cartopy/docs/latest/): required for Cartopy map projections.
+* [pygmt](https://www.pygmt.org) (>=0.7): required for pygmt map projections. pygmt requires (see below) *gmt (>=6.3.0)*.
 * [ducc0](https://gitlab.mpcdf.mpg.de/mtr/ducc) (>=0.15): required for using the 'ducc' backend for spherical harmonic transforms.
 * [palettable](https://jiffyclub.github.io/palettable/): scientific color maps required by one of the tutorials.
 
@@ -116,26 +116,9 @@ brew install fftw  # macOS
 ```
 Note that pyshtools supports the use of any FFTW3-compatible library, such as Intel's [MKL](https://software.intel.com/en-us/mkl).
 
-### How to install Cartopy
-
-The easiest way to install Cartopy is with `conda`:
-```bash
-conda install -c conda-forge cartopy
-```
-Cartopy can also be installed using `pip`, but there are several dependencies that need to be installed first. On macOS, this can be accomplished using
-```bash
-brew install proj geos
-pip install --upgrade cython numpy pyshp six
-# shapely needs to be built from source to link to geos. If it is already
-# installed, uninstall it by: pip3 uninstall shapely
-pip install shapely --no-binary shapely
-pip install cartopy
-```
-See [these instructions](https://scitools.org.uk/cartopy/docs/latest/installing.html#installing) for further details.
-
 ### How to install pygmt
 
-In order to use the *pygmt* plotting routines, it will be necessary to install both *pygmt (>=0.3)* and the *gmt (>=6.1.1)* library. This is most easily achieved using conda with
+In order to use the *pygmt* plotting routines, it will be necessary to install both *pygmt (>=0.7)* and the *gmt (>=6.3.0)* library. This is most easily achieved using conda with
 ```bash
 conda install -c conda-forge pygmt gmt
 ```

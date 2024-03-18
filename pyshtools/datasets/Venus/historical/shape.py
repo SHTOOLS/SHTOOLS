@@ -1,8 +1,8 @@
 '''
 Historical datasets related to the shape of Venus.
 
-Topography
--------
+Shape
+-----
 SHTJV360A01 (Magellan)       :  Rappaport and Plaut (1994)
 SHTJV360A02 (Magellan)       :  Rappaport et al. (1999)
 '''

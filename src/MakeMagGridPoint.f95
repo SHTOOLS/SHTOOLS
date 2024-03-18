@@ -13,7 +13,7 @@ function MakeMagGridPoint(cilm, lmax, a, r, lat, lon, dealloc)
 !           cilm        Spherical harmonic coefficients, with dimensions
 !                       (2, lmax+1, lmax+1).
 !           lmax        Maximum degree used in the expansion.
-!           a          Reference radius of the potential coefficients.
+!           a           Reference radius of the potential coefficients.
 !           r           Radius where the magnetic field is computed (meters).
 !           lat         Latitude where the gravity vector is computed, in
 !                       degrees.

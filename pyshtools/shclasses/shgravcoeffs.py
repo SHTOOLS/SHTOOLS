@@ -11,6 +11,7 @@ import xarray as _xr
 from scipy.special import factorial as _factorial
 import gzip as _gzip
 import shutil as _shutil
+from pathlib import Path
 
 from .shcoeffs import SHCoeffs as _SHCoeffs
 from .shcoeffs import SHRealCoeffs as _SHRealCoeffs
@@ -414,7 +415,7 @@ class SHGravCoeffs(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             File name or URL containing the spherical harmonic coefficients.
             filename will be treated as a URL if it starts with 'http://',
             'https://', or 'ftp://'. For 'shtools', 'icgem' and 'bshc'
@@ -894,7 +895,7 @@ class SHGravCoeffs(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             Name of the file, including path.
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to read.
@@ -1306,7 +1307,7 @@ class SHGravCoeffs(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             Name of the output file. If the filename ends with '.gz', the file
             will be compressed using gzip.
         format : str, optional, default = 'shtools'
@@ -1377,6 +1378,9 @@ class SHGravCoeffs(object):
 
         if errors is True and self.errors is None:
             errors = False
+
+        if isinstance(filename, Path):
+            filename = str(filename)
 
         if filename[-3:] == '.gz':
             filebase = filename[:-3]
@@ -1456,7 +1460,7 @@ class SHGravCoeffs(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             Name of the output file.
         title : str, optional, default = ''
             Title of the dataset
@@ -2381,7 +2385,7 @@ class SHGravCoeffs(object):
         return clm
 
     # ---- Routines that return different gravity-related class instances ----
-    def expand(self, a=None, f=None, colat=None, lat=None, lon=None,
+    def expand(self, a=None, f=None, r=None, colat=None, lat=None, lon=None,
                degrees=True, lmax=None, lmax_calc=None, normal_gravity=True,
                sampling=2, extend=True):
         """
@@ -2394,8 +2398,8 @@ class SHGravCoeffs(object):
         -----
         grids = x.expand([a, f, lmax, lmax_calc, normal_gravity, sampling,
                           extend])
-        g = x.expand(lat, lon, [a, f, lmax, lmax_calc, degrees])
-        g = x.expand(colat, lon, [a, f, lmax, lmax_calc, degrees])
+        g = x.expand(lat, lon, [a, f, r, lmax, lmax_calc, degrees])
+        g = x.expand(colat, lon, [a, f, r, lmax, lmax_calc, degrees])
 
         Returns
         -------
@@ -2410,6 +2414,9 @@ class SHGravCoeffs(object):
             is computed.
         f : optional, float, default = 0
             The flattening of the reference ellipsoid: f=(a-b)/a.
+        r : float, ndarray, or list, optional, default = None
+            The radii where the gravity is to be evaluated. When present, a and
+            f are ignored. r must be the same shape as lat, colat, and lon.
         lat : int, float, ndarray, or list, optional, default = None
             Latitude coordinates where the gravity is to be evaluated.
         colat : int, float, ndarray, or list, optional, default = None
@@ -2500,7 +2507,7 @@ class SHGravCoeffs(object):
                 else:
                     lat = temp - colat
 
-            values = self._expand_coord(a=a, f=f, lat=lat, lon=lon,
+            values = self._expand_coord(a=a, f=f, radius=r, lat=lat, lon=lon,
                                         degrees=degrees, lmax_calc=lmax_calc,
                                         omega=self.omega)
             return values
@@ -2736,16 +2743,16 @@ class SHGravCoeffs(object):
     def plot_spectrum(self, function='geoid', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
                       legend=None, legend_error='error', legend_loc='best',
-                      axes_labelsize=None, tick_labelsize=None, ax=None,
-                      show=True, fname=None, **kwargs):
+                      axes_labelsize=None, errors=True, tick_labelsize=None,
+                      ax=None, show=True, fname=None, **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
         x.plot_spectrum([function, unit, base, lmax, xscale, yscale, grid,
-                         legend, legend_loc, axes_labelsize, tick_labelsize,
-                         ax, show, fname, **kwargs])
+                         legend, legend_loc, errors, axes_labelsize,
+                         tick_labelsize, ax, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2777,6 +2784,8 @@ class SHGravCoeffs(object):
         legend_loc : str, optional, default = 'best'
             Location of the legend, such as 'upper right' or 'lower center'
             (see pyplot.legend for all options).
+        errors : bool, optional, default = True
+            If the coefficients have errors, plot the error spectrum.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -2874,7 +2883,7 @@ class SHGravCoeffs(object):
         if yscale == 'log':
             axes.set_yscale('log', base=base)
 
-        if self.errors is not None:
+        if self.errors is not None and errors:
             axes.plot(ls[2:lmax + 1], spectrum[2:lmax + 1], label=legend,
                       **kwargs)
             axes.plot(ls[2:lmax + 1], error_spectrum[2:lmax + 1],
@@ -3837,7 +3846,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
                                            gm=gm, r0=r0, omega=omega,
                                            epoch=self.epoch, copy=False)
 
-    def _expand_coord(self, a, f, lat, lon, degrees, lmax_calc, omega):
+    def _expand_coord(self, a, f, radius, lat, lon, degrees, lmax_calc, omega):
         """Evaluate the gravity at the coordinates lat and lon."""
         coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
 
@@ -3853,47 +3862,43 @@ class SHGravRealCoeffs(SHGravCoeffs):
                              'Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float or type(lat) is _np.float64:
+        if radius is None:
             if f == 0.:
-                r = a
+                if _np.isscalar(lat):
+                    radius = _np.array(a)
+                else:
+                    radius = _np.empty(len(lat))
+                    radius[:] = a
             else:
-                r = _np.cos(_np.deg2rad(latin))**2 + \
-                    _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
-                r = a * _np.sqrt(1. / r)
+                radius = _np.cos(_np.deg2rad(latin))**2 + \
+                         _np.sin(_np.deg2rad(latin))**2 / (1.0 - f)**2
+                radius = a * _np.sqrt(1. / radius)
 
+        if _np.isscalar(lat):
             return _MakeGravGridPoint(coeffs, gm=self.gm, r0=self.r0,
-                                      r=r, lat=latin, lon=lonin,
+                                      r=radius, lat=latin, lon=lonin,
                                       lmax=lmax_calc, omega=self.omega)
+
         elif type(lat) is _np.ndarray:
             values = _np.empty((len(lat), 3), dtype=_np.float64)
-            for i, (latitude, longitude) in enumerate(zip(latin, lonin)):
-                if f == 0.:
-                    r = a
-                else:
-                    r = _np.cos(_np.deg2rad(latitude))**2 + \
-                        _np.sin(_np.deg2rad(latitude))**2 / (1.0 - f)**2
-                    r = a * _np.sqrt(1. / r)
-
+            for i, (r, latitude, longitude) in enumerate(zip(radius, latin,
+                                                             lonin)):
                 values[i, :] = _MakeGravGridPoint(coeffs, gm=self.gm,
                                                   r0=self.r0, r=r,
                                                   lat=latitude, lon=longitude,
                                                   lmax=lmax_calc,
                                                   omega=self.omega)
             return values
+
         elif type(lat) is list:
             values = []
-            for latitude, longitude in zip(latin, lonin):
-                if f == 0.:
-                    r = a
-                else:
-                    r = _np.cos(_np.deg2rad(latitude))**2 + \
-                        _np.sin(_np.deg2rad(latitude))**2 / (1.0 - f)**2
-                    r = a * _np.sqrt(1. / r)
+            for r, latitude, longitude in zip(radius, latin, lonin):
                 values.append(
                     _MakeGravGridPoint(coeffs, gm=self.gm, r0=self.r0,
                                        r=r, lat=latitude, lon=longitude,
                                        lmax=lmax_calc, omega=self.omega))
             return values
+
         else:
             raise ValueError('lat and lon must be either an int, float, '
                              'ndarray, or list. Input types are {:s} and {:s}.'

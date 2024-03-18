@@ -9,11 +9,7 @@ requests
 pooch>=1.1
 tqdm
 cartopy>=0.18.0
-cython
-pyshp
-six
-shapely
-pygmt>=0.3
+pygmt>=0.7.0
 ducc0>=0.15
 palettable>=3.3
 jupyter

@@ -605,8 +605,9 @@ class Slepian(object):
     def plot(self, nmax, projection=None, lmax=None, maxcolumns=3,
              ticks='WSen', tick_interval=[60, 45],
              minor_tick_interval=[None, None], xlabel='Longitude',
-             ylabel='Latitude', title=True, colorbar=None, cmap='viridis',
-             cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
+             ylabel='Latitude', title=True, title_offset=None, colorbar=None,
+             cmap='viridis', cmap_limits=None, cmap_rlimits=None,
+             cmap_reverse=False, cmap_scale='lin', cb_triangles='neither',
              cb_label=None, cb_ylabel=None, cb_tick_interval=None,
              cb_minor_tick_interval=None, grid=False, loss=False,
              axes_labelsize=None, tick_labelsize=None, titlesize=8,
@@ -618,8 +619,9 @@ class Slepian(object):
         -----
         x.plot(nmax, [projections, lmax, maxcolumns, tick_interval,
                       minor_tick_interval, ticks, xlabel, ylabel, title,
-                      titlesize, colorbar, cmap, cmap_limits, cmap_reverse,
-                      cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
+                      titlesize, title_offset, colorbar, cmap, cmap_limits,
+                      cmap_rlimits, cmap_reverse, cmap_scale, cb_triangles,
+                      cb_label, cb_ylabel, cb_tick_interval,
                       cb_minor_tick_interval, cb_offset, cb_width, grid, loss,
                       axes_labelsize, tick_labelsize, ax, show, fname])
 
@@ -654,6 +656,8 @@ class Slepian(object):
         title : bool, optional, default = True
             If True, plot a title on top of each subplot providing the taper
             number and 1 minus the concentration factor.
+        title_offset : float, optional, default = None
+            The offset between the title and top of the plot in points.
         colorbar : str, optional, default = None
             Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
@@ -663,9 +667,14 @@ class Slepian(object):
             and optionally an interval for each color band. If the
             interval is specified, the number of discrete colors will be
             (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
+        cmap_scale : str, optional, default = 'lin'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
@@ -746,9 +755,10 @@ class Slepian(object):
 
             grid_temp.plot(projection=projection, tick_interval=tick_interval,
                            minor_tick_interval=minor_tick_interval,
-                           title=title_str, ticks=ticks,
-                           xlabel=xlabel, ylabel=ylabel, grid=grid,
-                           cmap=cmap, cmap_reverse=cmap_reverse,
+                           title=title_str, title_offset=title_offset,
+                           ticks=ticks, xlabel=xlabel, ylabel=ylabel,
+                           grid=grid, cmap=cmap, cmap_reverse=cmap_reverse,
+                           cmap_scale=cmap_scale, cmap_rlimits=cmap_rlimits,
                            axes_labelsize=axes_labelsize,
                            tick_labelsize=tick_labelsize,
                            colorbar=colorbar, cmap_limits=cmap_limits,

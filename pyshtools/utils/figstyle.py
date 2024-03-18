@@ -75,7 +75,7 @@ def figstyle(rel_width=0.75, screen_dpi=114, aspect_ratio=4/3,
         'xtick.major.width': 0.6,
         'ytick.major.width': 0.6,
         'xtick.minor.width': 0.6,
-        'xtick.minor.width': 0.6,
+        'ytick.minor.width': 0.6,
         'xtick.top': True,
         'ytick.right': True,
         # grids

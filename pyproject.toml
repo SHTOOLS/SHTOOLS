@@ -6,7 +6,7 @@ dynamic = [
 description = 'SHTOOLS - Spherical Harmonic Tools'
 readme = 'README.md'
 license = { text = 'BSD-3-Clause' }
-requires-python = '>=3.6'
+requires-python = '>=3.9'
 keywords = ['Spherical Harmonics', 'Spectral Estimation', 'Slepian Functions',
             'Legendre Functions', 'Gravity Field', 'Magnetic Field']
 classifiers = [
@@ -44,8 +44,8 @@ homepage = 'https://shtools.github.io/SHTOOLS/'
 download = 'https://github.com/SHTOOLS/SHTOOLS/zipball/master'
 
 [project.optional-dependencies]
-cartopy = ['cython', 'pyshp', 'six', 'shapely', 'cartopy>=0.18.0']
-pygmt = ['pygmt>=0.3']
+cartopy = ['cartopy>=0.18.0']
+pygmt = ['pygmt>=0.7']
 palettable = ['palettable>=3.3']
 ducc = ['ducc0>=0.15']
 
@@ -54,6 +54,7 @@ build-backend = 'mesonpy'
 requires = [
   'meson-python>=0.14',
   'oldest-supported-numpy',
+  'jupyter-core',
   'setuptools>=64',
   'setuptools_scm>=8',
 ]

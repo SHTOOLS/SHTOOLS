@@ -3,7 +3,7 @@
 entries:
 - title: sidebar
   product: SHTOOLS
-  version: '4.11'
+  version: '4.12'
   folders:
 
   - title:
@@ -139,4 +139,3 @@ entries:
     - title: License
       url: /fortran-license.html
       output: web, pdf
-

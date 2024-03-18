@@ -12,6 +12,7 @@ import shutil as _shutil
 import warnings as _warnings
 from scipy.special import factorial as _factorial
 import xarray as _xr
+from pathlib import Path
 
 from ..spectralanalysis import spectrum as _spectrum
 from ..spectralanalysis import cross_spectrum as _cross_spectrum
@@ -362,7 +363,7 @@ class SHCoeffs(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             File name or URL containing the spherical harmonic coefficients.
             filename will be treated as a URL if it starts with 'http://',
             'https://', or 'ftp://'. For 'shtools' and 'bshc' formatted files,
@@ -711,7 +712,7 @@ class SHCoeffs(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             Name of the file, including path.
         lmax : int, optional, default = None
             The maximum spherical harmonic degree to read.
@@ -983,7 +984,7 @@ class SHCoeffs(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             Name of the output file. If the filename ends with '.gz', the file
             will be compressed using gzip.
         format : str, optional, default = 'shtools'
@@ -1043,6 +1044,9 @@ class SHCoeffs(object):
         if errors is True and self.errors is None:
             errors = False
 
+        if isinstance(filename, Path):
+            filename = str(filename)
+
         if filename[-3:] == '.gz':
             filebase = filename[:-3]
         else:
@@ -1094,7 +1098,7 @@ class SHCoeffs(object):
 
         Parameters
         ----------
-        filename : str
+        filename : str or pathlib.Path
             Name of the output file.
         title : str, optional, default = ''
             Title of the dataset
@@ -2067,7 +2071,7 @@ class SHCoeffs(object):
                                        csphase=csphase, lmax=lmax)
         else:
             if self.errors is not None:
-                coeffs, error_coeffs = temp.to_array(
+                coeffs, error_coeffs = self.to_array(
                     normalization=normalization.lower(), csphase=csphase,
                     lmax=lmax, errors=True)
             else:
@@ -2319,8 +2323,8 @@ class SHCoeffs(object):
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
                       legend=None, legend_error='error', legend_loc='best',
-                      axes_labelsize=None, tick_labelsize=None, ax=None,
-                      show=True, fname=None, **kwargs):
+                      errors=True, axes_labelsize=None, tick_labelsize=None,
+                      ax=None, show=True, fname=None, **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
@@ -2328,7 +2332,7 @@ class SHCoeffs(object):
         -----
         x.plot_spectrum([convention, unit, base, lmax, xscale, yscale, grid,
                          axes_labelsize, tick_labelsize, legend, legend_error,
-                         legend_loc, ax, show, fname, **kwargs])
+                         legend_loc, errors, ax, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2360,6 +2364,8 @@ class SHCoeffs(object):
         legend_loc : str, optional, default = 'best'
             Location of the legend, such as 'upper right' or 'lower center'
             (see pyplot.legend for all options).
+        errors : bool, optional, default = True
+            If the coefficients have errors, plot the error spectrum.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -2464,12 +2470,12 @@ class SHCoeffs(object):
 
         if xscale == 'log':
             axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend, **kwargs)
-            if self.errors is not None:
+            if self.errors is not None and errors:
                 axes.plot(ls[1:lmax+1], error_spectrum[1:lmax+1],
                           label='error', **kwargs)
         else:
             axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend, **kwargs)
-            if self.errors is not None:
+            if self.errors is not None and errors:
                 axes.plot(ls[:lmax+1], error_spectrum[:lmax+1],
                           label=legend_error, **kwargs)
             if ax is None:

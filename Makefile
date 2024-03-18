@@ -126,7 +126,7 @@
 ###############################################################################
 
 # The VERSION number is used only for generating the man pages
-VERSION = 4.11
+VERSION = 4.12
 
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
@@ -195,6 +195,14 @@ else ifeq ($(findstring ifort,$(F95)),ifort)
 	SYSMODFLAG = -I$(SYSMODPATH)
 	OPENMPFLAGS ?= -qopenmp
 	LAPACK ?= -mkl
+	BLAS ?=
+else ifeq ($(findstring ifx,$(F95)),ifx)
+	# Default intel fortran flags
+	F95FLAGS ?= -m64 -fpp -free -O3 -Tf
+	MODFLAG = -I$(MODPATH)
+	SYSMODFLAG = -I$(SYSMODPATH)
+	OPENMPFLAGS ?= -qopenmp
+	LAPACK ?= -qmkl
 	BLAS ?=
 else ifeq ($(findstring g95,$(F95)),g95)
 	# Default g95 flags.

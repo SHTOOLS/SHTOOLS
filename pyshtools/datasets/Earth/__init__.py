@@ -26,6 +26,7 @@ Thebault2021               :  Thebault et al. (2021); degree 1050
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
+from pooch import DOIDownloader as _DOIDownloader
 from pooch import FTPDownloader as _FTPDownloader
 from pooch import Unzip as _Unzip
 from ...shclasses import SHGravCoeffs as _SHGravCoeffs
@@ -63,7 +64,8 @@ def EGM2008(lmax=2190):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
                                    errors='calibrated',
-                                   omega=_egm2008.omega.value, name='EGM2008',
+                                   omega=_egm2008.omega.value,
+                                   name='EGM2008 (Earth)',
                                    encoding='utf-8')
 
 
@@ -95,7 +97,8 @@ def EIGEN_6C4(lmax=2190):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
                                    errors='formal', omega=_egm2008.omega.value,
-                                   encoding='iso-8859-1', name='EIGEN_6C4')
+                                   encoding='iso-8859-1',
+                                   name='EIGEN_6C4 (Earth)')
 
 
 def GGM05C(lmax=360):
@@ -125,8 +128,8 @@ def GGM05C(lmax=360):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
                                    errors='calibrated',
-                                   omega=_egm2008.omega.value, name='GGM05C',
-                                   encoding='utf-8')
+                                   omega=_egm2008.omega.value,
+                                   name='GGM05C (Earth)', encoding='utf-8')
 
 
 def GOCO06S(lmax=300):
@@ -155,7 +158,7 @@ def GOCO06S(lmax=300):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
                                    errors='formal', omega=_egm2008.omega.value,
-                                   name='GOCO06S', encoding='utf-8')
+                                   name='GOCO06S (Earth)', encoding='utf-8')
 
 
 def EIGEN_GRGS_RL04_MEAN_FIELD(epoch=None, lmax=300):
@@ -188,7 +191,7 @@ def EIGEN_GRGS_RL04_MEAN_FIELD(epoch=None, lmax=300):
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
                                    errors='formal', omega=_egm2008.omega.value,
                                    epoch=epoch,
-                                   name='EIGEN_GRGS_RL04_MEAN_FIELD',
+                                   name='EIGEN_GRGS_RL04_MEAN_FIELD (Earth)',
                                    encoding='utf-8')
 
 
@@ -218,7 +221,7 @@ def XGM2019E(lmax=2190):
     )
     return _SHGravCoeffs.from_file(fname, lmax=lmax, format='icgem',
                                    errors='formal', omega=_egm2008.omega.value,
-                                   name='XGM2019E', encoding='utf-8')
+                                   name='XGM2019E (Earth)', encoding='utf-8')
 
 
 def IGRF_13(lmax=13, year=2020.):
@@ -251,7 +254,8 @@ def IGRF_13(lmax=13, year=2020.):
     )
     return _SHMagCoeffs.from_file(fname, format='igrf', r0=6371.2e3,
                                   lmax=lmax, year=year, file_units='nT',
-                                  name='IGRF_13', units='nT', encoding='utf-8')
+                                  name='IGRF_13 (Earth)', units='nT',
+                                  encoding='utf-8')
 
 
 def NGDC_720_V3(lmax=740):
@@ -282,7 +286,7 @@ def NGDC_720_V3(lmax=740):
     )
     return _SHMagCoeffs.from_file(fname, r0=6371.2e3, lmax=lmax, skip=14,
                                   header=False, file_units='nT',
-                                  name='NGDC_720_V3', units='nT',
+                                  name='NGDC_720_V3 (Earth)', units='nT',
                                   encoding='utf-8')
 
 
@@ -305,13 +309,13 @@ def WDMAM2_800(lmax=800):
         Earth, Planets and Space, 68, 27, doi:10.1186/s40623-016-0404-6.
     '''
     fname = _retrieve(
-        url="https://zenodo.org/record/3902903/files/WDMAM2_800.sh.gz?download=1",  # noqa: E501
+        url="doi:10.5281/zenodo.3902903/WDMAM2_800.sh.gz",  # noqa: E501
         known_hash="sha256:3ddf3d9f37cbfafebf965649c5d3745c52a5127b4c4cd7c2768ad521867e1e2d",  # noqa: E501
-        downloader=_HTTPDownloader(progressbar=True),
+        downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname, r0=6371.2e3, lmax=lmax, header=False,
-                                  file_units='nT', name='WDMAM2_800',
+                                  file_units='nT', name='WDMAM2_800 (Earth)',
                                   units='nT', encoding='utf-8')
 
 
@@ -343,7 +347,7 @@ def SWARM_MLI_2D_0501(lmax=133):
     return _SHMagCoeffs.from_file(fname[0], format='dov', r0=6371.2e3,
                                   r0_index=None, lmax=lmax, header=True,
                                   header2=True, skip=3, file_units='nT',
-                                  name='SWARM_MLI_2D_0501', units='nT',
+                                  name='SWARM_MLI_2D_0501 (Earth)', units='nT',
                                   encoding='utf-8')
 
 
@@ -367,16 +371,16 @@ def Thebault2021(lmax=1050):
         doi:10.1029/2021GL095147.
     '''
     fname = _retrieve(
-        url="https://zenodo.org/record/5546528/files/Spherical_HarmonicModel_GRL.zip?download=1",  # noqa: E501
+        url="doi:10.5281/zenodo.5546528/Spherical_HarmonicModel_GRL.zip",  # noqa: E501
         known_hash="sha256:d3ce3f049158cb055d1e69efaa39f0618d808d1e01f18efb5058b6ac5fa4e78d",  # noqa: E501
-        downloader=_HTTPDownloader(progressbar=True),
+        downloader=_DOIDownloader(progressbar=True),
         processor=_Unzip(),
         path=_os_cache('pyshtools'),
     )
     return _SHMagCoeffs.from_file(fname[0], format='shtools', r0=6371.2e3,
                                   r0_index=None, lmax=lmax, header=False,
                                   header2=False, skip=13, file_units='nT',
-                                  name='Thebault2021', units='nT',
+                                  name='Thebault2021 (Earth)', units='nT',
                                   encoding='utf-8')
 
 

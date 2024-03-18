@@ -143,8 +143,9 @@ class SHGravGrid(object):
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='right',
-                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                 title=None, titlesize=None, title_offset=None,
+                 colorbar='right', cmap='viridis', cmap_limits=None,
+                 cmap_rlimits=None, cmap_reverse=False, cmap_scale='lin',
                  cb_triangles='neither', cb_label='$g_r$, m s$^{-2}$',
                  cb_tick_interval=None, cb_offset=None,
                  cb_width=None, grid=False, axes_labelsize=None,
@@ -157,11 +158,12 @@ class SHGravGrid(object):
         Usage
         -----
         x.plot_rad([projection, tick_interval, minor_tick_interval, ticks,
-                    xlabel, ylabel, title, colorbar, cmap, cmap_limits,
-                    cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
-                    ax, show, fname])
+                    xlabel, ylabel, title, title_offset, colorbar, cmap,
+                    cmap_limits, cmap_rlimits, cmap_reverse, cmap_scale,
+                    cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
+                    cb_minor_tick_interval, cb_offset, cb_width, grid,
+                    titlesize, axes_labelsize, tick_labelsize, ax, show,
+                    fname])
 
         Parameters
         ----------
@@ -185,6 +187,8 @@ class SHGravGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
+        title_offset : float, optional, default = None
+            The offset between the title and top of the plot in points.
         colorbar : str, optional, default = 'right'
             Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
@@ -194,9 +198,14 @@ class SHGravGrid(object):
             and optionally an interval for each color band. If the interval is
             specified, the number of discrete colors will be
             (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
+        cmap_scale : str, optional, default = 'lin'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
@@ -235,9 +244,12 @@ class SHGravGrid(object):
                              tick_interval=tick_interval,
                              minor_tick_interval=minor_tick_interval,
                              xlabel=xlabel, ylabel=ylabel, title=title,
-                             titlesize=titlesize, colorbar=colorbar,
-                             cmap=cmap, cmap_limits=cmap_limits,
-                             cmap_reverse=cmap_reverse, cb_offset=cb_offset,
+                             titlesize=titlesize, title_offset=title_offset,
+                             colorbar=colorbar, cmap=cmap,
+                             cmap_limits=cmap_limits,
+                             cmap_rlimits=cmap_rlimits,
+                             cmap_reverse=cmap_reverse, cmap_scale=cmap_scale,
+                             cb_offset=cb_offset,
                              cb_triangles=cb_triangles, cb_label=cb_label,
                              cb_tick_interval=cb_tick_interval, grid=grid,
                              axes_labelsize=axes_labelsize,
@@ -249,8 +261,9 @@ class SHGravGrid(object):
 
     def plot_theta(self, projection=None, tick_interval=[30, 30],
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                   title=None, titlesize=None, colorbar='right',
-                   cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                   title=None, titlesize=None, title_offset=None,
+                   colorbar='right', cmap='viridis', cmap_limits=None,
+                   cmap_rlimits=None, cmap_reverse=False, cmap_scale='lin',
                    cb_triangles='neither', cb_label=r'$g_\theta$, m s$^{-2}$',
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    tick_labelsize=None, show=True, ax=None, cb_offset=None,
@@ -262,11 +275,12 @@ class SHGravGrid(object):
         Usage
         -----
         x.plot_theta([projection, tick_interval, minor_tick_interval, ticks,
-                      xlabel, ylabel, title, colorbar, cmap, cmap_limits,
-                      cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                      cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                      cb_width, grid, titlesize, axes_labelsize,
-                      tick_labelsize, ax, show, fname])
+                      xlabel, ylabel, title, title_offset, colorbar, cmap,
+                      cmap_limits, cmap_rlimits, cmap_reverse, cmap_scale,
+                      cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
+                      cb_minor_tick_interval, cb_offset, cb_width, grid,
+                      titlesize, axes_labelsize, tick_labelsize, ax, show,
+                      fname])
 
         Parameters
         ----------
@@ -290,6 +304,8 @@ class SHGravGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
+        title_offset : float, optional, default = None
+            The offset between the title and top of the plot in points.
         colorbar : str, optional, default = 'right'
             Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
@@ -299,9 +315,14 @@ class SHGravGrid(object):
             and optionally an interval for each color band. If the interval is
             specified, the number of discrete colors will be
             (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
+        cmap_scale : str, optional, default = 'lin'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
@@ -340,8 +361,11 @@ class SHGravGrid(object):
                                tick_interval=tick_interval,
                                minor_tick_interval=minor_tick_interval,
                                xlabel=xlabel, ylabel=ylabel, title=title,
-                               titlesize=titlesize, colorbar=colorbar,
-                               cmap=cmap, cmap_limits=cmap_limits,
+                               titlesize=titlesize, title_offset=title_offset,
+                               colorbar=colorbar, cmap=cmap,
+                               cmap_limits=cmap_limits,
+                               cmap_rlimits=cmap_rlimits,
+                               cmap_scale=cmap_scale,
                                cmap_reverse=cmap_reverse, cb_offset=cb_offset,
                                cb_triangles=cb_triangles, cb_label=cb_label,
                                cb_tick_interval=cb_tick_interval, grid=grid,
@@ -354,8 +378,9 @@ class SHGravGrid(object):
 
     def plot_phi(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='right',
-                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                 title=None, titlesize=None, title_offset=None,
+                 colorbar='right', cmap='viridis', cmap_limits=None,
+                 cmap_rlimits=None, cmap_reverse=False, cmap_scale='lin',
                  cb_triangles='neither', cb_label=r'$g_\phi$, m s$^{-2}$',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
                  tick_labelsize=None, show=True, ax=None, cb_offset=None,
@@ -367,11 +392,12 @@ class SHGravGrid(object):
         Usage
         -----
         x.plot_phi([projection, tick_interval, minor_tick_interval, ticks,
-                    xlabel, ylabel, title, colorbar, cmap, cmap_limits,
-                    cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
-                    ax, show, fname])
+                    xlabel, ylabel, title, title_offset, colorbar, cmap,
+                    cmap_limits, cmap_reverse, cmap_scale, cb_triangles,
+                    cb_label, cb_ylabel, cb_tick_interval,
+                    cb_minor_tick_interval, cb_offset, cb_width, grid,
+                    titlesize, axes_labelsize, tick_labelsize, ax, show,
+                    fname])
 
         Parameters
         ----------
@@ -395,6 +421,8 @@ class SHGravGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
+        title_offset : float, optional, default = None
+            The offset between the title and top of the plot in points.
         colorbar : str, optional, default = 'right'
             Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
@@ -404,9 +432,14 @@ class SHGravGrid(object):
             and optionally an interval for each color band. If the interval is
             specified, the number of discrete colors will be
             (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
+        cmap_scale : str, optional, default = 'lin'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
@@ -445,8 +478,10 @@ class SHGravGrid(object):
                              tick_interval=tick_interval,
                              minor_tick_interval=minor_tick_interval,
                              xlabel=xlabel, ylabel=ylabel, title=title,
-                             titlesize=titlesize, colorbar=colorbar,
-                             cmap=cmap, cmap_limits=cmap_limits,
+                             titlesize=titlesize, title_offset=title_offset,
+                             colorbar=colorbar, cmap=cmap,
+                             cmap_limits=cmap_limits,
+                             cmap_rlimits=cmap_rlimits, cmap_scale=cmap_scale,
                              cmap_reverse=cmap_reverse, cb_offset=cb_offset,
                              cb_triangles=cb_triangles, cb_label=cb_label,
                              cb_tick_interval=cb_tick_interval, grid=grid,
@@ -459,8 +494,9 @@ class SHGravGrid(object):
 
     def plot_total(self, projection=None, tick_interval=[30, 30],
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                   title=None, titlesize=None, colorbar='right',
-                   cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                   title=None, titlesize=None, title_offset=None,
+                   colorbar='right', cmap='viridis', cmap_limits=None,
+                   cmap_rlimits=None, cmap_reverse=False, cmap_scale='lin',
                    cb_triangles='neither', cb_label='Gravity disturbance',
                    cb_tick_interval=None, grid=False, axes_labelsize=None,
                    tick_labelsize=None, show=True, ax=None, cb_offset=None,
@@ -472,11 +508,12 @@ class SHGravGrid(object):
         Usage
         -----
         x.plot_total([projection, tick_interval, minor_tick_interval, ticks,
-                      xlabel, ylabel, title, colorbar, cmap, cmap_limits,
-                      cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                      cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                      cb_width, grid, titlesize, axes_labelsize,
-                      tick_labelsize, ax, show, fname])
+                      xlabel, ylabel, title, title_offset, colorbar, cmap,
+                      cmap_limits, cmap_rlimits, cmap_scale, cmap_reverse,
+                      cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
+                      cb_minor_tick_interval, cb_offset, cb_width, grid,
+                      titlesize, axes_labelsize, tick_labelsize, ax, show,
+                      fname])
 
         Parameters
         ----------
@@ -500,6 +537,8 @@ class SHGravGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
+        title_offset : float, optional, default = None
+            The offset between the title and top of the plot in points.
         colorbar : str, optional, default = 'right'
             Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
@@ -509,9 +548,14 @@ class SHGravGrid(object):
             and optionally an interval for each color band. If the interval is
             specified, the number of discrete colors will be
             (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
+        cmap_scale : str, optional, default = 'lin'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
@@ -567,22 +611,23 @@ class SHGravGrid(object):
                          tick_interval=tick_interval,
                          minor_tick_interval=minor_tick_interval,
                          xlabel=xlabel, ylabel=ylabel, title=title,
-                         titlesize=titlesize, colorbar=colorbar,
-                         cmap=cmap, cmap_limits=cmap_limits,
+                         titlesize=titlesize, title_offset=title_offset,
+                         colorbar=colorbar, cmap=cmap, cmap_limits=cmap_limits,
+                         cmap_rlimits=cmap_rlimits, cmap_scale=cmap_scale,
                          cmap_reverse=cmap_reverse, cb_offset=cb_offset,
                          cb_triangles=cb_triangles, cb_label=cb_label,
                          cb_tick_interval=cb_tick_interval, grid=grid,
-                         axes_labelsize=axes_labelsize,
-                         cb_ylabel=cb_ylabel, ticks=ticks,
-                         cb_width=cb_width,
+                         axes_labelsize=axes_labelsize,  cb_ylabel=cb_ylabel,
+                         ticks=ticks, cb_width=cb_width,
                          cb_minor_tick_interval=cb_minor_tick_interval,
-                         tick_labelsize=tick_labelsize, ax=ax,
-                         show=show, fname=fname)
+                         tick_labelsize=tick_labelsize, ax=ax, show=show,
+                         fname=fname)
 
     def plot_pot(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
-                 title=None, titlesize=None, colorbar='right',
-                 cmap='viridis', cmap_limits=None, cmap_reverse=False,
+                 title=None, titlesize=None, title_offset=None,
+                 colorbar='right', cmap='viridis', cmap_limits=None,
+                 cmap_rlimits=None, cmap_reverse=False, cmap_scale='lin',
                  cb_triangles='neither', cb_label='Potential, m$^2$ s$^{-2}$',
                  cb_tick_interval=None, grid=False, axes_labelsize=None,
                  tick_labelsize=None, show=True, ax=None, cb_offset=None,
@@ -594,11 +639,12 @@ class SHGravGrid(object):
         Usage
         -----
         x.plot_pot([projection, tick_interval, minor_tick_interval, ticks,
-                    xlabel, ylabel, title, colorbar, cmap, cmap_limits,
-                    cmap_reverse, cb_triangles, cb_label, cb_ylabel,
-                    cb_tick_interval, cb_minor_tick_interval, cb_offset,
-                    cb_width, grid, titlesize, axes_labelsize, tick_labelsize,
-                    ax, show, fname])
+                    xlabel, ylabel, title, title_offset, colorbar, cmap,
+                    cmap_limits, cmap_rlimits, cmap_reverse, cmap_scale,
+                    cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
+                    cb_minor_tick_interval, cb_offset, cb_width, grid,
+                    titlesize, axes_labelsize, tick_labelsize, ax, show,
+                    fname])
 
         Parameters
         ----------
@@ -622,6 +668,8 @@ class SHGravGrid(object):
             Label for the latitude axis.
         title : str or list, optional, default = None
             The title of the plot.
+        title_offset : float, optional, default = None
+            The offset between the title and top of the plot in points.
         colorbar : str, optional, default = 'right'
             Plot a colorbar along the 'top', 'right', 'bottom', or 'left' axis.
         cmap : str, optional, default = 'viridis'
@@ -631,9 +679,14 @@ class SHGravGrid(object):
             and optionally an interval for each color band. If the interval is
             specified, the number of discrete colors will be
             (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
+        cmap_scale : str, optional, default = 'lin'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
@@ -672,8 +725,10 @@ class SHGravGrid(object):
                              tick_interval=tick_interval,
                              minor_tick_interval=minor_tick_interval,
                              xlabel=xlabel, ylabel=ylabel, title=title,
-                             titlesize=titlesize, colorbar=colorbar,
-                             cmap=cmap, cmap_limits=cmap_limits,
+                             titlesize=titlesize, title_offset=title_offset,
+                             colorbar=colorbar, cmap=cmap,
+                             cmap_limits=cmap_limits,
+                             cmap_rlimits=cmap_rlimits, cmap_scale=cmap_scale,
                              cmap_reverse=cmap_reverse, cb_offset=cb_offset,
                              cb_triangles=cb_triangles, cb_label=cb_label,
                              cb_tick_interval=cb_tick_interval, grid=grid,
@@ -686,10 +741,11 @@ class SHGravGrid(object):
 
     def plot(self, projection=None, tick_interval=[60, 30],
              minor_tick_interval=[None, None], xlabel='Longitude',
-             ylabel='Latitude', colorbar='bottom', cmap='viridis',
-             cmap_limits=None, cmap_reverse=False, cb_triangles='neither',
-             cb_tick_interval=None, grid=False, axes_labelsize=9,
-             tick_labelsize=8, show=True, cb_offset=None,
+             ylabel='Latitude', title_offset=None, colorbar='bottom',
+             cmap='viridis', cmap_limits=None, cmap_rlimits=None,
+             cmap_reverse=False, cmap_scale='lin', cb_triangles='neither',
+             cb_tick_interval=None, grid=False, titlesize=None,
+             axes_labelsize=9, tick_labelsize=8, show=True, cb_offset=None,
              cb_minor_tick_interval=None, ticks='WSen', cb_ylabel=None,
              cb_width=None, fname=None):
         """
@@ -698,11 +754,12 @@ class SHGravGrid(object):
 
         Usage
         -----
-        x.plot([projection, tick_interval, minor_tick_interval, ticks, xlabel,
-                ylabel, colorbar, cmap, cmap_limits, cmap_reverse,
-                cb_triangles, cb_ylabel, cb_tick_interval,
-                cb_minor_tick_interval, cb_offset, cb_width, grid,
-                axes_labelsize, tick_labelsize, show, fname])
+        x.plot([projection, tick_interval, minor_tick_interval, ticks,
+                title_offset, xlabel, ylabel, colorbar, cmap, cmap_limits,
+                cmap_rlimits, cmap_reverse, cmap_scale, cb_triangles,
+                cb_ylabel, cb_tick_interval, cb_minor_tick_interval,
+                cb_offset, cb_width, grid, titlesize, axes_labelsize,
+                tick_labelsize, show, fname])
 
         Parameters
         ----------
@@ -720,6 +777,8 @@ class SHGravGrid(object):
             letters plot the ticks and annotations, whereas small letters plot
             only the ticks. 'W', 'S', 'E', and 'N' denote the west, south, east
             and north boundaries of the plot.
+        title_offset : float, optional, default = None
+            The offset between the title and top of the plot in points.
         xlabel : str, optional, default = 'longitude'
             Label for the longitude axis.
         ylabel : str, optional, default = 'latitude'
@@ -733,9 +792,14 @@ class SHGravGrid(object):
             and optionally an interval for each color band. If the interval is
             specified, the number of discrete colors will be
             (cmap_limits[1]-cmap_limits[0])/cmap_limits[2].
+        cmap_rlimits : list, optional, default = None
+           Same as cmap_limits, except the provided upper and lower values are
+           relative with respect to the maximum value of the data.
         cmap_reverse : bool, optional, default = False
             Set to True to reverse the sense of the color progression in the
             color table.
+        cmap_scale : str, optional, default = 'lin'
+            Scale of the color axis: 'lin' for linear or 'log' for logarithmic.
         cb_triangles : str, optional, default = 'neither'
             Add triangles to the edges of the colorbar for minimum and maximum
             values. Can be 'neither', 'both', 'min', or 'max'.
@@ -754,6 +818,8 @@ class SHGravGrid(object):
             horizontal colorbars, respectively.
         grid : bool, optional, default = False
             If True, plot major grid lines.
+        titlesize : int, optional, default = None
+            The font size of the title.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
@@ -779,8 +845,9 @@ class SHGravGrid(object):
                       tick_interval=tick_interval,
                       minor_tick_interval=minor_tick_interval,
                       xlabel=xlabel, ylabel=ylabel, title=None,
-                      titlesize=None, colorbar=colorbar,
-                      cmap=cmap, cmap_limits=cmap_limits,
+                      title_offset=title_offset, titlesize=titlesize,
+                      colorbar=colorbar, cmap=cmap, cmap_limits=cmap_limits,
+                      cmap_rlimits=cmap_rlimits, cmap_scale=cmap_scale,
                       cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
                       cb_tick_interval=cb_tick_interval,
                       grid=grid, axes_labelsize=axes_labelsize,
@@ -792,8 +859,9 @@ class SHGravGrid(object):
                         tick_interval=tick_interval,
                         minor_tick_interval=minor_tick_interval,
                         xlabel=xlabel, ylabel=ylabel, title=None,
-                        titlesize=None, colorbar=colorbar,
-                        cmap=cmap, cmap_limits=cmap_limits,
+                        titlesize=titlesize, title_offset=title_offset,
+                        colorbar=colorbar, cmap=cmap, cmap_limits=cmap_limits,
+                        cmap_rlimits=cmap_rlimits, cmap_scale=cmap_scale,
                         cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
                         cb_tick_interval=cb_tick_interval,
                         grid=grid, axes_labelsize=axes_labelsize,
@@ -805,8 +873,9 @@ class SHGravGrid(object):
                       tick_interval=tick_interval,
                       minor_tick_interval=minor_tick_interval,
                       xlabel=xlabel, ylabel=ylabel, title=None,
-                      titlesize=None, colorbar=colorbar,
-                      cmap=cmap, cmap_limits=cmap_limits,
+                      titlesize=titlesize, title_offset=title_offset,
+                      colorbar=colorbar, cmap=cmap, cmap_limits=cmap_limits,
+                      cmap_rlimits=cmap_rlimits, cmap_scale=cmap_scale,
                       cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
                       cb_tick_interval=cb_tick_interval,
                       grid=grid, axes_labelsize=axes_labelsize,
@@ -818,8 +887,9 @@ class SHGravGrid(object):
                         tick_interval=tick_interval,
                         minor_tick_interval=minor_tick_interval,
                         xlabel=xlabel, ylabel=ylabel, title=None,
-                        titlesize=None, colorbar=colorbar,
-                        cmap=cmap, cmap_limits=cmap_limits,
+                        titlesize=titlesize, title_offset=title_offset,
+                        colorbar=colorbar, cmap=cmap, cmap_limits=cmap_limits,
+                        cmap_rlimits=cmap_rlimits, cmap_scale=cmap_scale,
                         cmap_reverse=cmap_reverse, cb_triangles=cb_triangles,
                         cb_tick_interval=cb_tick_interval,
                         grid=grid, axes_labelsize=axes_labelsize,
