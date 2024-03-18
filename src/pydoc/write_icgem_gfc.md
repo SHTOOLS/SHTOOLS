@@ -11,7 +11,7 @@ write_icgem_gfc(filename, coeffs, [errors, header, lmax, modelname, gm, r0,
 
 # Parameters
 
-filename : str
+filename : str or pathlib.Path
 :   The filename to save the spherical harmonic ICGEM-formatted
     coefficients. If filename ends with '.gz' the file will be compressed
     using gzip.

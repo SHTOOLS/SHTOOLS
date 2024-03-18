@@ -31,7 +31,7 @@ mass = _Constant(
     reference='Derived from gm_callisto and G.')
 
 mean_radius = _Constant(
-    abbrev='r_callisto',
+    abbrev='mean_radius_callisto',
     name='Mean radius of Callisto',
     value=2410.3e3,
     unit='m',
@@ -43,29 +43,47 @@ mean_radius = _Constant(
 
 r = mean_radius
 
-density = _Constant(
-    abbrev='density_callisto',
+volume_equivalent_radius = _Constant(
+    abbrev='volume_equivalent_radius_callisto',
+    name='Volume equivalent radius of Callisto',
+    value=mean_radius.value,
+    unit='m',
+    uncertainty=mean_radius.uncertainty,
+    reference='Equal to mean_radius_callisto')
+
+volume = _Constant(
+    abbrev='volume_callisto',
+    name='Volume of Callisto',
+    value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
+    unit='m',
+    uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
+    volume_equivalent_radius.uncertainty,
+    reference='Derived from volume_equivalent_radius_callisto')
+
+mean_density = _Constant(
+    abbrev='mean_density_callisto',
     name='Mean density of Callisto',
-    value=3 * mass.value / (_np.pi * 4 * mean_radius.value**3),
+    value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
     uncertainty=_np.sqrt((3 * mass.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**3))**2
+                         (_np.pi * 4 * volume_equivalent_radius.value**3))**2
                          + (3 * 3 * mass.value *
-                         mean_radius.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**4))**2
+                         volume_equivalent_radius.uncertainty /
+                         (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_callisto and r_callisto.')
+    reference='Derived from mass_callisto and '
+    'volume_equivalent_radius_callisto.')
 
-g0 = _Constant(
-    abbrev='g0_callisto',
-    name='Surface gravity of Callisto, ignoring rotation and tides',
+gravity_mean_radius = _Constant(
+    abbrev='gravity_mean_radius_callisto',
+    name='Gravity at the mean radius of Callisto, ignoring rotation and tides',
     value=gm.value / mean_radius.value**2,
     unit='m / s2',
     uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
                          + (2 * gm.value * mean_radius.uncertainty
                          / mean_radius.value**3)**2
                          ),
-    reference='Derived from gm_callisto and r_callisto.')
+    reference='Derived from gm_callisto and mean_radius_callisto.')
 
 omega = _Constant(
     abbrev='omega_callisto',
@@ -82,4 +100,6 @@ omega = _Constant(
     '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
 
 
-__all__ = ['gm', 'mass', 'mean_radius', 'r', 'gm', 'density', 'omega']
+__all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume',
+           'volume_equivalent_radius', 'gravity_mean_radius', 'mean_density',
+           'omega']

@@ -3,5 +3,5 @@ channels:
     - conda-forge
 dependencies:
     - python=3.12
-    - pyshtools>=4.11.0
+    - pyshtools>=4.12.0
     - palettable>=3.3

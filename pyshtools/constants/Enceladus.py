@@ -48,15 +48,24 @@ mean_radius = _Constant(
 r = mean_radius
 
 volume_equivalent_radius = _Constant(
-    abbrev='r_volume_enceladus',
+    abbrev='volume_equivalent_radius_enceladus',
     name='Volume equivalent radius of Enceladus',
     value=251985.3,
     unit='m',
     uncertainty=0.,
     reference='Computed using JPL_SPC_shape and SHCoeffs.volume()')
 
-density = _Constant(
-    abbrev='density_enceladus',
+volume = _Constant(
+    abbrev='volume_enceladus',
+    name='Volume of Enceladus',
+    value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
+    unit='m',
+    uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
+    volume_equivalent_radius.uncertainty,
+    reference='Derived from volume_equivalent_radius_enceladus')
+
+mean_density = _Constant(
+    abbrev='mean_density_enceladus',
     name='Mean density of Enceladus',
     value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
@@ -66,18 +75,20 @@ density = _Constant(
                          volume_equivalent_radius.uncertainty /
                          (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_enceladus and r_volume_enceladus.')
+    reference='Derived from mass_enceladus and '
+    'volume_equivalent_radius_enceladus.')
 
-g0 = _Constant(
-    abbrev='g0_enceladus',
-    name='Surface gravity of Enceladus, ignoring rotation and tides',
+gravity_mean_radius = _Constant(
+    abbrev='gravity_mean_radius_enceladus',
+    name='Gravity at the mean radius of Enceladus, ignoring rotation and '
+    'tides',
     value=gm.value / mean_radius.value**2,
     unit='m / s2',
     uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
                          + (2 * gm.value * mean_radius.uncertainty
                          / mean_radius.value**3)**2
                          ),
-    reference='Derived from gm_enceladus and r_enceladus.')
+    reference='Derived from gm_enceladus and mean_radius_enceladus.')
 
 omega = _Constant(
     abbrev='omega_enceladus',
@@ -92,4 +103,5 @@ omega = _Constant(
     'Libration of Enceladus. Journal of Geophysical Research: Planets, '
     '129(1), e2023JE008054. https://doi.org/10.1029/2023JE008054')
 
-__all__ = ['gm', 'mass', 'mean_radius', 'r', 'gm', 'density', 'omega']
+__all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
+           'volume', 'gravity_mean_radius', 'mean_density', 'omega']

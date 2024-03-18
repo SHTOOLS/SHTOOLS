@@ -31,7 +31,7 @@ mass = _Constant(
     reference='Derived from gm_Europa and G.')
 
 mean_radius = _Constant(
-    abbrev='r_europa',
+    abbrev='mean_radius_europa',
     name='Mean radius of Europa',
     value=1560.8e3,
     unit='m',
@@ -43,29 +43,46 @@ mean_radius = _Constant(
 
 r = mean_radius
 
-density = _Constant(
-    abbrev='density_europa',
+volume_equivalent_radius = _Constant(
+    abbrev='volume_equivalent_radius_europa',
+    name='Volume equivalent radius of Europa',
+    value=mean_radius.value,
+    unit='m',
+    uncertainty=mean_radius.uncertainty,
+    reference='Equal to mean_radius_europa')
+
+volume = _Constant(
+    abbrev='volume_europa',
+    name='Volume of Europa',
+    value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
+    unit='m',
+    uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
+    volume_equivalent_radius.uncertainty,
+    reference='Derived from volume_equivalent_radius_europa')
+
+mean_density = _Constant(
+    abbrev='mean_density_europa',
     name='Mean density of Europa',
-    value=3 * mass.value / (_np.pi * 4 * mean_radius.value**3),
+    value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
     uncertainty=_np.sqrt((3 * mass.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**3))**2
+                         (_np.pi * 4 * volume_equivalent_radius.value**3))**2
                          + (3 * 3 * mass.value *
-                         mean_radius.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**4))**2
+                         volume_equivalent_radius.uncertainty /
+                         (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_europa and r_europa.')
+    reference='Derived from mass_europa and volume_equivalent_radius_europa.')
 
-g0 = _Constant(
-    abbrev='g0_europa',
-    name='Surface gravity of Europa, ignoring rotation and tides',
+gravity_mean_radius = _Constant(
+    abbrev='gravity_mean_radius_europa',
+    name='Gravity at mean radius of Europa, ignoring rotation and tides',
     value=gm.value / mean_radius.value**2,
     unit='m / s2',
     uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
                          + (2 * gm.value * mean_radius.uncertainty
                          / mean_radius.value**3)**2
                          ),
-    reference='Derived from gm_europa and r_europa.')
+    reference='Derived from gm_europa and mean_radius_europa.')
 
 omega = _Constant(
     abbrev='omega_europa',
@@ -82,4 +99,5 @@ omega = _Constant(
     '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
 
 
-__all__ = ['gm', 'mass', 'mean_radius', 'r', 'gm', 'density', 'omega']
+__all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
+           'volume', 'gravity_mean_radius', 'mean_density', 'omega']

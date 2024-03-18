@@ -33,7 +33,7 @@ mass = _Constant(
     reference='Derived from gm_vesta and G.')
 
 mean_radius = _Constant(
-    abbrev='r_vesta',
+    abbrev='mean_radius_vesta',
     name='Mean radius of (4) Vesta',
     value=260362.3,
     unit='m',
@@ -45,15 +45,24 @@ mean_radius = _Constant(
 r = mean_radius
 
 volume_equivalent_radius = _Constant(
-    abbrev='r_volume_vesta',
+    abbrev='volume_equivalent_radius_vesta',
     name='Volume equivalent radius of (4) Vesta',
     value=261590.3,
     unit='m',
     uncertainty=0.,
     reference='Computed using DLR_SPG_shape and SHCoeffs.volume()')
 
-density = _Constant(
-    abbrev='density_vesta',
+volume = _Constant(
+    abbrev='volume_vesta',
+    name='Volume of (4) Vesta',
+    value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
+    unit='m',
+    uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
+    volume_equivalent_radius.uncertainty,
+    reference='Derived from volume_equivalent_radius_vesta')
+
+mean_density = _Constant(
+    abbrev='mean_density_vesta',
     name='Mean density of (4) Vesta',
     value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
@@ -63,18 +72,18 @@ density = _Constant(
                          volume_equivalent_radius.uncertainty /
                          (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_vesta and r_volume_vesta.')
+    reference='Derived from mass_vesta and volume_equivalent_radius_vesta.')
 
-g0 = _Constant(
-    abbrev='g0_vesta',
-    name='Surface gravity of (4) Vesta, ignoring rotation',
+gravity_mean_radius = _Constant(
+    abbrev='gravity_mean_radius_vesta',
+    name='Gravity at the mean radius of (4) Vesta, ignoring rotation',
     value=gm.value / mean_radius.value**2,
     unit='m / s2',
     uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
                          + (2 * gm.value * mean_radius.uncertainty
                          / mean_radius.value**3)**2
                          ),
-    reference='Derived from gm_vesta and r_vesta.')
+    reference='Derived from gm_vesta and mean_radius_vesta.')
 
 omega = _Constant(
     abbrev='omega_vesta',
@@ -89,4 +98,5 @@ omega = _Constant(
     'period, landmark positions, and ephemeris from the Dawn tracking and '
     'optical data. Icarus, 240, 103-117, doi:10.1016/j.icarus.2013.09.005.')
 
-__all__ = ['gm', 'mass', 'mean_radius', 'r', 'gm', 'density', 'omega']
+__all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
+           'volume', 'gravity_mean_radius', 'mean_density', 'omega']

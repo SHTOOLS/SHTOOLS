@@ -52,7 +52,7 @@ def TestMakeGravGrid():
     fig, axes = plt.subplots(2, 2)
 
     for num, vv, s in ((0, rad, "$g_{r}$"), (1, theta, "$g_{\\theta}$"),
-                       (2, phi, "$g_{\phi}$"),
+                       (2, phi, r"$g_{\phi}$"),
                        (3, total, "Gravity disturbance")):
         if (num == 3):
             axes.flat[num].imshow(vv * 1.e5, vmin=-400, vmax=550)
@@ -151,7 +151,7 @@ def TestMakeMagGrid():
     fig, axes = plt.subplots(2, 2)
 
     for num, vv, s in ((0, rad, "$B_{r}$"), (1, theta, "$B_{\\theta}$"),
-                       (2, phi, "$B_{\phi}$"), (3, total, "$|B|$")):
+                       (2, phi, r"$B_{\phi}$"), (3, total, "$|B|$")):
         if (num == 3):
             axes.flat[num].imshow(vv, vmin=0, vmax=700)
         else:

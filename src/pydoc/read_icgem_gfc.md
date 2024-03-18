@@ -26,7 +26,7 @@ errors : ndarray, optional, shape (2, lmax + 1, lmax + 1)
 
 # Parameters
 
-filename : str
+filename : str or pathlib.Path
 :   The filename containing the spherical harmonic ICGEM-formatted
     coefficients. filename will be treated as a URL if it starts with
     'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or

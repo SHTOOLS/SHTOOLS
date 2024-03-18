@@ -41,7 +41,7 @@ for func, file in functions:
         kind = [[] for i in range(len(lines))]
         # Classify each line before processing
         for i in range(len(lines)):
-            lines[i] = lines[i].replace('*', '\*')
+            lines[i] = lines[i].replace('*', r'\*')
             if lines[i].isspace():
                 kind[i] = 'blank'
             elif lines[i].strip() == 'Usage':
@@ -109,7 +109,7 @@ for func, file in functions:
             elif kind[i] == 'desc' and kind[i-1] == 'parameter':
                 lines[i] = ':   ' + lines[i].strip() + '\n'
             elif kind[i] == 'desc' and kind[i-1] == 'continuation':
-                 lines[i] = ':   ' + lines[i].strip() + '\n'
+                lines[i] = ':   ' + lines[i].strip() + '\n'
             elif kind[i] == 'continuation' and kind[i-1] == 'continuation':
                 lines[i] = '    ' + lines[i].strip() + '\n'
             elif kind[i] == 'continuation' and kind[i-1] == 'desc':

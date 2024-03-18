@@ -14,7 +14,7 @@ clm : ndarray, size (2, 14, 14)
 
 # Parameters
 
-filename : str
+filename : str or pathlib.Path
 :   The filename containing the IGRF formatted spherical harmonic
     coefficients. filename will be treated as a URL if it starts with
     'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or

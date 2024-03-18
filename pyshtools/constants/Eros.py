@@ -32,7 +32,7 @@ mass = _Constant(
     reference='Derived from gm_eros and G.')
 
 mean_radius = _Constant(
-    abbrev='r_eros',
+    abbrev='mean_radius_eros',
     name='Mean radius of (433) Eros',
     value=7315.9,
     unit='m',
@@ -44,15 +44,24 @@ mean_radius = _Constant(
 r = mean_radius
 
 volume_equivalent_radius = _Constant(
-    abbrev='r_volume_eros',
+    abbrev='volume_equivalent_radius_eros',
     name='Volume equivalent radius of (433) Eros',
     value=8427.8,
     unit='m',
     uncertainty=0.,
     reference='Computed using NLR_shape and SHCoeffs.volume()')
 
-density = _Constant(
-    abbrev='density_eros',
+volume = _Constant(
+    abbrev='volume_eros',
+    name='Volume of (433) Eros',
+    value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
+    unit='m',
+    uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
+    volume_equivalent_radius.uncertainty,
+    reference='Derived from volume_equivalent_radius_eros')
+
+mean_density = _Constant(
+    abbrev='mean_density_eros',
     name='Mean density of (433) Eros',
     value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
@@ -62,18 +71,18 @@ density = _Constant(
                          volume_equivalent_radius.uncertainty /
                          (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_eros and r_volume_eros.')
+    reference='Derived from mass_eros and volume_equivalent_radius_eros.')
 
-g0 = _Constant(
-    abbrev='g0_eros',
-    name='Gravity of (433) Eros at mean planetary radius, ignoring rotation',
+gravity_mean_radius = _Constant(
+    abbrev='gravity_mean_radius_eros',
+    name='Gravity at the mean radius of (433) Eros, ignoring rotation',
     value=gm.value / mean_radius.value**2,
     unit='m / s2',
     uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
                          + (2 * gm.value * mean_radius.uncertainty
                          / mean_radius.value**3)**2
                          ),
-    reference='Derived from gm_eros and r_eros.')
+    reference='Derived from gm_eros and mean_radius_eros.')
 
 omega = _Constant(
     abbrev='omega_vesta',
@@ -87,4 +96,5 @@ omega = _Constant(
     'of Shape, Gravity, and Rotational State of Asteroid 433 Eros. Icarus, '
     '155(1), 3–17. https://doi.org/10.1006/icar.2001.6753')
 
-__all__ = ['gm', 'mass', 'mean_radius', 'r', 'gm', 'density', 'omega']
+__all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
+           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
