@@ -32,7 +32,7 @@ mass = _Constant(
     reference='Derived from gm_ganymede and G.')
 
 mean_radius = _Constant(
-    abbrev='r_ganymede',
+    abbrev='mean_radius_ganymede',
     name='Mean radius of Ganymede',
     value=2632630.,
     unit='m',
@@ -44,21 +44,39 @@ mean_radius = _Constant(
 
 r = mean_radius
 
-density = _Constant(
-    abbrev='density_ganymede',
+volume_equivalent_radius = _Constant(
+    abbrev='volume_equivalent_radius_ganymede',
+    name='Volume equivalent radius of Ganymede',
+    value=mean_radius.value,
+    unit='m',
+    uncertainty=mean_radius.uncertainty,
+    reference='Equal to mean_radius_ganymede')
+
+volume = _Constant(
+    abbrev='volume_ganymede',
+    name='Volume of Ganymede',
+    value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
+    unit='m',
+    uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
+    volume_equivalent_radius.uncertainty,
+    reference='Derived from volume_equivalent_radius_ganymede')
+
+mean_density = _Constant(
+    abbrev='mean_density_ganymede',
     name='Mean density of Ganymede',
-    value=3 * mass.value / (_np.pi * 4 * mean_radius.value**3),
+    value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
     uncertainty=_np.sqrt((3 * mass.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**3))**2
+                         (_np.pi * 4 * volume_equivalent_radius.value**3))**2
                          + (3 * 3 * mass.value *
-                         mean_radius.uncertainty /
-                         (_np.pi * 4 * mean_radius.value**4))**2
+                         volume_equivalent_radius.uncertainty /
+                         (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_ganymede and r_ganymede.')
+    reference='Derived from mass_ganymede and '
+    'volume_equivalent_radius_ganymede.')
 
-g0 = _Constant(
-    abbrev='g0_ganymede',
+gravity_mean_radius = _Constant(
+    abbrev='gravity_mean_radius_ganymede',
     name='Surface gravity of Ganymede, ignoring rotation and tides',
     value=gm.value / mean_radius.value**2,
     unit='m / s2',
@@ -66,7 +84,7 @@ g0 = _Constant(
                          + (2 * gm.value * mean_radius.uncertainty
                          / mean_radius.value**3)**2
                          ),
-    reference='Derived from gm_ganymede and r_ganymede.')
+    reference='Derived from gm_ganymede and mean_radius_ganymede.')
 
 omega = _Constant(
     abbrev='omega_Ganymede',
@@ -83,4 +101,5 @@ omega = _Constant(
     '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
 
 
-__all__ = ['gm', 'mass', 'mean_radius', 'r', 'gm', 'density', 'omega']
+__all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
+           'volume', 'gravity_mean_radius', 'mean_density', 'omega']

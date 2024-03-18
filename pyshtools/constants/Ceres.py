@@ -33,7 +33,7 @@ mass = _Constant(
     reference='Derived from gm_ceres and G.')
 
 mean_radius = _Constant(
-    abbrev='r_ceres',
+    abbrev='mean_radius_ceres',
     name='Mean radius of (1) Ceres',
     value=469461.8,
     unit='m',
@@ -45,15 +45,24 @@ mean_radius = _Constant(
 r = mean_radius
 
 volume_equivalent_radius = _Constant(
-    abbrev='r_volume_ceres',
+    abbrev='volume_equivalent_radius_ceres',
     name='Volume equivalent radius of (1) Ceres',
     value=469725.0,
     unit='m',
     uncertainty=0.,
     reference='Computed using JPL_SPC_shape and SHCoeffs.volume()')
 
-density = _Constant(
-    abbrev='density_ceres',
+volume = _Constant(
+    abbrev='volume_ceres',
+    name='Volume of (1) Ceres',
+    value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
+    unit='m',
+    uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
+    volume_equivalent_radius.uncertainty,
+    reference='Derived from volume_equivalent_radius_ceres')
+
+mean_density = _Constant(
+    abbrev='mean_density_ceres',
     name='Mean density of (1) Ceres',
     value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
@@ -63,18 +72,18 @@ density = _Constant(
                          volume_equivalent_radius.uncertainty /
                          (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_ceres and r_volume_ceres.')
+    reference='Derived from mass_ceres and volume_equivalent_radius_ceres.')
 
-g0 = _Constant(
-    abbrev='g0_ceres',
-    name='Surface gravity of (1) Ceres, ignoring rotation',
+gravity_mean_radius = _Constant(
+    abbrev='gravity_mean_radius_ceres',
+    name='Gravity at the mean radius of (1) Ceres, ignoring rotation',
     value=gm.value / mean_radius.value**2,
     unit='m / s2',
     uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
                          + (2 * gm.value * mean_radius.uncertainty
                          / mean_radius.value**3)**2
                          ),
-    reference='Derived from gm_ceres and r_ceres.')
+    reference='Derived from gm_ceres and mean_radius_ceres.')
 
 omega = _Constant(
     abbrev='omega_ceres',
@@ -89,4 +98,5 @@ omega = _Constant(
     'Dawn radiometric tracking and optical data, Icarus, 299, 411-429, '
     'doi:10.1016/j.icarus.2017.08.005.')
 
-__all__ = ['gm', 'mass', 'mean_radius', 'r', 'gm', 'density', 'omega']
+__all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
+           'volume', 'gravity_mean_radius', 'mean_density', 'omega']

@@ -31,7 +31,7 @@ mass = _Constant(
     reference='Derived from gm_titan and G.')
 
 mean_radius = _Constant(
-    abbrev='r_titan',
+    abbrev='mean_radius_titan',
     name='Mean radius of Titan',
     value=2574761.2,
     unit='m',
@@ -45,15 +45,24 @@ mean_radius = _Constant(
 r = mean_radius
 
 volume_equivalent_radius = _Constant(
-    abbrev='r_volume_titan',
+    abbrev='volume_equivalent_radius_titan',
     name='Volume equivalent radius of Titan',
     value=2574761.2,
     unit='m',
     uncertainty=0.,
     reference='Computed using Corlies2017 and SHCoeffs.volume()')
 
-density = _Constant(
-    abbrev='density_titan',
+volume = _Constant(
+    abbrev='volume_titan',
+    name='Volume of Titan',
+    value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
+    unit='m',
+    uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
+    volume_equivalent_radius.uncertainty,
+    reference='Derived from volume_equivalent_radius_titan')
+
+mean_density = _Constant(
+    abbrev='mean_density_titan',
     name='Mean density of Titan',
     value=3 * mass.value / (_np.pi * 4 * volume_equivalent_radius.value**3),
     unit='kg / m3',
@@ -63,18 +72,18 @@ density = _Constant(
                          volume_equivalent_radius.uncertainty /
                          (_np.pi * 4 * volume_equivalent_radius.value**4))**2
                          ),
-    reference='Derived from mass_titan and r_volume_titan.')
+    reference='Derived from mass_titan and volume_equivalent_radius_titan.')
 
-g0 = _Constant(
-    abbrev='g0_titan',
-    name='Surface gravity of Titan, ignoring rotation and tides',
+gravity_mean_radius = _Constant(
+    abbrev='gravity_mean_radius_titan',
+    name='Gravity at the mean radius of Titan, ignoring rotation and tides',
     value=gm.value / mean_radius.value**2,
     unit='m / s2',
     uncertainty=_np.sqrt((gm.uncertainty / mean_radius.value**2)**2
                          + (2 * gm.value * mean_radius.uncertainty
                          / mean_radius.value**3)**2
                          ),
-    reference='Derived from gm_titan and r_titan.')
+    reference='Derived from gm_titan and mean_radius_titan.')
 
 omega = _Constant(
     abbrev='omega_titan',
@@ -90,4 +99,5 @@ omega = _Constant(
     'Rotational Elements: 2015. Celestial Mechanics and Dynamical Astronomy, '
     '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
 
-__all__ = ['gm', 'mass', 'mean_radius', 'r', 'gm', 'density', 'omega']
+__all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
+           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
