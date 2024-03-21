@@ -41,6 +41,7 @@ except ImportError:
 from astropy.constants import G
 from astropy.constants import mu0
 from astropy.constants import codata
+from astropy.constants import au
 
 # == Constants organized by planet ===
 
@@ -62,6 +63,6 @@ from . import Enceladus
 
 # === Define __all__ ===
 
-__all__ = ['Constant', 'Quantity', 'G', 'mu0', 'codata', 'Mercury', 'Venus',
-           'Earth', 'Moon', 'Mars', 'Vesta', 'Ceres', 'Eros', 'Io', 'Europa',
-           'Ganymede', 'Callisto', 'Titan', 'Enceladus']
+__all__ = ['Constant', 'Quantity', 'G', 'mu0', 'codata', 'au', 'Mercury',
+           'Venus', 'Earth', 'Moon', 'Mars', 'Vesta', 'Ceres', 'Eros', 'Io',
+           'Europa', 'Ganymede', 'Callisto', 'Titan', 'Enceladus']

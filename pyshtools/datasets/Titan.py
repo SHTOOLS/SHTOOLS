@@ -15,7 +15,7 @@ from pooch import retrieve as _retrieve
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
-from ..constants.Titan import omega as _omega
+from ..constants.Titan import angular_velocity as _omega
 
 
 def Corlies2017_shape(lmax=8):

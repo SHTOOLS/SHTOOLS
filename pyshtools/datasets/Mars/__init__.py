@@ -25,7 +25,7 @@ from ...shclasses import SHCoeffs as _SHCoeffs
 from ...shclasses import SHGravCoeffs as _SHGravCoeffs
 from ...shclasses import SHMagCoeffs as _SHMagCoeffs
 from pooch import Decompress as _Decompress
-from ...constants.Mars import omega as _omega
+from ...constants.Mars import angular_velocity as _omega
 from . import historical  # noqa: F401
 
 

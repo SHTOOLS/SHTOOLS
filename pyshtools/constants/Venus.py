@@ -83,8 +83,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_venus and mean_radius_venus.')
 
-omega = _Constant(
-    abbrev='omega_venus',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_venus',
     name='Angular spin rate of Venus',
     value=-2 * _np.pi / (243.0226 * 24 * 60 * 60),
     unit='rad / s',
@@ -95,4 +95,4 @@ omega = _Constant(
     'doi:10.1038/s41550-021-01339-7.')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
+           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity']

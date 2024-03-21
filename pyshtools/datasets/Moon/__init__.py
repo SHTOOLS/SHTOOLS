@@ -27,7 +27,7 @@ from pooch import DOIDownloader as _DOIDownloader
 from ...shclasses import SHCoeffs as _SHCoeffs
 from ...shclasses import SHGravCoeffs as _SHGravCoeffs
 from ...shclasses import SHMagCoeffs as _SHMagCoeffs
-from ...constants.Moon import omega as _omega
+from ...constants.Moon import angular_velocity as _omega
 from . import historical  # noqa: F401
 
 

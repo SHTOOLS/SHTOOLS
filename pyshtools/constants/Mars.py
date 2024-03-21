@@ -83,8 +83,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_mars and mean_radius_mars.')
 
-omega = _Constant(
-    abbrev='omega_mars',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_mars',
     name='Angular spin rate of Mars',
     value=350.891985307 * 2 * _np.pi / 360 / (24 * 60 * 60),
     unit='rad / s',
@@ -144,4 +144,4 @@ u0 = _Constant(
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'mean_density',
            'volume_equivalent_radius', 'volume', 'gravity_mean_radius',
-           'omega', 'a', 'b', 'f', 'u0']
+           'angular_velocity', 'a', 'b', 'f', 'u0']

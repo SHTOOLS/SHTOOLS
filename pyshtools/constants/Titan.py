@@ -85,8 +85,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_titan and mean_radius_titan.')
 
-omega = _Constant(
-    abbrev='omega_titan',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_titan',
     name='Angular spin rate of Titan',
     value=22.5769768 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
@@ -100,4 +100,4 @@ omega = _Constant(
     '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
+           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity']

@@ -84,8 +84,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_eros and mean_radius_eros.')
 
-omega = _Constant(
-    abbrev='omega_vesta',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_vesta',
     name='Angular spin rate of Vesta',
     value=1639.389232 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
@@ -97,4 +97,4 @@ omega = _Constant(
     '155(1), 3–17. https://doi.org/10.1006/icar.2001.6753')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
+           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity']

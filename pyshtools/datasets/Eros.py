@@ -16,7 +16,7 @@ from pooch import HTTPDownloader as _HTTPDownloader
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..shclasses import SHCoeffs as _SHCoeffs
-from ..constants.Eros import omega as _omega
+from ..constants.Eros import angular_velocity as _omega
 
 
 def NLR_shape(lmax=719):

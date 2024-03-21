@@ -85,8 +85,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_callisto and mean_radius_callisto.')
 
-omega = _Constant(
-    abbrev='omega_callisto',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_callisto',
     name='Angular spin rate of Callisto',
     value=21.5710715 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
@@ -102,4 +102,4 @@ omega = _Constant(
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume',
            'volume_equivalent_radius', 'gravity_mean_radius', 'mean_density',
-           'omega']
+           'angular_velocity']

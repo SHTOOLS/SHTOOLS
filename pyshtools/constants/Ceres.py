@@ -85,8 +85,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_ceres and mean_radius_ceres.')
 
-omega = _Constant(
-    abbrev='omega_ceres',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_ceres',
     name='Angular spin rate of (1) Ceres',
     value=952.1532635 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
@@ -99,4 +99,4 @@ omega = _Constant(
     'doi:10.1016/j.icarus.2017.08.005.')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
+           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity']

@@ -30,7 +30,7 @@ Each body can have several attributes, including
 * `volume`
 * `mean_density`
 * `gravity_mean_radius`
-* `omega` (rotation rate)
+* `angular_velocity` (rotation rate)
 
 Additional parameters are defined when appropriate. To see all information about an individual constant, it is only necessary to use the print function:
 ```python
