@@ -237,7 +237,7 @@ class SHGravCoeffs(object):
         if _np.iscomplexobj(coeffs):
             raise TypeError('The input array must be real.')
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -534,7 +534,7 @@ class SHGravCoeffs(object):
             r0_index = None
             gm_index = None
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -773,7 +773,7 @@ class SHGravCoeffs(object):
         Note that the degree 0 term is set to 1, and the degree-1 terms are
         set to 0.
         """
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -925,7 +925,7 @@ class SHGravCoeffs(object):
         except:
             pass
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
@@ -1108,28 +1108,26 @@ class SHGravCoeffs(object):
         if backend is None:
             backend = preferred_backend()
 
-        if type(shape) is not _SHRealCoeffs and type(shape) is not _DHRealGrid:
+        if not isinstance(shape, (_SHRealCoeffs, _DHRealGrid)):
             raise ValueError('shape must be of type SHRealCoeffs '
                              'or DHRealGrid. Input type is {:s}.'
                              .format(repr(type(shape))))
 
-        if (not issubclass(type(rho), float) and type(rho) is not int
-                and type(rho) is not _np.ndarray and
-                type(rho) is not _SHRealCoeffs and
-                type(rho is not _DHRealGrid)):
+        if not isinstance(rho, (float, int, _np.ndarray, _SHRealCoeffs,
+                                _DHRealGrid)):
             raise ValueError('rho must be of type float, int, ndarray, '
                              'SHRealCoeffs or DHRealGrid. Input type is {:s}.'
                              .format(repr(type(rho))))
 
-        if type(shape) is _SHRealCoeffs:
+        if isinstance(shape, _SHRealCoeffs):
             shape = shape.expand(lmax=lmax_grid, lmax_calc=lmax_calc,
                                  backend=backend, nthreads=nthreads)
 
-        if type(rho) is _SHRealCoeffs:
+        if isinstance(rho, _SHRealCoeffs):
             rho = rho.expand(lmax=lmax_grid, lmax_calc=lmax_calc,
                              backend=backend, nthreads=nthreads)
 
-        if type(rho) is _DHRealGrid:
+        if isinstance(rho, _DHRealGrid):
             if shape.lmax != rho.lmax:
                 raise ValueError('The grids for shape and rho must have the '
                                  'same size. '
@@ -2179,7 +2177,7 @@ class SHGravCoeffs(object):
         True. This rotation is accomplished by performing the inverse rotation
         using the angles (-gamma, -beta, -alpha).
         """
-        if type(convention) is not str:
+        if not isinstance(convention, str):
             raise ValueError('convention must be a string. Input type is {:s}.'
                              .format(str(type(convention))))
 
@@ -2255,7 +2253,7 @@ class SHGravCoeffs(object):
             lmax = self.lmax
 
         # check argument consistency
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -2502,7 +2500,7 @@ class SHGravCoeffs(object):
                 else:
                     temp = _np.pi/2.
 
-                if type(colat) is list:
+                if isinstance(colat, list):
                     lat = list(map(lambda x: temp - x, colat))
                 else:
                     lat = temp - colat
@@ -2848,13 +2846,13 @@ class SHGravCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
@@ -3039,19 +3037,19 @@ class SHGravCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -3540,18 +3538,18 @@ class SHGravCoeffs(object):
         elif style == 'combined':
             legend_loc = [legend_loc, legend_loc]
         else:
-            if type(legend_loc) is str:
+            if isinstance(legend_loc, str):
                 legend_loc = [legend_loc, legend_loc]
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
@@ -3879,7 +3877,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
                                       r=radius, lat=latin, lon=lonin,
                                       lmax=lmax_calc, omega=self.omega)
 
-        elif type(lat) is _np.ndarray:
+        elif isinstance(lat, _np.ndarray):
             values = _np.empty((len(lat), 3), dtype=_np.float64)
             for i, (r, latitude, longitude) in enumerate(zip(radius, latin,
                                                              lonin)):
@@ -3890,7 +3888,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
                                                   omega=self.omega)
             return values
 
-        elif type(lat) is list:
+        elif isinstance(lat, list):
             values = []
             for r, latitude, longitude in zip(radius, latin, lonin):
                 values.append(
