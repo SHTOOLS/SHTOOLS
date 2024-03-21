@@ -9,7 +9,7 @@ from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
-from ..constants.Europa import omega as _omega
+from ..constants.Europa import angular_velocity as _omega
 
 
 def Anderson1998(lmax=2):

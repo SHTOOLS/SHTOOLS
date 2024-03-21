@@ -86,8 +86,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_mercury and mean_radius_mercury.')
 
-omega = _Constant(
-    abbrev='omega_mercury',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_mercury',
     name='Angular spin rate of Mercury',
     value=6.1385108 * 2 * _np.pi / 360 / (24 * 60 * 60),
     unit='rad / s',
@@ -98,8 +98,8 @@ omega = _Constant(
     'from MESSENGER observations after three years in orbit, J. Geophys. '
     'Res. Planets, 119, 2417-2436, doi:10.1002/2014JE004675.')
 
-omega_orbit = _Constant(
-    abbrev='omega_orbit_mercury',
+orbit_angular_velocity = _Constant(
+    abbrev='orbit_angular_velocity_mercury',
     name='Angular rotation rate of Mercury about the Sun',
     value=2 * _np.pi / (87.969216879 * 24 * 60 * 60),
     unit='rad / s',
@@ -111,5 +111,5 @@ omega_orbit = _Constant(
     'Res. Planets, 119, 2417-2436, doi:10.1002/2014JE004675.')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'mean_density', 'gravity_mean_radius', 'omega',
-           'omega_orbit']
+           'volume', 'mean_density', 'gravity_mean_radius', 'angular_velocity',
+           'orbit_angular_velocity']

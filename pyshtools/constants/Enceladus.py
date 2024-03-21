@@ -90,8 +90,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_enceladus and mean_radius_enceladus.')
 
-omega = _Constant(
-    abbrev='omega_enceladus',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_enceladus',
     name='Angular spin rate of Enceladus',
     value=262.7318870466 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
@@ -104,4 +104,4 @@ omega = _Constant(
     '129(1), e2023JE008054. https://doi.org/10.1029/2023JE008054')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
+           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity']
