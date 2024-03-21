@@ -197,7 +197,7 @@ class SHMagCoeffs(object):
         if _np.iscomplexobj(coeffs):
             raise TypeError('The input array must be real.')
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -475,7 +475,7 @@ class SHMagCoeffs(object):
             r0_index = None
         header2_list = None
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -697,7 +697,7 @@ class SHMagCoeffs(object):
         of the random realization can be fixed exactly to the input spectrum by
         setting exact_power to True.
         """
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -851,7 +851,7 @@ class SHMagCoeffs(object):
         except:
             pass
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
@@ -1659,7 +1659,7 @@ class SHMagCoeffs(object):
         True. This rotation is accomplished by performing the inverse rotation
         using the angles (-gamma, -beta, -alpha).
         """
-        if type(convention) is not str:
+        if not isinstance(convention, str):
             raise ValueError('convention must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(convention))))
@@ -1741,7 +1741,7 @@ class SHMagCoeffs(object):
             lmax = self.lmax
 
         # check argument consistency
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -2000,7 +2000,7 @@ class SHMagCoeffs(object):
                 else:
                     temp = _np.pi/2.
 
-                if type(colat) is list:
+                if isinstance(colat, list):
                     lat = list(map(lambda x: temp - x, colat))
                 else:
                     lat = temp - colat
@@ -2238,13 +2238,13 @@ class SHMagCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
@@ -2430,19 +2430,19 @@ class SHMagCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -2851,13 +2851,13 @@ class SHMagCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
@@ -3014,7 +3014,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
             return _MakeMagGridPoint(coeffs, a=self.r0, r=radius, lat=latin,
                                      lon=lonin, lmax=lmax_calc)
 
-        elif type(lat) is _np.ndarray:
+        elif isinstance(lat, _np.ndarray):
             values = _np.empty((len(lat), 3), dtype=_np.float64)
             for i, (r, latitude, longitude) in enumerate(zip(radius, latin,
                                                              lonin)):
@@ -3023,7 +3023,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
                                                  lmax=lmax_calc)
             return values
 
-        elif type(lat) is list:
+        elif isinstance(lat, list):
             values = []
             for r, latitude, longitude in zip(radius, latin, lonin):
                 values.append(
