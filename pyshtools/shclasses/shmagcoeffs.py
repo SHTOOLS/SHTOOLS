@@ -848,7 +848,7 @@ class SHMagCoeffs(object):
 
         try:
             normalization = ds.coeffs.normalization
-        except:
+        except Exception:
             pass
 
         if not isinstance(normalization, str):
@@ -864,7 +864,7 @@ class SHMagCoeffs(object):
 
         try:
             csphase = ds.coeffs.csphase
-        except:
+        except Exception:
             pass
 
         if csphase != 1 and csphase != -1:
@@ -875,7 +875,7 @@ class SHMagCoeffs(object):
 
         try:
             units = ds.coeffs.units
-        except:
+        except Exception:
             pass
 
         if units.lower() not in ('nt', 't'):
@@ -884,12 +884,12 @@ class SHMagCoeffs(object):
 
         try:
             r0 = ds.coeffs.r0
-        except:
+        except Exception:
             raise ValueError("coeffs.r0 must be specified in the netcdf file.")
 
         try:
             year = ds.coeffs.year
-        except:
+        except Exception:
             pass
 
         lmaxout = ds.dims['degree'] - 1
@@ -920,7 +920,7 @@ class SHMagCoeffs(object):
             serrors = serrors[:lmaxout+1, :lmaxout+1]
             errors = _np.array([cerrors, serrors])
             error_kind = ds.errors.error_kind
-        except:
+        except Exception:
             errors = None
             error_kind = None
 
