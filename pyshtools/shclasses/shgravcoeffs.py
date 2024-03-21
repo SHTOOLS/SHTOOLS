@@ -922,7 +922,7 @@ class SHGravCoeffs(object):
 
         try:
             normalization = ds.coeffs.normalization
-        except:
+        except Exception:
             pass
 
         if not isinstance(normalization, str):
@@ -938,7 +938,7 @@ class SHGravCoeffs(object):
 
         try:
             csphase = ds.coeffs.csphase
-        except:
+        except Exception:
             pass
 
         if csphase != 1 and csphase != -1:
@@ -949,19 +949,19 @@ class SHGravCoeffs(object):
 
         try:
             gm = ds.coeffs.GM
-        except:
+        except Exception:
             raise ValueError("coeffs.GM must be specified in the netcdf file.")
         try:
             r0 = ds.coeffs.r0
-        except:
+        except Exception:
             raise ValueError("coeffs.r0 must be specified in the netcdf file.")
         try:
             omega = ds.coeffs.omega
-        except:
+        except Exception:
             omega = None
         try:
             epoch = ds.coeffs.epoch
-        except:
+        except Exception:
             pass
 
         lmaxout = ds.dims['degree'] - 1
@@ -992,7 +992,7 @@ class SHGravCoeffs(object):
             serrors = serrors[:lmaxout+1, :lmaxout+1]
             errors = _np.array([cerrors, serrors])
             error_kind = ds.errors.error_kind
-        except:
+        except Exception:
             errors = None
             error_kind = None
 

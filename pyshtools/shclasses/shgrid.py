@@ -448,7 +448,7 @@ class SHGrid(object):
         """
         try:
             units = data_array.units
-        except:
+        except Exception:
             pass
 
         array = data_array.values
@@ -488,7 +488,7 @@ class SHGrid(object):
 
         try:
             units = data_array.units
-        except:
+        except Exception:
             pass
 
         return self.from_array(array, grid=grid, units=units)
