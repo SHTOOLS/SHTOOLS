@@ -98,8 +98,8 @@ a_orbit = _Constant(
     'coordinates, IOM 335-JW,DB, WF-20130722-016, July 22, 2013, '
     'Jet Propul. Lab., Pasadena, Calif.')
 
-omega = _Constant(
-    abbrev='omega_moon',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_moon',
     name='Angular spin rate of the Moon',
     value=2 * _np.pi / (27.321582 * 24 * 60 * 60),
     unit='rad / s',
@@ -156,5 +156,5 @@ gamma = _Constant(
     'Planets, 119, 1546-1578, doi:10.1002/2013JE004559.')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'mean_density', 'gravity_mean_radius', 'a_orbit', 'omega',
-           'i_solid', 'beta', 'gamma']
+           'volume', 'mean_density', 'gravity_mean_radius', 'a_orbit',
+           'angular_velocity', 'i_solid', 'beta', 'gamma']

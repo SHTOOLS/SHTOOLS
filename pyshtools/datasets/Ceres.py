@@ -17,7 +17,7 @@ from pooch import HTTPDownloader as _HTTPDownloader
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..shclasses import SHCoeffs as _SHCoeffs
-from ..constants.Ceres import omega as _omega
+from ..constants.Ceres import angular_velocity as _omega
 
 
 def DLR_SPG_shape(lmax=719):

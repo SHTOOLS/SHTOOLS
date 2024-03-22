@@ -12,7 +12,7 @@ from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
 from ....shclasses import SHGravCoeffs as _SHGravCoeffs
-from ....constants.Moon import omega as _omega
+from ....constants.Moon import angular_velocity as _omega
 
 
 def GLGM2(lmax=70):

@@ -84,8 +84,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_europa and mean_radius_europa.')
 
-omega = _Constant(
-    abbrev='omega_europa',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_europa',
     name='Angular spin rate of Europa',
     value=101.3747235 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
@@ -100,4 +100,4 @@ omega = _Constant(
 
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
+           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity']

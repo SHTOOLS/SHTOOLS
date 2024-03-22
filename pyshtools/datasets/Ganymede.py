@@ -12,7 +12,7 @@ from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
-from ..constants.Ganymede import omega as _omega
+from ..constants.Ganymede import angular_velocity as _omega
 
 
 def Ganymede2022(lmax=5):
