@@ -29,8 +29,7 @@ Inspect a constant using the print function:
 """
 
 try:
-    from astropy.constants import Constant
-    from astropy.units.quantity import Quantity
+    from astropy.constants import codata
 except ImportError:
     raise ImportError('To use the pyshtools constant subpackage, you must '
                       'install astropy.')
@@ -40,7 +39,6 @@ except ImportError:
 
 from astropy.constants import G
 from astropy.constants import mu0
-from astropy.constants import codata
 from astropy.constants import au
 
 # == Constants organized by planet ===
@@ -50,19 +48,25 @@ from . import Venus
 from . import Earth
 from . import Moon
 from . import Mars
-from . import Vesta
 from . import Ceres
+from . import Vesta
 from . import Eros
+from . import Jupiter
 from . import Io
 from . import Europa
 from . import Ganymede
 from . import Callisto
+from . import Saturn
 from . import Titan
 from . import Enceladus
+from . import Uranus
+from . import Neptune
+from . import Pluto
 
 
 # === Define __all__ ===
 
-__all__ = ['Constant', 'Quantity', 'G', 'mu0', 'codata', 'au', 'Mercury',
-           'Venus', 'Earth', 'Moon', 'Mars', 'Vesta', 'Ceres', 'Eros', 'Io',
-           'Europa', 'Ganymede', 'Callisto', 'Titan', 'Enceladus']
+__all__ = ['G', 'mu0', 'codata', 'au', 'Mercury', 'Venus', 'Earth', 'Moon',
+           'Mars', 'Vesta', 'Ceres', 'Eros', 'Jupiter', 'Io', 'Europa',
+           'Ganymede', 'Callisto', 'Saturn', 'Titan', 'Enceladus', 'Uranus',
+           'Neptune', 'Pluto']

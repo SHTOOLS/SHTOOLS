@@ -142,6 +142,46 @@ u0 = _Constant(
     'the planet Mars. Earth, Moon, and Planets, 106, 1-13, '
     'doi:10.1007/s11038-009-9342-7.')
 
+orbit_semimajor_axis = _Constant(
+    abbrev='orbit_semimajor_axis_mars',
+    name='Semimajor axis of the orbit of Mars about the Sun, with respect to '
+    'the mean ecliptic and equinox of J2000, valid for the time interval '
+    '1800-2050 AD',
+    value=1.52371034,
+    unit='au',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_mars',
+    name='Eccentricity of the orbit of Mars about the Sun, with respect to '
+    'the mean ecliptic and equinox of J2000, valid for the time interval '
+    '1800-2050 AD',
+    value=0.09339410,
+    unit='',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_mars',
+    name='Inclination of the orbit of Mars about the Sun, with respect to '
+    'the mean ecliptic and equinox of J2000, valid for the time interval '
+    '1800-2050 AD',
+    value=1.84969142,
+    unit='degrees',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'mean_density',
            'volume_equivalent_radius', 'volume', 'gravity_mean_radius',
-           'angular_velocity', 'a', 'b', 'f', 'u0']
+           'angular_velocity', 'a', 'b', 'f', 'u0', 'orbit_semimajor_axis',
+           'orbit_eccentricity', 'orbit_inclination']

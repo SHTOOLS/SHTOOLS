@@ -110,6 +110,46 @@ orbit_angular_velocity = _Constant(
     'from MESSENGER observations after three years in orbit, J. Geophys. '
     'Res. Planets, 119, 2417-2436, doi:10.1002/2014JE004675.')
 
+orbit_semimajor_axis = _Constant(
+    abbrev='orbit_semimajor_axis_mercury',
+    name='Semimajor axis of the orbit of Mercury about the Sun, with respect '
+    'to the mean ecliptic and equinox of J2000, valid for the time interval '
+    '1800-2050 AD',
+    value=0.38709927,
+    unit='au',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_mercury',
+    name='Eccentricity of the orbit of Mercury about the Sun, with respect to '
+    'the mean ecliptic and equinox of J2000, valid for the time interval '
+    '1800-2050 AD',
+    value=0.20563593,
+    unit='',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_mercury',
+    name='Inclination of the orbit of Mercury about the Sun, with respect to '
+    'the mean ecliptic and equinox of J2000, valid for the time interval '
+    '1800-2050 AD',
+    value=7.00497902,
+    unit='degrees',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
            'volume', 'mean_density', 'gravity_mean_radius', 'angular_velocity',
-           'orbit_angular_velocity']
+           'orbit_angular_velocity', 'orbit_semimajor_axis',
+           'orbit_eccentricity', 'orbit_inclination']
