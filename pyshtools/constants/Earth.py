@@ -172,4 +172,44 @@ dynamical_flattening_earth = _Constant(
     '(No. IERS-TN-36). BUREAU INTERNATIONAL DES POIDS '
     'ET MESURES SEVRES (FRANCE).')
 
-__all__ = [wgs84, egm2008, dynamical_flattening_earth]
+orbit_semimajor_axis = _Constant(
+    abbrev='orbit_semimajor_axis_earth_moon_barycenter',
+    name='Semimajor axis of the orbit of the Earth-Moon barycenter about the '
+    'Sun, with respect to the mean ecliptic and equinox of J2000, valid for '
+    'the time interval 1800-2050 AD',
+    value=1.00000261,
+    unit='au',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_earth_moon_barycenter',
+    name='Eccentricity of the orbit of the Earth-Moon barycenter about the '
+    'Sun, with respect to the mean ecliptic and equinox of J2000, valid for '
+    'the time interval 1800-2050 AD',
+    value=0.01671123,
+    unit='',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_earth_moon_barycenter',
+    name='Inclination of the orbit of the Earth-Moon barycenter about the '
+    'Sun, with respect to the mean ecliptic and equinox of J2000, valid for '
+    'the time interval 1800-2050 AD',
+    value=-0.00001531,
+    unit='degrees',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+__all__ = ['wgs84', 'egm2008', 'dynamical_flattening_earth',
+           'orbit_semimajor_axis', 'orbit_eccentricity', 'orbit_inclination']
