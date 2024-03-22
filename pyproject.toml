@@ -67,3 +67,5 @@ dist = ['--no-tests']
 [tool.setuptools_scm]
 version_scheme =  'no-guess-dev'
 local_scheme =  'dirty-tag'
+parentdir_prefix_version = 'SHTOOLS-'
+fallback_version = '0.0.0'
