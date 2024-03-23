@@ -85,8 +85,8 @@ gravity_mean_radius = _Constant(
     reference='Derived from gm_eros and mean_radius_eros.')
 
 angular_velocity = _Constant(
-    abbrev='angular_velocity_vesta',
-    name='Angular spin rate of Vesta',
+    abbrev='angular_velocity_eros',
+    name='Angular spin rate of (433) Eros',
     value=1639.389232 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
     uncertainty=0.,
@@ -96,5 +96,44 @@ angular_velocity = _Constant(
     'of Shape, Gravity, and Rotational State of Asteroid 433 Eros. Icarus, '
     '155(1), 3–17. https://doi.org/10.1006/icar.2001.6753')
 
+orbit_semimajor_axis = _Constant(
+    abbrev='orbit_semimajor_axis_eros',
+    name='Semimajor axis of the orbit of (433) Eros about the Sun',
+    value=1.458117412303767,
+    unit='au',
+    uncertainty=1.5706E-10,
+    reference='JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
+    'solution date: 2021-May-24 17:55:05')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_eros',
+    name='Eccentricity of the orbit of (433) Eros about the Sun',
+    value=0.2227966940876033,
+    unit='',
+    uncertainty=9.3813E-9,
+    reference='JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
+    'solution date: 2021-May-24 17:55:05')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_eros',
+    name='Inclination of the orbit of (433) Eros about the Sun, with respect '
+    'to the mean ecliptic and equinox of J2000',
+    value=10.82792727465937,
+    unit='degrees',
+    uncertainty=1.158E-6,
+    reference='JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
+    'solution date: 2021-May-24 17:55:05')
+
+orbit_angular_velocity = _Constant(
+    abbrev='orbit_angular_velocity_eros',
+    name='Orbital angular velocity of (433) Eros about the Sun',
+    value=2 * _np.pi / (643.1128260948039 * 24 * 60 * 60),
+    unit='rad / s',
+    uncertainty=2 * _np.pi / (24 * 60 * 60) * 1.0391E-7 / 643.1128260948039**2,
+    reference='JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
+    'solution date: 2021-May-24 17:55:05')
+
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity']
+           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity',
+           'orbit_semimajor_axis', 'orbit_eccentricity',
+           'orbit_inclination', 'orbit_angular_velocity']
