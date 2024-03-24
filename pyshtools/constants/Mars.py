@@ -145,8 +145,7 @@ u0 = _Constant(
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_mars',
     name='Semimajor axis of the orbit of Mars about the Sun, with respect to '
-    'the mean ecliptic and equinox of J2000, valid for the time interval '
-    '1800-2050 AD',
+    'the mean ecliptic and equinox of J2000',
     value=1.52371034,
     unit='au',
     uncertainty=0.,
@@ -158,8 +157,7 @@ orbit_semimajor_axis = _Constant(
 orbit_eccentricity = _Constant(
     abbrev='orbit_eccentricity_mars',
     name='Eccentricity of the orbit of Mars about the Sun, with respect to '
-    'the mean ecliptic and equinox of J2000, valid for the time interval '
-    '1800-2050 AD',
+    'the mean ecliptic and equinox of J2000',
     value=0.09339410,
     unit='',
     uncertainty=0.,
@@ -171,8 +169,7 @@ orbit_eccentricity = _Constant(
 orbit_inclination = _Constant(
     abbrev='orbit_inclination_mars',
     name='Inclination of the orbit of Mars about the Sun, with respect to '
-    'the mean ecliptic and equinox of J2000, valid for the time interval '
-    '1800-2050 AD',
+    'the mean ecliptic and equinox of J2000',
     value=1.84969142,
     unit='degrees',
     uncertainty=0.,
