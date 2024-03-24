@@ -98,6 +98,64 @@ angular_velocity = _Constant(
     'Rotational Elements: 2015. Celestial Mechanics and Dynamical Astronomy, '
     '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
 
+orbit_semimajor_axis = _Constant(
+    abbrev='orbit_semimajor_axis_europa',
+    name='Semimajor axis of the orbit of Europa about Jupiter',
+    value=671100.e3,
+    unit='m',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_europa',
+    name='Eccentricity of the orbit of Europa about Jupiter',
+    value=0.009,
+    unit='',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_europa',
+    name='Inclination of the orbit of Europa about Jupiter with respect '
+    'to the Laplace plane',
+    value=0.5,
+    unit='degrees',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_angular_velocity = _Constant(
+    abbrev='orbit_angular_velocity_europa',
+    name='Orbital angular velocity of Europa about Jupiter',
+    value=2 * _np.pi / (3.525463 * 24 * 60 * 60),
+    unit='rad / s',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_tilt = _Constant(
+    abbrev='orbit_tilt_europa',
+    name='Angle between the Europa Laplace plane and the equatorial plane '
+    'of Jupiter',
+    value=0.0,
+    unit='degrees',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity']
+           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity',
+           'orbit_semimajor_axis', 'orbit_eccentricity',
+           'orbit_inclination', 'orbit_angular_velocity', 'orbit_tilt']
