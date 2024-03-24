@@ -12,8 +12,7 @@ from astropy.constants import G as _G
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_jupiter',
     name='Semimajor axis of the orbit of Jupiter about the Sun, with respect '
-    'to the mean ecliptic and equinox of J2000, valid for the time interval '
-    '1800-2050 AD',
+    'to the mean ecliptic and equinox of J2000',
     value=5.20288700,
     unit='au',
     uncertainty=0.,
@@ -25,8 +24,7 @@ orbit_semimajor_axis = _Constant(
 orbit_eccentricity = _Constant(
     abbrev='orbit_eccentricity_jupiter',
     name='Eccentricity of the orbit of Jupiter about the Sun, with respect to '
-    'the mean ecliptic and equinox of J2000, valid for the time interval '
-    '1800-2050 AD',
+    'the mean ecliptic and equinox of J2000',
     value=0.04838624,
     unit='',
     uncertainty=0.,
@@ -38,8 +36,7 @@ orbit_eccentricity = _Constant(
 orbit_inclination = _Constant(
     abbrev='orbit_inclination_jupiter',
     name='Inclination of the orbit of Jupiter about the Sun, with respect to '
-    'the mean ecliptic and equinox of J2000, valid for the time interval '
-    '1800-2050 AD',
+    'the mean ecliptic and equinox of J2000',
     value=1.30439695,
     unit='degrees',
     uncertainty=0.,

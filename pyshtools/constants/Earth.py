@@ -175,8 +175,7 @@ dynamical_flattening_earth = _Constant(
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_earth_moon_barycenter',
     name='Semimajor axis of the orbit of the Earth-Moon barycenter about the '
-    'Sun, with respect to the mean ecliptic and equinox of J2000, valid for '
-    'the time interval 1800-2050 AD',
+    'Sun, with respect to the mean ecliptic and equinox of J2000',
     value=1.00000261,
     unit='au',
     uncertainty=0.,
@@ -188,8 +187,7 @@ orbit_semimajor_axis = _Constant(
 orbit_eccentricity = _Constant(
     abbrev='orbit_eccentricity_earth_moon_barycenter',
     name='Eccentricity of the orbit of the Earth-Moon barycenter about the '
-    'Sun, with respect to the mean ecliptic and equinox of J2000, valid for '
-    'the time interval 1800-2050 AD',
+    'Sun, with respect to the mean ecliptic and equinox of J2000',
     value=0.01671123,
     unit='',
     uncertainty=0.,
@@ -201,8 +199,7 @@ orbit_eccentricity = _Constant(
 orbit_inclination = _Constant(
     abbrev='orbit_inclination_earth_moon_barycenter',
     name='Inclination of the orbit of the Earth-Moon barycenter about the '
-    'Sun, with respect to the mean ecliptic and equinox of J2000, valid for '
-    'the time interval 1800-2050 AD',
+    'Sun, with respect to the mean ecliptic and equinox of J2000',
     value=-0.00001531,
     unit='degrees',
     uncertainty=0.,
