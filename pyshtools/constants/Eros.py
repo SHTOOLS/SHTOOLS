@@ -102,7 +102,10 @@ orbit_semimajor_axis = _Constant(
     value=1.458117412303767,
     unit='au',
     uncertainty=1.5706E-10,
-    reference='JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
+    reference='Park, R., Folkner, W., Williams, J., & Boggs, D. (2021). The '
+    'JPL Planetary and Lunar Ephemerides DE440 and DE441. The Astronomical '
+    'Journal, 161, 105, https://doi.org/10.3847/1538-3881/abd414. '
+    'Accessed via JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
     'solution date: 2021-May-24 17:55:05')
 
 orbit_eccentricity = _Constant(
@@ -111,7 +114,10 @@ orbit_eccentricity = _Constant(
     value=0.2227966940876033,
     unit='',
     uncertainty=9.3813E-9,
-    reference='JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
+    reference='Park, R., Folkner, W., Williams, J., & Boggs, D. (2021). The '
+    'JPL Planetary and Lunar Ephemerides DE440 and DE441. The Astronomical '
+    'Journal, 161, 105, https://doi.org/10.3847/1538-3881/abd414. '
+    'Accessed via JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
     'solution date: 2021-May-24 17:55:05')
 
 orbit_inclination = _Constant(
@@ -121,7 +127,10 @@ orbit_inclination = _Constant(
     value=10.82792727465937,
     unit='degrees',
     uncertainty=1.158E-6,
-    reference='JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
+    reference='Park, R., Folkner, W., Williams, J., & Boggs, D. (2021). The '
+    'JPL Planetary and Lunar Ephemerides DE440 and DE441. The Astronomical '
+    'Journal, 161, 105, https://doi.org/10.3847/1538-3881/abd414. '
+    'Accessed via JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
     'solution date: 2021-May-24 17:55:05')
 
 orbit_angular_velocity = _Constant(
@@ -130,7 +139,10 @@ orbit_angular_velocity = _Constant(
     value=2 * _np.pi / (643.1128260948039 * 24 * 60 * 60),
     unit='rad / s',
     uncertainty=2 * _np.pi / (24 * 60 * 60) * 1.0391E-7 / 643.1128260948039**2,
-    reference='JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
+    reference='Park, R., Folkner, W., Williams, J., & Boggs, D. (2021). The '
+    'JPL Planetary and Lunar Ephemerides DE440 and DE441. The Astronomical '
+    'Journal, 161, 105, https://doi.org/10.3847/1538-3881/abd414. '
+    'Accessed via JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
     'solution date: 2021-May-24 17:55:05')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',

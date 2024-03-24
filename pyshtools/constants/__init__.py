@@ -43,6 +43,7 @@ from astropy.constants import au
 
 # == Constants organized by planet ===
 
+from . import Sun
 from . import Mercury
 from . import Venus
 from . import Earth
@@ -66,7 +67,7 @@ from . import Pluto
 
 # === Define __all__ ===
 
-__all__ = ['G', 'mu0', 'codata', 'au', 'Mercury', 'Venus', 'Earth', 'Moon',
-           'Mars', 'Vesta', 'Ceres', 'Eros', 'Jupiter', 'Io', 'Europa',
+__all__ = ['G', 'mu0', 'codata', 'au', 'Sun', 'Mercury', 'Venus', 'Earth',
+           'Moon', 'Mars', 'Vesta', 'Ceres', 'Eros', 'Jupiter', 'Io', 'Europa',
            'Ganymede', 'Callisto', 'Saturn', 'Titan', 'Enceladus', 'Uranus',
            'Neptune', 'Pluto']
