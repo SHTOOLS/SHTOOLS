@@ -1,5 +1,6 @@
 python_sources = [
   '__init__.py',
+  'Sun.py',
   'Mercury.py',
   'Venus.py',
   'Earth.py',
