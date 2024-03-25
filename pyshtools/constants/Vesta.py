@@ -98,6 +98,15 @@ angular_velocity = _Constant(
     'period, landmark positions, and ephemeris from the Dawn tracking and '
     'optical data. Icarus, 240, 103-117, doi:10.1016/j.icarus.2013.09.005.')
 
+rotational_period = _Constant(
+    abbrev='rotational_period_vesta',
+    name='Rotational period of (4) Vesta',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_vesta')
+
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_vesta',
     name='Semimajor axis of the orbit of (4) Vesta about the Sun',
@@ -147,7 +156,17 @@ orbit_angular_velocity = _Constant(
     'Accessed via JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
     'solution date: 2021-Apr-13 11:15:57')
 
+orbit_period = _Constant(
+    abbrev='orbit_period_vesta',
+    name='Orbital period of (4) Vesta',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_vesta')
+
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
            'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity',
            'orbit_semimajor_axis', 'orbit_eccentricity',
-           'orbit_inclination', 'orbit_angular_velocity']
+           'orbit_inclination', 'orbit_angular_velocity', 'rotational_period',
+           'orbit_period']

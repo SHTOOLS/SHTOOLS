@@ -100,6 +100,15 @@ angular_velocity = _Constant(
     'Rotational Elements: 2015. Celestial Mechanics and Dynamical Astronomy, '
     '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
 
+rotational_period = _Constant(
+    abbrev='rotational_period_ganymede',
+    name='Rotational period of Ganymede',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_ganymede')
+
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_ganymede',
     name='Semimajor axis of the orbit of Ganymede about Jupiter',
@@ -157,7 +166,17 @@ orbit_tilt = _Constant(
     'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
     'https://ssd.jpl.nasa.gov, JUP365.')
 
+orbit_period = _Constant(
+    abbrev='orbit_period_ganymede',
+    name='Orbital period of Ganymede',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_ganymede')
+
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
            'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity',
            'orbit_semimajor_axis', 'orbit_eccentricity',
-           'orbit_inclination', 'orbit_angular_velocity', 'orbit_tilt']
+           'orbit_inclination', 'orbit_angular_velocity', 'orbit_tilt',
+           'rotational_period', 'orbit_period']

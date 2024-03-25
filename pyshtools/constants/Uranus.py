@@ -8,6 +8,9 @@ import numpy as _np
 
 from astropy.constants import Constant as _Constant
 from astropy.constants import G as _G
+from astropy.constants import au as _au
+from . import Sun as _Sun
+
 
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_uranus',

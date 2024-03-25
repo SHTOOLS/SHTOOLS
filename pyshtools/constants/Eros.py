@@ -96,6 +96,15 @@ angular_velocity = _Constant(
     'of Shape, Gravity, and Rotational State of Asteroid 433 Eros. Icarus, '
     '155(1), 3–17. https://doi.org/10.1006/icar.2001.6753')
 
+rotational_period = _Constant(
+    abbrev='rotational_period_eros',
+    name='Rotational period of (433) Eros',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_eros')
+
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_eros',
     name='Semimajor axis of the orbit of (433) Eros about the Sun',
@@ -145,7 +154,17 @@ orbit_angular_velocity = _Constant(
     'Accessed via JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
     'solution date: 2021-May-24 17:55:05')
 
+orbit_period = _Constant(
+    abbrev='orbit_period_eros',
+    name='Orbital period of (433) Eros',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_eros')
+
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
            'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity',
            'orbit_semimajor_axis', 'orbit_eccentricity',
-           'orbit_inclination', 'orbit_angular_velocity']
+           'orbit_inclination', 'orbit_angular_velocity', 'rotational_period',
+           'orbit_period']

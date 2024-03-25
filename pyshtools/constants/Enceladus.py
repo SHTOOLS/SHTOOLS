@@ -103,6 +103,15 @@ angular_velocity = _Constant(
     'Libration of Enceladus. Journal of Geophysical Research: Planets, '
     '129(1), e2023JE008054. https://doi.org/10.1029/2023JE008054')
 
+rotational_period = _Constant(
+    abbrev='rotational_period_enceladus',
+    name='Rotational period of Enceladus',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_enceladus')
+
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_enceladus',
     name='Semimajor axis of the orbit of Enceladus about Saturn',
@@ -160,8 +169,17 @@ orbit_tilt = _Constant(
     "Saturn's Pole. The Astronomical Journal, 164, 199. "
     'https://doi.org/10.3847/1538-3881/ac90c9')
 
+orbit_period = _Constant(
+    abbrev='orbit_period_enceladus',
+    name='Orbital period of Enceladus',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_enceladus')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
            'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity',
            'orbit_semimajor_axis', 'orbit_eccentricity',
-           'orbit_inclination', 'orbit_angular_velocity', 'orbit_tilt']
+           'orbit_inclination', 'orbit_angular_velocity', 'orbit_tilt',
+           'rotational_period', 'orbit_period']

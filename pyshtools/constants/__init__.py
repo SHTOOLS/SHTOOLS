@@ -10,14 +10,6 @@ Quantity.
 
 Examples
 
-Calculate the gravitational acceleration on the surface of Mars and
-then to convert this to mGals:
-
-    >>> Mars.gm / Mars.r**2
-    <Quantity 3.7278663 m / s2>
-    >>> (Mars.gm / Mars.r**2).to_value('mGal')
-    372786.6303857397
-
 Inspect a constant using the print function:
 
     >>> print(G)
@@ -26,6 +18,17 @@ Inspect a constant using the print function:
       Uncertainty  = 1.5e-15
       Unit  = m3 / (kg s2)
       Reference = CODATA 2018
+
+Convert the orbital period of Callisto to days
+
+    >>> Callisto.rotational_period.to('day')
+    <Quantity 16.68901797 d>
+
+Calculate the gravitational acceleration on the mean planetary radius of
+Mercury and then return as a value converted to mGals:
+
+    >>> (Mercury.gm / Mercury.mean_radius**2).to_value('mGal')
+    370218.70697392424
 """
 
 try:
