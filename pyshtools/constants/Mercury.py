@@ -98,6 +98,15 @@ angular_velocity = _Constant(
     'from MESSENGER observations after three years in orbit, J. Geophys. '
     'Res. Planets, 119, 2417-2436, doi:10.1002/2014JE004675.')
 
+rotational_period = _Constant(
+    abbrev='rotational_period_mercury',
+    name='Rotational period of Mercury',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_mercury')
+
 orbit_angular_velocity = _Constant(
     abbrev='orbit_angular_velocity_mercury',
     name='Angular rotation rate of Mercury about the Sun',
@@ -125,7 +134,7 @@ orbit_semimajor_axis = _Constant(
 orbit_eccentricity = _Constant(
     abbrev='orbit_eccentricity_mercury',
     name='Eccentricity of the orbit of Mercury about the Sun, with respect to '
-    'the mean ecliptic and equinox of J2000,
+    'the mean ecliptic and equinox of J2000',
     value=0.20563593,
     unit='',
     uncertainty=0.,
@@ -146,7 +155,17 @@ orbit_inclination = _Constant(
     'Astronomical Almanac (Third edition, pp. 305–342). University Science '
     'Books.')
 
+orbit_period = _Constant(
+    abbrev='orbit_period_mercury',
+    name='Orbital period of Mercury',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_mercury')
+
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
            'volume', 'mean_density', 'gravity_mean_radius', 'angular_velocity',
            'orbit_angular_velocity', 'orbit_semimajor_axis',
-           'orbit_eccentricity', 'orbit_inclination']
+           'orbit_eccentricity', 'orbit_inclination', 'rotational_period',
+           'orbit_period']

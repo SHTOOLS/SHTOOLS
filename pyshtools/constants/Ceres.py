@@ -98,6 +98,15 @@ angular_velocity = _Constant(
     'Dawn radiometric tracking and optical data, Icarus, 299, 411-429, '
     'doi:10.1016/j.icarus.2017.08.005.')
 
+rotational_period = _Constant(
+    abbrev='rotational_period_ceres',
+    name='Rotational period of (1) Ceres',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_ceres')
+
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_ceres',
     name='Semimajor axis of the orbit of (1) Ceres about the Sun',
@@ -147,7 +156,17 @@ orbit_angular_velocity = _Constant(
     'Accessed via JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
     'solution date: 2021-Apr-13 11:04:44')
 
+orbit_period = _Constant(
+    abbrev='orbit_period_ceres',
+    name='Orbital period of (1) Ceres',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_ceres')
+
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
            'volume', 'gravity_mean_radius', 'mean_density',
            'angular_velocity', 'orbit_semimajor_axis', 'orbit_eccentricity',
-           'orbit_inclination', 'orbit_angular_velocity']
+           'orbit_inclination', 'orbit_angular_velocity', 'rotational_period',
+           'orbit_period']

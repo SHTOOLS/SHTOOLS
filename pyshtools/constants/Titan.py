@@ -99,6 +99,15 @@ angular_velocity = _Constant(
     'Rotational Elements: 2015. Celestial Mechanics and Dynamical Astronomy, '
     '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
 
+rotational_period = _Constant(
+    abbrev='rotational_period_titan',
+    name='Rotational period of Titan',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_titan')
+
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_titan',
     name='Semimajor axis of the orbit of Titan about Saturn',
@@ -156,7 +165,18 @@ orbit_tilt = _Constant(
     "Saturn's Pole. The Astronomical Journal, 164, 199. "
     'https://doi.org/10.3847/1538-3881/ac90c9')
 
+orbit_period = _Constant(
+    abbrev='orbit_period_titan',
+    name='Orbital period of Titan',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_titan')
+
+
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
            'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity',
            'orbit_semimajor_axis', 'orbit_eccentricity',
-           'orbit_inclination', 'orbit_angular_velocity', 'orbit_tilt']
+           'orbit_inclination', 'orbit_angular_velocity', 'orbit_tilt',
+           'rotational_period', 'orbit_period']

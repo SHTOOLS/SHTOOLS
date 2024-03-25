@@ -98,6 +98,15 @@ angular_velocity = _Constant(
     'Physics: A Handbook of Physical Constants. AGU Reference Shelf, '
     'vol. 1, pp. 1-31. American Geophysical Union.')
 
+rotational_period = _Constant(
+    abbrev='rotational_period_moon',
+    name='Rotational period of the Moon',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_moon')
+
 orbit_semimajor_axis = _Constant(
     abbrev='a_orbit_moon',
     name='Semimajor axis of the orbit of the Moon about Earth',
@@ -177,4 +186,5 @@ gamma = _Constant(
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
            'volume', 'mean_density', 'gravity_mean_radius',
            'angular_velocity', 'orbit_semimajor_axis', 'orbit_eccentricity',
-           'orbit_inclination', 'i_solid', 'beta', 'gamma']
+           'orbit_inclination', 'i_solid', 'beta', 'gamma',
+           'rotational_period']
