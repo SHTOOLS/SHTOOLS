@@ -40,7 +40,7 @@ angular_velocity = _Constant(
     unit='rad / s',
     uncertainty=2.05 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     reference='Mankovich, C., Marley, M. S., Fortney, J. J., & Movshovitz, N. '
-    "(2019). Cassini Ring Seismology as a Probe of Saturn's Interior. I. '
+    "(2019). Cassini Ring Seismology as a Probe of Saturn's Interior. I. "
     'Rigid Rotation. The Astrophysical Journal, 871(1), 1. '
     'https://doi.org/10.3847/1538-4357/aaf798')
 

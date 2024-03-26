@@ -186,6 +186,13 @@ The following is the list of implemented datasets. Additional older or deprecate
 | Anderson2001 | Degree and order 2 spherical harmonic model of the gravitational potential of Callisto (Anderson et al. 2001). |
 
 
+### Saturn
+
+| Dataset | Description |
+| ---------- | ----------- |
+| Jacobson2022_gravity | Degree and order 12 spherical harmonic model of the gravitational potential of Saturn (Jacobson 2022). |
+
+
 ### Titan (Saturn)
 
 | Dataset | Description |
