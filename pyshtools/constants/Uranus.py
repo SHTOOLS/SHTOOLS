@@ -114,6 +114,6 @@ orbit_period = _Constant(
     orbit_angular_velocity.value**2,
     reference='Derived from orbit_angular_velocity_uranus')
 
-__all__ = ['gm', 'mass', 'angular_velocity', 'otational_period',
+__all__ = ['gm', 'mass', 'angular_velocity', 'rotational_period',
            'orbit_semimajor_axis', 'orbit_eccentricity',
            'orbit_inclination', 'orbit_angular_velocity', 'orbit_period']
