@@ -88,16 +88,13 @@ gravity_mean_radius = _Constant(
 angular_velocity = _Constant(
     abbrev='angular_velocity_titan',
     name='Angular spin rate of Titan',
-    value=22.5769768 * 2. * _np.pi / 360. / (24. * 60. * 60.),
+    value=2 * _np.pi / (15.945448 * 24 * 60 * 60),
     unit='rad / s',
     uncertainty=0.,
-    reference='Archinal, B. A., Acton, C. H., A’Hearn, M. F., Conrad, A., '
-    'Consolmagno, G. J., Duxbury, T., Hestroffer, D., Hilton, J. L., Kirk, '
-    'R. L., Klioner, S. A., McCarthy, D., Meech, K., Oberst, J., Ping, J., '
-    'Seidelmann, P. K., Tholen, D. J., Thomas, P. C., & Williams, I. P. '
-    '(2018). Report of the IAU Working Group on Cartographic Coordinates and '
-    'Rotational Elements: 2015. Celestial Mechanics and Dynamical Astronomy, '
-    '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
+    reference='Jacobson, R. (2022). The Orbits of the Main Saturnian '
+    'Satellites, the Saturnian System Gravity Field, and the Orientation of '
+    "Saturn's Pole. The Astronomical Journal, 164, 199. "
+    'https://doi.org/10.3847/1538-3881/ac90c9')
 
 rotational_period = _Constant(
     abbrev='rotational_period_titan',
