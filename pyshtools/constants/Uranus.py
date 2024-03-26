@@ -33,6 +33,25 @@ mass = _Constant(
                          ),
     reference='Derived from gm_uranus and G.')
 
+angular_velocity = _Constant(
+    abbrev='angular_velocity_uranus',
+    name='Angular spin rate of Uranus',
+    value=2. * _np.pi / (17.239 * 60 * 60),
+    unit='rad / s',
+    uncertainty=0.009 * 2 * _np.pi / 17.239**2 / 60 / 60,
+    reference='Desch, M. D., Connerney, J. E. P., & Kaiser, M. L. (1986). '
+    'The rotation period of Uranus. Nature, 322(6074), 42–43. '
+    'https://doi.org/10.1038/322042a0')
+
+rotational_period = _Constant(
+    abbrev='rotational_period_uranus',
+    name='Rotational period of Uranus',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_uranus')
+
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_uranus',
     name='Semimajor axis of the orbit of Uranus about the Sun, with respect '
@@ -95,5 +114,6 @@ orbit_period = _Constant(
     orbit_angular_velocity.value**2,
     reference='Derived from orbit_angular_velocity_uranus')
 
-__all__ = ['gm', 'mass', 'orbit_semimajor_axis', 'orbit_eccentricity',
+__all__ = ['gm', 'mass', 'angular_velocity', 'otational_period',
+           'orbit_semimajor_axis', 'orbit_eccentricity',
            'orbit_inclination', 'orbit_angular_velocity', 'orbit_period']
