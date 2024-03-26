@@ -10,7 +10,9 @@ python_sources = [
   'Callisto.py',
   'Saturn.py',
   'Titan.py',
-  'Enceladus.py'
+  'Enceladus.py',
+  'Uranus.py',
+  'Neptune.py',
 ]
 
 python.install_sources(python_sources, subdir: 'pyshtools/datasets')

@@ -190,7 +190,7 @@ The following is the list of implemented datasets. Additional older or deprecate
 
 | Dataset | Description |
 | ---------- | ----------- |
-| Jacobson2022_gravity | Degree and order 12 spherical harmonic model of the gravitational potential of Saturn (Jacobson 2022). |
+| Jacobson2022_gravity | Degree 12 and order 0 spherical harmonic model of the gravitational potential of Saturn (Jacobson 2022). |
 
 
 ### Titan (Saturn)
@@ -209,3 +209,15 @@ The following is the list of implemented datasets. Additional older or deprecate
 | JPL_SPC_shape | Degree and order 1023 spherical harmonic model of the shape of Saturn's moon Enceladus based on the JPL stereo-photoclinometric DTM (Wieczorek 2024). |
 | Iess2014_gravity | Degree and order 3 spherical harmonic model of the gravitational field of Saturn's moon Enceladus (Iess et al. 2014). |
 | Park2024_gravity | Degree and order 3 spherical harmonic model of the gravitational field of Saturn's moon Enceladus (Park et al. 2024). |
+
+### Uranus
+
+| Dataset | Description |
+| ---------- | ----------- |
+| Jacobson2014_gravity | Degree 6 and order 0 spherical harmonic model of the gravitational potential of Uranus (Jacobson 2014). |
+
+### Neptune
+
+| Dataset | Description |
+| ---------- | ----------- |
+| Jacobson2009_gravity | Degree 4 and order 0 spherical harmonic model of the gravitational potential of Neptune (Jacobson 2009). |

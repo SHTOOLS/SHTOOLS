@@ -31,8 +31,10 @@ from . import Callisto
 from . import Saturn
 from . import Titan
 from . import Enceladus
+from . import Uranus
+from . import Neptune
 
 
 __all__ = ['Mercury', 'Venus', 'Earth', 'Moon', 'Mars', 'Eros', 'Vesta',
            'Ceres', 'Io', 'Europa', 'Ganymede', 'Callisto', 'Saturn', 'Titan',
-           'Enceladus']
+           'Enceladus', 'Uranus', 'Neptune']

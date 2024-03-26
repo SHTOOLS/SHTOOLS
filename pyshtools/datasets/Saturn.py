@@ -14,12 +14,12 @@ from ..constants.Saturn import angular_velocity as _omega
 
 def Jacobson2022_gravity(lmax=12):
     '''
-    Jacobson2022_gravity is a degree and order 12 spherical harmonic model of
+    Jacobson2022_gravity is a degree 12 and order 0 spherical harmonic model of
     the gravitational potential of Saturn.
 
     Parameters
     ----------
-    lmax : int, optional, default = 3
+    lmax : int, optional, default = 12
         The maximum spherical harmonic degree to return.
 
     Reference
