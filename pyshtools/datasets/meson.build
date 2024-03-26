@@ -8,6 +8,7 @@ python_sources = [
   'Europa.py',
   'Ganymede.py',
   'Callisto.py',
+  'Saturn.py',
   'Titan.py',
   'Enceladus.py'
 ]

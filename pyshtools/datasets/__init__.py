@@ -28,10 +28,11 @@ from . import Io
 from . import Europa
 from . import Ganymede
 from . import Callisto
+from . import Saturn
 from . import Titan
 from . import Enceladus
 
 
 __all__ = ['Mercury', 'Venus', 'Earth', 'Moon', 'Mars', 'Eros', 'Vesta',
-           'Ceres', 'Io', 'Europa', 'Ganymede', 'Callisto', 'Titan',
+           'Ceres', 'Io', 'Europa', 'Ganymede', 'Callisto', 'Saturn', 'Titan',
            'Enceladus']
