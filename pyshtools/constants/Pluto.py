@@ -1,5 +1,5 @@
 """
-pyshtools constants for Neptune.
+pyshtools constants for Pluto.
 
 Each object is an astropy Constant that possesses the attributes name, value,
 unit, uncertainty, and reference.

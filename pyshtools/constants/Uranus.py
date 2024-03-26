@@ -1,5 +1,5 @@
 """
-pyshtools constants for Uranus.
+pyshtools constants for the planet Uranus.
 
 Each object is an astropy Constant that possesses the attributes name, value,
 unit, uncertainty, and reference.
@@ -11,6 +11,27 @@ from astropy.constants import G as _G
 from astropy.constants import au as _au
 from . import Sun as _Sun
 
+
+gm = _Constant(
+    abbrev='gm_uranus',
+    name='Gravitational constant times the mass of the Uranus system',
+    value=5794556.4e9,
+    unit='m3 / s2',
+    uncertainty=4.3e9,
+    reference='Jacobson, R. A. (2014). The orbits of the Uranian satellites '
+    'and rings, the gravity field of the Uranian system, and the orientation '
+    'of the pole of Uranus. The Astronomical Journal, 148(5), 76. '
+    'https://doi.org/10.1088/0004-6256/148/5/76')
+
+mass = _Constant(
+    abbrev='mass_uranus',
+    name='Mass of Uranus',
+    value=gm.value / _G.value,
+    unit='kg',
+    uncertainty=_np.sqrt((gm.uncertainty / _G.value)**2 +
+                         (gm.value * _G.uncertainty / _G.value**2)**2
+                         ),
+    reference='Derived from gm_uranus and G.')
 
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_uranus',
@@ -48,4 +69,31 @@ orbit_inclination = _Constant(
     'Astronomical Almanac (Third edition, pp. 305–342). University Science '
     'Books.')
 
-__all__ = ['orbit_semimajor_axis', 'orbit_eccentricity', 'orbit_inclination']
+orbit_angular_velocity = _Constant(
+    abbrev='orbit_angular_velocity_uranus',
+    name='Orbital angular velocity of Uranus',
+    value=_np.sqrt((_Sun.gm.value + gm.value) /
+                   (_au.value * orbit_semimajor_axis.value)**3),
+    unit='rad / s',
+    uncertainty=_np.sqrt(
+        _Sun.gm.uncertainty**2 / 4. / (_Sun.gm.value + gm.value) /
+        (_au.value * orbit_semimajor_axis.value)**3 +
+        gm.uncertainty**2 / 4. / (_Sun.gm.value + gm.value) /
+        (_au.value * orbit_semimajor_axis.value)**3 +
+        9. * (_au.value * orbit_semimajor_axis.uncertainty)**2 *
+        (_Sun.gm.value + gm.value) / 4. /
+        (_au.value * orbit_semimajor_axis.value)**5),
+    reference="Approximated using Kepler's third law, gm_sun, gm_uranus and "
+    'orbit_semimajor_axis_uranus')
+
+orbit_period = _Constant(
+    abbrev='orbit_period_uranus',
+    name='Orbital period of Uranus',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_uranus')
+
+__all__ = ['gm', 'mass', 'orbit_semimajor_axis', 'orbit_eccentricity',
+           'orbit_inclination', 'orbit_angular_velocity', 'orbit_period']

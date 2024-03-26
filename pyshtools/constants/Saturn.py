@@ -1,5 +1,5 @@
 """
-pyshtools constants for Saturn.
+pyshtools constants for the planet Saturn.
 
 Each object is an astropy Constant that possesses the attributes name, value,
 unit, uncertainty, and reference.
