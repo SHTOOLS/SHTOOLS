@@ -34,6 +34,25 @@ mass = _Constant(
                          ),
     reference='Derived from gm_jupiter and G.')
 
+angular_velocity = _Constant(
+    abbrev='angular_velocity_jupiter',
+    name='Angular spin rate of Jupiter (system III)',
+    value=0.00017585327063385654,
+    unit='rad / s',
+    uncertainty=1.4765300375888075e-11,
+    reference='Yu, Z. J., & Russell, C. T. (2009). Rotation period of Jupiter '
+    'from the observation of its magnetic field. Geophysical Research '
+    'Letters, 36(20). https://doi.org/10.1029/2009GL040094')
+
+rotational_period = _Constant(
+    abbrev='rotational_period_jupiter',
+    name='Rotational period of Jupiter (system III)',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_jupiter')
+
 orbit_semimajor_axis = _Constant(
     abbrev='orbit_semimajor_axis_jupiter',
     name='Semimajor axis of the orbit of Jupiter about the Sun, with respect '
@@ -96,5 +115,6 @@ orbit_period = _Constant(
     orbit_angular_velocity.value**2,
     reference='Derived from orbit_angular_velocity_uranus')
 
-__all__ = ['gm', 'mass', 'orbit_semimajor_axis', 'orbit_eccentricity',
+__all__ = ['gm', 'mass', 'angular_velocity', 'rotational_period',
+           'orbit_semimajor_axis', 'orbit_eccentricity',
            'orbit_inclination', 'orbit_angular_velocity', 'orbit_period']
