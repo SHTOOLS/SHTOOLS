@@ -7,17 +7,15 @@ Jacobson2022_gravity  :  Jacobson et al. (2022)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
-from pooch import create as _create
 from pooch import DOIDownloader as _DOIDownloader
-from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..constants.Saturn import angular_velocity as _omega
 
 
 def Jacobson2022_gravity(lmax=12):
     '''
-    Jacobson2022_gravity is a degree and order 12 spherical harmonic model of the
-    gravitational potential of Saturn.
+    Jacobson2022_gravity is a degree and order 12 spherical harmonic model of
+    the gravitational potential of Saturn.
 
     Parameters
     ----------
@@ -43,5 +41,6 @@ def Jacobson2022_gravity(lmax=12):
                                    encoding='utf-8',
                                    omega=_omega.value,
                                    normalization='unnorm')
+
 
 __all__ = ['Jacobson2022_gravity']
