@@ -171,7 +171,6 @@ orbit_period = _Constant(
     orbit_angular_velocity.value**2,
     reference='Derived from orbit_angular_velocity_titan')
 
-
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
            'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity',
            'orbit_semimajor_axis', 'orbit_eccentricity',

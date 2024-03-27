@@ -25,7 +25,7 @@ Convert the orbital period of Callisto to days
     <Quantity 16.68901797 d>
 
 Calculate the gravitational acceleration on the mean planetary radius of
-Mercury and then return as a value converted to mGals:
+Mercury and then return a value converted to mGals:
 
     >>> (Mercury.gm / Mercury.mean_radius**2).to_value('mGal')
     370218.70697392424
@@ -66,6 +66,7 @@ from . import Enceladus
 from . import Uranus
 from . import Neptune
 from . import Pluto
+from . import Charon
 
 
 # === Define __all__ ===
@@ -73,4 +74,4 @@ from . import Pluto
 __all__ = ['G', 'mu0', 'codata', 'au', 'Sun', 'Mercury', 'Venus', 'Earth',
            'Moon', 'Mars', 'Vesta', 'Ceres', 'Eros', 'Jupiter', 'Io', 'Europa',
            'Ganymede', 'Callisto', 'Saturn', 'Titan', 'Enceladus', 'Uranus',
-           'Neptune', 'Pluto']
+           'Neptune', 'Pluto', 'Charon']

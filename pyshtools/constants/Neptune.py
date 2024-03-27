@@ -111,7 +111,7 @@ orbit_period = _Constant(
     unit='s',
     uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
     orbit_angular_velocity.value**2,
-    reference='Derived from orbit_angular_velocity_uranus')
+    reference='Derived from orbit_angular_velocity_neptune')
 
 __all__ = ['gm', 'mass', 'orbit_semimajor_axis', 'orbit_eccentricity',
            'orbit_inclination', 'orbit_angular_velocity', 'orbit_period']

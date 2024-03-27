@@ -4,7 +4,7 @@ keywords: spherical harmonics software package, spherical harmonic transform, le
 sidebar: mydoc_sidebar
 permalink: python-constants.html
 summary: pyshtools provides easy access to many research-grade planetary constants.
-toc: true
+toc: false
 folder: mydoc
 ---
 
@@ -20,13 +20,13 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 ## Constants
 
-The *constants* subpackage defines physical constants related to the terrestrial planets and moons. Each constant is an instance of an [astropy](http://docs.astropy.org/en/stable/constants/index.html) `Constant` class, which has the attributes `name`, `value`, `uncertainty`, `unit`, and `reference`.
+The *constants* subpackage defines physical constants related to the terrestrial planets, moons, and asteroids. Each constant is an instance of an [astropy](http://docs.astropy.org/en/stable/constants/index.html) `Constant` class, which has the attributes `name`, `value`, `uncertainty`, `unit`, and `reference`.
 
-Each body can have several attributes, including
-* `gm`,
-* `mass`,
-* `mean_radius` (aliased as `r`),
-* `volume_equivalent_radius`,
+Each body has several attributes, including
+* `gm`
+* `mass`
+* `mean_radius` (aliased as `r`)
+* `volume_equivalent_radius`
 * `volume`
 * `mean_density`
 * `gravity_mean_radius`

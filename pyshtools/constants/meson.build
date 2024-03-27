@@ -20,6 +20,7 @@ python_sources = [
   'Uranus.py',
   'Neptune.py',
   'Pluto.py',
+  'Charon.py',
 ]
 
 python.install_sources(python_sources, subdir: 'pyshtools/constants')
