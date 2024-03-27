@@ -1,9 +1,9 @@
 ---
-title: "Constants and datasets"
+title: "Datasets"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
-permalink: python-datasets-constants.html
-summary: pyshtools provides easy access to many research-grade datasets and common physical constants.
+permalink: python-datasets.html
+summary: pyshtools provides easy access to many research-grade and historical datasets.
 toc: true
 folder: mydoc
 ---
@@ -18,56 +18,9 @@ table:nth-of-type(n) th:nth-of-type(2) {
 }
 </style>
 
-## Constants
-
-The *constants* subpackage defines physical constants related to the terrestrial planets and moons. Each constant is an instance of an [astropy](http://docs.astropy.org/en/stable/constants/index.html) `Constant` class, which has the attributes `name`, `value`, `uncertainty`, `unit`, and `reference`.
-
-Each body can have several attributes, including
-* `gm`,
-* `mass`,
-* `mean_radius` (aliased as `r`),
-* `volume_equivalent_radius`,
-* `volume`
-* `mean_density`
-* `gravity_mean_radius`
-* `angular_velocity`
-* `rotational_period`
-* `orbit_angular_velocity`
-* `orbit_semimajor_axis`
-* `orbit_eccentricity`
-* `orbit_inclination`
-* `orbit_period`
-
-Additional parameters are defined when appropriate. To see all information about an individual constant, it is only necessary to use the print function:
-```python
-In [1]: print(pysh.constants.Mars.mean_radius)
-  Name   = Mean radius of Mars
-  Value  = 3389500.0
-  Uncertainty  = 0.0
-  Unit  = m
-  Reference = MOLA_shape: Wieczorek, M. (2024). Spherical harmonic models of the shape of Mars (1.0.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10794059
-```
-To use the value of a constant in a calculation, such as in this simple calculation of the circumference in kilometers, it is only necessary to access its `value` attribute:
-```python
-In [2]: 2 * np.pi * pysh.constants.Mars.mean_radius.value / 1000
-21296.856598685208
-```
-To convert to a different set of units, one only needs to use the `to` method. For example, this converts the rotational period of Callisto from seconds to days
-```python
-In [3]: pysh.constants.Callisto.rotational_period.to('day')
-<Quantity 16.68901797 d>
-```
-and this computes the gravitational acceleration on the mean planetary radius of
-Mercury and then returns the value as a simple float in mGals:
-```python
-In [4]: (Mercury.gm / Mercury.mean_radius**2).to_value('mGal')
-370218.70697392424
-```
-Physical constants from the *Committee on Data for Science and Technology* are provided in the submodule `codata`, and a few of these (such as `G` and `mu0`) are referenced in the main constants namespace.
-
 ## Datasets
 
-pyshtools provides easy access to many research-grade gravity, topography, and magnetic field datasets of the terrestrial planets. To load a dataset, it is only necessary to call the relevant method from the *datasets* submodule as in these examples:
+pyshtools provides easy access to many research-grade gravity, shape, and magnetic field datasets of the terrestrial planets, moons, and asteroids. To load a dataset, it is only necessary to call the relevant method from the *datasets* submodule as in these examples:
 ```
     hlm = pysh.datasets.Venus.VenusTopo719()  # Venus shape
     clm = pysh.datasets.Earth.EGM2008()  # Earth gravity
@@ -77,7 +30,7 @@ pyshtools provides easy access to many research-grade gravity, topography, and m
 
 When accessing a dataset, the file will first be downloaded from the original source using [pooch](https://www.fatiando.org/pooch/latest/) and then stored in the pyshtools subdirectory of the user's cache directory (if it had not been done previously). The file hash will be verified to ensure that it has not been modified, and the file will then be used to initialize and return an `SHCoeffs`, `SHGravCoeffs` or `SHMagCoeffs` class instance. In most cases the files are stored in their original form: If they need to be decompressed or unzipped, this is done on the fly when they are used. Only when zip archives contain several files are the files stored in unzipped form.
 
-The coefficients can be read up to a maximum specified degree by providing the optional variable `lmax`. For IGRF magnetic field coefficients, the year of the output coefficients can be specified by the optional argument `year` (the default is 2020).
+The coefficients can be read up to a maximum specified degree by providing the optional variable `lmax`. For some datasets (such as the shape of Mars), the several different models of differing resolution exist, and only the smallest file that is necessary based on the user input value of `lmax` will be downloaded. For IGRF magnetic field coefficients, the year of the output coefficients can be specified by the optional argument `year` (the default is 2020).
 
 The following is the list of implemented datasets. Additional older or deprecated datasets can be found in the `historical` module for each body.
 
@@ -171,11 +124,13 @@ The following is the list of implemented datasets. Additional older or deprecate
 | SPC_shape | 511 degree and order spherical harmonic shape model of asteroid (433) Eros based on a stereo-photoclinometry shape model (Wieczorek 2024). |
 | JGE15A01 | JPL 15 degree and order spherical harmonic model of the gravitational potential of asteroid (433) Eros (Miller et al. 2002). |
 
+
 ### Jupiter
 
 | Dataset | Description |
 | ---------- | ----------- |
 | Kaspi2023_gravity | Degree 40 and order 0 spherical harmonic model of the gravitational potential of Jupiter (Kaspi et al. 2023). |
+
 
 ### Io (Jupiter)
 
@@ -231,11 +186,13 @@ The following is the list of implemented datasets. Additional older or deprecate
 | Iess2014_gravity | Degree and order 3 spherical harmonic model of the gravitational field of Saturn's moon Enceladus (Iess et al. 2014). |
 | Park2024_gravity | Degree and order 3 spherical harmonic model of the gravitational field of Saturn's moon Enceladus (Park et al. 2024). |
 
+
 ### Uranus
 
 | Dataset | Description |
 | ---------- | ----------- |
 | Jacobson2014_gravity | Degree 6 and order 0 spherical harmonic model of the gravitational potential of Uranus (Jacobson 2014). |
+
 
 ### Neptune
 
