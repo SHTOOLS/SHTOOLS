@@ -30,7 +30,7 @@ def Anderson2001(lmax=2):
         https://doi.org/10.1006/icar.2001.6664
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10817282/Anderson2001_Callisto_gravity.sh",  # noqa: E501
+        url="doi:10.5281/zenodo.10817282/Anderson2001_Callisto_gravity.sh",
         known_hash="sha256:472d3c6837e96c2aa89c2fb154b71b187248c01e0cb47482d0e743cd02002c6b",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),

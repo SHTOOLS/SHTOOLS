@@ -198,7 +198,7 @@ def Langlais2019(lmax=134):
         doi:10.1029/2018JE005854.
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.3876714/Langlais2019.sh.gz",  # noqa: E501
+        url="doi:10.5281/zenodo.3876714/Langlais2019.sh.gz",
         known_hash="sha256:3cad9e268f0673be1702f1df504a4cbcb8dba4480c7b3f629921911488fe247b",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
@@ -226,7 +226,7 @@ def Morschhauser2014(lmax=110):
         Research: Planets, 119, 1162-1188, doi:10.1002/2013JE004555.
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.3876495/Morschhauser2014.txt.gz",  # noqa: E501
+        url="doi:10.5281/zenodo.3876495/Morschhauser2014.txt.gz",
         known_hash="sha256:a86200b3147a24447ff8bba88ec6047329823275813a9f5e9505bb611e3e86e0",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),

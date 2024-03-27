@@ -309,7 +309,7 @@ def WDMAM2_800(lmax=800):
         Earth, Planets and Space, 68, 27, doi:10.1186/s40623-016-0404-6.
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.3902903/WDMAM2_800.sh.gz",  # noqa: E501
+        url="doi:10.5281/zenodo.3902903/WDMAM2_800.sh.gz",
         known_hash="sha256:3ddf3d9f37cbfafebf965649c5d3745c52a5127b4c4cd7c2768ad521867e1e2d",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
@@ -371,7 +371,7 @@ def Thebault2021(lmax=1050):
         doi:10.1029/2021GL095147.
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.5546528/Spherical_HarmonicModel_GRL.zip",  # noqa: E501
+        url="doi:10.5281/zenodo.5546528/Spherical_HarmonicModel_GRL.zip",
         known_hash="sha256:d3ce3f049158cb055d1e69efaa39f0618d808d1e01f18efb5058b6ac5fa4e78d",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         processor=_Unzip(),
