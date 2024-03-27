@@ -90,8 +90,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_enceladus and mean_radius_enceladus.')
 
-omega = _Constant(
-    abbrev='omega_enceladus',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_enceladus',
     name='Angular spin rate of Enceladus',
     value=262.7318870466 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
@@ -103,5 +103,83 @@ omega = _Constant(
     'Libration of Enceladus. Journal of Geophysical Research: Planets, '
     '129(1), e2023JE008054. https://doi.org/10.1029/2023JE008054')
 
+rotational_period = _Constant(
+    abbrev='rotational_period_enceladus',
+    name='Rotational period of Enceladus',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_enceladus')
+
+orbit_semimajor_axis = _Constant(
+    abbrev='orbit_semimajor_axis_enceladus',
+    name='Semimajor axis of the orbit of Enceladus about Saturn',
+    value=238400e3,
+    unit='m',
+    uncertainty=0.,
+    reference='Jacobson, R. (2022). The Orbits of the Main Saturnian '
+    'Satellites, the Saturnian System Gravity Field, and the Orientation of '
+    "Saturn's Pole. The Astronomical Journal, 164, 199. "
+    'https://doi.org/10.3847/1538-3881/ac90c9')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_enceladus',
+    name='Eccentricity of the orbit of Enceladus about Saturn',
+    value=0.005,
+    unit='',
+    uncertainty=0.,
+    reference='Jacobson, R. (2022). The Orbits of the Main Saturnian '
+    'Satellites, the Saturnian System Gravity Field, and the Orientation of '
+    "Saturn's Pole. The Astronomical Journal, 164, 199. "
+    'https://doi.org/10.3847/1538-3881/ac90c9')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_enceladus',
+    name='Inclination of the orbit of Enceladus about Saturn with respect '
+    'to the Laplace plane',
+    value=0.0,
+    unit='degrees',
+    uncertainty=0.,
+    reference='Jacobson, R. (2022). The Orbits of the Main Saturnian '
+    'Satellites, the Saturnian System Gravity Field, and the Orientation of '
+    "Saturn's Pole. The Astronomical Journal, 164, 199. "
+    'https://doi.org/10.3847/1538-3881/ac90c9')
+
+orbit_angular_velocity = _Constant(
+    abbrev='orbit_angular_velocity_enceladus',
+    name='Orbital angular velocity of enceladus about Saturn',
+    value=2 * _np.pi / (1.370218 * 24 * 60 * 60),
+    unit='rad / s',
+    uncertainty=0.,
+    reference='Jacobson, R. (2022). The Orbits of the Main Saturnian '
+    'Satellites, the Saturnian System Gravity Field, and the Orientation of '
+    "Saturn's Pole. The Astronomical Journal, 164, 199. "
+    'https://doi.org/10.3847/1538-3881/ac90c9')
+
+orbit_tilt = _Constant(
+    abbrev='orbit_tilt_enceladus',
+    name='Angle between the Enceladus Laplace plane and the equatorial plane '
+    'of Saturn',
+    value=0.0,
+    unit='degrees',
+    uncertainty=0.,
+    reference='Jacobson, R. (2022). The Orbits of the Main Saturnian '
+    'Satellites, the Saturnian System Gravity Field, and the Orientation of '
+    "Saturn's Pole. The Astronomical Journal, 164, 199. "
+    'https://doi.org/10.3847/1538-3881/ac90c9')
+
+orbit_period = _Constant(
+    abbrev='orbit_period_enceladus',
+    name='Orbital period of Enceladus',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_enceladus')
+
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
+           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity',
+           'orbit_semimajor_axis', 'orbit_eccentricity',
+           'orbit_inclination', 'orbit_angular_velocity', 'orbit_tilt',
+           'rotational_period', 'orbit_period']

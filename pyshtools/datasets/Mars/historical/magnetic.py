@@ -31,7 +31,7 @@ def FSU50(lmax=50):
         Geophysical Research: Planets, 108 (E2), doi:10.1029/2000JE001487.
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.5503849/FSU50.sh.gz",  # noqa: E501
+        url="doi:10.5281/zenodo.5503849/FSU50.sh.gz",
         known_hash="sha256:ee53cf52869c6144fdeefde96f91c25f3d391768446a3c7c7da1b258eff79efc",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
@@ -60,7 +60,7 @@ def FSU90(lmax=90):
         Geophysical Research: Planets, 108 (E2), doi:10.1029/2000JE001487.
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.5503849/FSU90.sh.gz",  # noqa: E501
+        url="doi:10.5281/zenodo.5503849/FSU90.sh.gz",
         known_hash="sha256:a0c8653c01f06c4af24d011f84ac2f3b119ca19bb79a274f7d5c2536122a4689",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),

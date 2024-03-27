@@ -9,6 +9,10 @@ import numpy as _np
 
 from astropy.constants import Constant as _Constant
 from astropy.constants import G as _G
+from astropy.constants import au as _au
+from . import Sun as _Sun
+from . import Moon as _Moon
+
 
 _a_wgs84 = _Constant(
     abbrev='a_wgs84',
@@ -113,6 +117,14 @@ _u0_wgs84 = _Constant(
     'with Local Geodetic Systems. NIMA TR8350.2, National Imagery and '
     'Mapping Agency.')
 
+_rotational_period_wgs84 = _Constant(
+    abbrev='rotational_period_wgs84',
+    name='Rotational period of the WGS84 ellipsoid',
+    value=2. * _np.pi / _omega_wgs84.value,
+    unit='s',
+    uncertainty=0.,
+    reference='Derived from wgs84.omega')
+
 wgs84 = _SimpleNamespace(__doc__='WGS84 geodetic reference system')
 wgs84.a = _a_wgs84
 wgs84.f = _f_wgs84
@@ -123,6 +135,7 @@ wgs84.gma = _gma_wgs84
 wgs84.b = _b_wgs84
 wgs84.r3 = _r3_wgs84
 wgs84.u0 = _u0_wgs84
+wgs84.rotational_period = _rotational_period_wgs84
 
 _gm_egm2008 = _Constant(
     abbrev='gm_egm2008',
@@ -157,10 +170,19 @@ _omega_egm2008 = _Constant(
     'Model 2008 (EGM2008). J. Geophys. Res., 117, B04406, '
     'doi:10.1029/2011JB008916.')
 
+_rotational_period_egm2008 = _Constant(
+    abbrev='rotational_period_egm2008',
+    name='Rotational period of the egm2008 ellipsoid',
+    value=2. * _np.pi / _omega_egm2008.value,
+    unit='s',
+    uncertainty=0.,
+    reference='Derived from egm2008.omega')
+
 egm2008 = _SimpleNamespace(__doc__='EGM2008')
 egm2008.gm = _gm_egm2008
 egm2008.mass = _mass_egm2008
 egm2008.omega = _omega_egm2008
+egm2008.rotational_period = _rotational_period_egm2008
 
 dynamical_flattening_earth = _Constant(
     abbrev='dynamical_flattening_earth',
@@ -172,4 +194,73 @@ dynamical_flattening_earth = _Constant(
     '(No. IERS-TN-36). BUREAU INTERNATIONAL DES POIDS '
     'ET MESURES SEVRES (FRANCE).')
 
-__all__ = [wgs84, egm2008, dynamical_flattening_earth]
+orbit_semimajor_axis = _Constant(
+    abbrev='orbit_semimajor_axis_earth_moon_barycenter',
+    name='Semimajor axis of the orbit of the Earth-Moon barycenter about the '
+    'Sun, with respect to the mean ecliptic and equinox of J2000',
+    value=1.00000261,
+    unit='au',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_earth_moon_barycenter',
+    name='Eccentricity of the orbit of the Earth-Moon barycenter about the '
+    'Sun, with respect to the mean ecliptic and equinox of J2000',
+    value=0.01671123,
+    unit='',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_earth_moon_barycenter',
+    name='Inclination of the orbit of the Earth-Moon barycenter about the '
+    'Sun, with respect to the mean ecliptic and equinox of J2000',
+    value=-0.00001531,
+    unit='degrees',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+orbit_angular_velocity = _Constant(
+    abbrev='orbit_angular_velocity_earth_moon_barycenter',
+    name='Orbital angular velocity of Earth-Moon barycenter',
+    value=_np.sqrt((_Sun.gm.value + egm2008.gm.value + _Moon.gm.value) /
+                   (_au.value * orbit_semimajor_axis.value)**3),
+    unit='rad / s',
+    uncertainty=_np.sqrt(
+        _Sun.gm.uncertainty**2 / 4. /
+        (_Sun.gm.value + egm2008.gm.value + _Moon.gm.value) /
+        (_au.value * orbit_semimajor_axis.value)**3 +
+        egm2008.gm.uncertainty**2 / 4. /
+        (_Sun.gm.value + egm2008.gm.value + _Moon.gm.value) /
+        (_au.value * orbit_semimajor_axis.value)**3 +
+        _Moon.gm.uncertainty**2 / 4. /
+        (_Sun.gm.value + egm2008.gm.value + _Moon.gm.value) /
+        (_au.value * orbit_semimajor_axis.value)**3 +
+        9. * (_au.value * orbit_semimajor_axis.uncertainty)**2 *
+        (_Sun.gm.value + egm2008.gm.value + _Moon.gm.value) / 4. /
+        (_au.value * orbit_semimajor_axis.value)**5),
+    reference="Approximated using Kepler's third law, gm_sun, gm_earth, "
+    'gm_moon and orbit_semimajor_axis_earth_moon_barycenter')
+
+orbit_period = _Constant(
+    abbrev='orbit_period_earth_moon_barycenter',
+    name='Orbital period of the Earth-Moon barycenter',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_earth_moon_barycenter')
+
+__all__ = ['wgs84', 'egm2008', 'dynamical_flattening_earth',
+           'orbit_semimajor_axis', 'orbit_eccentricity', 'orbit_inclination',
+           'orbit_angular_velocity', 'orbit_period']

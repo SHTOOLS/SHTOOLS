@@ -12,7 +12,7 @@ from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import HTTPDownloader as _HTTPDownloader
 from ....shclasses import SHGravCoeffs as _SHGravCoeffs
-from ....constants.Moon import omega as _omega
+from ....constants.Moon import angular_velocity as _omega
 
 
 def GLGM2(lmax=70):
@@ -122,7 +122,7 @@ def SGM100I(lmax=100):
         J. Geodesy, 85, 205-228, doi:10.1007/s00190-010-0430-2.
     '''
     fname = _retrieve(
-        url="https://zenodo.org/record/5233378/files/SGM100i.sh.gz",  # noqa: E501
+        url="https://zenodo.org/record/5233378/files/SGM100i.sh.gz",
         known_hash="sha256:0a6e4d8cf3e26f60d61ac194bb63506a4eb91d7dc119a2038cba0acf58849944",  # noqa: E501
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),

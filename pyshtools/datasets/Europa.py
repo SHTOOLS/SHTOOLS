@@ -9,7 +9,7 @@ from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
-from ..constants.Europa import omega as _omega
+from ..constants.Europa import angular_velocity as _omega
 
 
 def Anderson1998(lmax=2):
@@ -30,7 +30,7 @@ def Anderson1998(lmax=2):
         https://doi.org/10.1126/science.281.5385.2019
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10817282/Anderson1998_Europa_gravity.sh",  # noqa: E501
+        url="doi:10.5281/zenodo.10817282/Anderson1998_Europa_gravity.sh",
         known_hash="sha256:52d5f62ed31fd1dce8324fdcee8eebe105509bbeafaa254a9056a0eb46314615",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),

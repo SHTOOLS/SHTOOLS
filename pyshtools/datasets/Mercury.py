@@ -21,7 +21,7 @@ from pooch import HTTPDownloader as _HTTPDownloader
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
-from ..constants.Mercury import omega as _omega
+from ..constants.Mercury import angular_velocity as _omega
 
 
 def USGS_SPG_shape(lmax=719):

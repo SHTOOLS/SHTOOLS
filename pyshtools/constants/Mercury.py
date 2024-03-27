@@ -86,8 +86,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_mercury and mean_radius_mercury.')
 
-omega = _Constant(
-    abbrev='omega_mercury',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_mercury',
     name='Angular spin rate of Mercury',
     value=6.1385108 * 2 * _np.pi / 360 / (24 * 60 * 60),
     unit='rad / s',
@@ -98,8 +98,17 @@ omega = _Constant(
     'from MESSENGER observations after three years in orbit, J. Geophys. '
     'Res. Planets, 119, 2417-2436, doi:10.1002/2014JE004675.')
 
-omega_orbit = _Constant(
-    abbrev='omega_orbit_mercury',
+rotational_period = _Constant(
+    abbrev='rotational_period_mercury',
+    name='Rotational period of Mercury',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_mercury')
+
+orbit_angular_velocity = _Constant(
+    abbrev='orbit_angular_velocity_mercury',
     name='Angular rotation rate of Mercury about the Sun',
     value=2 * _np.pi / (87.969216879 * 24 * 60 * 60),
     unit='rad / s',
@@ -110,6 +119,53 @@ omega_orbit = _Constant(
     'from MESSENGER observations after three years in orbit, J. Geophys. '
     'Res. Planets, 119, 2417-2436, doi:10.1002/2014JE004675.')
 
+orbit_semimajor_axis = _Constant(
+    abbrev='orbit_semimajor_axis_mercury',
+    name='Semimajor axis of the orbit of Mercury about the Sun, with respect '
+    'to the mean ecliptic and equinox of J2000',
+    value=0.38709927,
+    unit='au',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_mercury',
+    name='Eccentricity of the orbit of Mercury about the Sun, with respect to '
+    'the mean ecliptic and equinox of J2000',
+    value=0.20563593,
+    unit='',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_mercury',
+    name='Inclination of the orbit of Mercury about the Sun, with respect to '
+    'the mean ecliptic and equinox of J2000',
+    value=7.00497902,
+    unit='degrees',
+    uncertainty=0.,
+    reference='Standish, M., & Williams, J. (2012). Orbital Ephemerides of '
+    'the Sun, Moon, and Planets. In Explanatory Supplement to the '
+    'Astronomical Almanac (Third edition, pp. 305–342). University Science '
+    'Books.')
+
+orbit_period = _Constant(
+    abbrev='orbit_period_mercury',
+    name='Orbital period of Mercury',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_mercury')
+
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'mean_density', 'gravity_mean_radius', 'omega',
-           'omega_orbit']
+           'volume', 'mean_density', 'gravity_mean_radius', 'angular_velocity',
+           'orbit_angular_velocity', 'orbit_semimajor_axis',
+           'orbit_eccentricity', 'orbit_inclination', 'rotational_period',
+           'orbit_period']

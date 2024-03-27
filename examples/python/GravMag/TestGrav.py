@@ -35,20 +35,23 @@ def TestMakeGravGrid():
     clm[0, 0, 0] = 1.0
     print(gm, r0)
 
-    geoid = pysh.gravmag.MakeGeoidGridDH(clm, r0, gm,
-                                         pysh.constants.Mars.u0.value,
-                                         a=pysh.constants.Mars.a.value,
-                                         f=pysh.constants.Mars.f.value,
-                                         omega=pysh.constants.Mars.omega.value)
+    geoid = pysh.gravmag.MakeGeoidGridDH(
+        clm, r0, gm,
+        pysh.constants.Mars.u0.value,
+        a=pysh.constants.Mars.a.value,
+        f=pysh.constants.Mars.f.value,
+        omega=pysh.constants.Mars.angular_velocity.value)
     geoid = geoid / 1.e3  # convert to meters
     fig_map = plt.figure()
     plt.imshow(geoid)
     fig_map.savefig('MarsGeoid.png')
 
     rad, theta, phi, total, pot = pysh.gravmag.MakeGravGridDH(
-        clm, gm, r0, lmax=719, a=pysh.constants.Mars.a.value,
-        f=pysh.constants.Mars.f.value, lmax_calc=85,
-        omega=pysh.constants.Mars.omega.value, normal_gravity=1)
+        clm, gm, r0, lmax=719, lmax_calc=85,
+        a=pysh.constants.Mars.a.value,
+        f=pysh.constants.Mars.f.value,
+        omega=pysh.constants.Mars.angular_velocity.value,
+        normal_gravity=1)
     fig, axes = plt.subplots(2, 2)
 
     for num, vv, s in ((0, rad, "$g_{r}$"), (1, theta, "$g_{\\theta}$"),
@@ -68,7 +71,7 @@ def TestMakeGravGrid():
 
 def TestNormalGravity():
     gm = pysh.constants.Mars.gm.value
-    omega = pysh.constants.Mars.omega.value
+    omega = pysh.constants.Mars.angular_velocity.value
     a = pysh.constants.Mars.a.value
     b = pysh.constants.Mars.b.value
     lat = np.arange(-90., 90., 1.)

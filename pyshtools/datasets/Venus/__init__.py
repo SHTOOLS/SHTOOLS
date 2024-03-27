@@ -15,7 +15,7 @@ from pooch import HTTPDownloader as _HTTPDownloader
 from pooch import DOIDownloader as _DOIDownloader
 from ...shclasses import SHCoeffs as _SHCoeffs
 from ...shclasses import SHGravCoeffs as _SHGravCoeffs
-from ...constants.Venus import omega as _omega
+from ...constants.Venus import angular_velocity as _omega
 from . import historical  # noqa: F401
 
 

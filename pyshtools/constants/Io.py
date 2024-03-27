@@ -44,7 +44,7 @@ r = mean_radius
 
 volume_equivalent_radius = _Constant(
     abbrev='volume_equivalent_radius_io',
-    name='Volume equivalent radius of io',
+    name='Volume equivalent radius of Io',
     value=mean_radius.value,
     unit='m',
     uncertainty=mean_radius.uncertainty,
@@ -83,20 +83,94 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_io and mean_radius_io.')
 
-omega = _Constant(
-    abbrev='omega_Io',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_Io',
     name='Angular spin rate of Io',
-    value=203.4889538 * 2. * _np.pi / 360. / (24. * 60. * 60.),
+    value=2 * _np.pi / (1.762732 * 24 * 60 * 60),
     unit='rad / s',
     uncertainty=0.,
-    reference='Archinal, B. A., Acton, C. H., A’Hearn, M. F., Conrad, A., '
-    'Consolmagno, G. J., Duxbury, T., Hestroffer, D., Hilton, J. L., Kirk, '
-    'R. L., Klioner, S. A., McCarthy, D., Meech, K., Oberst, J., Ping, J., '
-    'Seidelmann, P. K., Tholen, D. J., Thomas, P. C., & Williams, I. P. '
-    '(2018). Report of the IAU Working Group on Cartographic Coordinates and '
-    'Rotational Elements: 2015. Celestial Mechanics and Dynamical Astronomy, '
-    '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
 
+rotational_period = _Constant(
+    abbrev='rotational_period_io',
+    name='Rotational period of Io',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_io')
+
+orbit_semimajor_axis = _Constant(
+    abbrev='orbit_semimajor_axis_io',
+    name='Semimajor axis of the orbit of Io about Jupiter',
+    value=421800.e3,
+    unit='m',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_io',
+    name='Eccentricity of the orbit of Io about Jupiter',
+    value=0.004,
+    unit='',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_io',
+    name='Inclination of the orbit of Io about Jupiter with respect '
+    'to the Laplace plane',
+    value=0.0,
+    unit='degrees',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_angular_velocity = _Constant(
+    abbrev='orbit_angular_velocity_io',
+    name='Orbital angular velocity of Io about Jupiter',
+    value=2 * _np.pi / (1.762732 * 24 * 60 * 60),
+    unit='rad / s',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_tilt = _Constant(
+    abbrev='orbit_tilt_io',
+    name='Angle between the Io Laplace plane and the equatorial plane '
+    'of Jupiter',
+    value=0.0,
+    unit='degrees',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_period = _Constant(
+    abbrev='orbit_period_io',
+    name='Orbital period of Io',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_io')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
+           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity',
+           'orbit_semimajor_axis', 'orbit_eccentricity',
+           'orbit_inclination', 'orbit_angular_velocity', 'orbit_tilt',
+           'rotational_period', 'orbit_period']
