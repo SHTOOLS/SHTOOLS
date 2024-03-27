@@ -44,7 +44,7 @@ r = mean_radius
 
 volume_equivalent_radius = _Constant(
     abbrev='volume_equivalent_radius_io',
-    name='Volume equivalent radius of io',
+    name='Volume equivalent radius of Io',
     value=mean_radius.value,
     unit='m',
     uncertainty=mean_radius.uncertainty,

@@ -29,5 +29,4 @@ mass = _Constant(
                          ),
     reference='Derived from gm_sun and G.')
 
-
 __all__ = ['gm', 'mass']
