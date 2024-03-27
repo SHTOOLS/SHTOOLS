@@ -3145,23 +3145,23 @@ class Tensor(object):
             desc = 'magnetic field tensor component '
 
         _vxx = self.vxx.to_xarray(title=desc+'(Vxx)', long_name='$V_{xx}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vxy = self.vxy.to_xarray(title=desc+'(Vxy)', long_name='$V_{xy}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vxz = self.vxz.to_xarray(title=desc+'(Vxz)', long_name='$V_{xz}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vyx = self.vyx.to_xarray(title=desc+'(Vyx)', long_name='$V_{yx}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vyy = self.vyy.to_xarray(title=desc+'(Vyy)', long_name='$V_{yy}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vyz = self.vyz.to_xarray(title=desc+'(Vyz)', long_name='$V_{yz}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vzx = self.vzx.to_xarray(title=desc+'(Vzx)', long_name='$V_{zx}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vzy = self.vzy.to_xarray(title=desc+'(Vzy)', long_name='$V_{zy}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vzz = self.vzz.to_xarray(title=desc+'(Vzz)', long_name='$V_{zz}$',
-                                  units=self._vii_units)
+                                  units=self.units)
 
         dataset = _xr.Dataset({'vxx': _vxx, 'vxy': _vxy, 'vxz': _vxz,
                                'vyx': _vyx, 'vyy': _vyy, 'vyz': _vyz,
@@ -3210,13 +3210,13 @@ class Tensor(object):
 
             _eig1 = self.eig1.to_xarray(title=desc1,
                                         long_name=r'${\lambda}_1$',
-                                        units=self._vii_units)
+                                        units=self.units)
             _eig2 = self.eig2.to_xarray(title=desc2,
                                         long_name=r'${\lambda}_2$',
-                                        units=self._vii_units)
+                                        units=self.units)
             _eig3 = self.eig3.to_xarray(title=desc3,
                                         long_name=r'${\lambda}_3$',
-                                        units=self._vii_units)
+                                        units=self.units)
 
             dataset['eig1'] = _eig1
             dataset['eig2'] = _eig2
@@ -3237,13 +3237,13 @@ class Tensor(object):
 
             _eigh1 = self.eigh1.to_xarray(title=desc1,
                                           long_name=r'${\lambda}_{h1}$',
-                                          units=self._vii_units)
+                                          units=self.units)
             _eigh2 = self.eigh2.to_xarray(title=desc2,
                                           long_name=r'${\lambda}_{h2}$',
-                                          units=self._vii_units)
+                                          units=self.units)
             _eighh = self.eighh.to_xarray(title=desc3,
                                           long_name=r'${\lambda}_{hh}$',
-                                          units=self._vii_units)
+                                          units=self.units)
 
             dataset['eigh1'] = _eigh1
             dataset['eigh2'] = _eigh2
