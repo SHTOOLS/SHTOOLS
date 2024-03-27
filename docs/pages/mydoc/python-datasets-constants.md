@@ -30,7 +30,13 @@ Each body can have several attributes, including
 * `volume`
 * `mean_density`
 * `gravity_mean_radius`
-* `angular_velocity` (rotation rate)
+* `angular_velocity`
+* `rotational_period`
+* `orbit_angular_velocity`
+* `orbit_semimajor_axis`
+* `orbit_eccentricity`
+* `orbit_inclination`
+* `orbit_period`
 
 Additional parameters are defined when appropriate. To see all information about an individual constant, it is only necessary to use the print function:
 ```python
@@ -42,10 +48,20 @@ In [1]: print(pysh.constants.Mars.mean_radius)
   Reference = MOLA_shape: Wieczorek, M. (2024). Spherical harmonic models of the shape of Mars (1.0.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10794059
 ```
 To use the value of a constant in a calculation, such as in this simple calculation of the circumference in kilometers, it is only necessary to access its `value` attribute:
-
 ```python
 In [2]: 2 * np.pi * pysh.constants.Mars.mean_radius.value / 1000
 21296.856598685208
+```
+To convert to a different set of units, one only needs to use the `to` method. For example, this converts the rotational period of Callisto from seconds to days
+```python
+In [3]: pysh.constants.Callisto.rotational_period.to('day')
+<Quantity 16.68901797 d>
+```
+and this computes the gravitational acceleration on the mean planetary radius of
+Mercury and then returns the value as a simple float in mGals:
+```python
+In [4]: (Mercury.gm / Mercury.mean_radius**2).to_value('mGal')
+370218.70697392424
 ```
 Physical constants from the *Committee on Data for Science and Technology* are provided in the submodule `codata`, and a few of these (such as `G` and `mu0`) are referenced in the main constants namespace.
 
@@ -155,6 +171,11 @@ The following is the list of implemented datasets. Additional older or deprecate
 | SPC_shape | 511 degree and order spherical harmonic shape model of asteroid (433) Eros based on a stereo-photoclinometry shape model (Wieczorek 2024). |
 | JGE15A01 | JPL 15 degree and order spherical harmonic model of the gravitational potential of asteroid (433) Eros (Miller et al. 2002). |
 
+### Jupiter
+
+| Dataset | Description |
+| ---------- | ----------- |
+| Kaspi2023_gravity | Degree 40 and order 0 spherical harmonic model of the gravitational potential of Jupiter (Kaspi et al. 2023). |
 
 ### Io (Jupiter)
 

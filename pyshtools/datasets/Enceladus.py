@@ -93,7 +93,7 @@ def Iess2014_gravity(lmax=3):
         https://doi.org/10.1126/science.1250551
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10809142/Iess2014.sh",  # noqa: E501
+        url="doi:10.5281/zenodo.10809142/Iess2014.sh",
         known_hash="sha256:f393e0ab8a7c0420907ed1f9e33b51c8bf38589e8e67ebdd3a8ab35ba1ad6988",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
@@ -127,7 +127,7 @@ def Park2024_gravity(lmax=3):
         129(1), e2023JE008054. https://doi.org/10.1029/2023JE008054
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10809142/Park2024.sh",  # noqa: E501
+        url="doi:10.5281/zenodo.10809142/Park2024.sh",
         known_hash="sha256:f1b29bec0132f008032a8dbf07366a64cd33c404787ce0839ed1799d4863318f",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),

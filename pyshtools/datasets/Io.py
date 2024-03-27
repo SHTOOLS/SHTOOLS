@@ -29,7 +29,7 @@ def Anderson2001(lmax=2):
         106, 32963–32969. https://doi.org/10.1029/2000JE001367
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10817282/Anderson2001_Io_gravity.sh",  # noqa: E501
+        url="doi:10.5281/zenodo.10817282/Anderson2001_Io_gravity.sh",
         known_hash="sha256:d2090309dc67ffa2c2c2e96eb9a3cb8a86b3631be39f43bd4112e07367cdfeaa",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),

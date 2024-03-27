@@ -43,7 +43,7 @@ def NLR_shape(lmax=719):
         https://doi.org/10.1126/science.289.5487.2097
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10820812/Eros_NLR_shape_719.bshc.gz",  # noqa: E501
+        url="doi:10.5281/zenodo.10820812/Eros_NLR_shape_719.bshc.gz",
         known_hash="sha256:42563d6083319b0a96b0f931a2bbefcf8ebf9a98b835c78a1e258fc164965963",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
@@ -75,7 +75,7 @@ def SPC_shape(lmax=511):
         System, 2021; doi: 10.26033/d0gq-9427.
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10820812/Eros_SPC_shape_511.bshc.gz",  # noqa: E501
+        url="doi:10.5281/zenodo.10820812/Eros_SPC_shape_511.bshc.gz",
         known_hash="sha256:13c467661c96da9927d04e5c026afd1d6381786a295b23fb70c526daf995c05f",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),

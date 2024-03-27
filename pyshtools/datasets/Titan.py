@@ -41,7 +41,7 @@ def Corlies2017_shape(lmax=8):
 
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10806604/Titan_shape_Corlies2017_unnorm.sh",  # noqa: E501
+        url="doi:10.5281/zenodo.10806604/Titan_shape_Corlies2017_unnorm.sh",
         known_hash="sha256:413c147243ea8e171c14161a0972dcfcf0980ce57039ab7d70714f7e2d1e94c0",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
@@ -74,7 +74,7 @@ def Mitri2014_shape(lmax=6):
         https://doi.org/10.1016/j.icarus.2014.03.018
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10806604/Titan_shape_Mitri2014_unnorm.sh",  # noqa: E501
+        url="doi:10.5281/zenodo.10806604/Titan_shape_Mitri2014_unnorm.sh",
         known_hash="sha256:19d2dc5be97eff1a60513cfe69dd6ef684ba6e877db60bc0dd5515fa82b13dd5",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
@@ -103,7 +103,7 @@ def Durante2019_gravity(lmax=5):
         Icarus, 326, 123–132. https://doi.org/10.1016/j.icarus.2019.03.003
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10808302/Durante2019.sh",  # noqa: E501
+        url="doi:10.5281/zenodo.10808302/Durante2019.sh",
         known_hash="sha256:6f82bd3dc0fb8d3db8c934e6a0e9b2ea6941d3568e9e76ad7944e88d15bb2453",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),

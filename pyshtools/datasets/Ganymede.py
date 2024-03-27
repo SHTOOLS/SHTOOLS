@@ -35,7 +35,7 @@ def Ganymede2022(lmax=5):
         doi:10.1029/2022GL099475.
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.7665171/Ganymede2022.sh.gz",  # noqa: E501
+        url="doi:10.5281/zenodo.7665171/Ganymede2022.sh.gz",
         known_hash="sha256:593b084cf91673a9093fdfdf657016d52246c6b1a9bf297e42cf543f88fb3b97",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
@@ -64,7 +64,7 @@ def Anderson1996_1(lmax=2):
         Ganymede. Nature, 384(6609), https://doi.org/10.1038/384541a0
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10817282/Anderson1996_Ganymede_1_gravity.sh",  # noqa: E501
+        url="doi:10.5281/zenodo.10817282/Anderson1996_Ganymede_1_gravity.sh",
         known_hash="sha256:33e37de6891655c0e57ed7d17fd749525a42cb3c1726078f9b01add2f8c09ceb",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
@@ -94,7 +94,7 @@ def Anderson1996_2(lmax=2):
         Ganymede. Nature, 384(6609), https://doi.org/10.1038/384541a0
     '''
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10817282/Anderson1996_Ganymede_2_gravity.sh",  # noqa: E501
+        url="doi:10.5281/zenodo.10817282/Anderson1996_Ganymede_2_gravity.sh",
         known_hash="sha256:d2b3f0baa3f84491573dfb520d1b3a2e9e521ead249e54fbf6e280116049495a",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
