@@ -65,6 +65,7 @@ class SHMagCoeffs(object):
     Once initialized, each class instance defines the following class
     attributes:
 
+    name          : The name of the dataset.
     lmax          : The maximum spherical harmonic degree of the coefficients.
     coeffs        : The raw coefficients with the specified normalization and
                     csphase conventions. This is a three-dimensional array
@@ -82,7 +83,6 @@ class SHMagCoeffs(object):
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
     kind          : The coefficient data type (only 'real' is permissible).
-    name          : The name of the dataset.
     units         : The units of the spherical harmonic coefficients.
     year          : The year of the time-variable spherical harmonic
                     coefficients.
@@ -1579,7 +1579,8 @@ class SHMagCoeffs(object):
 
     # ---- Operations that return a new SHMagCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
-               body=False, dj_matrix=None, backend=None, nthreads=None):
+               body=False, dj_matrix=None, name=None, backend=None,
+               nthreads=None):
         """
         Rotate either the coordinate system used to express the spherical
         harmonic coefficients or the physical body, and return a new class
@@ -1588,7 +1589,7 @@ class SHMagCoeffs(object):
         Usage
         -----
         x_rotated = x.rotate(alpha, beta, gamma, [degrees, convention,
-                             body, dj_matrix, backend, nthreads])
+                             body, dj_matrix, name, backend, nthreads])
 
         Returns
         -------
@@ -1610,6 +1611,8 @@ class SHMagCoeffs(object):
         dj_matrix : ndarray, optional, default = None
             The djpi2 rotation matrix computed by a call to djpi2 (not used if
             the backend is 'ducc').
+        name : str, optional, default = self.name
+            The name of the dataset.
         backend : str, optional, default = preferred_backend()
             Name of the preferred backend, either 'shtools' or 'ducc'.
         nthreads : int, optional, default = 1
@@ -1694,17 +1697,17 @@ class SHMagCoeffs(object):
                            category=RuntimeWarning)
 
         rot = self._rotate(angles, dj_matrix, r0=self.r0, backend=backend,
-                           nthreads=nthreads)
+                           nthreads=nthreads, name=name)
         return rot
 
-    def convert(self, normalization=None, csphase=None, lmax=None):
+    def convert(self, normalization=None, csphase=None, lmax=None, name=None):
         """
         Return an SHMagCoeffs class instance with a different normalization
         convention.
 
         Usage
         -----
-        clm = x.convert([normalization, csphase, lmax])
+        clm = x.convert([normalization, csphase, lmax, name])
 
         Returns
         -------
@@ -1721,6 +1724,8 @@ class SHMagCoeffs(object):
             the phase factor, or -1 to include it.
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -1739,6 +1744,8 @@ class SHMagCoeffs(object):
             csphase = self.csphase
         if lmax is None:
             lmax = self.lmax
+        if name is None:
+            name = self.name
 
         # check argument consistency
         if not isinstance(normalization, str):
@@ -1762,22 +1769,24 @@ class SHMagCoeffs(object):
             return SHMagCoeffs.from_array(
                 coeffs, r0=self.r0, errors=errors, error_kind=self.error_kind,
                 normalization=normalization.lower(),
-                csphase=csphase, units=self.units, year=self.year, copy=False)
+                csphase=csphase, units=self.units, year=self.year, copy=False,
+                name=name)
         else:
             coeffs = self.to_array(normalization=normalization.lower(),
                                    csphase=csphase, lmax=lmax)
             return SHMagCoeffs.from_array(
                 coeffs, r0=self.r0, normalization=normalization.lower(),
-                csphase=csphase, units=self.units, year=self.year, copy=False)
+                csphase=csphase, units=self.units, year=self.year, copy=False,
+                name=name)
 
-    def pad(self, lmax, copy=True):
+    def pad(self, lmax, copy=True, name=None):
         """
         Return an SHMagCoeffs class where the coefficients are zero padded or
         truncated to a different lmax.
 
         Usage
         -----
-        clm = x.pad(lmax)
+        clm = x.pad(lmax, [copy, name])
 
         Returns
         -------
@@ -1790,11 +1799,17 @@ class SHMagCoeffs(object):
         copy : bool, optional, default = True
             If True, make a copy of x when initializing the class instance.
             If False, modify x itself.
+        name : str, optional, default = self.name
+            The name of the dataset.
         """
         if copy:
             clm = self.copy()
         else:
             clm = self
+
+        if name is None:
+            name = self.name
+        clm.name = name
 
         if lmax <= self.lmax:
             clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]
@@ -1817,13 +1832,13 @@ class SHMagCoeffs(object):
         clm.lmax = lmax
         return clm
 
-    def change_ref(self, r0=None, lmax=None):
+    def change_ref(self, r0=None, lmax=None, name=None):
         """
         Return a new SHMagCoeffs class instance with a different reference r0.
 
         Usage
         -----
-        clm = x.change_ref([r0, lmax])
+        clm = x.change_ref([r0, lmax, name])
 
         Returns
         -------
@@ -1835,6 +1850,8 @@ class SHMagCoeffs(object):
             The reference radius of the spherical harmonic coefficients.
         lmax : int, optional, default = self.lmax
             Maximum spherical harmonic degree to output.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -1847,7 +1864,10 @@ class SHMagCoeffs(object):
         if lmax is None:
             lmax = self.lmax
 
-        clm = self.pad(lmax)
+        if name is None:
+            name = self.name
+
+        clm = self.pad(lmax, name=name)
 
         if r0 is not None and r0 != self.r0:
             for l in _np.arange(lmax+1):
@@ -1858,14 +1878,14 @@ class SHMagCoeffs(object):
 
         return clm
 
-    def change_units(self, units=None, lmax=None):
+    def change_units(self, units=None, lmax=None, name=None):
         """
         Return a new SHMagCoeffs class instance with the internal coefficients
         converted to either nT or T.
 
         Usage
         -----
-        clm = x.change_units([units, lmax])
+        clm = x.change_units([units, lmax, name])
 
         Returns
         -------
@@ -1878,13 +1898,17 @@ class SHMagCoeffs(object):
             either 'T' or 'nT'.
         lmax : int, optional, default = self.lmax
             Maximum spherical harmonic degree to output.
+        name : str, optional, default = self.name
+            The name of the dataset.
         """
         if lmax is None:
             lmax = self.lmax
         if units is None:
             units = self.units
+        if name is None:
+            name = self.name
 
-        clm = self.pad(lmax)
+        clm = self.pad(lmax, name=name)
 
         if units != self.units:
             if units.lower() == 't' and self.units.lower() == 'nt':
@@ -1905,7 +1929,7 @@ class SHMagCoeffs(object):
     # ---- Routines that return different magnetic-related class instances ----
     def expand(self, a=None, f=None, r=None, lat=None, colat=None, lon=None,
                degrees=True, lmax=None, lmax_calc=None, sampling=2,
-               extend=True):
+               extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened ellipsoid of all three
         components of the magnetic field, the total magnetic intensity,
@@ -1914,7 +1938,7 @@ class SHMagCoeffs(object):
 
         Usage
         -----
-        grids = x.expand([a, f, lmax, lmax_calc, sampling, extend])
+        grids = x.expand([a, f, lmax, lmax_calc, sampling, extend, name])
         g = x.expand(lat, lon, [a, f, r, lmax, lmax_calc, degrees])
         g = x.expand(colat, lon, [a, f, r, lmax, lmax_calc, degrees])
 
@@ -1956,6 +1980,8 @@ class SHMagCoeffs(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E and the
             latitudinal band for 90 S.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2014,6 +2040,8 @@ class SHMagCoeffs(object):
                 lmax = self.lmax
             if lmax_calc is None:
                 lmax_calc = lmax
+            if name is None:
+                name = self.name
 
             coeffs = self.to_array(normalization='schmidt', csphase=1,
                                    errors=False)
@@ -2024,10 +2052,10 @@ class SHMagCoeffs(object):
 
         return _SHMagGrid(rad, theta, phi, total, pot, a, f, lmax, lmax_calc,
                           units=self.units, pot_units=self.units+' m',
-                          year=self.year)
+                          year=self.year, name=name)
 
     def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, sampling=2,
-               extend=True):
+               extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened ellipsoid of the 9
         components of the magnetic field tensor in a local north-oriented
@@ -2035,7 +2063,7 @@ class SHMagCoeffs(object):
 
         Usage
         -----
-        tensor = x.tensor([a, f, lmax, lmax_calc, sampling, extend])
+        tensor = x.tensor([a, f, lmax, lmax_calc, sampling, extend, name])
 
         Returns
         -------
@@ -2061,6 +2089,8 @@ class SHMagCoeffs(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E and the
             latitudinal band for 90 S.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2119,6 +2149,8 @@ class SHMagCoeffs(object):
             lmax = self.lmax
         if lmax_calc is None:
             lmax_calc = lmax
+        if name is None:
+            name = self.name
 
         coeffs = self.to_array(normalization='schmidt', csphase=1,
                                errors=False)
@@ -2132,7 +2164,7 @@ class SHMagCoeffs(object):
             sampling=sampling, extend=extend)
 
         return _SHMagTensor(vxx, vyy, vzz, vxy, vxz, vyz, a, f, lmax,
-                            lmax_calc, units=units, year=self.year)
+                            lmax_calc, units=units, year=self.year, name=name)
 
     # ---- Plotting routines ----
     def plot_spectrum(self, function='total', unit='per_l', base=10.,
@@ -2932,7 +2964,8 @@ class SHMagRealCoeffs(SHMagCoeffs):
             self.errors = None
 
     def __repr__(self):
-        return ('kind = {:s}\n'
+        return ('name = {:s}\n'
+                'kind = {:s}\n'
                 'normalization = {:s}\n'
                 'csphase = {:d}\n'
                 'lmax = {:d}\n'
@@ -2940,16 +2973,16 @@ class SHMagRealCoeffs(SHMagCoeffs):
                 'error_kind = {:s}\n'
                 'header = {:s}\n'
                 'header2 = {:s}\n'
-                'name = {:s}\n'
                 'units = {:s}\n'
                 'year = {:s}'
-                .format(repr(self.kind), repr(self.normalization),
-                        self.csphase, self.lmax, repr(self.r0),
-                        repr(self.error_kind), repr(self.header),
-                        repr(self.header2), repr(self.name), repr(self.units),
-                        repr(self.year)))
+                .format(repr(self.name), repr(self.kind),
+                        repr(self.normalization), self.csphase, self.lmax,
+                        repr(self.r0), repr(self.error_kind),
+                        repr(self.header), repr(self.header2),
+                        repr(self.units), repr(self.year)))
 
-    def _rotate(self, angles, dj_matrix, r0=None, backend=None, nthreads=None):
+    def _rotate(self, angles, dj_matrix, r0=None, backend=None, nthreads=None,
+                name=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         if self.lmax > 1200 and backend.lower() == "shtools":
             _warnings.warn("The rotate() method is accurate only to about" +
@@ -2976,11 +3009,11 @@ class SHMagRealCoeffs(SHMagCoeffs):
                                           normalization=self.normalization,
                                           csphase=self.csphase,
                                           units=self.units, year=self.year,
-                                          copy=False)
+                                          copy=False, name=name)
         else:
             return SHMagCoeffs.from_array(coeffs, r0=r0, errors=self.errors,
                                           units=self.units, year=self.year,
-                                          copy=False)
+                                          copy=False, name=name)
 
     def _expand_coord(self, a, f, radius, lat, lon, degrees, lmax_calc):
         """Evaluate the magnetic field at the coordinates lat and lon."""

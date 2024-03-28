@@ -42,6 +42,7 @@ class SHGrid(object):
 
     The class instance defines the following class attributes:
 
+    name       : The name of the dataset.
     data       : Gridded array of the data.
     nlat, nlon : The number of latitude and longitude bands in the grid.
     n          : The number of samples in latitude for 'DH' grids.
@@ -53,13 +54,13 @@ class SHGrid(object):
     kind       : Either 'real' or 'complex' for the data type.
     grid       : Either 'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-
                  Legendre Quadrature grids.
-    units      : The units of the gridded data.
     zeros      : The cos(colatitude) nodes used with Gauss-Legendre
                  Quadrature grids. Default is None.
     weights    : The latitudinal weights used with Gauss-Legendre
                  Quadrature grids. Default is None.
     extend     : True if the grid contains the redundant column for 360 E and
                  (for 'DH' grids) the unnecessary row for 90 S.
+    units      : The units of the gridded data.
 
     Each class instance provides the following methods:
 
@@ -103,13 +104,13 @@ class SHGrid(object):
 
     # ---- Factory methods ----
     @classmethod
-    def from_array(self, array, grid='DH', units=None, copy=True):
+    def from_array(self, array, grid='DH', units=None, name=None, copy=True):
         """
         Initialize the class instance from an input array.
 
         Usage
         -----
-        x = SHGrid.from_array(array, [grid, units, copy])
+        x = SHGrid.from_array(array, [grid, units, name, copy])
 
         Returns
         -------
@@ -125,6 +126,8 @@ class SHGrid(object):
             Quadrature grids, respectively.
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         copy : bool, optional, default = True
             If True (default), make a copy of array when initializing the class
             instance. If False, initialize the class instance with a reference
@@ -147,17 +150,17 @@ class SHGrid(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
-                return cls(array, units=units, copy=copy)
+                return cls(array, units=units, name=name, copy=copy)
 
     @classmethod
     def from_zeros(self, lmax, grid='DH', kind='real', sampling=2,
-                   units=None, extend=True, empty=False):
+                   units=None, name=None, extend=True, empty=False):
         """
         Initialize the class instance using an array of zeros.
 
         Usage
         -----
-        x = SHGrid.from_zeros(lmax, [grid, kind, sampling, units, extend,
+        x = SHGrid.from_zeros(lmax, [grid, kind, sampling, units, name, extend,
                                      empty])
 
         Returns
@@ -180,6 +183,8 @@ class SHGrid(object):
             with extend=True).
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         extend : bool, optional, default = True
             If True, include the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
@@ -223,11 +228,11 @@ class SHGrid(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
-                return cls(array, units=units, copy=False)
+                return cls(array, units=units, name=name, copy=False)
 
     @classmethod
     def from_ellipsoid(self, lmax, a, b=None, c=None, grid='DH', kind='real',
-                       sampling=2, units=None, extend=True):
+                       sampling=2, units=None, name=None, extend=True):
         """
         Initialize the class instance with a triaxial ellipsoid whose principal
         axes are aligned with the x, y, and z axes.
@@ -235,7 +240,7 @@ class SHGrid(object):
         Usage
         -----
         x = SHGrid.from_ellipsoid(lmax, a, [b, c, grid, kind, sampling,
-                                            units, extend])
+                                            units, name, extend])
 
         Returns
         -------
@@ -263,12 +268,15 @@ class SHGrid(object):
             with extend=True).
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         extend : bool, optional, default = True
             If True, include the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
         """
         temp = self.from_zeros(lmax, grid=grid, kind=kind, sampling=sampling,
-                               units=units, extend=extend, empty=True)
+                               units=units, extend=extend, empty=True,
+                               name=name)
         if c is None and b is None:
             temp.data[:, :] = a
         elif c is not None and b is None:
@@ -293,7 +301,7 @@ class SHGrid(object):
 
     @classmethod
     def from_cap(self, theta, clat, clon, lmax, grid='DH', kind='real',
-                 sampling=2, degrees=True, units=None, extend=True):
+                 sampling=2, degrees=True, units=None, name=None, extend=True):
         """
         Initialize the class instance with an array equal to unity within
         a spherical cap and zero elsewhere.
@@ -301,7 +309,7 @@ class SHGrid(object):
         Usage
         -----
         x = SHGrid.from_cap(theta, clat, clon, lmax, [grid, kind, sampling,
-                            degrees, units, extend])
+                            degrees, units, name, extend])
 
         Returns
         -------
@@ -330,12 +338,14 @@ class SHGrid(object):
             If True, theta, clat, and clon are in degrees.
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         extend : bool, optional, default = True
             If True, include the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
         """
         temp = self.from_zeros(lmax, grid=grid, kind=kind, sampling=sampling,
-                               units=units, extend=extend)
+                               units=units, extend=extend, name=name)
 
         if degrees is True:
             theta = _np.deg2rad(theta)
@@ -376,13 +386,14 @@ class SHGrid(object):
         return temp
 
     @classmethod
-    def from_file(self, fname, binary=False, grid='DH', units=None, **kwargs):
+    def from_file(self, fname, binary=False, grid='DH', units=None, name=None,
+                  **kwargs):
         """
         Initialize the class instance from gridded data in a file.
 
         Usage
         -----
-        x = SHGrid.from_file(fname, [binary, grid, units, **kwargs])
+        x = SHGrid.from_file(fname, [binary, grid, units, name, **kwargs])
 
         Returns
         -------
@@ -407,6 +418,8 @@ class SHGrid(object):
             Quadrature grids, respectively.
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         **kwargs : keyword arguments, optional
             Keyword arguments of numpy.loadtxt() or numpy.load().
         """
@@ -418,16 +431,17 @@ class SHGrid(object):
             raise ValueError('binary must be True or False. '
                              'Input value is {:s}.'.format(binary))
 
-        return self.from_array(data, grid=grid, units=units, copy=False)
+        return self.from_array(data, grid=grid, units=units, name=name,
+                               copy=False)
 
     @classmethod
-    def from_xarray(self, data_array, grid='DH', units=None):
+    def from_xarray(self, data_array, grid='DH', units=None, name=None):
         """
         Initialize the class instance from an xarray DataArray object.
 
         Usage
         -----
-        x = SHGrid.from_xarray(data_array, [grid, units])
+        x = SHGrid.from_xarray(data_array, [grid, units, name])
 
         Returns
         -------
@@ -445,6 +459,8 @@ class SHGrid(object):
             Quadrature grids, respectively.
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         """
         try:
             units = data_array.units
@@ -455,16 +471,16 @@ class SHGrid(object):
         if data_array.coords[data_array.dims[0]].values[0] == -90.:
             array = _np.flipud(array)
 
-        return self.from_array(array, grid=grid, units=units)
+        return self.from_array(array, grid=grid, units=units, name=name)
 
     @classmethod
-    def from_netcdf(self, netcdf, grid='DH', units=None):
+    def from_netcdf(self, netcdf, grid='DH', units=None, name=None):
         """
         Initialize the class instance from a netcdf formatted file or object.
 
         Usage
         -----
-        x = SHGrid.from_netcdf(netcdf, [grid, units])
+        x = SHGrid.from_netcdf(netcdf, [grid, units, name])
 
         Returns
         -------
@@ -479,6 +495,8 @@ class SHGrid(object):
             Quadrature grids, respectively.
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         """
         data_array = _xr.open_dataarray(netcdf)
         if data_array.coords[data_array.dims[0]].values[0] == -90.:
@@ -491,7 +509,7 @@ class SHGrid(object):
         except Exception:
             pass
 
-        return self.from_array(array, grid=grid, units=units)
+        return self.from_array(array, grid=grid, units=units, name=name)
 
     # ---- I/O methods ----
     def copy(self):
@@ -683,7 +701,7 @@ class SHGrid(object):
         grid : SHGrid class instance
         """
         return SHGrid.from_array(self.to_array().real, grid=self.grid,
-                                 units=self.units, copy=False)
+                                 units=self.units, name=self.name, copy=False)
 
     def to_imag(self):
         """
@@ -699,7 +717,7 @@ class SHGrid(object):
         grid : SHGrid class instance
         """
         return SHGrid.from_array(self.to_array().imag, grid=self.grid,
-                                 units=self.units, copy=False)
+                                 units=self.units, name=self.name, copy=False)
 
     def info(self):
         """
@@ -863,8 +881,10 @@ class SHGrid(object):
         return SHGrid.from_array(abs(self.data), grid=self.grid)
 
     def __repr__(self):
-        str = ('kind = {:s}\n'
-               'grid = {:s}\n'.format(repr(self.kind), repr(self.grid)))
+        str = ('name = {:s}\n'
+               'kind = {:s}\n'
+               'grid = {:s}\n'.format(repr(self.name), repr(self.kind),
+                                      repr(self.grid)))
         if self.grid == 'DH':
             str += ('n = {:d}\n'
                     'sampling = {:d}\n'.format(self.n, self.sampling))
@@ -963,14 +983,15 @@ class SHGrid(object):
         """
         return self._histogram(bins=bins, range=range)
 
-    def expand(self, normalization='4pi', csphase=1, lmax_calc=None,
+    def expand(self, normalization='4pi', csphase=1, lmax_calc=None, name=None,
                backend=None, nthreads=None):
         """
         Expand the grid into spherical harmonics.
 
         Usage
         -----
-        clm = x.expand([normalization, csphase, lmax_calc, backend, nthreads])
+        clm = x.expand([normalization, csphase, lmax_calc, name, backend,
+                        nthreads])
 
         Returns
         -------
@@ -987,6 +1008,8 @@ class SHGrid(object):
             or -1 to include it.
         lmax_calc : int, optional, default = x.lmax
             Maximum spherical harmonic degree to return.
+        name : str, optional, default = None
+            The name of the dataset.
         backend : str, optional, default = preferred_backend()
             Name of the preferred backend, either 'shtools' or 'ducc'.
         nthreads : int, optional, default = 1
@@ -1021,10 +1044,12 @@ class SHGrid(object):
 
         if backend is None:
             backend = preferred_backend()
+        if name is None:
+            name = self.name
 
         return self._expand(normalization=normalization, csphase=csphase,
                             lmax_calc=lmax_calc, backend=backend,
-                            nthreads=nthreads)
+                            nthreads=nthreads, name=name)
 
     # ---- Plotting routines ----
     def plot3d(self, elevation=20, azimuth=30, cmap='viridis',
@@ -1867,7 +1892,7 @@ class DHRealGrid(SHGrid):
     def isgrid(grid):
         return grid == 'DH'
 
-    def __init__(self, array, units=None, copy=True):
+    def __init__(self, array, units=None, copy=True, name=None):
         self.nlat, self.nlon = array.shape
 
         if self.nlat % 2 != 0:
@@ -1892,6 +1917,7 @@ class DHRealGrid(SHGrid):
         self.grid = 'DH'
         self.kind = 'real'
         self.units = units
+        self.name = name
 
         if copy:
             self.data = _np.copy(array)
@@ -1945,7 +1971,8 @@ class DHRealGrid(SHGrid):
                              weights=da[:, :self.nlon-self.extend],
                              density=True, range=range)
 
-    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads,
+                name):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -1971,7 +1998,7 @@ class DHRealGrid(SHGrid):
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
-                                     copy=False)
+                                     copy=False, name=name)
         return coeffs
 
     def _plot(self, projection=None, xlabel=None, ylabel=None, ax=None,
@@ -2488,7 +2515,7 @@ class DHComplexGrid(SHGrid):
     def isgrid(grid):
         return grid == 'DH'
 
-    def __init__(self, array, units=None, copy=True):
+    def __init__(self, array, units=None, copy=True, name=None):
         self.nlat, self.nlon = array.shape
 
         if self.nlat % 2 != 0:
@@ -2513,6 +2540,7 @@ class DHComplexGrid(SHGrid):
         self.grid = 'DH'
         self.kind = 'complex'
         self.units = units
+        self.name = name
 
         if copy:
             self.data = _np.copy(array)
@@ -2545,7 +2573,8 @@ class DHComplexGrid(SHGrid):
         """Return an area-weighted histogram normalized to unity."""
         raise NotImplementedError('histogram() does not support complex data.')
 
-    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads,
+                name):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -2570,7 +2599,7 @@ class DHComplexGrid(SHGrid):
                 lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
-                                     copy=False)
+                                     copy=False, name=name)
         return coeffs
 
     def _plot(self, projection=None, xlabel=None, ylabel=None, colorbar=None,
@@ -2727,7 +2756,8 @@ class GLQRealGrid(SHGrid):
     def isgrid(grid):
         return grid == 'GLQ'
 
-    def __init__(self, array, zeros=None, weights=None, units=None, copy=True):
+    def __init__(self, array, zeros=None, weights=None, units=None, copy=True,
+                 name=None):
         self.nlat, self.nlon = array.shape
         self.lmax = self.nlat - 1
 
@@ -2752,6 +2782,7 @@ class GLQRealGrid(SHGrid):
         self.grid = 'GLQ'
         self.kind = 'real'
         self.units = units
+        self.name = name
 
         if copy:
             self.data = _np.copy(array)
@@ -2802,7 +2833,8 @@ class GLQRealGrid(SHGrid):
                              weights=da[:, :self.nlon-self.extend],
                              density=True, range=range)
 
-    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads,
+                name):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -2826,7 +2858,7 @@ class GLQRealGrid(SHGrid):
                 norm=norm, csphase=csphase, lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
-                                     copy=False)
+                                     copy=False, name=name)
         return coeffs
 
     def _plot(self, projection=None, xlabel=None, ylabel=None, ax=None,
@@ -3084,7 +3116,8 @@ class GLQComplexGrid(SHGrid):
     def isgrid(grid):
         return grid == 'GLQ'
 
-    def __init__(self, array, zeros=None, weights=None, units=None, copy=True):
+    def __init__(self, array, zeros=None, weights=None, units=None, copy=True,
+                 name=None):
         self.nlat, self.nlon = array.shape
         self.lmax = self.nlat - 1
 
@@ -3109,6 +3142,7 @@ class GLQComplexGrid(SHGrid):
         self.grid = 'GLQ'
         self.kind = 'complex'
         self.units = units
+        self.name = name
 
         if copy:
             self.data = _np.copy(array)
@@ -3132,7 +3166,8 @@ class GLQComplexGrid(SHGrid):
         """Return an area-weighted histogram normalized to unity."""
         raise NotImplementedError('histogram() does not support complex data.')
 
-    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads,
+                name):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -3156,7 +3191,7 @@ class GLQComplexGrid(SHGrid):
                 norm=norm, csphase=csphase, lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
-                                     copy=False)
+                                     copy=False, name=name)
         return coeffs
 
     def _plot(self, projection=None, minor_xticks=[], minor_yticks=[],
