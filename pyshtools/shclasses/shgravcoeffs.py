@@ -74,6 +74,7 @@ class SHGravCoeffs(object):
     Once initialized, each class instance defines the following class
     attributes:
 
+    name          : The name of the dataset.
     lmax          : The maximum spherical harmonic degree of the coefficients.
     coeffs        : The raw coefficients with the specified normalization and
                     csphase conventions. This is a three-dimensional array
@@ -94,7 +95,6 @@ class SHGravCoeffs(object):
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
     kind          : The coefficient data type (only 'real' is permissible).
-    name          : The name of the dataset.
     epoch         : The epoch time of the spherical harmonic coefficients.
     header        : A list of values (of type str) from the header line of the
                     input file used to initialize the class (for 'shtools'
@@ -2097,7 +2097,8 @@ class SHGravCoeffs(object):
 
     # ---- Operations that return a new SHGravCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
-               body=False, dj_matrix=None, backend=None, nthreads=None):
+               body=False, dj_matrix=None, name=None, backend=None,
+               nthreads=None):
         """
         Rotate either the coordinate system used to express the spherical
         harmonic coefficients or the physical body, and return a new class
@@ -2106,7 +2107,7 @@ class SHGravCoeffs(object):
         Usage
         -----
         x_rotated = x.rotate(alpha, beta, gamma, [degrees, convention,
-                             body, dj_matrix, backend, nthreads])
+                             body, dj_matrix, name, backend, nthreads])
 
         Returns
         -------
@@ -2128,6 +2129,8 @@ class SHGravCoeffs(object):
         dj_matrix : ndarray, optional, default = None
             The djpi2 rotation matrix computed by a call to djpi2 (not used if
             the backend is 'ducc').
+        name : str, optional, default = self.name
+            The name of the dataset.
         backend : str, optional, default = preferred_backend()
             Name of the preferred backend, either 'shtools' or 'ducc'.
         nthreads : int, optional, default = 1
@@ -2206,17 +2209,17 @@ class SHGravCoeffs(object):
 
         rot = self._rotate(angles, dj_matrix, gm=self.gm, r0=self.r0,
                            omega=self.omega, backend=backend,
-                           nthreads=nthreads)
+                           nthreads=nthreads, name=name)
         return rot
 
-    def convert(self, normalization=None, csphase=None, lmax=None):
+    def convert(self, normalization=None, csphase=None, lmax=None, name=None):
         """
         Return an SHGravCoeffs class instance with a different normalization
         convention.
 
         Usage
         -----
-        clm = x.convert([normalization, csphase, lmax])
+        clm = x.convert([normalization, csphase, lmax, name])
 
         Returns
         -------
@@ -2233,6 +2236,8 @@ class SHGravCoeffs(object):
             the phase factor, or -1 to include it.
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2251,6 +2256,8 @@ class SHGravCoeffs(object):
             csphase = self.csphase
         if lmax is None:
             lmax = self.lmax
+        if name is None:
+            name = self.name
 
         # check argument consistency
         if not isinstance(normalization, str):
@@ -2275,23 +2282,23 @@ class SHGravCoeffs(object):
                 coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
                 errors=errors, error_kind=self.error_kind,
                 normalization=normalization.lower(),
-                csphase=csphase, epoch=self.epoch, copy=False)
+                csphase=csphase, epoch=self.epoch, copy=False, name=name)
         else:
             coeffs = self.to_array(normalization=normalization.lower(),
                                    csphase=csphase, lmax=lmax)
             return SHGravCoeffs.from_array(
                 coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
                 normalization=normalization.lower(), csphase=csphase,
-                epoch=self.epoch, copy=False)
+                epoch=self.epoch, copy=False, name=name)
 
-    def pad(self, lmax, copy=True):
+    def pad(self, lmax, copy=True, name=None):
         """
         Return an SHGravCoeffs class where the coefficients are zero padded or
         truncated to a different lmax.
 
         Usage
         -----
-        clm = x.pad(lmax)
+        clm = x.pad(lmax, [copy, name])
 
         Returns
         -------
@@ -2304,11 +2311,17 @@ class SHGravCoeffs(object):
         copy : bool, optional, default = True
             If True, make a copy of x when initializing the class instance.
             If False, modify x itself.
+        name : str, optional, default = self.name
+            The name of the dataset.
         """
         if copy:
             clm = self.copy()
         else:
             clm = self
+
+        if name is None:
+            name = self.name
+        clm.name = name
 
         if lmax <= self.lmax:
             clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]
@@ -2331,14 +2344,14 @@ class SHGravCoeffs(object):
         clm.lmax = lmax
         return clm
 
-    def change_ref(self, gm=None, r0=None, lmax=None):
+    def change_ref(self, gm=None, r0=None, lmax=None, name=None):
         """
         Return a new SHGravCoeffs class instance with a different reference gm
         or r0.
 
         Usage
         -----
-        clm = x.change_ref([gm, r0, lmax])
+        clm = x.change_ref([gm, r0, lmax, name])
 
         Returns
         -------
@@ -2353,6 +2366,8 @@ class SHGravCoeffs(object):
             The reference radius of the spherical harmonic coefficients.
         lmax : int, optional, default = self.lmax
             Maximum spherical harmonic degree to output.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2365,7 +2380,10 @@ class SHGravCoeffs(object):
         if lmax is None:
             lmax = self.lmax
 
-        clm = self.pad(lmax)
+        if name is None:
+            name = self.name
+
+        clm = self.pad(lmax, name=name)
 
         if gm is not None and gm != self.gm:
             clm.coeffs *= self.gm / gm
@@ -2385,7 +2403,7 @@ class SHGravCoeffs(object):
     # ---- Routines that return different gravity-related class instances ----
     def expand(self, a=None, f=None, r=None, colat=None, lat=None, lon=None,
                degrees=True, lmax=None, lmax_calc=None, normal_gravity=True,
-               sampling=2, extend=True):
+               sampling=2, extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened and rotating ellipsoid of the
         three components of the gravity vector, the gravity disturbance, and
@@ -2395,7 +2413,7 @@ class SHGravCoeffs(object):
         Usage
         -----
         grids = x.expand([a, f, lmax, lmax_calc, normal_gravity, sampling,
-                          extend])
+                          extend, name])
         g = x.expand(lat, lon, [a, f, r, lmax, lmax_calc, degrees])
         g = x.expand(colat, lon, [a, f, r, lmax, lmax_calc, degrees])
 
@@ -2442,6 +2460,8 @@ class SHGravCoeffs(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E and the
             latitudinal band for 90 S.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2515,6 +2535,8 @@ class SHGravCoeffs(object):
                 lmax = self.lmax
             if lmax_calc is None:
                 lmax_calc = lmax
+            if name is None:
+                name = self.name
 
             coeffs = self.to_array(normalization='4pi', csphase=1,
                                    errors=False)
@@ -2526,10 +2548,10 @@ class SHGravCoeffs(object):
             return _SHGravGrid(rad, theta, phi, total, pot, self.gm, a, f,
                                self.omega, normal_gravity, lmax, lmax_calc,
                                units='m/s2', pot_units='m2/s2',
-                               epoch=self.epoch)
+                               epoch=self.epoch, name=name)
 
     def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, degree0=False,
-               sampling=2, extend=True):
+               sampling=2, extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened ellipsoid of the 9
         components of the gravity "gradient" tensor in a local north-oriented
@@ -2537,7 +2559,7 @@ class SHGravCoeffs(object):
 
         Usage
         -----
-        tensor = x.tensor([a, f, lmax, lmax_calc, sampling, extend])
+        tensor = x.tensor([a, f, lmax, lmax_calc, sampling, extend, name])
 
         Returns
         -------
@@ -2566,6 +2588,8 @@ class SHGravCoeffs(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E and the
             latitudinal band for 90 S.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2624,6 +2648,8 @@ class SHGravCoeffs(object):
             lmax = self.lmax
         if lmax_calc is None:
             lmax_calc = lmax
+        if name is None:
+            name = self.name
 
         coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
 
@@ -2636,10 +2662,10 @@ class SHGravCoeffs(object):
 
         return _SHGravTensor(1.e9*vxx, 1.e9*vyy, 1.e9*vzz, 1.e9*vxy, 1.e9*vxz,
                              1.e9*vyz, self.gm, a, f, lmax, lmax_calc,
-                             units='Eötvös', epoch=self.epoch)
+                             units='Eötvös', epoch=self.epoch, name=name)
 
     def geoid(self, potref, a=None, f=None, r=None, omega=None, order=2,
-              lmax=None, lmax_calc=None, grid='DH2', extend=True):
+              lmax=None, lmax_calc=None, grid='DH2', extend=True, name=None):
         """
         Create a global map of the height of the geoid and return an SHGeoid
         class instance.
@@ -2647,7 +2673,7 @@ class SHGravCoeffs(object):
         Usage
         -----
         geoid = x.geoid(potref, [a, f, r, omega, order, lmax, lmax_calc, grid,
-                                 extend])
+                                 extend, name])
 
         Returns
         -------
@@ -2683,6 +2709,8 @@ class SHGravCoeffs(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E and the
             latitudinal band for 90 S.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2714,6 +2742,8 @@ class SHGravCoeffs(object):
             lmax = self.lmax
         if lmax_calc is None:
             lmax_calc = lmax
+        if name is None:
+            name = self.name
 
         if grid.upper() in ('DH', 'DH1'):
             sampling = 1
@@ -2735,7 +2765,8 @@ class SHGravCoeffs(object):
                                  sampling=sampling, extend=extend)
 
         return _SHGeoid(geoid, self.gm, potref, a, f, omega, r, order,
-                        lmax, lmax_calc, units='m', epoch=self.epoch)
+                        lmax, lmax_calc, units='m', epoch=self.epoch,
+                        name=name)
 
     # ---- Plotting routines ----
     def plot_spectrum(self, function='geoid', unit='per_l', base=10.,
@@ -3793,7 +3824,8 @@ class SHGravRealCoeffs(SHGravCoeffs):
             self.errors = None
 
     def __repr__(self):
-        return ('kind = {:s}\n'
+        return ('name = {:s}\n'
+                'kind = {:s}\n'
                 'normalization = {:s}\n'
                 'csphase = {:d}\n'
                 'lmax = {:d}\n'
@@ -3803,16 +3835,15 @@ class SHGravRealCoeffs(SHGravCoeffs):
                 'error_kind = {:s}\n'
                 'header = {:s}\n'
                 'header2 = {:s}\n'
-                'name = {:s}\n'
                 'epoch = {:s}'
-                .format(repr(self.kind), repr(self.normalization),
-                        self.csphase, self.lmax, repr(self.gm), repr(self.r0),
-                        repr(self.omega), repr(self.error_kind),
-                        repr(self.header), repr(self.header2),
-                        repr(self.name), repr(self.epoch)))
+                .format(repr(self.name), repr(self.kind),
+                        repr(self.normalization), self.csphase, self.lmax,
+                        repr(self.gm), repr(self.r0), repr(self.omega),
+                        repr(self.error_kind), repr(self.header),
+                        repr(self.header2), repr(self.epoch)))
 
     def _rotate(self, angles, dj_matrix, gm=None, r0=None, omega=None,
-                backend=None, nthreads=None):
+                backend=None, nthreads=None, name=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         if self.lmax > 1200 and backend.lower() == "shtools":
             _warnings.warn("The rotate() method is accurate only to about" +
@@ -3838,11 +3869,12 @@ class SHGravRealCoeffs(SHGravCoeffs):
             return SHGravCoeffs.from_array(
                 temp, errors=self.errors, normalization=self.normalization,
                 csphase=self.csphase, copy=False, gm=gm, r0=r0, omega=omega,
-                epoch=self.epoch)
+                epoch=self.epoch, name=name)
         else:
             return SHGravCoeffs.from_array(coeffs, errors=self.errors,
                                            gm=gm, r0=r0, omega=omega,
-                                           epoch=self.epoch, copy=False)
+                                           epoch=self.epoch, copy=False,
+                                           name=name)
 
     def _expand_coord(self, a, f, radius, lat, lon, degrees, lmax_calc, omega):
         """Evaluate the gravity at the coordinates lat and lon."""

@@ -25,11 +25,11 @@ class SlepianCoeffs(object):
 
     Each class instance defines the following class attributes:
 
+    name            : The name of the class instance.
     falpha          : Array of the Slepian expansion coefficients.
     galpha          : A Slepian class instance that contains the associated
                       Slepian functions.
     nmax            : The number of Slepian expansion coefficients.
-    name            : The name of the dataset.
 
     Each class instance provides the following methods:
 
@@ -78,21 +78,23 @@ class SlepianCoeffs(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('nmax = {:d}\n'
+        str = ('name = {:s}\n'
+               'nmax = {:d}\n'
                'lmax = {:d}\n'
                'name = {:s}\n'
-               .format(self.nmax, self.galpha.lmax, repr(self.name)))
+               .format(repr(self.name), self.nmax, self.galpha.lmax,
+                       repr(self.name)))
         str += '\nSlepian functions:\n' + self.galpha.__repr__()
         return str
 
     def expand(self, nmax=None, grid='DH2', zeros=None, extend=True,
-               backend=None, nthreads=None):
+               backend=None, nthreads=None, name=None):
         """
         Expand the function on a grid using the first n Slepian coefficients.
 
         Usage
         -----
-        f = x.expand([nmax, grid, zeros, extend])
+        f = x.expand([nmax, grid, zeros, extend, name])
 
         Returns
         -------
@@ -119,6 +121,8 @@ class SlepianCoeffs(object):
             Number of threads to use for the 'ducc' backend. Setting this
             parameter to 0 will use as many threads as there are hardware
             threads on the system.
+        name : str, optional, default = None
+            The name of the SHGrid class instance.
         """
         if not isinstance(grid, str):
             raise ValueError('grid must be a string. ' +
@@ -141,25 +145,27 @@ class SlepianCoeffs(object):
             gridout = backend_module(
                 backend=backend, nthreads=nthreads).MakeGridDH(
                     shcoeffs, sampling=1, norm=1, csphase=1, extend=extend)
-            return SHGrid.from_array(gridout, grid='DH', copy=False)
+            return SHGrid.from_array(gridout, grid='DH', copy=False, name=name)
         elif grid.upper() == 'DH2':
             gridout = backend_module(
                 backend=backend, nthreads=nthreads).MakeGridDH(
                     shcoeffs, sampling=2, norm=1, csphase=1, extend=extend)
-            return SHGrid.from_array(gridout, grid='DH', copy=False)
+            return SHGrid.from_array(gridout, grid='DH', copy=False, name=name)
         elif grid.upper() == 'GLQ':
             if backend == "shtools" and zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.galpha.lmax)
             gridout = backend_module(
                 backend=backend, nthreads=nthreads).MakeGridGLQ(
                     shcoeffs, zeros=zeros, norm=1, csphase=1, extend=extend)
-            return SHGrid.from_array(gridout, grid='GLQ', copy=False)
+            return SHGrid.from_array(gridout, grid='GLQ', copy=False,
+                                     name=name)
         else:
             raise ValueError(
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
                 "Input value was {:s}".format(repr(grid)))
 
-    def to_shcoeffs(self, nmax=None, normalization='4pi', csphase=1):
+    def to_shcoeffs(self, nmax=None, normalization='4pi', csphase=1,
+                    name=None):
         """
         Return the spherical harmonic coefficients using the first n Slepian
         coefficients.
@@ -167,7 +173,7 @@ class SlepianCoeffs(object):
         Usage
         -----
 
-        s = x.to_shcoeffs([nmax])
+        s = x.to_shcoeffs([nmax, normalization, csphase, name])
 
         Returns
         -------
@@ -187,6 +193,8 @@ class SlepianCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
+        name : str, optional, default = None
+            The name of the SHCoeffs class instance.
         """
         if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
@@ -215,7 +223,8 @@ class SlepianCoeffs(object):
             shcoeffs = _shtools.SlepianCoeffsToSH(self.falpha,
                                                   self.galpha.tapers, nmax)
 
-        temp = SHCoeffs.from_array(shcoeffs, normalization='4pi', csphase=1)
+        temp = SHCoeffs.from_array(shcoeffs, normalization='4pi', csphase=1,
+                                   name=name)
 
         if normalization != '4pi' or csphase != 1:
             return temp.convert(normalization=normalization, csphase=csphase)

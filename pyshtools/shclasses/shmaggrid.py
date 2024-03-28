@@ -19,6 +19,7 @@ class SHMagGrid(object):
 
     Attributes:
 
+    name           : The name of the dataset.
     rad            : SHGrid class instance of the radial component of the
                      magnetic field evaluated on an ellipsoid.
     theta          : SHGrid class instance of the theta component of the
@@ -62,7 +63,7 @@ class SHMagGrid(object):
     """
 
     def __init__(self, rad, theta, phi, total, pot, a, f, lmax, lmax_calc,
-                 units=None, pot_units=None, year=None):
+                 units=None, pot_units=None, year=None, name=None):
         """
         Initialize the SHMagGrid class.
         """
@@ -84,6 +85,7 @@ class SHMagGrid(object):
         self.units = units
         self.pot_units = pot_units
         self.year = year
+        self.name = name
 
     def copy(self):
         """
@@ -106,7 +108,8 @@ class SHMagGrid(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('grid = {:s}\n'
+        str = ('name = {:s}\n'
+               'grid = {:s}\n'
                'nlat = {:d}\n'
                'nlon = {:d}\n'
                'n = {:d}\n'
@@ -119,10 +122,10 @@ class SHMagGrid(object):
                'units (magnetic field) = {:s}\n'
                'units (potential) = {:s}\n'
                'year = {:s}'
-               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
-                       self.extend, self.lmax, self.lmax_calc, self.a,
-                       self.f, repr(self.units), repr(self.pot_units),
-                       repr(self.year)))
+               .format(repr(self.name), repr(self.grid), self.nlat, self.nlon,
+                       self.n, self.sampling, self.extend, self.lmax,
+                       self.lmax_calc, self.a, self.f, repr(self.units),
+                       repr(self.pot_units), repr(self.year)))
         return str
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],
