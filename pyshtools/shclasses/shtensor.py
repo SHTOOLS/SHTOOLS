@@ -3260,6 +3260,7 @@ class SHGravTensor(Tensor):
 
     Attributes:
 
+    name             : The name of the dataset.
     vxx, vxy, vzz,   : The 9 components of the gravity tensor.
     vyx, vyy, vyz,
     vzx, vzy, vzz
@@ -3329,7 +3330,7 @@ class SHGravTensor(Tensor):
     """
 
     def __init__(self, vxx, vyy, vzz, vxy, vxz, vyz, gm, a, f, lmax,
-                 lmax_calc, units='Eötvös', epoch=None):
+                 lmax_calc, units='Eötvös', name=None, epoch=None):
         """
         Initialize the SHGravTensor class.
         """
@@ -3363,6 +3364,7 @@ class SHGravTensor(Tensor):
         self.eigh1 = None
         self.eigh2 = None
         self.eighh = None
+        self.name = name
         self.units = units
         self.epoch = epoch
 
@@ -3390,7 +3392,8 @@ class SHGravTensor(Tensor):
         self._eighh_label = r'$\lambda_{hh}$, ' + self.units
 
     def __repr__(self):
-        str = ('grid = {:s}\n'
+        str = ('name = {:s}\n'
+               'grid = {:s}\n'
                'nlat = {:d}\n'
                'nlon = {:d}\n'
                'n = {:d}\n'
@@ -3403,9 +3406,10 @@ class SHGravTensor(Tensor):
                'f = {:e}\n'
                'units = {:s}\n'
                'epoch = {:s}'
-               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
-                       self.extend, self.lmax, self.lmax_calc, self.gm, self.a,
-                       self.f, repr(self.units), repr(self.epoch)))
+               .format(repr(self.name), repr(self.grid), self.nlat, self.nlon,
+                       self.n, self.sampling, self.extend, self.lmax,
+                       self.lmax_calc, self.gm, self.a, self.f,
+                       repr(self.units), repr(self.epoch)))
         return str
 
 
@@ -3417,6 +3421,7 @@ class SHMagTensor(Tensor):
 
     Attributes:
 
+    name             : The name of the dataset.
     vxx, vxy, vzz,   : The 9 components of the magnetic field tensor.
     vyx, vyy, vyz,
     vzx, vzy, vzz
@@ -3485,7 +3490,7 @@ class SHMagTensor(Tensor):
     """
 
     def __init__(self, vxx, vyy, vzz, vxy, vxz, vyz, a, f, lmax,
-                 lmax_calc, units=None, year=None):
+                 lmax_calc, units=None, name=None, year=None):
         """
         Initialize the SHMagTensor class.
         """
@@ -3518,6 +3523,7 @@ class SHMagTensor(Tensor):
         self.eigh1 = None
         self.eigh2 = None
         self.eighh = None
+        self.name = name
         self.units = units
         self.year = year
         if self.units.lower() == 'nt/m':
@@ -3553,7 +3559,8 @@ class SHMagTensor(Tensor):
         self._eighh_label = r'$\lambda_{hh}$, ' + self._units_formatted
 
     def __repr__(self):
-        str = ('grid = {:s}\n'
+        str = ('name = {:s}\n'
+               'grid = {:s}\n'
                'nlat = {:d}\n'
                'nlon = {:d}\n'
                'n = {:d}\n'
@@ -3565,7 +3572,8 @@ class SHMagTensor(Tensor):
                'f = {:e}\n'
                'units = {:s}\n'
                'year = {:s}'
-               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
-                       self.extend, self.lmax, self.lmax_calc, self.a,
-                       self.f, repr(self.units), repr(self.year)))
+               .format(repr(self.name), repr(self.grid), self.nlat, self.nlon,
+                       self.n, self.sampling, self.extend, self.lmax,
+                       self.lmax_calc, self.a, self.f, repr(self.units),
+                       repr(self.year)))
         return str

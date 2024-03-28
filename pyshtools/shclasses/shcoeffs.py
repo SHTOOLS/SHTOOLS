@@ -59,6 +59,7 @@ class SHCoeffs(object):
     Once initialized, each class instance defines the following class
     attributes:
 
+    name          : The name of the dataset.
     lmax          : The maximum spherical harmonic degree of the coefficients.
     coeffs        : The raw coefficients with the specified normalization and
                     csphase conventions. This is a three-dimensional array
@@ -74,7 +75,6 @@ class SHCoeffs(object):
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
     kind          : The coefficient data type: either 'complex' or 'real'.
-    name          : The name of the dataset.
     units         : The units of the spherical harmonic coefficients.
     header        : A list of values (of type str) from the header line of the
                     input file used to initialize the class (for 'shtools'
@@ -196,7 +196,7 @@ class SHCoeffs(object):
         else:
             kind = 'real'
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -435,7 +435,7 @@ class SHCoeffs(object):
         header_list = None
         header2_list = None
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -597,7 +597,7 @@ class SHCoeffs(object):
         exactly to the input spectrum by setting exact_power to True.
         """
         # check if all arguments are correct
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -738,10 +738,10 @@ class SHCoeffs(object):
 
         try:
             normalization = ds.coeffs.normalization
-        except:
+        except Exception:
             pass
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
@@ -754,7 +754,7 @@ class SHCoeffs(object):
 
         try:
             csphase = ds.coeffs.csphase
-        except:
+        except Exception:
             pass
 
         if csphase != 1 and csphase != -1:
@@ -765,7 +765,7 @@ class SHCoeffs(object):
 
         try:
             units = ds.coeffs.units
-        except:
+        except Exception:
             pass
 
         lmaxout = ds.dims['degree'] - 1
@@ -796,7 +796,7 @@ class SHCoeffs(object):
             serrors = serrors[:lmaxout+1, :lmaxout+1]
             errors = _np.array([cerrors, serrors])
             error_kind = ds.errors.error_kind
-        except:
+        except Exception:
             errors = None
             error_kind = None
 
@@ -870,7 +870,7 @@ class SHCoeffs(object):
         specified latitude and longitude, specify the optional parameters clat
         and clon.
         """
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -1429,19 +1429,19 @@ class SHCoeffs(object):
                                       'for these operands.')
 
     def __repr__(self):
-        return ('kind = {:s}\n'
+        return ('name = {:s}\n'
+                'kind = {:s}\n'
                 'normalization = {:s}\n'
                 'csphase = {:d}\n'
                 'lmax = {:d}\n'
                 'error_kind = {:s}\n'
                 'header = {:s}\n'
                 'header2 = {:s}\n'
-                'name = {:s}\n'
                 'units = {:s}'
                 .format(
-                    repr(self.kind), repr(self.normalization), self.csphase,
-                    self.lmax, repr(self.error_kind), repr(self.header),
-                    repr(self.header2), repr(self.name), repr(self.units)))
+                    repr(self.name), repr(self.kind), repr(self.normalization),
+                    self.csphase, self.lmax, repr(self.error_kind),
+                    repr(self.header), repr(self.header2), repr(self.units)))
 
     # ---- Extract data ----
     def degrees(self):
@@ -1877,7 +1877,8 @@ class SHCoeffs(object):
 
     # ---- Operations that return a new SHGravCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
-               body=False, dj_matrix=None, backend=None, nthreads=None):
+               body=False, dj_matrix=None, name=None, backend=None,
+               nthreads=None):
         """
         Rotate either the coordinate system used to express the spherical
         harmonic coefficients or the physical body, and return a new class
@@ -1886,7 +1887,7 @@ class SHCoeffs(object):
         Usage
         -----
         x_rotated = x.rotate(alpha, beta, gamma, [degrees, convention,
-                             body, dj_matrix, backend, nthreads])
+                             body, dj_matrix, name, backend, nthreads])
 
         Returns
         -------
@@ -1908,6 +1909,8 @@ class SHCoeffs(object):
         dj_matrix : ndarray, optional, default = None
             The djpi2 rotation matrix computed by a call to djpi2 (not used if
             the backend is 'ducc').
+        name : str, optional, default = self.name
+            The name of the dataset.
         backend : str, optional, default = preferred_backend()
             Name of the preferred backend, either 'shtools' or 'ducc'.
         nthreads : int, optional, default = 1
@@ -1957,7 +1960,7 @@ class SHCoeffs(object):
         True. This rotation is accomplished by performing the inverse rotation
         using the angles (-gamma, -beta, -alpha).
         """
-        if type(convention) is not str:
+        if not isinstance(convention, str):
             raise ValueError('convention must be a string. Input type is {:s}.'
                              .format(str(type(convention))))
 
@@ -1985,18 +1988,21 @@ class SHCoeffs(object):
         if backend is None:
             backend = preferred_backend()
 
-        rot = self._rotate(angles, dj_matrix, backend, nthreads)
+        if name is None:
+            name = self.name
+
+        rot = self._rotate(angles, dj_matrix, backend, nthreads, name)
         return rot
 
     def convert(self, normalization=None, csphase=None, lmax=None, kind=None,
-                check=True):
+                check=True, name=None):
         """
-        Return a SHCoeffs class instance with a different normalization
+        Return an SHCoeffs class instance with a different normalization
         convention.
 
         Usage
         -----
-        clm = x.convert([normalization, csphase, lmax, kind, check])
+        clm = x.convert([normalization, csphase, lmax, kind, check, name])
 
         Returns
         -------
@@ -2019,6 +2025,8 @@ class SHCoeffs(object):
         check : bool, optional, default = True
             When converting complex coefficients to real coefficients, if True,
             check if function is entirely real.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2041,9 +2049,11 @@ class SHCoeffs(object):
             lmax = self.lmax
         if kind is None:
             kind = self.kind
+        if name is None:
+            name = self.name
 
         # check argument consistency
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -2082,16 +2092,16 @@ class SHCoeffs(object):
                                    error_kind=self.error_kind,
                                    normalization=normalization.lower(),
                                    csphase=csphase, units=self.units,
-                                   copy=False)
+                                   copy=False, name=name)
 
-    def pad(self, lmax, copy=True):
+    def pad(self, lmax, copy=True, name=None):
         """
-        Return a SHCoeffs class where the coefficients are zero padded or
+        Return an SHCoeffs class where the coefficients are zero padded or
         truncated to a different lmax.
 
         Usage
         -----
-        clm = x.pad(lmax, [copy])
+        clm = x.pad(lmax, [copy, name])
 
         Returns
         -------
@@ -2104,11 +2114,17 @@ class SHCoeffs(object):
         copy : bool, optional, default = True
             If True, make a copy of x when initializing the class instance.
             If False, modify x itself.
+        name : str, optional, default = self.name
+            The name of the dataset.
         """
         if copy:
             clm = self.copy()
         else:
             clm = self
+
+        if name is None:
+            name = self.name
+        clm.name = name
 
         if lmax <= self.lmax:
             clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]
@@ -2134,14 +2150,14 @@ class SHCoeffs(object):
     # ---- Expand the coefficients onto a grid ----
     def expand(self, grid='DH2', lat=None, colat=None, lon=None, degrees=True,
                zeros=None, lmax=None, lmax_calc=None, extend=True,
-               backend=None, nthreads=None):
+               backend=None, name=None, nthreads=None):
         """
         Evaluate the spherical harmonic coefficients either on a global grid
         or for a list of coordinates.
 
         Usage
         -----
-        f = x.expand([grid, lmax, lmax_calc, zeros, backend, nthreads])
+        f = x.expand([grid, lmax, lmax_calc, zeros, backend, name, nthreads])
         g = x.expand(lat=lat, lon=lon, [lmax_calc, degrees])
         g = x.expand(colat=colat, lon=lon, [lmax_calc, degrees])
 
@@ -2178,6 +2194,8 @@ class SHCoeffs(object):
             grids.
         backend : str, optional, default = preferred_backend()
             Name of the preferred backend, either 'shtools' or 'ducc'.
+        name : str, optional, default = self.name
+            The name of the dataset.
         nthreads : int, optional, default = 1
             Number of threads to use for the 'ducc' backend. Setting this
             parameter to 0 will use as many threads as there are hardware
@@ -2206,7 +2224,7 @@ class SHCoeffs(object):
                 else:
                     temp = _np.pi/2.
 
-                if type(colat) is list:
+                if isinstance(colat, list):
                     lat = list(map(lambda x: temp - x, colat))
                 else:
                     lat = temp - colat
@@ -2222,23 +2240,28 @@ class SHCoeffs(object):
                 lmax_calc = lmax
             if backend is None:
                 backend = preferred_backend()
+            if name is None:
+                name = self.name
 
-            if type(grid) is not str:
+            if not isinstance(grid, str):
                 raise ValueError('grid must be a string. Input type is {:s}.'
                                  .format(str(type(grid))))
 
             if grid.upper() in ('DH', 'DH1'):
                 gridout = self._expandDH(sampling=1, lmax=lmax,
                                          lmax_calc=lmax_calc, extend=extend,
-                                         backend=backend, nthreads=nthreads)
+                                         backend=backend, nthreads=nthreads,
+                                         name=name)
             elif grid.upper() == 'DH2':
                 gridout = self._expandDH(sampling=2, lmax=lmax,
                                          lmax_calc=lmax_calc, extend=extend,
-                                         backend=backend, nthreads=nthreads)
+                                         backend=backend, nthreads=nthreads,
+                                         name=name)
             elif grid.upper() == 'GLQ':
                 gridout = self._expandGLQ(zeros=zeros, lmax=lmax,
                                           lmax_calc=lmax_calc, extend=extend,
-                                          backend=backend, nthreads=nthreads)
+                                          backend=backend, nthreads=nthreads,
+                                          name=name)
             else:
                 raise ValueError(
                     "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
@@ -2248,14 +2271,16 @@ class SHCoeffs(object):
 
     # ---- Compute the horizontal gradient ----
     def gradient(self, grid='DH2', lmax=None, lmax_calc=None, units=None,
-                 extend=True, radius=None, backend=None, nthreads=None):
+                 extend=True, radius=None, name=None, backend=None,
+                 nthreads=None):
         """
         Compute the horizontal gradient of the function and return an
         SHGradient class instance.
 
         Usage
         -----
-        g = x.gradient([grid, lmax, lmax_calc, units, backend, nthreads])
+        g = x.gradient([grid, lmax, lmax_calc, units, extend, radius, name,
+                        backend, nthreads])
 
         Returns
         -------
@@ -2280,6 +2305,8 @@ class SHCoeffs(object):
         radius : float, optional, default = 1.0
             The radius of the sphere used when computing the gradient of the
             function.
+        name : str, optional, default = self.name
+            The name of the dataset.
         backend : str, optional, default = preferred_backend()
             Name of the preferred backend, either 'shtools' or 'ducc'.
         nthreads : int, optional, default = 1
@@ -2294,8 +2321,10 @@ class SHCoeffs(object):
             lmax_calc = lmax
         if backend is None:
             backend = preferred_backend()
+        if name is None:
+            name = self.name
 
-        if type(grid) is not str:
+        if not isinstance(grid, str):
             raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
@@ -2303,12 +2332,14 @@ class SHCoeffs(object):
             gradientout = self._gradientDH(sampling=1, lmax=lmax,
                                            lmax_calc=lmax_calc, units=units,
                                            extend=extend, radius=radius,
-                                           backend=backend, nthreads=nthreads)
+                                           backend=backend, nthreads=nthreads,
+                                           name=name)
         elif grid.upper() == 'DH2':
             gradientout = self._gradientDH(sampling=2, lmax=lmax,
                                            lmax_calc=lmax_calc, units=units,
                                            extend=extend, radius=radius,
-                                           backend=backend, nthreads=nthreads)
+                                           backend=backend, nthreads=nthreads,
+                                           name=name)
         elif grid.upper() == 'GLQ':
             raise NotImplementedError('gradient() does not support the use '
                                       'of GLQ grids.')
@@ -2423,13 +2454,13 @@ class SHCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
@@ -2599,13 +2630,13 @@ class SHCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
@@ -2795,19 +2826,19 @@ class SHCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -3296,19 +3327,19 @@ class SHCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -3788,18 +3819,18 @@ class SHCoeffs(object):
         elif style == 'combined':
             legend_loc = [legend_loc, legend_loc]
         else:
-            if type(legend_loc) is str:
+            if isinstance(legend_loc, str):
                 legend_loc = [legend_loc, legend_loc]
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
@@ -4055,9 +4086,9 @@ class SHRealCoeffs(SHCoeffs):
         return SHCoeffs.from_array(complex_coeffs,
                                    normalization=self.normalization,
                                    csphase=self.csphase, units=self.units,
-                                   copy=False)
+                                   copy=False, name=self.name)
 
-    def _rotate(self, angles, dj_matrix, backend, nthreads):
+    def _rotate(self, angles, dj_matrix, backend, nthreads, name):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         if self.lmax > 1200 and backend.lower() == "shtools":
             _warnings.warn("The rotate() method is accurate only to about" +
@@ -4082,12 +4113,13 @@ class SHRealCoeffs(SHCoeffs):
                             csphase_out=self.csphase)
             return SHCoeffs.from_array(
                 temp, errors=self.errors, normalization=self.normalization,
-                csphase=self.csphase, units=self.units, copy=False)
+                csphase=self.csphase, units=self.units, copy=False, name=name)
         else:
             return SHCoeffs.from_array(coeffs, errors=self.errors,
-                                       units=self.units, copy=False)
+                                       units=self.units, copy=False, name=name)
 
-    def _expandDH(self, sampling, lmax, lmax_calc, extend, backend, nthreads):
+    def _expandDH(self, sampling, lmax, lmax_calc, extend, backend, nthreads,
+                  name):
         """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
         from .shgrid import SHGrid
         if self.normalization == '4pi':
@@ -4110,10 +4142,11 @@ class SHRealCoeffs(SHCoeffs):
                 csphase=self.csphase, lmax=lmax,
                 lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='DH', units=self.units,
-                                    copy=False)
+                                    copy=False, name=name)
         return gridout
 
-    def _expandGLQ(self, zeros, lmax, lmax_calc, extend, backend, nthreads):
+    def _expandGLQ(self, zeros, lmax, lmax_calc, extend, backend, nthreads,
+                   name):
         """Evaluate the coefficients on a Gauss Legendre quadrature grid."""
         from .shgrid import SHGrid
         if self.normalization == '4pi':
@@ -4138,7 +4171,7 @@ class SHRealCoeffs(SHCoeffs):
                 csphase=self.csphase, lmax=lmax,
                 lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='GLQ', units=self.units,
-                                    copy=False)
+                                    copy=False, name=name)
         return gridout
 
     def _expand_coord(self, lat, lon, lmax_calc, degrees):
@@ -4169,11 +4202,11 @@ class SHRealCoeffs(SHCoeffs):
                              'Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float or type(lat) is _np.float64:
+        if isinstance(lat, (int, float, _np.float64)):
             return _shtools.MakeGridPoint(self.coeffs, lat=latin, lon=lonin,
                                           lmax=lmax_calc, norm=norm,
                                           csphase=self.csphase)
-        elif type(lat) is _np.ndarray:
+        elif isinstance(lat, _np.ndarray):
             values = _np.empty_like(lat, dtype=_np.float64)
             for v, latitude, longitude in _np.nditer([values, latin, lonin],
                                                      op_flags=['readwrite']):
@@ -4182,7 +4215,7 @@ class SHRealCoeffs(SHCoeffs):
                                                 lmax=lmax_calc, norm=norm,
                                                 csphase=self.csphase)
             return values
-        elif type(lat) is list:
+        elif isinstance(lat, list):
             values = []
             for latitude, longitude in zip(latin, lonin):
                 values.append(
@@ -4197,7 +4230,7 @@ class SHRealCoeffs(SHCoeffs):
                              .format(repr(type(lat)), repr(type(lon))))
 
     def _gradientDH(self, sampling, lmax, lmax_calc, units, extend, radius,
-                    backend, nthreads):
+                    backend, nthreads, name):
         """Evaluate the gradient on a Driscoll and Healy (1994) grid."""
         from .shgradient import SHGradient
 
@@ -4208,7 +4241,7 @@ class SHRealCoeffs(SHCoeffs):
                     sampling=sampling, lmax=lmax,
                     lmax_calc=lmax_calc, extend=extend, radius=radius)
 
-        return SHGradient(theta, phi, lmax, lmax_calc, units=units)
+        return SHGradient(theta, phi, lmax, lmax_calc, units=units, name=name)
 
 
 # =============== COMPLEX SPHERICAL HARMONICS ================
@@ -4298,9 +4331,10 @@ class SHComplexCoeffs(SHCoeffs):
                                       switchcs=0)
         return SHCoeffs.from_array(real_coeffs,
                                    normalization=self.normalization,
-                                   csphase=self.csphase, units=self.units)
+                                   csphase=self.csphase, units=self.units,
+                                   name=self.name)
 
-    def _rotate(self, angles, dj_matrix, backend, nthreads):
+    def _rotate(self, angles, dj_matrix, backend, nthreads, name):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         if backend == 'ducc':
             coeffs = backend_module(
@@ -4315,10 +4349,12 @@ class SHComplexCoeffs(SHCoeffs):
                                 csphase_out=self.csphase)
                 return SHCoeffs.from_array(
                     temp, errors=self.errors, normalization=self.normalization,
-                    csphase=self.csphase, units=self.units, copy=False)
+                    csphase=self.csphase, units=self.units, copy=False,
+                    name=name)
             else:
                 return SHCoeffs.from_array(coeffs, errors=self.errors,
-                                           units=self.units, copy=False)
+                                           units=self.units, copy=False,
+                                           name=name)
 
         # Note that the current method is EXTREMELY inefficient. The complex
         # coefficients are expanded onto real and imaginary grids, each of
@@ -4371,9 +4407,10 @@ class SHComplexCoeffs(SHCoeffs):
         return SHCoeffs.from_array(coeffs_rot, errors=self.errors,
                                    normalization=self.normalization,
                                    csphase=self.csphase, units=self.units,
-                                   copy=False)
+                                   copy=False, name=name)
 
-    def _expandDH(self, sampling, lmax, lmax_calc, extend, backend, nthreads):
+    def _expandDH(self, sampling, lmax, lmax_calc, extend, backend, nthreads,
+                  name):
         """Evaluate the coefficients on a Driscoll and Healy (1994) grid."""
         from .shgrid import SHGrid
         if self.normalization == '4pi':
@@ -4396,10 +4433,11 @@ class SHComplexCoeffs(SHCoeffs):
                     csphase=self.csphase, lmax=lmax,
                     lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='DH', units=self.units,
-                                    copy=False)
+                                    copy=False, name=name)
         return gridout
 
-    def _expandGLQ(self, zeros, lmax, lmax_calc, extend, backend, nthreads):
+    def _expandGLQ(self, zeros, lmax, lmax_calc, extend, backend, nthreads,
+                   name):
         """Evaluate the coefficients on a Gauss-Legendre quadrature grid."""
         from .shgrid import SHGrid
         if self.normalization == '4pi':
@@ -4424,7 +4462,7 @@ class SHComplexCoeffs(SHCoeffs):
                     csphase=self.csphase, lmax=lmax,
                     lmax_calc=lmax_calc, extend=extend)
         gridout = SHGrid.from_array(data, grid='GLQ', units=self.units,
-                                    copy=False)
+                                    copy=False, name=name)
         return gridout
 
     def _expand_coord(self, lat, lon, lmax_calc, degrees):
@@ -4455,11 +4493,11 @@ class SHComplexCoeffs(SHCoeffs):
                              'Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float or type(lat) is _np.float64:
+        if isinstance(lat, (int, float, _np.float64)):
             return _shtools.MakeGridPointC(self.coeffs, lat=latin, lon=lonin,
                                            lmax=lmax_calc, norm=norm,
                                            csphase=self.csphase)
-        elif type(lat) is _np.ndarray:
+        elif isinstance(lat, _np.ndarray):
             values = _np.empty_like(lat, dtype=_np.complex128)
             for v, latitude, longitude in _np.nditer([values, latin, lonin],
                                                      op_flags=['readwrite']):
@@ -4468,7 +4506,7 @@ class SHComplexCoeffs(SHCoeffs):
                                                  lmax=lmax_calc, norm=norm,
                                                  csphase=self.csphase)
             return values
-        elif type(lat) is list:
+        elif isinstance(lat, list):
             values = []
             for latitude, longitude in zip(latin, lonin):
                 values.append(
@@ -4483,7 +4521,7 @@ class SHComplexCoeffs(SHCoeffs):
                              'Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
-    def _gradientDH(self, sampling, lmax, lmax_calc, units, extend):
+    def _gradientDH(self, sampling, lmax, lmax_calc, units, extend, name):
         """Evaluate the gradient on a Driscoll and Healy (1994) grid."""
         raise NotImplementedError('gradient() does not support the use '
                                   'of complex DH grids.')

@@ -149,7 +149,7 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                 while f.read(1) != b'\n':
                     try:
                         f.seek(-2, _os.SEEK_CUR)
-                    except:
+                    except Exception:
                         f.seek(-1, _os.SEEK_CUR)  # beginning of file
                         break
 
@@ -166,7 +166,7 @@ def read_dov(filename, lmax=None, error=False, header=False, header2=False,
                     line = line.replace(',', ' ')
                     try:
                         f.seek(-len(line)-2, _os.SEEK_CUR)
-                    except:
+                    except Exception:
                         raise RuntimeError('Encountered beginning of file '
                                            'while attempting to determine '
                                            'lmax.')

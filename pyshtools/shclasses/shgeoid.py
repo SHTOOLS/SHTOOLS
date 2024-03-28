@@ -17,6 +17,7 @@ class SHGeoid(object):
 
     Attributes:
 
+    name           : The name of the dataset.
     geoid          : SHGrid class instance of the geoid.
     gm             : Gravitational constant time the mass of the body.
     potref         : Potential of the chosen geoid, in m2/s2.
@@ -35,9 +36,9 @@ class SHGeoid(object):
     sampling       : The longitudinal sampling for Driscoll and Healy grids.
                      Either 1 for equally sampled grids (nlat=nlon) or 2 for
                      equally spaced grids in degrees.
-    units          : The units of the gridded data.
     extend         : True if the grid contains the redundant column for 360 E
                      and the unnecessary row for 90 S.
+    units          : The units of the gridded data.
     epoch          : The epoch time of the gravity model.
 
     Methods:
@@ -50,7 +51,7 @@ class SHGeoid(object):
     info()         : Print a summary of the data stored in the SHGrid instance.
     """
     def __init__(self, geoid, gm, potref, a, f, omega, r, order, lmax,
-                 lmax_calc, units=None, epoch=None):
+                 lmax_calc, name=None, units=None, epoch=None):
         """
         Initialize the SHGeoid class.
         """
@@ -73,6 +74,7 @@ class SHGeoid(object):
         self.r = r
         self.lmax = lmax
         self.lmax_calc = lmax_calc
+        self.name = name
         self.units = units
         self.epoch = epoch
 
@@ -97,7 +99,8 @@ class SHGeoid(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('grid = {:s}\n'
+        str = ('name = {:s}\n'
+               'grid = {:s}\n'
                'sampling = {:d}\n'
                'nlat = {:d}\n'
                'nlon = {:d}\n'
@@ -115,11 +118,11 @@ class SHGeoid(object):
                'order of expansion = {:d}\n'
                'units = {:s}\n'
                'epoch = {:s}'
-               .format(repr(self.grid), self.sampling, self.nlat, self.nlon,
-                       self.n, self.sampling, self.extend, self.lmax,
-                       self.lmax_calc, self.gm, self.potref, self.a, self.f,
-                       repr(self.omega), self.r, self.order, repr(self.units),
-                       repr(self.epoch)))
+               .format(repr(self.name), repr(self.grid), self.sampling,
+                       self.nlat, self.nlon, self.n, self.sampling,
+                       self.extend, self.lmax, self.lmax_calc, self.gm,
+                       self.potref, self.a, self.f, repr(self.omega), self.r,
+                       self.order, repr(self.units), repr(self.epoch)))
         return str
 
     def plot(self, projection=None, tick_interval=[30, 30],
