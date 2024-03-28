@@ -19,6 +19,7 @@ class SHGravGrid(object):
 
     Attributes:
 
+    name           : The name of the dataset.
     rad            : SHGrid class instance of the radial component of the
                      gravitational acceleration evaluated on an ellipsoid.
     theta          : SHGrid class instance of the theta component of the
@@ -68,7 +69,7 @@ class SHGravGrid(object):
 
     def __init__(self, rad, theta, phi, total, pot, gm, a, f, omega,
                  normal_gravity, lmax, lmax_calc, units=None, pot_units=None,
-                 epoch=None):
+                 epoch=None, name=None):
         """
         Initialize the SHGravGrid class.
         """
@@ -96,6 +97,7 @@ class SHGravGrid(object):
         self.units = units
         self.pot_units = pot_units
         self.epoch = epoch
+        self.name = name
 
     def copy(self):
         """
@@ -118,7 +120,8 @@ class SHGravGrid(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('grid = {:s}\n'
+        str = ('name = {:s}\n'
+               'grid = {:s}\n'
                'nlat = {:d}\n'
                'nlon = {:d}\n'
                'n = {:d}\n'
@@ -134,11 +137,12 @@ class SHGravGrid(object):
                'units (gravity) = {:s}\n'
                'units (potential) = {:s}\n'
                'epoch = {:s}'
-               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
-                       self.extend, self.lmax, self.lmax_calc, self.gm,
-                       self.a, self.f, repr(self.omega),
-                       repr(self.normal_gravity), repr(self.units),
-                       repr(self.pot_units), repr(self.epoch)))
+               .format(repr(self.name), repr(self.grid), self.nlat, self.nlon,
+                       self.n, self.sampling, self.extend, self.lmax,
+                       self.lmax_calc, self.gm, self.a, self.f,
+                       repr(self.omega), repr(self.normal_gravity),
+                       repr(self.units), repr(self.pot_units),
+                       repr(self.epoch)))
         return str
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],
