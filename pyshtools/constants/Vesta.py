@@ -12,7 +12,7 @@ from astropy.constants import G as _G
 gm = _Constant(
     abbrev='gm_vesta',
     name='Gravitational constant times the mass of (4) Vesta',
-    value=317288244969.3,
+    value=17288244969.3,
     unit='m3 / s2',
     uncertainty=4064.9,
     reference='VESTA20H: Konopliv, A.S., Asmar, S.W., Park, R.S., Bills, '
