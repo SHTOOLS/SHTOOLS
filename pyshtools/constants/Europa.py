@@ -33,12 +33,12 @@ mass = _Constant(
 mean_radius = _Constant(
     abbrev='mean_radius_europa',
     name='Mean radius of Europa',
-    value=1560.8e3,
+    value=1560.7e3,
     unit='m',
     uncertainty=0.3e3,
-    reference='Nimmo, F., Thomas, P., Pappalardo, R., & Moore, W. (2007). The '
-    'global shape of Europa: Constraints on lateral shell thickness '
-    'variations. Icarus, 191(1), 183–192. '
+    reference='(nominal ellipsoid): Nimmo, F., Thomas, P., Pappalardo, R., & '
+    'Moore, W. (2007). The global shape of Europa: Constraints on lateral '
+    'shell thickness variations. Icarus, 191(1), 183–192. '
     'https://doi.org/10.1016/j.icarus.2007.04.021')
 
 r = mean_radius
