@@ -231,16 +231,18 @@ class SHGrid(object):
                 return cls(array, units=units, name=name, copy=False)
 
     @classmethod
-    def from_ellipsoid(self, lmax, a, b=None, c=None, grid='DH', kind='real',
-                       sampling=2, units=None, name=None, extend=True):
+    def from_ellipsoid(self, lmax, a, b=None, c=None, alpha=0.,
+                       grid='DH', kind='real', sampling=2, units=None,
+                       name=None, extend=True):
         """
         Initialize the class instance with a triaxial ellipsoid whose principal
-        axes are aligned with the x, y, and z axes.
+        axes are aligned with the x, y, and z axes. Optionally, rotate the
+        a and b principal axes about the z axis by alpha.
 
         Usage
         -----
-        x = SHGrid.from_ellipsoid(lmax, a, [b, c, grid, kind, sampling,
-                                            units, name, extend])
+        x = SHGrid.from_ellipsoid(lmax, a, [b, c, alpha, grid, kind,
+                                            sampling, units, name, extend])
 
         Returns
         -------
@@ -248,14 +250,18 @@ class SHGrid(object):
 
         Parameters
         ----------
+        lmax : int
+            The maximum spherical harmonic degree resolvable by the grid.
         a : float
             Length of the principal axis aligned with the x axis.
         b : float, optional, default = a
             Length of the principal axis aligned with the y axis.
         c : float, optional, default = b
             Length of the principal axis aligned with the z axis.
-        lmax : int
-            The maximum spherical harmonic degree resolvable by the grid.
+        alpha : float, optional, default = 0
+            Rotate the a and b principal axes about the z axis by alpha in
+            degrees. The longitude of the x and y axes will be alpha and
+            90 + alpha, respectively.
         grid : str, optional, default = 'DH'
             'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
             Quadrature grids, respectively.
@@ -288,8 +294,8 @@ class SHGrid(object):
         else:
             if c is None:
                 c = b
-            cos2 = _np.cos(_np.deg2rad(temp.lons()))**2
-            sin2 = _np.sin(_np.deg2rad(temp.lons()))**2
+            cos2 = _np.cos(_np.deg2rad(temp.lons() - alpha))**2
+            sin2 = _np.sin(_np.deg2rad(temp.lons() - alpha))**2
             for ilat, lat in enumerate(temp.lats()):
                 temp.data[ilat, :] = 1. / _np.sqrt(
                     _np.cos(_np.deg2rad(lat))**2 * cos2 / a**2 +
