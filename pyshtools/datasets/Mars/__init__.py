@@ -105,6 +105,9 @@ def GMM3(lmax=120):
         Mars from MGS, Mars Odyssey and MRO radio science, Icarus, 272,
         228-245, doi:10.1016/j.icarus.2016.02.050.
     '''
+    if lmax < 0:
+        lmax = 120
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/gmm3_120_sha.tab",  # noqa: E501
         known_hash="sha256:eb4913b1afb6682406e6a9dad5be7918a162fa8462473c9a2e7aae258d4c2c9c",  # noqa: E501
@@ -136,6 +139,9 @@ def GMM3_RM1_1E0(lmax=150):
         from gravity and topography, Geophysical Research Letters, 44,
         7686-7694, doi:10.1002/2017GL074172.
     '''
+    if lmax < 0:
+        lmax = 150
+
     fname = _retrieve(
         url="https://pgda.gsfc.nasa.gov/data/MarsDensityRM1/sha.gmm3_l150_rm1_lambda_1",  # noqa: E501
         known_hash="sha256:b309917362bd2014df42a62cb19ea321ee8db97997b0688eda2774deb46ef538",  # noqa: E501
@@ -167,6 +173,9 @@ def MRO120F(lmax=120):
         Chandler Wobble of Mars From Orbiting Spacecraft. Geophysical Research
         Letters, 47, e2020GL090568, doi:10.1029/2020GL090568.
     '''
+    if lmax < 0:
+        lmax = 120
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/jgmro_120f_sha.tab",  # noqa: E501
         known_hash="sha256:ddd3de9c30d75879fe37aa17a1149e7c96c141c095962954cb7ea865a2c025b6",  # noqa: E501
@@ -197,6 +206,9 @@ def Langlais2019(lmax=134):
         and MAVEN. Journal of Geophysical Research: Planets, 124, 1542-1569,
         doi:10.1029/2018JE005854.
     '''
+    if lmax < 0:
+        lmax = 134
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.3876714/Langlais2019.sh.gz",
         known_hash="sha256:3cad9e268f0673be1702f1df504a4cbcb8dba4480c7b3f629921911488fe247b",  # noqa: E501
@@ -225,6 +237,9 @@ def Morschhauser2014(lmax=110):
         of the lithospheric magnetic ﬁeld of Mars, Journal of Geophysical
         Research: Planets, 119, 1162-1188, doi:10.1002/2013JE004555.
     '''
+    if lmax < 0:
+        lmax = 110
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.3876495/Morschhauser2014.txt.gz",
         known_hash="sha256:a86200b3147a24447ff8bba88ec6047329823275813a9f5e9505bb611e3e86e0",  # noqa: E501

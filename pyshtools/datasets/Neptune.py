@@ -29,6 +29,9 @@ def Jacobson2009_gravity(lmax=4):
         4322. https://doi.org/10.1088/0004-6256/137/5/4322
 
     '''
+    if lmax < 0:
+        lmax = 4
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.10883883/Jacobson2009.sh",
         known_hash="sha256:200d6e00446edfa5a25f82646a5d0e882d36c54dae862b20411d90b4d20ad5de",  # noqa: E501

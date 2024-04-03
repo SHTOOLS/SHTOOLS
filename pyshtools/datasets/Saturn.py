@@ -29,6 +29,9 @@ def Jacobson2022_gravity(lmax=12):
         The Astronomical Journal, 164, 199.
         https://doi.org/10.3847/1538-3881/ac90c9
     '''
+    if lmax < 0:
+        lmax = 12
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.10878627/Jacobson2022.sh",
         known_hash="sha256:9f39f74cca125e3c1e44a9fded2ddb648397b1c13850b2b136465c18589174e6",  # noqa: E501

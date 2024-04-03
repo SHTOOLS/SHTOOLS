@@ -33,6 +33,9 @@ def GLGM2(lmax=70):
         data. Journal of Geophysical Research 102 (E7), 16,339-16,359,
         doi:10.1029/97JE01418.
     '''
+    if lmax < 0:
+        lmax = 70
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/lunar/clem1-gravity-topo-v1/cl_8xxx/gravity/glgm2sh.tab",  # noqa: E501
         known_hash="sha256:94a443391897affa44bdb0c30d5cd5fbf051a6b17df20cff98dc7c8e391734f6",  # noqa: E501
@@ -63,6 +66,9 @@ def GLGM3(lmax=150):
         NASA Moon orbiters, J. Geophys. Res., 115, E05001,
         doi:10.1029/2009JE003472.
     '''
+    if lmax < 0:
+        lmax = 150
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/lunar/lp-l-rss-5-glgm3_gravity-v1/lp_1201/data/shadr/gglp_glgm3150_sha.tab",  # noqa: E501
         known_hash="sha256:c8329d8cdfc62e92b9731e0053fe328959bba63444648283bc7df21d42266de4",  # noqa: E501
@@ -91,6 +97,9 @@ def LP165P(lmax=165):
         (2001). Recent gravity models as a result of the Lunar Prospector
         mission, Icarus, 150, 1-18, doi:10.1006/icar.2000.6573.
     '''
+    if lmax < 0:
+        lmax = 165
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/lunar/lp-l-rss-5-gravity-v1/lp_1001/sha/jgl165p1.sha",  # noqa: E501
         known_hash="sha256:b75a40be56f9b58bd00536a65c7773db3b6ed17de78fba26b945837fd0d049ee",  # noqa: E501
@@ -121,6 +130,9 @@ def SGM100I(lmax=100):
         determination using SELENE same-beam differential VLBI tracking data.
         J. Geodesy, 85, 205-228, doi:10.1007/s00190-010-0430-2.
     '''
+    if lmax < 0:
+        lmax = 100
+
     fname = _retrieve(
         url="https://zenodo.org/record/5233378/files/SGM100i.sh.gz",
         known_hash="sha256:0a6e4d8cf3e26f60d61ac194bb63506a4eb91d7dc119a2038cba0acf58849944",  # noqa: E501

@@ -30,6 +30,9 @@ def Kaspi2023_gravity(lmax=40):
         oriented zonal flows on Jupiter. Nature Astronomy, 7(12), 1463–1472.
         https://doi.org/10.1038/s41550-023-02077-8
     '''
+    if lmax < 0:
+        lmax = 40
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.10886089/Kaspi2023.sh",
         known_hash="sha256:9517c67f623c5e252ce77ef2650f8efed798ac7b7fc68768615e610a3ac34db1",  # noqa: E501

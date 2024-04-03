@@ -28,6 +28,9 @@ def MarsTopo2600(lmax=2600):
         Treatise on Geophysics, 2nd edition, Oxford, 153-193,
         doi:10.1016/B978-0-444-53802-4.00169-X.
     '''
+    if lmax < 0:
+        lmax = 2600
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.3870922/MarsTopo2600.shape.gz",
         known_hash="sha256:8882a9ee7ee405d971b752028409f69bd934ba5411f1c64eaacd149e3b8642af",  # noqa: E501
@@ -55,6 +58,9 @@ def MarsTopo719(lmax=719):
         Treatise on Geophysics, 2nd edition, Oxford, 153-193,
         doi:10.1016/B978-0-444-53802-4.00169-X.
     '''
+    if lmax < 0:
+        lmax = 719
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.6475460/MarsTopo719.shape.gz",
         known_hash="sha256:37a98efae5eab7c85260f4b43315fe9fcf44247a61581bed1b6f7f10f79adea0",  # noqa: E501
