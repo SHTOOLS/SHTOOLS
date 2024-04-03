@@ -175,6 +175,9 @@ def T2015_449(lmax=449):
         Journal of Geophysical Research Planets, 123, 291-316,
         doi:10.1002/2017JE005418.
     '''
+    if lmax < 0:
+        lmax = 449
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.3873648/T2015_449.sh.gz",
         known_hash="sha256:4db0b77b3863f38d6fb6e62c5c1116bf7123b77c5aad65df7dae598714edd655",  # noqa: E501
@@ -205,6 +208,9 @@ def Ravat2020(lmax=450):
         gradients, Journal of Geophysical Research: Planets, 125,
         e2019JE006187, doi:10.1029/2019JE006187.
     '''
+    if lmax < 0:
+        lmax = 450
+
     fname = _retrieve(
         url="https://uknowledge.uky.edu/cgi/viewcontent.cgi?filename=4&article=1001&context=ees_data&type=additional",  # noqa: E501
         known_hash="sha256:dd1128d7819a8de097f3abeba93fee4cb80fced5bd63d56cca5a9bc70ac2bea9",  # noqa: E501
@@ -235,6 +241,9 @@ def GRGM900C(lmax=900):
         GRAIL primary and extended mission data, Geophysical Research Letters,
         41, 3382-3389, doi:10.1002/2014GL060027.
     '''
+    if lmax < 0:
+        lmax = 900
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/grail/grail-l-lgrs-5-rdr-v1/grail_1001/shadr/gggrx_0900c_sha.tab",  # noqa: E501
         known_hash="sha256:dab6ab06e0d3d7cbc594ea4bd03151a65534ed5fdf4f147ae38662428c04454e",  # noqa: E501
@@ -266,6 +275,9 @@ def GRGM1200B(lmax=1200):
         Geophysical Research Planets, 125, e2019JE006086,
         doi:10.1029/2019JE006086.
     '''
+    if lmax < 0:
+        lmax = 1200
+
     fname = _retrieve(
         url="https://pgda.gsfc.nasa.gov/data/MoonRM1/sha.grgm1200b_sigma",
         known_hash="sha256:f08a988b43f3eaa5a2089045a9b7e41e02f16542c7912b87ea34366fafa39bc5",  # noqa: E501
@@ -299,6 +311,9 @@ def GRGM1200B_RM1_1E0(lmax=1200):
         Geophysical Research Planets, 125, e2019JE006086,
         doi:10.1029/2019JE006086.
     '''
+    if lmax < 0:
+        lmax = 1200
+
     fname = _retrieve(
         url="https://pgda.gsfc.nasa.gov/data/MoonRM1/sha.grgm1200b_rm1_1e0_sigma",  # noqa: E501
         known_hash="sha256:d42536cc716f5da8e067aa79a253c310e9d53d1d3b3ae7b43fa4517654d20d35",  # noqa: E501
@@ -331,6 +346,9 @@ def GL0900D(lmax=900):
         gravity fields from the GRAIL Primary and Extended Missions,
         Geophysical Research Letters, 41, 1452-1458, doi:10.1002/2013GL059066.
     '''
+    if lmax < 0:
+        lmax = 900
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/grail/grail-l-lgrs-5-rdr-v1/grail_1001/shadr/jggrx_0900d_sha.tab",  # noqa: E501
         known_hash="sha256:0ead4e6260729c53fe29dcc6d954d473e87eb3ae1f4d932496a1417fd62fcdc6",  # noqa: E501
@@ -361,6 +379,9 @@ def GL1500E(lmax=1500):
         gravity fields from the GRAIL Primary and Extended Missions,
         Geophysical Research Letters, 41, 1452-1458, doi:10.1002/2013GL059066.
     '''
+    if lmax < 0:
+        lmax = 1500
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/grail/grail-l-lgrs-5-rdr-v1/grail_1001/shadr/jggrx_1500e_sha.tab",  # noqa: E501
         known_hash="sha256:93a7467b9241f6f94c131126c87fd3b81cfc3d223c474ee3444bf162b7c97f5a",  # noqa: E501

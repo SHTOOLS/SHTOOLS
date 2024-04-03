@@ -35,6 +35,9 @@ def GGMRO95A(lmax=95):
         Mars Reconnaissance Orbiter Eos Trans. AGU, 89(53), Fall Meet. Suppl.,
         Abstract P41B-1376.
     '''
+    if lmax < 0:
+        lmax = 95
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/ggmro_095a_sha.tab",  # noqa: E501
         known_hash="sha256:94978102bc6f443ff195dda0f9020660994381b1b5b47d9ad3110922e87b7ebc",  # noqa: E501
@@ -67,6 +70,9 @@ def MRO95A(lmax=95):
         gravity fields from MRO, Mars seasonal gravity, and other dynamical
         parameters. Icarus, 211, 401-428, doi:10.1016/j.icarus.2010.10.004.
     '''
+    if lmax < 0:
+        lmax = 95
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/jgmro_095a_sha.tab",  # noqa: E501
         known_hash="sha256:c35927f287f40bd039d101e50b5364841ebfd9ab55d0a863784175c5bc984ce5",  # noqa: E501
@@ -97,6 +103,9 @@ def MRO110B(lmax=110):
         gravity fields from MRO, Mars seasonal gravity, and other dynamical
         parameters. Icarus, 211, 401-428, doi:10.1016/j.icarus.2010.10.004.
     '''
+    if lmax < 0:
+        lmax = 110
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/jgmro_110b_sha.tab",  # noqa: E501
         known_hash="sha256:49e55b6833ed90c7853abbdb0b54bcc30a3613b20cc7dbbfcb7399a0e3b70e5c",  # noqa: E501
@@ -129,6 +138,9 @@ def MRO110B2(lmax=110):
         gravity fields from MRO, Mars seasonal gravity, and other dynamical
         parameters. Icarus, 211, 401-428, doi:10.1016/j.icarus.2010.10.004.
     '''
+    if lmax < 0:
+        lmax = 110
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/jgmro_110b2_sha.tab",  # noqa: E501
         known_hash="sha256:e1fc6dc9578715a328a43407d8c52f173a1c72740981a46e107530e05c813d1c",  # noqa: E501
@@ -159,6 +171,9 @@ def MRO110C(lmax=110):
         gravity fields from MRO, Mars seasonal gravity, and other dynamical
         parameters. Icarus, 211, 401-428, doi:10.1016/j.icarus.2010.10.004.
     '''
+    if lmax < 0:
+        lmax = 110
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/jgmro_110c_sha.tab",  # noqa: E501
         known_hash="sha256:31fecb73a8959a55a9e5f92911d23ddaecb0a04139b93b500406b7944a6d6b80",  # noqa: E501
@@ -188,6 +203,9 @@ def MRO120D(lmax=120):
         gravity field and orientation from Mars orbiter and lander tracking
         data. Icarus, 274, 253-260, doi:10.1016/j.icarus.2016.02.052.
     '''
+    if lmax < 0:
+        lmax = 120
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/mro/mro-m-rss-5-sdp-v1/mrors_1xxx/data/shadr/jgmro_120d_sha.tab",  # noqa: E501
         known_hash="sha256:00c3a2fada7bdfb8022962752b1226be1de21ea469f9e88af5d8dc47d23883bd",  # noqa: E501

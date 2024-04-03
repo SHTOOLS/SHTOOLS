@@ -56,6 +56,9 @@ def EGM2008(lmax=2190):
         (EGM2008), Journal of Geophysical Research: Solid Earth, 117, B04406,
         doi:10.1029/2011JB008916.
     '''
+    if lmax < 0:
+        lmax = 2190
+
     fname = _retrieve(
         url="http://icgem.gfz-potsdam.de/getmodel/gfc/c50128797a9cb62e936337c890e4425f03f0461d7329b09a8cc8561504465340/EGM2008.gfc",  # noqa: E501
         known_hash="sha256:ab5b524da073e63b5bdceb7ca47a0de07a26dd44a1c5798f39fc98dc80af70fd",  # noqa: E501
@@ -89,6 +92,9 @@ def EIGEN_6C4(lmax=2190):
         data up to degree and order 2190 of GFZ Potsdam and GRGS Toulouse, GFZ
         Data Services, http://doi.org/10.5880/icgem.2015.1.
     '''
+    if lmax < 0:
+        lmax = 2190
+
     fname = _retrieve(
         url="http://icgem.gfz-potsdam.de/getmodel/gfc/7fd8fe44aa1518cd79ca84300aef4b41ddb2364aef9e82b7cdaabdb60a9053f1/EIGEN-6C4.gfc",  # noqa: E501
         known_hash="sha256:2ac274a66a25fb25bdddcec7074669867939345ad003bbc1ece3967450d48dc1",  # noqa: E501
@@ -120,6 +126,9 @@ def GGM05C(lmax=360):
         (2016). The Combined Gravity Model GGM05C, GFZ Data Services,
         http://doi.org/10.5880/icgem.2016.002.
     '''
+    if lmax < 0:
+        lmax = 360
+
     fname = _retrieve(
         url="http://icgem.gfz-potsdam.de/getmodel/gfc/778a683780a5b0ad3163f4772b97b9075a0a13c389d2bd8ea3f891b64cfa383d/GGM05C.gfc",  # noqa: E501
         known_hash="sha256:efb1781e748969dab2721f45365cd060b5963ffe4fd497006cc786f9e5241bf2",  # noqa: E501
@@ -150,6 +159,9 @@ def GOCO06S(lmax=300):
         The satellite-only gravity field model GOCO06s, GFZ Data Services,
         http://doi.org/10.5880/ICGEM.2019.002.
     '''
+    if lmax < 0:
+        lmax = 300
+
     fname = _retrieve(
         url="http://icgem.gfz-potsdam.de/getmodel/gfc/32ec2884630a02670476f752d2a2bf1c395d8c8d6d768090ed95b4f04b0d5863/GOCO06s.gfc",  # noqa: E501
         known_hash="sha256:351d9d20b84cd2c0f52ce77146b1e3b774f408200b579ffaf98593cf3d271819",  # noqa: E501
@@ -182,6 +194,9 @@ def EIGEN_GRGS_RL04_MEAN_FIELD(epoch=None, lmax=300):
         based on GRACE+SLR RL04 from CNES/GRGS, IDS Workshop, 24-29 September,
         Ponta Delgada, Portugal.
     '''
+    if lmax < 0:
+        lmax = 300
+
     fname = _retrieve(
         url="http://icgem.gfz-potsdam.de/getmodel/gfc/96e984f23a31505411d943341767e9ff082ad2c77fbbdcba1be2e393cf35110a/EIGEN-GRGS.RL04.MEAN-FIELD.gfc",  # noqa: E501
         known_hash="sha256:ea5d99d84da42d0eedccb381c282604a1a42fd64d1f9e25bba796b7e8838732f",  # noqa: E501
@@ -213,6 +228,9 @@ def XGM2019E(lmax=2190):
         global gravity field model XGM2019e, Journal of Geodesy, 94, 66,
         doi:10.1007/s00190-020-01398-0.
     '''
+    if lmax < 0:
+        lmax = 2190
+
     fname = _retrieve(
         url="http://icgem.gfz-potsdam.de/getmodel/gfc/eeb03971cf6e533e6eeb6b010336463286dcda0846684248d5530acf8e800055/XGM2019e_2159.gfc",  # noqa: E501
         known_hash="sha256:ee24f7cf68f45b44cdbf3ccbf57e7382c7667869356061419f00f2ca951861e4",  # noqa: E501
@@ -246,6 +264,9 @@ def IGRF_13(lmax=13, year=2020.):
         Field: the 12th generation, Earth, Planets and Space, 67, 79,
         doi:10.1186/s40623-015-0228-9.
     '''
+    if lmax < 0:
+        lmax = 13
+
     fname = _retrieve(
         url="https://www.ngdc.noaa.gov/IAGA/vmod/coeffs/igrf13coeffs.txt",
         known_hash="sha256:460b8d8beb9b4df84febe4f0b639f0dd54dccfe8ff0970616287b015fa721425",  # noqa: E501
@@ -278,6 +299,9 @@ def NGDC_720_V3(lmax=740):
         lithospheric magnetic field to degree and order 720, Geochem. Geophys.
         Geosyst., 11, Q06015, doi:10.1029/2010GC003026.
     '''
+    if lmax < 0:
+        lmax = 740
+
     fname = _retrieve(
         url="https://www.ngdc.noaa.gov/geomag/NGDC720/data/geomag/NGDC-720_V3p0.cof.gz",  # noqa: E501
         known_hash="sha256:d9a0f89f2845548a3a42214e1044169b0772d407a83719d146390af2591a4007",  # noqa: E501
@@ -308,6 +332,9 @@ def WDMAM2_800(lmax=800):
         the second version of the world digital magnetic anomaly map (WDMAM).
         Earth, Planets and Space, 68, 27, doi:10.1186/s40623-016-0404-6.
     '''
+    if lmax < 0:
+        lmax = 800
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.3902903/WDMAM2_800.sh.gz",
         known_hash="sha256:3ddf3d9f37cbfafebf965649c5d3745c52a5127b4c4cd7c2768ad521867e1e2d",  # noqa: E501
@@ -337,6 +364,9 @@ def SWARM_MLI_2D_0501(lmax=133):
         (2013). Swarm SCARF dedicated lithospheric field inversion chain.
         Earth, Planets and Space, 65, 7, doi:10.5047/eps.2013.07.008.
     '''
+    if lmax < 0:
+        lmax = 133
+
     fname = _retrieve(
         url="ftp://swarm-diss.eo.esa.int/Level2longterm/MLI/SW_OPER_MLI_SHA_2D_00000000T000000_99999999T999999_0501.ZIP",  # noqa: E501
         known_hash="sha256:53b92d229ff9416c4cd5663975bdcb23f193f41e7212f2956685dae34dbc6f7f",  # noqa: E501
@@ -370,6 +400,9 @@ def Thebault2021(lmax=1050):
         1050, Geophysical Research Letters, 48, e2021GL095147,
         doi:10.1029/2021GL095147.
     '''
+    if lmax < 0:
+        lmax = 1050
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.5546528/Spherical_HarmonicModel_GRL.zip",
         known_hash="sha256:d3ce3f049158cb055d1e69efaa39f0618d808d1e01f18efb5058b6ac5fa4e78d",  # noqa: E501

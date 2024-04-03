@@ -28,6 +28,9 @@ def SHTJV360A01(lmax=360):
     Rappaport, N. J., Plaut, J. J. (1994). A 360 degree and order model of
         Venus topography, Icarus, 112, 27-33, doi:10.1006/icar.1994.1167.
     '''
+    if lmax < 0:
+        lmax = 360
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/mgn/mgn-v-rss-5-gravity-l2-v1/mg_5201/topo/shtjv360.a01",  # noqa: E501
         known_hash="sha256:eafc429a9a13b11d4142f19af2092d40dc7a69fb4ee915d99b5738f9b08171cd",  # noqa: E501
@@ -60,6 +63,9 @@ def SHTJV360A02(lmax=360):
         360 degree and order model of Venus topography, Icarus, 139, 19-31,
         doi:10.1006/icar.1999.6081.
     '''
+    if lmax < 0:
+        lmax = 360
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/mgn/mgn-v-rss-5-gravity-l2-v1/mg_5201/topo/shtjv360.a02",  # noqa: E501
         known_hash="sha256:c5cc0da9890826b0531f57ed408a64be9fe3a679c81a3e8f6405ad5c8fdcdeb4",  # noqa: E501

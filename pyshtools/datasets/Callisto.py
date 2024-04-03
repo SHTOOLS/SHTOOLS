@@ -29,6 +29,9 @@ def Anderson2001(lmax=2):
         structure of Callisto. Icarus, 153(1), 157–161.
         https://doi.org/10.1006/icar.2001.6664
     '''
+    if lmax < 0:
+        lmax = 2
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.10817282/Anderson2001_Callisto_gravity.sh",
         known_hash="sha256:472d3c6837e96c2aa89c2fb154b71b187248c01e0cb47482d0e743cd02002c6b",  # noqa: E501

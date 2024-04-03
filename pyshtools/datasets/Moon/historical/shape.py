@@ -30,6 +30,9 @@ def MoonTopo2600p(lmax=2600):
         Treatise on Geophysics, 2nd edition, Oxford, 153-193,
         doi:10.1016/B978-0-444-53802-4.00169-X.
     '''
+    if lmax < 0:
+        lmax = 2600
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.3870924/MoonTopo2600p.shape.gz",
         known_hash="sha256:193146df894e2fef796df9d6142c78fae6fa5c183fd79d3f79eeb356602af69a",  # noqa: E501
@@ -56,6 +59,9 @@ def GLTM2B(lmax=70):
         Topography of the Moon from the Clementine lidar. Journal of
         Geophysical Research, 102 (E1), 1591-1611, doi:10.1029/96JE02940.
     '''
+    if lmax < 0:
+        lmax = 70
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/lunar/clem1-gravity-topo-v1/cl_8xxx/topo/gltm2bsh.tab",  # noqa: E501
         known_hash="sha256:002bc2bccaaef6175f3e42f717e06dd267cd699d6d5bae6e6c23d344ca7293d4",  # noqa: E501
