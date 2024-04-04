@@ -4,7 +4,7 @@ Determine the spherical harmonic coefficients of an irregularly sampled function
 
 # Usage
 
-call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `csphase`, `weights`, `exitstatus`)
+call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `csphase`, `weights`, `g`, `exitstatus`)
 
 # Parameters
 
@@ -38,6 +38,9 @@ call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `cs
 `weights` : input, real(dp), dimension (`nmax`)
 :   The weights to be applied in a weighted least squares inversion.
 
+`g` : input, real(dp), dimension (`nmax`, `(lmax+1)**2`)
+:   The matrix G that is used when performing the least squares inversion
+
 `exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
 
@@ -47,8 +50,8 @@ call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `cs
 
 A weighted least squares inversion will be performed if the optional vector `weights` is specified. The weights should be set equal to the inverse of the data variance, and it is assumed explicitly that each measurement is statistically independent (i.e., the weighting matrix is diagonal). The weighted least squares inversion must be overdetermined, and the inversion is performed using the LAPACK routine DGELS after scaling the data vector and inversion matrix.
 
-The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
+The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. If the subroutine is to be called several times using the same lat and lon coordinates, the matrix G can be precomputed using the routine LSQ_G.
 
 # See also
 
-[g_lsq](g_lsq.html), [makegriddh](makegriddh.html), [shexpanddh](shexpanddh.html), [makegriddhc](makegriddhc.html), [shexpanddhc](shexpanddhc.html), [makegridglq](makegridglq.html), [shexpandglq](shexpandglq.html), [makegridglqc](makegridglqc.html), [shexpandglqc](shexpandglqc.html), dgels(1)
+[lsq_g](lsq_g.html), [makegriddh](makegriddh.html), [shexpanddh](shexpanddh.html), [makegriddhc](makegriddhc.html), [shexpanddhc](shexpanddhc.html), [makegridglq](makegridglq.html), [shexpandglq](shexpandglq.html), [makegridglqc](makegridglqc.html), [shexpandglqc](shexpandglqc.html), dgels(1)

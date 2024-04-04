@@ -38,7 +38,7 @@ from .._SHTOOLS import MakeGridGLQC
 from .._SHTOOLS import GLQGridCoord
 from .._SHTOOLS import SHExpandLSQ
 from .._SHTOOLS import SHExpandWLSQ
-from .._SHTOOLS import G_LSQ
+from .._SHTOOLS import LSQ_G
 from .._SHTOOLS import MakeGrid2D
 from .._SHTOOLS import MakeGridPoint
 from .._SHTOOLS import MakeGridPointC
@@ -125,7 +125,7 @@ __all__ = ['PlmBar', 'PlmBar_d1', 'PlBar', 'PlBar_d1', 'PlmON', 'PlmON_d1',
            'PLegendre_d1', 'SHExpandDH', 'MakeGridDH', 'SHExpandDHC',
            'MakeGridDHC', 'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ',
            'SHExpandGLQC', 'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ',
-           'SHExpandWLSQ', 'G_LSQ', 'MakeGrid2D', 'MakeGridPoint',
+           'SHExpandWLSQ', 'LSQ_G', 'MakeGrid2D', 'MakeGridPoint',
            'MakeGridPointC', 'SHMultiply', 'SHRead2', 'SHRead2Error',
            'SHReadJPL', 'SHReadJPLError', 'SHCilmToVector', 'SHVectorToCilm',
            'SHCilmToCindex', 'SHCindexToCilm', 'SHrtoc', 'SHctor',
