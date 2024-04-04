@@ -1,14 +1,18 @@
 subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
-                       csphase, weights, exitstatus)
+                       csphase, weights, g, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will expand a set of discrete data points into spherical
-!   harmonics using a least squares inversion. When there are more data points
-!   than spherical harmonic coefficients (nmax > (lmax+1)**2), the solution of
-!   the overdetermined system will be determined by least squares. If there are
-!   more coefficients than data points, then the solution of the
-!   underdetermined system will be determined by minimizing the solution
-!   norm. The inversion is performed using the LAPACK routine DGELS.
+!   harmonics using a least squares inversion:
+!
+!       m = [G' W G]^-1 G' W d
+!
+!   When there are more data points than spherical harmonic coefficients
+!   (nmax > (lmax+1)**2), the solution of the overdetermined system will be
+!   determined by least squares. If there are more coefficients than data
+!   points, then the solution of the underdetermined system will be determined
+!   by minimizing the solution norm. The inversion is performed using the
+!   LAPACK routine DGELS.
 !
 !   A weighted least squares inversion will be performed if the optional vector
 !   weights is specified. In this case, the problem must be overdetermined, and
@@ -21,7 +25,9 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !   though this can be modified by supplying the optional argument norm.
 !
 !   Note that this routine requires a lot of memory (~8*nmax*(lmax+1)**2 bytes)
-!   and is very slow for large lmax
+!   and is very slow for large lmax. If the subroutine is to be called several
+!   times using the same lat and lon coordinates, the matrix G can be
+!   precomputed using the routine LSQ_G.
 !
 !   Calling Parameters
 !
@@ -48,6 +54,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !                       -1: Apply the phase factor of (-1)^m.
 !           weights  The weights to be used when performing the weighted least
 !                    squares inversion.
+!           G        The matrix G used in the least squares inversion.
 !
 !       OPTIONAL (OUT)
 !           chi2        This is the residual sum of squares misfit for an
@@ -75,7 +82,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
     integer(int32), intent(in) :: nmax, lmax
     integer(int32), intent(in), optional :: norm, csphase
     real(dp), intent(out), optional :: chi2
-    real(dp), intent(in), optional :: weights(:)
+    real(dp), intent(in), optional :: weights(:), g(:,:)
     integer(int32), intent(out), optional :: exitstatus
     integer(int32), parameter :: opt = 80
     integer(int32) :: ncoef, i, l, m, ind1, ind2, info, lwork, opt1, phase, &
@@ -213,6 +220,22 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 
     end if
 
+    if (present(g)) then
+        if (size(g(:,1)) < nmax .or. size(g(1,:)) < (lmax+1)**2 ) then
+            print*, "Error --- SHExpandLSQ"
+            print*, "G must be dimensioned as (NMAX, (LMAX+1)**2)."
+            print*, "NMAX = ", nmax
+            print*, "LMAX = ", lmax
+            print*, "Input array is dimensioned ", size(g(:,1)), size(g(1,:))
+            if (present(exitstatus)) then
+                exitstatus = 1
+                return
+            else
+                stop
+            end if
+        end if
+    end if
+
     ncoef = (lmax+1)**2
     lwork = min(ncoef, nmax)*(1+opt)
 
@@ -245,67 +268,74 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
     !   Calculate matrix G (nmax by ncoef)
     !
     !--------------------------------------------------------------------------
-    do i = 1, nmax
-        if (present(exitstatus)) then
-            select case(lnorm)
-                case(1)
-                    call PlmBar(p, lmax, sin(lat(i) * pi / 180.0_dp), &
-                                csphase = phase, exitstatus = exitstatus)
-                case(2)
-                    call PlmSchmidt(p, lmax, sin(lat(i) * pi / 180.0_dp), &
+    if (present(g)) then
+      gg = g
+
+    else
+        do i = 1, nmax
+            if (present(exitstatus)) then
+                select case(lnorm)
+                    case(1)
+                        call PlmBar(p, lmax, sin(lat(i) * pi / 180.0_dp), &
                                     csphase = phase, exitstatus = exitstatus)
-                case(3)
-                    call PLegendreA(p, lmax, sin(lat(i) * pi / 180.0_dp), &
-                                    csphase = phase, exitstatus = exitstatus)
-                case(4)
-                    call PlmON(p, lmax, sin(lat(i) * pi / 180.0_dp), &
-                               csphase = phase, exitstatus = exitstatus)
-            end select
-            if (exitstatus /= 0) return
+                    case(2)
+                        call PlmSchmidt(p, lmax, sin(lat(i) * pi / 180.0_dp), &
+                                        csphase = phase, &
+                                        exitstatus = exitstatus)
+                    case(3)
+                        call PLegendreA(p, lmax, sin(lat(i) * pi / 180.0_dp), &
+                                        csphase = phase, &
+                                        exitstatus = exitstatus)
+                    case(4)
+                        call PlmON(p, lmax, sin(lat(i) * pi / 180.0_dp), &
+                                   csphase = phase, exitstatus = exitstatus)
+                end select
+                if (exitstatus /= 0) return
 
-        else
-            select case(lnorm)
-                case(1)
-                    call PlmBar(p, lmax, sin(lat(i) * pi / 180.0_dp), &
-                                csphase = phase)
-                case(2)
-                    call PlmSchmidt(p, lmax, sin(lat(i) * pi / 180.0_dp), &
+            else
+                select case(lnorm)
+                    case(1)
+                        call PlmBar(p, lmax, sin(lat(i) * pi / 180.0_dp), &
                                     csphase = phase)
-                case(3)
-                    call PLegendreA(p, lmax, sin(lat(i) * pi / 180.0_dp), &
-                                    csphase = phase)
-                case(4)
-                    call PlmON(p, lmax, sin(lat(i) * pi / 180.0_dp), &
-                               csphase = phase)
-            end select
+                    case(2)
+                        call PlmSchmidt(p, lmax, sin(lat(i) * pi / 180.0_dp), &
+                                        csphase = phase)
+                    case(3)
+                        call PLegendreA(p, lmax, sin(lat(i) * pi / 180.0_dp), &
+                                        csphase = phase)
+                    case(4)
+                        call PlmON(p, lmax, sin(lat(i) * pi / 180.0_dp), &
+                                   csphase = phase)
+                end select
 
-        end if
+            end if
 
-        lonr = lon(i) * pi / 180.0_dp
-        ind1 = 0
+            lonr = lon(i) * pi / 180.0_dp
+            ind1 = 0
 
-        do l = 0, lmax
-            ! do cos terms
+            do l = 0, lmax
+                ! do cos terms
 
-            do m = 0, l
-                ind1 = ind1 + 1
-                ind2 = l * (l + 1) / 2 + m + 1
-                gg(i,ind1) = p(ind2) * cos(m*lonr)
+                do m = 0, l
+                    ind1 = ind1 + 1
+                    ind2 = l * (l + 1) / 2 + m + 1
+                    gg(i,ind1) = p(ind2) * cos(m*lonr)
 
-            end do
+                end do
 
-            ! do sin terms
-            do m = 1, l, 1
-                ind1 = ind1 + 1
-                ind2 = l*(l+1)/2 + m + 1
-                gg(i,ind1) = p(ind2) * sin(m*lonr)
+                ! do sin terms
+                do m = 1, l, 1
+                    ind1 = ind1 + 1
+                    ind2 = l*(l+1)/2 + m + 1
+                    gg(i,ind1) = p(ind2) * sin(m*lonr)
+
+                end do
 
             end do
 
         end do
 
-    end do
-
+    end if
     !--------------------------------------------------------------------------
     !
     !   Do least squares inversion with no weights

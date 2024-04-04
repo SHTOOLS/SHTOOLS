@@ -516,9 +516,9 @@
                          csphase=csphase,weights=w,exitstatus=exitstatus)
     end subroutine pySHExpandWLSQ
 
-    subroutine pyG_LSQ(exitstatus,g,lat,lon,nmax,lmax,norm,csphase,g_d0,g_d1,&
+    subroutine pyLSQ_G(exitstatus,g,lat,lon,nmax,lmax,norm,csphase,g_d0,g_d1,&
                        lat_d0,lon_d0)
-        use shtools, only: G_LSQ
+        use shtools, only: LSQ_G
         use ftypes
         implicit none
         integer(int32),intent(in) :: g_d0
@@ -533,9 +533,9 @@
         integer(int32),intent(in) :: lmax
         integer(int32),intent(in) :: norm
         integer(int32),intent(in) :: csphase
-        call G_LSQ(g,lat,lon,nmax,lmax,norm=norm,csphase=csphase,&
+        call LSQ_G(g,lat,lon,nmax,lmax,norm=norm,csphase=csphase,&
                    exitstatus=exitstatus)
-    end subroutine pyG_LSQ
+    end subroutine pyLSQ_G
 
     subroutine pyMakeGrid2d(exitstatus,grid,cilm,lmax,interval,nlat,nlong,&
                             norm,csphase,f,a,north,south,east,west,dealloc,&

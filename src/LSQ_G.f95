@@ -1,4 +1,4 @@
-subroutine G_LSQ(G, lat, lon, nmax, lmax, norm, csphase, exitstatus)
+subroutine LSQ_G(G, lat, lon, nmax, lmax, norm, csphase, exitstatus)
 !------------------------------------------------------------------------------
 !
 !   This subroutine will compute the matrix G that is used when computing the
@@ -71,7 +71,7 @@ subroutine G_LSQ(G, lat, lon, nmax, lmax, norm, csphase, exitstatus)
     ncoef = (lmax+1)**2
 
     if (size(G(1, :)) < ncoef .or. size(G(:,1)) < nmax) then
-        print*, "Error --- G_LSQ"
+        print*, "Error --- LSQ_G"
         print*, "G must be dimensioned as (NMAX, (LMAX+1)**2) with "
         print*, "NMAX = ", nmax
         print*, "LMAX = ", lmax
@@ -84,7 +84,7 @@ subroutine G_LSQ(G, lat, lon, nmax, lmax, norm, csphase, exitstatus)
         end if
 
     else if (size(lat) < nmax) then
-        print*, "Error --- G_LSQ"
+        print*, "Error --- LSQ_G"
         print*, "LAT must be dimensioned as (NMAX) where NMAX is ", nmax
         print*, "Input array is dimensioned ", size(lat)
         if (present(exitstatus)) then
@@ -95,7 +95,7 @@ subroutine G_LSQ(G, lat, lon, nmax, lmax, norm, csphase, exitstatus)
         end if
 
     else if (size(lon) < nmax) then
-        print*, "Error --- G_LSQ"
+        print*, "Error --- LSQ_G"
         print*, "LON must be dimensioned as (NMAX) where NMAX is ", nmax
         print*, "Input array is dimensioned ", size(lon)
         if (present(exitstatus)) then
@@ -109,7 +109,7 @@ subroutine G_LSQ(G, lat, lon, nmax, lmax, norm, csphase, exitstatus)
 
     if (present(norm)) then
         if (norm > 4 .or. norm < 1) then
-            print*, "Error --- G_LSQ"
+            print*, "Error --- LSQ_G"
             print*, "Parameter NORM must be 1 (geodesy), 2 (Schmidt), " // &
                     "3 (unnormalized), or 4 (orthonormalized)."
             print*, "Input value is ", norm
@@ -131,7 +131,7 @@ subroutine G_LSQ(G, lat, lon, nmax, lmax, norm, csphase, exitstatus)
 
     if (present(csphase)) then
         if (csphase /= -1 .and. csphase /= 1) then
-            print*, "Error ---- G_LSQ"
+            print*, "Error ---- LSQ_G"
             print*, "CSPHASE must be 1 (exclude) or -1 (include)."
             print*, "Input value is ", csphase
             if (present(exitstatus)) then
@@ -154,7 +154,7 @@ subroutine G_LSQ(G, lat, lon, nmax, lmax, norm, csphase, exitstatus)
     allocate (p((lmax+1)*(lmax+2)/2), stat = astat)
 
     if (astat /= 0) then
-        print*, "Error --- G_LSQ"
+        print*, "Error --- LSQ_G"
         print*, "Problem allocating array P: ", astat
         if (present(exitstatus)) then
             exitstatus = 3
@@ -245,4 +245,4 @@ subroutine G_LSQ(G, lat, lon, nmax, lmax, norm, csphase, exitstatus)
 
     end select
 
-end subroutine G_LSQ
+end subroutine LSQ_G
