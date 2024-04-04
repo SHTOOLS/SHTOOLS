@@ -281,6 +281,15 @@ module SHTOOLS
             integer(int32), intent(out), optional :: exitstatus
         end subroutine SHExpandLSQ
 
+        subroutine G_LSQ(g, lat, lon, nmax, lmax, norm, csphase, exitstatus)
+            use iso_fortran_env, only: int32, dp=>real64
+            real(dp), intent(in) :: lat(:), lon(:)
+            real(dp), intent(out) :: g(:,:)
+            integer(int32), intent(in) :: nmax, lmax
+            integer(int32), intent(in), optional :: norm, csphase
+            integer(int32), intent(out), optional :: exitstatus
+        end subroutine G_LSQ
+
         subroutine MakeGrid2d(grid, cilm, lmax, interval, nlat, nlong, &
                               norm, csphase, f, a, north, south, east, west, &
                               dealloc, exitstatus)

@@ -516,6 +516,27 @@
                          csphase=csphase,weights=w,exitstatus=exitstatus)
     end subroutine pySHExpandWLSQ
 
+    subroutine pyG_LSQ(exitstatus,g,lat,lon,nmax,lmax,norm,csphase,g_d0,g_d1,&
+                       lat_d0,lon_d0)
+        use shtools, only: G_LSQ
+        use ftypes
+        implicit none
+        integer(int32),intent(in) :: g_d0
+        integer(int32),intent(in) :: g_d1
+        integer(int32),intent(in) :: lat_d0
+        integer(int32),intent(in) :: lon_d0
+        integer(int32),intent(out) :: exitstatus
+        real(dp),dimension(g_d0,g_d1),intent(out) :: g
+        real(dp),dimension(lat_d0),intent(in) :: lat
+        real(dp),dimension(lon_d0),intent(in) :: lon
+        integer(int32),intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: norm
+        integer(int32),intent(in) :: csphase
+        call G_LSQ(g,lat,lon,nmax,lmax,norm=norm,csphase=csphase,&
+                   exitstatus=exitstatus)
+    end subroutine pyG_LSQ
+
     subroutine pyMakeGrid2d(exitstatus,grid,cilm,lmax,interval,nlat,nlong,&
                             norm,csphase,f,a,north,south,east,west,dealloc,&
                             cilm_d0,cilm_d1,cilm_d2,grid_d0,grid_d1)
@@ -1845,7 +1866,7 @@
         if (sampling == 1) then
             call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n,&
                           exitstatus=exitstatus)
-        else 
+        else
             call CilmPlus(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n,&
                           exitstatus=exitstatus)
         end if
@@ -1875,7 +1896,7 @@
         if (sampling == 1) then
             call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,2,n=n,&
                            exitstatus=exitstatus)
-        else 
+        else
             call CilmMinus(cilm,gridin,lmax,nmax,mass,d,rho,3,n=n,&
                            exitstatus=exitstatus)
         end if
@@ -1983,7 +2004,7 @@
                           lmax_calc=lmax_calc,exitstatus=exitstatus)
         end if
     end subroutine pyBAtoHilmDH
-    
+
     subroutine pyBAtoHilmRhoHDH(exitstatus,cilm,ba,griddh,rho,lmax,nmax,mass,&
                                 r0,sampling,filter_type,filter_deg,lmax_calc,&
                                 ba_d0,ba_d1,ba_d2,griddh_d0,griddh_d1,cilm_d0,&
