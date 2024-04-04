@@ -17,7 +17,7 @@ SOURCES = [
   'EigValVecSymTri.F95',
   'FFTW3.f95',
   'ftypes.f95',
-  'G_LSQ.f95',
+  'LSQ_G.f95',
   'GLQGridCoord.f95',
   'MakeCircleCoord.f95',
   'MakeEllipseCoord.f95',
