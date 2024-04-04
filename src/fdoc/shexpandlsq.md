@@ -1,6 +1,6 @@
 # SHExpandLSQ
 
-Expand a set of irregularly sampled data points into spherical harmonics using a (weighted) least squares inversion.
+Determine the spherical harmonic coefficients of an irregularly sampled function using a (weighted) least squares inversion.
 
 # Usage
 
@@ -30,7 +30,7 @@ call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `cs
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.
 
 `chi2` : output, optional, real(dp)
-:   The residual sum of squares misfit for an overdetermined inversion.
+:   The residual (weighted) sum of squares misfit.
 
 `csphase` : input, optional, integer(int32), default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
@@ -43,10 +43,9 @@ call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `cs
 
 # Description
 
-`SHExpandLSQ` will expand a set of irregularly sampled data points into spherical harmonics by a least squares inversion. When the number of data points is greater or equal to the number of spherical harmonic coefficients (i.e., `nmax>=(lmax+1)**2`), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. The inversions are performed using the LAPACK routine DGELS.
+`SHExpandLSQ` will determine the spherical harmonic coefficients of an irregularly sampled function using a least squares inversion. When the number of data points is greater or equal to the number of spherical harmonic coefficients (i.e., `nmax>=(lmax+1)**2`), the solution of the overdetermined system will be determined. If there are more coefficients than data points, then the solution of the underdetermined system that minimizes the solution norm will be determined. The inversions are performed using the LAPACK routine DGELS.
 
-A weighted least squares inversion will be performed if the optional vector
-`weights` is specified. In this case, the problem must be overdetermined, and it is assumed that each measurement is statistically independent (i.e., the weighting matrix is diagonal). The inversion is performed using the LAPACK routine DGGGLM.
+A weighted least squares inversion will be performed if the optional vector `weights` is specified. The weights should be set equal to the inverse of the data variance, and it is assumed explicitly that each measurement is statistically independent (i.e., the weighting matrix is diagonal). The weighted least squares inversion must be overdetermined, and the inversion is performed using the LAPACK routine DGELS after scaling the data vector and inversion matrix.
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 
