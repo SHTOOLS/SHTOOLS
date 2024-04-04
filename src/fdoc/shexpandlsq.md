@@ -15,10 +15,10 @@ call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `cs
 :   The value of the function at the coordinates (`lat`, `lon`).
 
 `lat` : input, real(dp), dimension (`nmax`)
-:   The latitude in DEGREES corresponding to the value in `d`.
+:   The latitude in degrees corresponding to the value in `d`.
 
 `lon` : input, real(dp), dimension (`nmax`)
-:   The longitude in DEGREES corresponding to the value in `d`.
+:   The longitude in degrees corresponding to the value in `d`.
 
 `nmax` : input, integer(int32)
 :   The number of data points.
@@ -51,4 +51,4 @@ The employed spherical harmonic normalization and Condon-Shortley phase conventi
 
 # See also
 
-[makegriddh](makegriddh.html), [shexpanddh](shexpanddh.html), [makegriddhc](makegriddhc.html), [shexpanddhc](shexpanddhc.html), [makegridglq](makegridglq.html), [shexpandglq](shexpandglq.html), [makegridglqc](makegridglqc.html), [shexpandglqc](shexpandglqc.html), dgels(1), dggglm(1)
+[g_lsq](g_lsq.html), [makegriddh](makegriddh.html), [shexpanddh](shexpanddh.html), [makegriddhc](makegriddhc.html), [shexpanddhc](shexpanddhc.html), [makegridglq](makegridglq.html), [shexpandglq](shexpandglq.html), [makegridglqc](makegridglqc.html), [shexpandglqc](shexpandglqc.html), dgels(1)

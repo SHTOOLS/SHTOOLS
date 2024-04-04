@@ -40,6 +40,8 @@ SHExpandLSQ    Expand a set of irregularly sampled data points into spherical
                harmonics using a least squares inversion.
 SHExpandWLSQ   Expand a set of irregularly sampled data points into spherical
                harmonics using a weighted least squares inversion.
+G_LSQ          Compute the matrix G that is used when computing spherical
+               harmonic coefficients by least squares inversion.
 MakeGrid2D     Create a 2D cylindrical map with arbitrary grid spacing from a
                set of spherical harmonic coefficients.
 MakeGridPoint  Evaluate a real function expressed in real spherical harmonics
@@ -57,6 +59,7 @@ from ..backends.shtools import SHGLQ
 from ..backends.shtools import GLQGridCoord
 from ..backends.shtools import SHExpandLSQ
 from ..backends.shtools import SHExpandWLSQ
+from ..backends.shtools import G_LSQ
 from ..backends.shtools import MakeGrid2D
 from ..backends.shtools import MakeGridPoint
 from ..backends.shtools import MakeGridPointC
@@ -99,5 +102,5 @@ select_preferred_backend()
 __all__ = ['SHExpandDH', 'MakeGridDH', 'SHExpandDHC', 'MakeGridDHC',
            'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ', 'SHExpandGLQC',
            'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ', 'SHExpandWLSQ',
-           'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC', 'SHMultiply',
-           'MakeGradientDH', 'spharm', 'spharm_lm']
+           'G_LSQ', 'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC',
+           'SHMultiply', 'MakeGradientDH', 'spharm', 'spharm_lm']
