@@ -20,10 +20,10 @@ d : float, dimension (nmax)
 :   The value of the function at the coordinates (lat, lon).
 
 lat : float, dimension (nmax)
-:   The latitude in DEGREES corresponding to the value in d.
+:   The latitude in degrees corresponding to the value in d.
 
 lon : float, dimension (nmax)
-:   The longitude in DEGREES corresponding to the value in d.
+:   The longitude in degrees corresponding to the value in d.
 
 lmax : integer
 :   The maximum spherical harmonic degree of the output coefficients cilm.

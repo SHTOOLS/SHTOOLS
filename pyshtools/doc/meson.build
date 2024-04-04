@@ -14,6 +14,7 @@ doc_files = [
   'downcontfilterma.doc',
   'downcontfiltermc.doc',
   'glqgridcoord.doc',
+  'g_lsq.doc',
   'makecirclecoord.doc',
   'makeellipsecoord.doc',
   'makegeoidgriddh.doc',
