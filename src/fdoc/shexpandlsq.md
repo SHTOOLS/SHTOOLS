@@ -39,7 +39,7 @@ call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `cs
 :   The weights to be applied in a weighted least squares inversion.
 
 `g` : input, real(dp), dimension (`nmax`, `(lmax+1)**2`)
-:   The matrix G that is used when performing the least squares inversion
+:   The data kernel matrix G that is used when performing the least squares inversion.
 
 `exitstatus` : output, optional, integer(int32)
 :   If present, instead of executing a STOP when an error is encountered, the variable exitstatus will be returned describing the error. 0 = No errors; 1 = Improper dimensions of input array; 2 = Improper bounds for input variable; 3 = Error allocating memory; 4 = File IO error.
@@ -50,7 +50,7 @@ call SHExpandLSQ (`cilm`, `d`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `chi2`, `cs
 
 A weighted least squares inversion will be performed if the optional vector `weights` is specified. The weights should be set equal to the inverse of the data variance, and it is assumed explicitly that each measurement is statistically independent (i.e., the weighting matrix is diagonal). The weighted least squares inversion must be overdetermined, and the inversion is performed using the LAPACK routine DGELS after scaling the data vector and inversion matrix.
 
-The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. If the subroutine is to be called several times using the same lat and lon coordinates, the matrix G can be precomputed using the routine LSQ_G.
+The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m. If the subroutine is to be called several times using the same lat and lon coordinates, the data kernel matrix G can be precomputed using the routine LSQ_G.
 
 # See also
 

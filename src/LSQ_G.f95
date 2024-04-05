@@ -1,11 +1,11 @@
 subroutine LSQ_G(G, lat, lon, nmax, lmax, norm, csphase, exitstatus)
 !------------------------------------------------------------------------------
 !
-!   This subroutine will compute the matrix G that is used when computing the
-!   spherical harmonic coefficients of an irregularly sampled function by
-!   least squares inversion, as used with SHExpandLSQ. The matrix G has
-!   dimensions (nmax, (lmax+1)**2) where nmax is the number of data points and
-!   lmax is the maximum spherical harmonic degree of the expansion. Each
+!   This subroutine will compute the data kernel matrix G that is used when
+!   computing the spherical harmonic coefficients of an irregularly sampled
+!   function by least squares inversion, as used with SHExpandLSQ. The matrix G
+!   has dimensions (nmax, (lmax+1)**2) where nmax is the number of data points
+!   and lmax is the maximum spherical harmonic degree of the expansion. Each
 !   element in a given row corresponds to the values of the spherical harmonic
 !   functions for a given latitude and longitude. The elements in each row are
 !   ordered by increasing degree, with all cosine terms for a given degree
@@ -26,7 +26,7 @@ subroutine LSQ_G(G, lat, lon, nmax, lmax, norm, csphase, exitstatus)
 !           lmax    Maximum degree of spherical harmonic expansion.
 !
 !       OUT
-!           G       The matrix G.
+!           G       The data kernel matrix.
 !
 !       OPTIONAL (IN)
 !           norm    Spherical harmonic normalizaton for output coefficients and
@@ -170,7 +170,7 @@ subroutine LSQ_G(G, lat, lon, nmax, lmax, norm, csphase, exitstatus)
 
     !--------------------------------------------------------------------------
     !
-    !   Calculate matrix G (nmax by ncoef)
+    !   Compute the matrix G (nmax by ncoef)
     !
     !--------------------------------------------------------------------------
     do i = 1, nmax

@@ -36,12 +36,18 @@ GLQGridCoord   Compute the latitude and longitude coordinates used in Gauss-
 
 Other
 -----
-SHExpandLSQ    Expand a set of irregularly sampled data points into spherical
-               harmonics using a least squares inversion.
-SHExpandWLSQ   Expand a set of irregularly sampled data points into spherical
-               harmonics using a weighted least squares inversion.
-LSQ_G           Compute the matrix G that is used when computing spherical
-               harmonic coefficients by least squares inversion.
+SHExpandLSQ    Determine the spherical harmonic coefficients of an irregularly
+               sampled function using a least squares inversion.
+SHExpandLSQ_G  Determine the spherical harmonic coefficients of an irregularly
+               sampled function using a least squares inversion with a
+               precomputed data kernel matrix.
+SHExpandWLSQ   Determine the spherical harmonic coefficients of an irregularly
+               sampled function using a weighted least squares inversion.
+SHExpandLSQ_G  Determine the spherical harmonic coefficients of an irregularly
+               sampled function using a weighted least squares inversion with a
+               precomputed data kernel matrix.
+LSQ_G          Compute the data kernel matrix G that is used when computing
+               spherical harmonic coefficients by least squares inversion.
 MakeGrid2D     Create a 2D cylindrical map with arbitrary grid spacing from a
                set of spherical harmonic coefficients.
 MakeGridPoint  Evaluate a real function expressed in real spherical harmonics
@@ -58,7 +64,9 @@ spharm_lm      Compute the spherical harmonic function for a specific degree l
 from ..backends.shtools import SHGLQ
 from ..backends.shtools import GLQGridCoord
 from ..backends.shtools import SHExpandLSQ
+from ..backends.shtools import SHExpandLSQ_G
 from ..backends.shtools import SHExpandWLSQ
+from ..backends.shtools import SHExpandWLSQ_G
 from ..backends.shtools import LSQ_G
 from ..backends.shtools import MakeGrid2D
 from ..backends.shtools import MakeGridPoint
@@ -101,6 +109,7 @@ select_preferred_backend()
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['SHExpandDH', 'MakeGridDH', 'SHExpandDHC', 'MakeGridDHC',
            'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ', 'SHExpandGLQC',
-           'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ', 'SHExpandWLSQ',
-           'LSQ_G', 'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC',
-           'SHMultiply', 'MakeGradientDH', 'spharm', 'spharm_lm']
+           'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ', 'SHExpandLSQ_G',
+           'SHExpandWLSQ', 'SHExpandWLSQ_G', 'LSQ_G', 'MakeGrid2D',
+           'MakeGridPoint', 'MakeGridPointC', 'SHMultiply', 'MakeGradientDH',
+           'spharm', 'spharm_lm']
