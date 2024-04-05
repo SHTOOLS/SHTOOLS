@@ -1,4 +1,4 @@
-Compute the matrix G that is used when computing spherical harmonic
+Compute the data kernel matrix G that is used when computing spherical harmonic
 coefficients by least squares inversion.
 
 Usage
@@ -8,7 +8,7 @@ g = LSQ_G (lat, lon, lmax, [norm,  csphase])
 Returns
 -------
 g : float, dimension (nmax, (lmax+1)**2)
-    The matrix G.
+    The data kernel matrix.
 
 Parameters
 ----------
@@ -28,9 +28,9 @@ csphase : optional, integer, default = 1
 
 Description
 -----------
-LSQ_G will compute the matrix G that is used when computing the spherical
-harmonic coefficients of an irregularly sampled function by least squares
-inversion, as used with SHExpandLSQ. The matrix G has dimension (nmax,
+LSQ_G will compute the data kernel matrix G that is used when computing the
+spherical harmonic coefficients of an irregularly sampled function by least
+squares inversion, as used with SHExpandLSQ. The matrix G has dimension (nmax,
 (lmax+1)**2) where nmax is the number of data points and lmax is the maximum
 spherical harmonic degree of the expansion. Each element in a given row
 corresponds to the values of the spherical harmonic functions for a given

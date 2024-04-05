@@ -2,8 +2,8 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
                        csphase, weights, g, exitstatus)
 !------------------------------------------------------------------------------
 !
-!   This subroutine will expand a set of discrete data points into spherical
-!   harmonics using a least squares inversion:
+!   This subroutine will determine the spherical harmonic coefficients of a
+!   function using a least squares inversion:
 !
 !       m = [G' W G]^-1 G' W d
 !
@@ -18,7 +18,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !   weights is specified. In this case, the problem must be overdetermined, and
 !   it is assumed that each measurement is statistically independent. The
 !   inversion is performed using the LAPACK routine DGELS be scaling the data
-!   vector and matrix G.
+!   vector and data kernel matrix G.
 !
 !   The default normalization convention for the output spherical harmonics
 !   (and the calculation of the matrix G) is the "geodesy" 4pi normalization,
@@ -26,8 +26,8 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !
 !   Note that this routine requires a lot of memory (~8*nmax*(lmax+1)**2 bytes)
 !   and is very slow for large lmax. If the subroutine is to be called several
-!   times using the same lat and lon coordinates, the matrix G can be
-!   precomputed using the routine LSQ_G.
+!   times using the same lat and lon coordinates, the data kernel matrix G can
+!   be precomputed using the routine LSQ_G.
 !
 !   Calling Parameters
 !
@@ -54,7 +54,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 !                       -1: Apply the phase factor of (-1)^m.
 !           weights  The weights to be used when performing the weighted least
 !                    squares inversion.
-!           G        The matrix G used in the least squares inversion.
+!           G        The data kernel matrix used in the least squares inversion.
 !
 !       OPTIONAL (OUT)
 !           chi2        This is the residual sum of squares misfit for an
@@ -265,7 +265,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 
     !--------------------------------------------------------------------------
     !
-    !   Calculate matrix G (nmax by ncoef)
+    !   Compute the matrix G (nmax by ncoef)
     !
     !--------------------------------------------------------------------------
     if (present(g)) then

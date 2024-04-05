@@ -40,12 +40,24 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | [MakeGridGLQC](pymakegridglqc.html) | Create a 2D complex map from a set of complex spherical harmonic coefficients sampled on a the Gauss-Legendre quadrature nodes. |
 | [GLQGridCoord](pyglqgridcoord.html) | Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature grids. |
 
+## Least squares inversion
+
+| Function name | Description |
+| ------------- | ----------- |
+| [SHExpandLSQ](pyshexpandlsq.html) | Determine the spherical harmonic coefficients of an irregularly sampled function
+using a least squares inversion. |
+| [SHExpandLSQ_G](pyshexpandlsq_g.html) | Determine the spherical harmonic coefficients of an irregularly sampled function
+using a least squares inversion with a precomputed data kernel matrix. |
+| [SHExpandWLSQ](pyshexpandwlsq.html) | Determine the spherical harmonic coefficients of an irregularly sampled function
+using a weighted least squares inversion. |
+| [SHExpandWLSQ_G](pyshexpandwlsq_g.html) | Determine the spherical harmonic coefficients of an irregularly sampled function
+using a weighted least squares inversion with a precomputed data kernel matrix. |
+| [LSQ_G](pylsq_g.html) | Compute the data kernel matrix G that is used when computing spherical harmonic coefficients by least squares inversion. |
+
 ## Other routines
 
 | Function name | Description |
 | ------------- | ----------- |
-| [SHExpandLSQ](pyshexpandlsq.html) | Expand a set of irregularly sampled data points into spherical harmonics using a least squares inversion. |
-| [SHExpandWLSQ](pyshexpandwlsq.html) | Expand a set of irregularly sampled data points into spherical harmonics using a weighted least squares inversion. |
 | [MakeGrid2D](pymakegrid2d.html) | Create a 2D cylindrical map with arbitrary grid spacing from a set of spherical harmonic coefficients. |
 | [MakeGridPoint](pymakegridpoint.html) | Evaluate a real function expressed in real spherical harmonics at a set of points. |
 | [MakeGridPointC](pymakegridpointc.html) | Evaluate a complex function expressed in complex spherical harmonics at a set of points. |

@@ -1,6 +1,6 @@
 # LSQ_G
 
-Compute the matrix G that is used when computing spherical harmonic coefficients by least squares inversion.
+Compute the data kernel matrix G that is used when computing spherical harmonic coefficients by least squares inversion.
 
 # Usage
 
@@ -9,7 +9,7 @@ call LSQ_G (`g`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `csphase`, `exitstatus`)
 # Parameters
 
 `g` : output, real(dp), dimension (2, `lmax`+1, `lmax`+1)
-:   The matrix G.
+:   The data kernel matrix.
 
 `lat` : input, real(dp), dimension (`nmax`)
 :   The latitude in degrees of the data points.
@@ -34,7 +34,7 @@ call LSQ_G (`g`, `lat`, `lon`, `nmax`, `lmax`, `norm`, `csphase`, `exitstatus`)
 
 # Description
 
-`LSQ_G` will compute the matrix G that is used when computing the spherical harmonic coefficients of an irregularly sampled function by least squares inversion, as used with SHExpandLSQ. The matrix G has dimension (nmax, (lmax+1)**2) where nmax is the number of data points and lmax is the maximum spherical harmonic degree of the expansion. Each element in a given row corresponds to the values of the spherical harmonic functions for a given latitude and longitude. The elements in each row are ordered by increasing degree, with all cosine terms for a given degree followed by all sin terms for the same degree (with increasing order).
+`LSQ_G` will compute the data kernel matrix G that is used when computing the spherical harmonic coefficients of an irregularly sampled function by least squares inversion, as used with SHExpandLSQ. The matrix G has dimension (nmax, (lmax+1)**2) where nmax is the number of data points and lmax is the maximum spherical harmonic degree of the expansion. Each element in a given row corresponds to the values of the spherical harmonic functions for a given latitude and longitude. The elements in each row are ordered by increasing degree, with all cosine terms for a given degree followed by all sin terms for the same degree (with increasing order).
 
 The employed spherical harmonic normalization and Condon-Shortley phase convention can be set by the optional arguments `norm` and `csphase`; if not set, the default is to use geodesy 4-pi normalized harmonics that exclude the Condon-Shortley phase of (-1)^m.
 

@@ -488,6 +488,35 @@
                          csphase=csphase,exitstatus=exitstatus)
     end subroutine pySHExpandLSQ
 
+    subroutine pySHExpandLSQ_G(exitstatus,cilm,d,lat,lon,g,nmax,lmax,norm,&
+                               chi2,csphase,cilm_d0,cilm_d1,cilm_d2,d_d0,&
+                               lat_d0,lon_d0,g_d0,g_d1)
+        use shtools, only: SHExpandLSQ
+        use ftypes
+        implicit none
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: d_d0
+        integer(int32),intent(in) :: lat_d0
+        integer(int32),intent(in) :: lon_d0
+        integer(int32),intent(in) :: g_d0
+        integer(int32),intent(in) :: g_d1
+        integer(int32),intent(out) :: exitstatus
+        real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real(dp),dimension(d_d0),intent(in) :: d
+        real(dp),dimension(lat_d0),intent(in) :: lat
+        real(dp),dimension(lon_d0),intent(in) :: lon
+        real(dp),dimension(g_d0,g_d1),intent(in) :: g
+        integer(int32),intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: norm
+        real(dp),intent(out) :: chi2
+        integer(int32),intent(in) :: csphase
+        call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm=norm,chi2=chi2,&
+                         g=g,csphase=csphase,exitstatus=exitstatus)
+    end subroutine pySHExpandLSQ_G
+
     subroutine pySHExpandWLSQ(exitstatus,cilm,d,w,lat,lon,nmax,lmax,norm,chi2,&
                              csphase,cilm_d0,cilm_d1,cilm_d2,d_d0,w_d0,lat_d0,&
                              lon_d0)
@@ -515,6 +544,37 @@
         call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm=norm,chi2=chi2,&
                          csphase=csphase,weights=w,exitstatus=exitstatus)
     end subroutine pySHExpandWLSQ
+
+    subroutine pySHExpandWLSQ_G(exitstatus,cilm,d,w,lat,lon,g,nmax,lmax,norm,&
+                                chi2,csphase,cilm_d0,cilm_d1,cilm_d2,d_d0,w_d0,&
+                                lat_d0,lon_d0,g_d0,g_d1)
+        use shtools, only: SHExpandLSQ
+        use ftypes
+        implicit none
+        integer(int32),intent(in) :: cilm_d0
+        integer(int32),intent(in) :: cilm_d1
+        integer(int32),intent(in) :: cilm_d2
+        integer(int32),intent(in) :: d_d0
+        integer(int32),intent(in) :: w_d0
+        integer(int32),intent(in) :: lat_d0
+        integer(int32),intent(in) :: lon_d0
+        integer(int32),intent(in) :: g_d0
+        integer(int32),intent(in) :: g_d1
+        integer(int32),intent(out) :: exitstatus
+        real(dp),dimension(cilm_d0,cilm_d1,cilm_d2),intent(out) :: cilm
+        real(dp),dimension(d_d0),intent(in) :: d
+        real(dp),dimension(w_d0),intent(in) :: w
+        real(dp),dimension(g_d0,g_d1),intent(in) :: g
+        real(dp),dimension(lat_d0),intent(in) :: lat
+        real(dp),dimension(lon_d0),intent(in) :: lon
+        integer(int32),intent(in) :: nmax
+        integer(int32),intent(in) :: lmax
+        integer(int32),intent(in) :: norm
+        real(dp),intent(out) :: chi2
+        integer(int32),intent(in) :: csphase
+        call SHExpandLSQ(cilm,d,lat,lon,nmax,lmax,norm=norm,chi2=chi2,&
+                         csphase=csphase,weights=w,g=g,exitstatus=exitstatus)
+    end subroutine pySHExpandWLSQ_G
 
     subroutine pyLSQ_G(exitstatus,g,lat,lon,nmax,lmax,norm,csphase,g_d0,g_d1,&
                        lat_d0,lon_d0)
