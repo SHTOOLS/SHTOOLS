@@ -34,8 +34,10 @@ MakeGridGLQC   Create a 2D complex map from a set of complex spherical harmonic
 GLQGridCoord   Compute the latitude and longitude coordinates used in Gauss-
                Legendre quadrature grids.
 
-Other
------
+Least squares inversion
+-----------------------
+shlsq          Generic function for computing the spherical harmonic
+               coefficients by least squares inversion.
 SHExpandLSQ    Determine the spherical harmonic coefficients of an irregularly
                sampled function using a least squares inversion.
 SHExpandLSQ_G  Determine the spherical harmonic coefficients of an irregularly
@@ -48,6 +50,9 @@ SHExpandLSQ_G  Determine the spherical harmonic coefficients of an irregularly
                precomputed data kernel matrix.
 LSQ_G          Compute the data kernel matrix G that is used when computing
                spherical harmonic coefficients by least squares inversion.
+
+Other
+-----
 MakeGrid2D     Create a 2D cylindrical map with arbitrary grid spacing from a
                set of spherical harmonic coefficients.
 MakeGridPoint  Evaluate a real function expressed in real spherical harmonics
@@ -75,10 +80,12 @@ from ..backends.shtools import SHMultiply
 
 from .spharm_functions import spharm
 from .spharm_functions import spharm_lm
+from .sh_least_squares import shlsq
 
 from ..backends import backend_module, select_preferred_backend
 
 del spharm_functions  # noqa: F821
+del sh_least_squares  # noqa: F821
 
 
 def inject_backend_specific_functions_for_expand():
@@ -109,7 +116,7 @@ select_preferred_backend()
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['SHExpandDH', 'MakeGridDH', 'SHExpandDHC', 'MakeGridDHC',
            'SHGLQ', 'SHExpandGLQ', 'MakeGridGLQ', 'SHExpandGLQC',
-           'MakeGridGLQC', 'GLQGridCoord', 'SHExpandLSQ', 'SHExpandLSQ_G',
-           'SHExpandWLSQ', 'SHExpandWLSQ_G', 'LSQ_G', 'MakeGrid2D',
-           'MakeGridPoint', 'MakeGridPointC', 'SHMultiply', 'MakeGradientDH',
-           'spharm', 'spharm_lm']
+           'MakeGridGLQC', 'GLQGridCoord', 'shlsq', 'SHExpandLSQ',
+           'SHExpandLSQ_G', 'SHExpandWLSQ', 'SHExpandWLSQ_G', 'LSQ_G',
+           'MakeGrid2D', 'MakeGridPoint', 'MakeGridPointC', 'SHMultiply',
+           'MakeGradientDH', 'spharm', 'spharm_lm']
