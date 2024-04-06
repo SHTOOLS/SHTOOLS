@@ -44,6 +44,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 
 | Function name | Description |
 | ------------- | ----------- |
+| [shlsq](pyshlsq.html) | Determine the spherical harmonic coefficients of an irregularly sampled function using a (weighted) least squares inversion, optionally with a precomputed data kernel matrix. |
 | [SHExpandLSQ](pyshexpandlsq.html) | Determine the spherical harmonic coefficients of an irregularly sampled function
 using a least squares inversion. |
 | [SHExpandLSQ_G](pyshexpandlsq_g.html) | Determine the spherical harmonic coefficients of an irregularly sampled function
