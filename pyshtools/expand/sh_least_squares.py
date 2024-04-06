@@ -15,7 +15,7 @@ from . import SHExpandWLSQ_G as _SHExpandWLSQ_G
 
 
 def shlsq(data, latitude, longitude, lmax, weights=None, g=None,
-          normalization='4pi', kind='real', csphase=1, degrees=True):
+          normalization='4pi', csphase=1, kind='real', degrees=True):
     """
     Determine the spherical harmonic coefficients of an irregularly sampled
     function using a (weighted) least squares inversion, optionally with a
@@ -24,7 +24,7 @@ def shlsq(data, latitude, longitude, lmax, weights=None, g=None,
     Usage
     -----
     coeffs, chi2 = shlsq (data, latitude, longitude, lmax, [weights, g,
-                          normalization, csphase, degrees])
+                          normalization, csphase, kind, degrees])
 
     Returns
     -------
@@ -38,11 +38,11 @@ def shlsq(data, latitude, longitude, lmax, weights=None, g=None,
     Parameters
     ----------
     data : float, dimension (nmax)
-        The value of the function at the coordinates (lat, lon).
+        The value of the function at the latitude and longitude coordinates.
     latitude : float, dimension (nmax)
-        The latitude in degrees corresponding to the value in d.
+        The latitude in degrees of the data.
     longitude : float, dimension (nmax)
-        The longitude in degrees corresponding to the value in d.
+        The longitude in degrees of the data.
     lmax : integer
         The maximum spherical harmonic degree of the output coefficients.
     weights : float, dimension (nmax)
@@ -53,33 +53,33 @@ def shlsq(data, latitude, longitude, lmax, weights=None, g=None,
         '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
         orthonormalized, Schmidt semi-normalized, or unnormalized spherical
         harmonic functions, respectively.
-    kind : str, optional, default = 'real'
-        'real' or 'complex' spherical harmonic coefficients.
     csphase : integer, optional, default = 1
         If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
         Condon-Shortley phase of (-1)^m will be appended to the spherical
         harmonic functions.
+    kind : str, optional, default = 'real'
+        'real' or 'complex' spherical harmonic coefficients.
     degrees : bool, optional, default = True
         If True, latitude and longitude are in degrees, otherwise they are in
         radians.
 
     Notes
     -----
-    If this routine is used several times with the same latitude and longitude
-    coordinates, the data kernel matrix G can be precomputed using LSG_G. When
-    the number of data points is greater or equal to the number of spherical
-    harmonic coefficients (i.e., nmax>=(lmax+1)**2), the solution of the
-    overdetermined system will be determined. If there are more coefficients
-    than data points, then the solution of the underdetermined system that
-    minimizes the solution norm will be determined. The inversions are
-    performed using the LAPACK routine DGELS.
+    When the number of data points is greater or equal to the number of
+    spherical harmonic coefficients (i.e., nmax>=(lmax+1)**2), the solution of
+    the overdetermined system will be determined. If there are more
+    coefficients than data points, then the solution of the underdetermined
+    system that minimizes the solution norm will be determined.
 
     When weigths are present, they should be set equal to the inverse of the
-    data variance. Here, it is assumed explicitly that each measurement is
+    data variance. It is assumed explicitly that each measurement is
     statistically independent (i.e., the weighting matrix is diagonal). The
     weighted least squares inversion must be overdetermined (i.e.,
-    nmax>(lmax+1)**2), and the inversion is performed using the same LAPACK
-    routine after scaling the data vector and inversion matrix.
+    nmax>(lmax+1)**2).
+
+    The inversions are performed using the LAPACK routine DGELS. If this
+    routine is used several times with the same latitude and longitude
+    coordinates, the data kernel matrix G can be precomputed using LSQ_G.
     """
     if lmax < 0:
         raise ValueError(
@@ -134,13 +134,13 @@ def shlsq(data, latitude, longitude, lmax, weights=None, g=None,
     if weights is not None:
         if g is not None:
             coeffs, chi2 = _SHExpandWLSQ_G(data, weights, latitude, longitude,
-                                           lmax, g, norm=norm, csphase=csphase)
+                                           g, lmax, norm=norm, csphase=csphase)
         else:
             coeffs, chi2 = _SHExpandWLSQ(data, weights, latitude, longitude,
                                          lmax, norm=norm, csphase=csphase)
     else:
         if g is not None:
-            coeffs, chi2 = _SHExpandLSQ_G(data, latitude, longitude, lmax, g,
+            coeffs, chi2 = _SHExpandLSQ_G(data, latitude, longitude, g, lmax,
                                           norm=norm, csphase=csphase)
         else:
             coeffs, chi2 = _SHExpandLSQ(data, latitude, longitude, lmax,

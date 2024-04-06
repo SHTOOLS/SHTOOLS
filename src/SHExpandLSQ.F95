@@ -96,6 +96,8 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 
     if (present(exitstatus)) exitstatus = 0
 
+    ncoef = (lmax+1)**2
+
     if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 &
             .or. size(cilm(1,1,:)) < lmax+1) then
         print*, "Error --- SHExpandLSQ"
@@ -202,7 +204,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
                 stop
             end if
 
-        else if (nmax < (lmax+1)**2) then
+        else if (nmax < ncoef) then
             print*, "Error --- SHExpandLSQ"
             print*, "When performing a weighted least-squares inversion, "
             print*, "NMAX must be greater or equal to (LMAX+1)**2, where"
@@ -221,7 +223,7 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
     end if
 
     if (present(g)) then
-        if (size(g(:,1)) < nmax .or. size(g(1,:)) < (lmax+1)**2 ) then
+        if (size(g(:,1)) < nmax .or. size(g(1,:)) < ncoef) then
             print*, "Error --- SHExpandLSQ"
             print*, "G must be dimensioned as (NMAX, (LMAX+1)**2)."
             print*, "NMAX = ", nmax
@@ -236,7 +238,6 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
         end if
     end if
 
-    ncoef = (lmax+1)**2
     lwork = min(ncoef, nmax)*(1+opt)
 
     astat = 0
@@ -261,7 +262,6 @@ subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, &
 
     pi = acos(-1.0_dp)
     mm = 0.0_dp
-    gg = 0.0_dp
 
     !--------------------------------------------------------------------------
     !

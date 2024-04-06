@@ -548,12 +548,12 @@ python module _SHTOOLS
             real(dp),dimension(g_d0, g_d1),intent(out) :: g
             real(dp),dimension(lat_d0),intent(in) :: lat
             real(dp),dimension(lon_d0),intent(in) :: lon
-            integer(int32),intent(hide) :: nmax = g_d0
+            integer(int32),intent(hide),depend(lat_d0) :: nmax = lat_d0
             integer(int32),intent(in) :: lmax
             integer(int32),optional,intent(in) :: norm = 1
             integer(int32),optional,intent(in) :: csphase = 1
-            integer(int32),optional,intent(in),depend(g),intent(hide) :: g_d0 = shape(g,0)
-            integer(int32),optional,intent(in),depend(g),intent(hide) :: g_d1 = shape(g,1)
+            integer(int32),intent(hide),depend(nmax) :: g_d0 = nmax
+            integer(int32),intent(hide),depend(lmax) :: g_d1 = (lmax+1)*(lmax+1)
             integer(int32),optional,intent(in),depend(lat),intent(hide) :: lat_d0 = len(lat)
             integer(int32),optional,intent(in),depend(lon),intent(hide) :: lon_d0 = len(lon)
         end subroutine LSQ_G
