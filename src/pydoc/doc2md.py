@@ -7,6 +7,7 @@ import pyshtools as pysh
 functions = [
     ['pysh.expand.spharm', 'pyspharm.md'],
     ['pysh.expand.spharm_lm', 'pyspharm_lm.md'],
+    ['pysh.expand.shlsq', 'pyshlsq.md'],
     ['pysh.gravmag.mag_spectrum', 'mag_spectrum.md'],
     ['pysh.legendre.legendre', 'pylegendre.md'],
     ['pysh.legendre.legendre_lm', 'pylegendre_lm.md'],
