@@ -45,14 +45,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | Function name | Description |
 | ------------- | ----------- |
 | [shlsq](pyshlsq.html) | Determine the spherical harmonic coefficients of an irregularly sampled function using a (weighted) least squares inversion, optionally with a precomputed data kernel matrix. |
-| [SHExpandLSQ](pyshexpandlsq.html) | Determine the spherical harmonic coefficients of an irregularly sampled function
-using a least squares inversion. |
-| [SHExpandLSQ_G](pyshexpandlsq_g.html) | Determine the spherical harmonic coefficients of an irregularly sampled function
-using a least squares inversion with a precomputed data kernel matrix. |
-| [SHExpandWLSQ](pyshexpandwlsq.html) | Determine the spherical harmonic coefficients of an irregularly sampled function
-using a weighted least squares inversion. |
-| [SHExpandWLSQ_G](pyshexpandwlsq_g.html) | Determine the spherical harmonic coefficients of an irregularly sampled function
-using a weighted least squares inversion with a precomputed data kernel matrix. |
+| [SHExpandLSQ](pyshexpandlsq.html) | Determine the spherical harmonic coefficients of an irregularly sampled function using a least squares inversion. |
+| [SHExpandLSQ_G](pyshexpandlsq_g.html) | Determine the spherical harmonic coefficients of an irregularly sampled function using a least squares inversion with a precomputed data kernel matrix. |
+| [SHExpandWLSQ](pyshexpandwlsq.html) | Determine the spherical harmonic coefficients of an irregularly sampled function using a weighted least squares inversion. |
+| [SHExpandWLSQ_G](pyshexpandwlsq_g.html) | Determine the spherical harmonic coefficients of an irregularly sampled function using a weighted least squares inversion with a precomputed data kernel matrix. |
 | [LSQ_G](pylsq_g.html) | Compute the data kernel matrix G that is used when computing spherical harmonic coefficients by least squares inversion. |
 
 ## Other routines
