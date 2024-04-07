@@ -31,6 +31,7 @@ class Slepian(object):
 
     Each class instance defines the following class attributes:
 
+    name            : The name of the class isntance.
     kind            : Either 'cap' or 'mask'.
     tapers          : Matrix containing the spherical harmonic coefficients
                       (in packed form) of either the unrotated spherical cap
@@ -109,7 +110,7 @@ class Slepian(object):
     @classmethod
     def from_cap(cls, theta, lmax, clat=None, clon=None, nmax=None,
                  theta_degrees=True, coord_degrees=True, dj_matrix=None,
-                 slepian_degrees=None):
+                 slepian_degrees=None, name=None):
         """
         Construct spherical cap Slepian functions.
 
@@ -117,7 +118,7 @@ class Slepian(object):
         -----
         x = Slepian.from_cap(theta, lmax, [clat, clon, nmax, theta_degrees,
                                            coord_degrees, dj_matrix,
-                                           slepian_degrees])
+                                           slepian_degrees, name])
 
         Returns
         -------
@@ -145,6 +146,8 @@ class Slepian(object):
                           default = None
             Boolean or int array defining which spherical harmonic degrees were
             used (True or 1) to construct the Slepian functions.
+        name : str, optional, default = None
+            The name of the class instance.
         """
         if theta_degrees:
             tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(
@@ -155,17 +158,18 @@ class Slepian(object):
 
         return SlepianCap(theta, tapers, eigenvalues, taper_order, clat, clon,
                           nmax, theta_degrees, coord_degrees, dj_matrix,
-                          slepian_degrees, copy=False)
+                          slepian_degrees, copy=False, name=name)
 
     @classmethod
-    def from_mask(cls, dh_mask, lmax, nmax=None, slepian_degrees=None):
+    def from_mask(cls, dh_mask, lmax, nmax=None, slepian_degrees=None,
+                  name=None):
         """
         Construct Slepian functions that are optimally concentrated within
         the region specified by a mask.
 
         Usage
         -----
-        x = Slepian.from_mask(dh_mask, lmax, [nmax, slepian_degrees])
+        x = Slepian.from_mask(dh_mask, lmax, [nmax, slepian_degrees, name])
 
         Returns
         -------
@@ -187,6 +191,8 @@ class Slepian(object):
                           default = None
             Boolean or int array defining which spherical harmonic degrees were
             used (True or 1) to construct the Slepian functions.
+        name : str, optional, default = None
+            The name of the class instance.
         """
         if nmax is None:
             nmax = (lmax + 1)**2
@@ -220,7 +226,7 @@ class Slepian(object):
             data, lmax, ntapers=nmax, degrees=slepian_degrees)
 
         return SlepianMask(tapers, eigenvalues, area, slepian_degrees,
-                           copy=False)
+                           copy=False, name=name)
 
     def copy(self):
         """Return a deep copy of the class instance."""
@@ -265,13 +271,13 @@ class Slepian(object):
         """
         return len(self.eigenvalues[self.eigenvalues >= concentration])
 
-    def expand(self, flm, nmax=None):
+    def expand(self, flm, nmax=None, name=None):
         """
         Return the Slepian expansion coefficients of the input function.
 
         Usage
         -----
-        s = x.expand(flm, [nmax])
+        s = x.expand(flm, [nmax, name])
 
         Returns
         -------
@@ -284,6 +290,8 @@ class Slepian(object):
             The input function to expand in Slepian functions.
         nmax : int, optional, default = (x.lmax+1)**2
             The number of Slepian expansion coefficients to compute.
+        name : str, optional, default = None
+            The name of the SlepianCoeff class instance.
 
         Notes
         -----
@@ -302,9 +310,12 @@ class Slepian(object):
                 .format(repr(self.lmax), repr(nmax))
                 )
 
+        if name is None:
+            name = self.name
+
         coeffsin = flm.to_array(normalization='4pi', csphase=1, lmax=self.lmax)
 
-        return self._expand(coeffsin, nmax)
+        return self._expand(coeffsin, nmax, name)
 
     def coupling_matrix(self, nmax=None):
         """
@@ -383,14 +394,14 @@ class Slepian(object):
         return self._to_array(
             alpha, normalization=normalization.lower(), csphase=csphase)
 
-    def to_shcoeffs(self, alpha, normalization='4pi', csphase=1):
+    def to_shcoeffs(self, alpha, normalization='4pi', csphase=1, name=None):
         """
         Return the spherical harmonic coefficients of Slepian function i as a
         SHCoeffs class instance.
 
         Usage
         -----
-        clm = x.to_shcoeffs(alpha, [normalization, csphase])
+        clm = x.to_shcoeffs(alpha, [normalization, csphase, name])
 
         Returns
         -------
@@ -408,6 +419,8 @@ class Slepian(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
+        name : str, optional, default = None
+            The name of the SHCoeffs class instance.
         """
         if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
@@ -429,16 +442,16 @@ class Slepian(object):
         coeffs = self.to_array(alpha, normalization=normalization.lower(),
                                csphase=csphase)
         return SHCoeffs.from_array(coeffs, normalization=normalization.lower(),
-                                   csphase=csphase, copy=False)
+                                   csphase=csphase, copy=False, name=name)
 
-    def to_shgrid(self, alpha, grid='DH2', zeros=None, extend=True):
+    def to_shgrid(self, alpha, grid='DH2', zeros=None, extend=True, name=None):
         """
         Evaluate the coefficients of Slepian function i on a grid and return
         an SHGrid class instance.
 
         Usage
         -----
-        f = x.to_shgrid(alpha, [grid, zeros])
+        f = x.to_shgrid(alpha, [grid, zeros, extend, name])
 
         Returns
         -------
@@ -459,6 +472,8 @@ class Slepian(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
+        name : str, optional, default = None
+            The name of the SHGrid class instance.
 
         Notes
         -----
@@ -473,17 +488,18 @@ class Slepian(object):
         if grid.upper() in ('DH', 'DH1'):
             gridout = _shtools.MakeGridDH(self.to_array(alpha), sampling=1,
                                           norm=1, csphase=1, extend=extend)
-            return SHGrid.from_array(gridout, grid='DH', copy=False)
+            return SHGrid.from_array(gridout, grid='DH', copy=False, name=name)
         elif grid.upper() == 'DH2':
             gridout = _shtools.MakeGridDH(self.to_array(alpha), sampling=2,
                                           norm=1, csphase=1, extend=extend)
-            return SHGrid.from_array(gridout, grid='DH', copy=False)
+            return SHGrid.from_array(gridout, grid='DH', copy=False, name=name)
         elif grid.upper() == 'GLQ':
             if zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.lmax)
             gridout = _shtools.MakeGridGLQ(self.to_array(alpha), zeros,
                                            norm=1, csphase=1, extend=extend)
-            return SHGrid.from_array(gridout, grid='GLQ', copy=False)
+            return SHGrid.from_array(gridout, grid='GLQ', copy=False,
+                                     name=name)
         else:
             raise ValueError(
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
@@ -1109,7 +1125,7 @@ class SlepianCap(Slepian):
 
     def __init__(self, theta, tapers, eigenvalues, taper_order, clat, clon,
                  nmax, theta_degrees, coord_degrees, dj_matrix,
-                 slepian_degrees, copy=True):
+                 slepian_degrees, copy=True, name=None):
         self.kind = 'cap'
         self.theta = theta
         self.clat = clat
@@ -1120,6 +1136,7 @@ class SlepianCap(Slepian):
         self.dj_matrix = dj_matrix
         self.nrot = None
         self.slepian_degrees = slepian_degrees
+        self.name = name
 
         if (self.theta_degrees):
             self.area = 2 * _np.pi * (1 - _np.cos(_np.radians(self.theta)))
@@ -1158,7 +1175,7 @@ class SlepianCap(Slepian):
                         coord_degrees=self.coord_degrees,
                         dj_matrix=self.dj_matrix)
 
-    def _expand(self, coeffsin, nmax):
+    def _expand(self, coeffsin, nmax, name):
         """
         Determine the Slepian expansion coefficients of a function.
         """
@@ -1171,7 +1188,7 @@ class SlepianCap(Slepian):
                              .format(nmax, self.nrot))
         falpha = _shtools.SlepianCoeffs(self.coeffs, coeffsin, nmax)
 
-        return SlepianCoeffs(falpha, self)
+        return SlepianCoeffs(falpha, self, name=name)
 
     def _coupling_matrix(self, nmax):
         """Return the coupling matrix."""
@@ -1308,13 +1325,14 @@ class SlepianCap(Slepian):
         else:
             str += 'theta = {:f} radians'.format(self.theta)
 
-        str += ('lmax = {:d}\n'
+        str += ('name = {:s}\n'
+                'lmax = {:d}\n'
                 'nmax = {:d}\n'
                 'nrot = {:s}\n'
                 'shannon = {:f}\n'
                 'area (radians) = {:e}\n'
-                .format(self.lmax, self.nmax, repr(self.nrot), self.shannon,
-                        self.area))
+                .format(repr(self.name), self.lmax, self.nmax, repr(self.nrot),
+                        self.shannon, self.area))
 
         if self.clat is not None:
             if self.coord_degrees:
@@ -1350,11 +1368,13 @@ class SlepianMask(Slepian):
     def istype(kind):
         return kind == 'mask'
 
-    def __init__(self, tapers, eigenvalues, area, slepian_degrees, copy=True):
+    def __init__(self, tapers, eigenvalues, area, slepian_degrees, copy=True,
+                 name=None):
         self.kind = 'mask'
         self.lmax = _np.sqrt(tapers.shape[0]).astype(int) - 1
         self.nmax = tapers.shape[1]
         self.slepian_degrees = slepian_degrees
+        self.name = name
 
         if copy:
             self.tapers = _np.copy(tapers)
@@ -1370,13 +1390,13 @@ class SlepianMask(Slepian):
         else:
             self.shannon = sum(self.eigenvalues)
 
-    def _expand(self, coeffsin, nmax):
+    def _expand(self, coeffsin, nmax, name):
         """
         Determine the Slepian expansion coefficients of a function.
         """
         falpha = _shtools.SlepianCoeffs(self.tapers, coeffsin, nmax)
 
-        return SlepianCoeffs(falpha, self)
+        return SlepianCoeffs(falpha, self, name=name)
 
     def _coupling_matrix(self, nmax):
         """Return the coupling matrix."""
@@ -1415,11 +1435,13 @@ class SlepianMask(Slepian):
         print(repr(self))
 
     def __repr__(self):
-        str = ('kind = {:s}\n'
+        str = ('name = {:s}\n'
+               'kind = {:s}\n'
                'lmax = {:d}\n'
                'nmax = {:d}\n'
                'shannon = {:f}\n'
-               'area (radians) = {:e}\n'.format(repr(self.kind), self.lmax,
+               'area (radians) = {:e}\n'.format(repr(self.name),
+                                                repr(self.kind), self.lmax,
                                                 self.nmax, self.shannon,
                                                 self.area))
 
