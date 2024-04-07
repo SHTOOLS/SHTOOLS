@@ -33,12 +33,12 @@ mass = _Constant(
 mean_radius = _Constant(
     abbrev='mean_radius_europa',
     name='Mean radius of Europa',
-    value=1560.8e3,
+    value=1560.7e3,
     unit='m',
     uncertainty=0.3e3,
-    reference='Nimmo, F., Thomas, P., Pappalardo, R., & Moore, W. (2007). The '
-    'global shape of Europa: Constraints on lateral shell thickness '
-    'variations. Icarus, 191(1), 183–192. '
+    reference='(nominal ellipsoid): Nimmo, F., Thomas, P., Pappalardo, R., & '
+    'Moore, W. (2007). The global shape of Europa: Constraints on lateral '
+    'shell thickness variations. Icarus, 191(1), 183–192. '
     'https://doi.org/10.1016/j.icarus.2007.04.021')
 
 r = mean_radius
@@ -84,20 +84,94 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_europa and mean_radius_europa.')
 
-omega = _Constant(
-    abbrev='omega_europa',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_europa',
     name='Angular spin rate of Europa',
-    value=101.3747235 * 2. * _np.pi / 360. / (24. * 60. * 60.),
+    value=2 * _np.pi / (3.525463 * 24 * 60 * 60),
     unit='rad / s',
     uncertainty=0.,
-    reference='Archinal, B. A., Acton, C. H., A’Hearn, M. F., Conrad, A., '
-    'Consolmagno, G. J., Duxbury, T., Hestroffer, D., Hilton, J. L., Kirk, '
-    'R. L., Klioner, S. A., McCarthy, D., Meech, K., Oberst, J., Ping, J., '
-    'Seidelmann, P. K., Tholen, D. J., Thomas, P. C., & Williams, I. P. '
-    '(2018). Report of the IAU Working Group on Cartographic Coordinates and '
-    'Rotational Elements: 2015. Celestial Mechanics and Dynamical Astronomy, '
-    '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
 
+rotational_period = _Constant(
+    abbrev='rotational_period_europa',
+    name='Rotational period of Europa',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_europa')
+
+orbit_semimajor_axis = _Constant(
+    abbrev='orbit_semimajor_axis_europa',
+    name='Semimajor axis of the orbit of Europa about Jupiter',
+    value=671100.e3,
+    unit='m',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_europa',
+    name='Eccentricity of the orbit of Europa about Jupiter',
+    value=0.009,
+    unit='',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_europa',
+    name='Inclination of the orbit of Europa about Jupiter with respect '
+    'to the Laplace plane',
+    value=0.5,
+    unit='degrees',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_angular_velocity = _Constant(
+    abbrev='orbit_angular_velocity_europa',
+    name='Orbital angular velocity of Europa about Jupiter',
+    value=2 * _np.pi / (3.525463 * 24 * 60 * 60),
+    unit='rad / s',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_tilt = _Constant(
+    abbrev='orbit_tilt_europa',
+    name='Angle between the Europa Laplace plane and the equatorial plane '
+    'of Jupiter',
+    value=0.0,
+    unit='degrees',
+    uncertainty=0.,
+    reference='R. A. Jacobson (2021), The Orbits of the Regular Jovian '
+    'Satellites and the Orientation of the Pole of Jupiter, personal '
+    'communication to Horizons/NAIF. Accessed via JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov, JUP365.')
+
+orbit_period = _Constant(
+    abbrev='orbit_period_europa',
+    name='Orbital period of Europa',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_europa')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
+           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity',
+           'orbit_semimajor_axis', 'orbit_eccentricity',
+           'orbit_inclination', 'orbit_angular_velocity', 'orbit_tilt',
+           'rotational_period', 'orbit_period']

@@ -17,7 +17,7 @@ from pooch import HTTPDownloader as _HTTPDownloader
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..shclasses import SHCoeffs as _SHCoeffs
-from ..constants.Ceres import omega as _omega
+from ..constants.Ceres import angular_velocity as _omega
 
 
 def DLR_SPG_shape(lmax=719):
@@ -154,6 +154,9 @@ def CERES18D(lmax=18):
         tracking and optical data, Icarus, 299, 411-429,
         doi:10.1016/j.icarus.2017.08.005.
     '''
+    if lmax < 0:
+        lmax = 18
+
     fname = _retrieve(
         url="https://sbnarchive.psi.edu/pds3/dawn/grav/DWNCGRS_2_v3_181005/DATA/SHADR/JGDWN_CER18D_SHA.TAB",  # noqa: E501
         known_hash="sha256:e7ccb1f0c689f77fe5dae4e0bb5d514db1cf5acb5be927bbcaa8576aca153981",  # noqa: E501

@@ -87,19 +87,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_moon and mean_radius_moon.')
 
-a_orbit = _Constant(
-    abbrev='a_orbit_moon',
-    name='Semimajor axis of the orbit of the Moon',
-    value=384399.014e3,
-    unit='m',
-    uncertainty=0.0,
-    reference='Williams, J. G., D. H. Boggs, and W. M. Folkner '
-    '(2013), DE430 lunar orbit, physical librations, and surface '
-    'coordinates, IOM 335-JW,DB, WF-20130722-016, July 22, 2013, '
-    'Jet Propul. Lab., Pasadena, Calif.')
-
-omega = _Constant(
-    abbrev='omega_moon',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_moon',
     name='Angular spin rate of the Moon',
     value=2 * _np.pi / (27.321582 * 24 * 60 * 60),
     unit='rad / s',
@@ -108,6 +97,45 @@ omega = _Constant(
     'of Earth and the solar system. In: Ahrens TJ (ed.) Global Earth '
     'Physics: A Handbook of Physical Constants. AGU Reference Shelf, '
     'vol. 1, pp. 1-31. American Geophysical Union.')
+
+rotational_period = _Constant(
+    abbrev='rotational_period_moon',
+    name='Rotational period of the Moon',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_moon')
+
+orbit_semimajor_axis = _Constant(
+    abbrev='a_orbit_moon',
+    name='Semimajor axis of the orbit of the Moon about Earth',
+    value=384399.014e3,
+    unit='m',
+    uncertainty=0.0,
+    reference='Williams, J. G., D. H. Boggs, and W. M. Folkner '
+    '(2013), DE430 lunar orbit, physical librations, and surface '
+    'coordinates, IOM 335-JW,DB, WF-20130722-016, July 22, 2013, '
+    'Jet Propul. Lab., Pasadena, Calif.')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_moon',
+    name='Eccentricity of the orbit of the Moon about Earth',
+    value=0.0554,
+    unit='',
+    uncertainty=0.,
+    reference='DE405/LE405: JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_moon',
+    name='Inclination of the orbit of the Moon about Earth with respect to '
+    'the ecliptic plane',
+    value=5.16,
+    unit='degrees',
+    uncertainty=0.,
+    reference='DE405/LE405: JPL Solar System Dynamics, '
+    'https://ssd.jpl.nasa.gov')
 
 i_solid = _Constant(
     abbrev='i_solid_moon',
@@ -156,5 +184,7 @@ gamma = _Constant(
     'Planets, 119, 1546-1578, doi:10.1002/2013JE004559.')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'mean_density', 'gravity_mean_radius', 'a_orbit', 'omega',
-           'i_solid', 'beta', 'gamma']
+           'volume', 'mean_density', 'gravity_mean_radius',
+           'angular_velocity', 'orbit_semimajor_axis', 'orbit_eccentricity',
+           'orbit_inclination', 'i_solid', 'beta', 'gamma',
+           'rotational_period']

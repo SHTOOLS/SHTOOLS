@@ -135,7 +135,7 @@ class SHGrid(object):
         else:
             kind = 'real'
 
-        if type(grid) is not str:
+        if not isinstance(grid, str):
             raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
@@ -187,7 +187,7 @@ class SHGrid(object):
             If True, create the data array using numpy.empty() and do not
             initialize with zeros.
         """
-        if type(grid) is not str:
+        if not isinstance(grid, str):
             raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
@@ -448,7 +448,7 @@ class SHGrid(object):
         """
         try:
             units = data_array.units
-        except:
+        except Exception:
             pass
 
         array = data_array.values
@@ -488,7 +488,7 @@ class SHGrid(object):
 
         try:
             units = data_array.units
-        except:
+        except Exception:
             pass
 
         return self.from_array(array, grid=grid, units=units)
@@ -1001,7 +1001,7 @@ class SHGrid(object):
         90 N and S are downweighted to zero and have no influence on the
         returned spherical harmonic coefficients.
         """
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -1353,19 +1353,19 @@ class SHGrid(object):
             minor_tick_interval = [None, None]
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -1672,19 +1672,19 @@ class SHGrid(object):
                                  .format(repr(colorbar)))
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -1804,19 +1804,19 @@ class SHGrid(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -2431,7 +2431,7 @@ class DHRealGrid(SHGrid):
             # generate shading from self
             shading_str = "+a{:}+nt{:}+m0".format(shading_azimuth,
                                                   shading_amplitude)
-        elif type(shading) is str:
+        elif isinstance(shading, str):
             shading_str = shading  # external filename
             if shading_azimuth is not None:
                 shading_str += "+a{:}+nt{:}+m0".format(shading_azimuth,

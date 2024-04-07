@@ -21,7 +21,7 @@ from pooch import HTTPDownloader as _HTTPDownloader
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
-from ..constants.Mercury import omega as _omega
+from ..constants.Mercury import angular_velocity as _omega
 
 
 def USGS_SPG_shape(lmax=719):
@@ -96,6 +96,9 @@ def GTMES150(lmax=150):
     lmax : int, optional
         The maximum spherical harmonic degree to return.
     '''
+    if lmax < 0:
+        lmax = 150
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/messenger/mess-h-rss_mla-5-sdp-v1/messrs_1001/data/shadr/gtmes_150v05_sha.tab",  # noqa: E501
         known_hash="sha256:c49d07c14b09c1b1ed1b4bfc4b42d2ff058875f5e949b50128b83ffa94c659b3",  # noqa: E501
@@ -128,6 +131,9 @@ def JGMESS160A(lmax=160):
         radiometric tracking data, Icarus, 335, 253-260,
         doi:10.1016/j.icarus.2019.07.020.
     '''
+    if lmax < 0:
+        lmax = 160
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/messenger/mess-h-rss_mla-5-sdp-v1/messrs_1001/data/shadr/jgmess_160a_sha.tab",  # noqa: E501
         known_hash="sha256:14fa0129c4b5ef655e08a883a05a476a836a806349da607f84b3c2b2e3d899ca",  # noqa: E501
@@ -159,6 +165,9 @@ def JGMESS160A_ACCEL(lmax=160):
         radiometric tracking data, Icarus, 335, 253-260,
         doi:10.1016/j.icarus.2019.07.020.
     '''
+    if lmax < 0:
+        lmax = 160
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/messenger/mess-h-rss_mla-5-sdp-v1/messrs_1001/data/shadr/jgmess_160a_accel_sha.tab",  # noqa: E501
         known_hash="sha256:a0f99553fcea3d7d0c1395c89d8516f4e53e9e39893a2b82541ca1520b291423",  # noqa: E501
@@ -190,6 +199,9 @@ def JGMESS160A_TOPOSIG(lmax=160):
         radiometric tracking data, Icarus, 335, 253-260,
         doi:10.1016/j.icarus.2019.07.020.
     '''
+    if lmax < 0:
+        lmax = 160
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/messenger/mess-h-rss_mla-5-sdp-v1/messrs_1001/data/shadr/jgmess_160a_toposig_sha.tab",  # noqa: E501
         known_hash="sha256:ad6d77e55968b9ddaea9cde03cb00ad6b630c81e8509e413e5b5b11213b3d848",  # noqa: E501
@@ -221,6 +233,9 @@ def GGMES100V08(lmax=100):
         core. Geophysical Research Letters, 46, 3625-3633,
         doi:10.1029/2018GL081135.
     '''
+    if lmax < 0:
+        lmax = 100
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/messenger/mess-h-rss_mla-5-sdp-v1/messrs_1001/data/shadr/ggmes_100v08_sha.tab",  # noqa: E501
         known_hash="sha256:f81b33663ced0c6e05c775aa2d8c6c8eb99c41a20d4063d240fed536e45058fd",  # noqa: E501

@@ -44,7 +44,7 @@ def surface(lmax=2160):
         spherical harmonics, International Journal of Applied Earth Observation
         and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
-    if lmax <= 2160:
+    if lmax > 0 and lmax <= 2160:
         file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_5min/shcs_to2160/Earth2014.SUR2014.degree2160.bshc"  # noqa: E501
         file_hash = "sha256:5694260d135c17427270ed18d48af23f4788e5fbc1dfb9dcb19f1cf9b401c9ce"  # noqa: E501
     else:
@@ -78,7 +78,7 @@ def bedrock(lmax=2160):
         spherical harmonics, International Journal of Applied Earth Observation
         and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
-    if lmax <= 2160:
+    if lmax > 0 and lmax <= 2160:
         file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_5min/shcs_to2160/Earth2014.BED2014.degree2160.bshc"  # noqa: E501
         file_hash = "sha256:146dcc80f17d201352d391aa90f487f5ed16006a6a3966add2d023b998727af7"  # noqa: E501
     else:
@@ -112,7 +112,7 @@ def tbi(lmax=2160):
         spherical harmonics, International Journal of Applied Earth Observation
         and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
-    if lmax <= 2160:
+    if lmax > 0 and lmax <= 2160:
         file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_5min/shcs_to2160/Earth2014.TBI2014.degree2160.bshc"  # noqa: E501
         file_hash = "sha256:84a72ef25fe26fd746d2c6988c01840a12e9e414ee266e9357acb81faaaa6d5f"  # noqa: E501
     else:
@@ -147,7 +147,7 @@ def ret(lmax=2160):
         spherical harmonics, International Journal of Applied Earth Observation
         and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
-    if lmax <= 2160:
+    if lmax > 0 and lmax <= 2160:
         file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_5min/shcs_to2160/Earth2014.RET2014.degree2160.bshc"  # noqa: E501
         file_hash = "sha256:1fa87749532811614c00e9723dae1aa312e5511570d101bccb74bc40cb7dd5d1"  # noqa: E501
     else:
@@ -181,7 +181,7 @@ def ice(lmax=2160):
         spherical harmonics, International Journal of Applied Earth Observation
         and Geoinformation, 39, 103-112, doi:10.10.1016/j.jag.2015.03.001.
     '''
-    if lmax <= 2160:
+    if lmax > 0 and lmax <= 2160:
         file_url = "http://ddfe.curtin.edu.au/models/Earth2014/data_5min/shcs_to2160/Earth2014.ICE2014.degree2160.bshc"  # noqa: E501
         file_hash = "sha256:04cd185cc668eba6f9bd1db527c4985703cce8d1a9fb993509e625e2bbecc78e"  # noqa: E501
     else:

@@ -196,7 +196,7 @@ class SHCoeffs(object):
         else:
             kind = 'real'
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -435,7 +435,7 @@ class SHCoeffs(object):
         header_list = None
         header2_list = None
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -597,7 +597,7 @@ class SHCoeffs(object):
         exactly to the input spectrum by setting exact_power to True.
         """
         # check if all arguments are correct
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -738,10 +738,10 @@ class SHCoeffs(object):
 
         try:
             normalization = ds.coeffs.normalization
-        except:
+        except Exception:
             pass
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
@@ -754,7 +754,7 @@ class SHCoeffs(object):
 
         try:
             csphase = ds.coeffs.csphase
-        except:
+        except Exception:
             pass
 
         if csphase != 1 and csphase != -1:
@@ -765,7 +765,7 @@ class SHCoeffs(object):
 
         try:
             units = ds.coeffs.units
-        except:
+        except Exception:
             pass
 
         lmaxout = ds.dims['degree'] - 1
@@ -796,7 +796,7 @@ class SHCoeffs(object):
             serrors = serrors[:lmaxout+1, :lmaxout+1]
             errors = _np.array([cerrors, serrors])
             error_kind = ds.errors.error_kind
-        except:
+        except Exception:
             errors = None
             error_kind = None
 
@@ -870,7 +870,7 @@ class SHCoeffs(object):
         specified latitude and longitude, specify the optional parameters clat
         and clon.
         """
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -1957,7 +1957,7 @@ class SHCoeffs(object):
         True. This rotation is accomplished by performing the inverse rotation
         using the angles (-gamma, -beta, -alpha).
         """
-        if type(convention) is not str:
+        if not isinstance(convention, str):
             raise ValueError('convention must be a string. Input type is {:s}.'
                              .format(str(type(convention))))
 
@@ -2043,7 +2043,7 @@ class SHCoeffs(object):
             kind = self.kind
 
         # check argument consistency
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -2206,7 +2206,7 @@ class SHCoeffs(object):
                 else:
                     temp = _np.pi/2.
 
-                if type(colat) is list:
+                if isinstance(colat, list):
                     lat = list(map(lambda x: temp - x, colat))
                 else:
                     lat = temp - colat
@@ -2223,7 +2223,7 @@ class SHCoeffs(object):
             if backend is None:
                 backend = preferred_backend()
 
-            if type(grid) is not str:
+            if not isinstance(grid, str):
                 raise ValueError('grid must be a string. Input type is {:s}.'
                                  .format(str(type(grid))))
 
@@ -2295,7 +2295,7 @@ class SHCoeffs(object):
         if backend is None:
             backend = preferred_backend()
 
-        if type(grid) is not str:
+        if not isinstance(grid, str):
             raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
@@ -2423,13 +2423,13 @@ class SHCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
@@ -2599,13 +2599,13 @@ class SHCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
@@ -2795,19 +2795,19 @@ class SHCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -3296,19 +3296,19 @@ class SHCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -3788,18 +3788,18 @@ class SHCoeffs(object):
         elif style == 'combined':
             legend_loc = [legend_loc, legend_loc]
         else:
-            if type(legend_loc) is str:
+            if isinstance(legend_loc, str):
                 legend_loc = [legend_loc, legend_loc]
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
@@ -4169,11 +4169,11 @@ class SHRealCoeffs(SHCoeffs):
                              'Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float or type(lat) is _np.float64:
+        if isinstance(lat, (int, float, _np.float64)):
             return _shtools.MakeGridPoint(self.coeffs, lat=latin, lon=lonin,
                                           lmax=lmax_calc, norm=norm,
                                           csphase=self.csphase)
-        elif type(lat) is _np.ndarray:
+        elif isinstance(lat, _np.ndarray):
             values = _np.empty_like(lat, dtype=_np.float64)
             for v, latitude, longitude in _np.nditer([values, latin, lonin],
                                                      op_flags=['readwrite']):
@@ -4182,7 +4182,7 @@ class SHRealCoeffs(SHCoeffs):
                                                 lmax=lmax_calc, norm=norm,
                                                 csphase=self.csphase)
             return values
-        elif type(lat) is list:
+        elif isinstance(lat, list):
             values = []
             for latitude, longitude in zip(latin, lonin):
                 values.append(
@@ -4455,11 +4455,11 @@ class SHComplexCoeffs(SHCoeffs):
                              'Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
 
-        if type(lat) is int or type(lat) is float or type(lat) is _np.float64:
+        if isinstance(lat, (int, float, _np.float64)):
             return _shtools.MakeGridPointC(self.coeffs, lat=latin, lon=lonin,
                                            lmax=lmax_calc, norm=norm,
                                            csphase=self.csphase)
-        elif type(lat) is _np.ndarray:
+        elif isinstance(lat, _np.ndarray):
             values = _np.empty_like(lat, dtype=_np.complex128)
             for v, latitude, longitude in _np.nditer([values, latin, lonin],
                                                      op_flags=['readwrite']):
@@ -4468,7 +4468,7 @@ class SHComplexCoeffs(SHCoeffs):
                                                  lmax=lmax_calc, norm=norm,
                                                  csphase=self.csphase)
             return values
-        elif type(lat) is list:
+        elif isinstance(lat, list):
             values = []
             for latitude, longitude in zip(latin, lonin):
                 values.append(

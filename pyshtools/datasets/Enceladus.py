@@ -16,7 +16,7 @@ from pooch import create as _create
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
-from ..constants.Enceladus import omega as _omega
+from ..constants.Enceladus import angular_velocity as _omega
 
 
 def JPL_SPC_shape(lmax=719):
@@ -92,8 +92,11 @@ def Iess2014_gravity(lmax=3):
         Enceladus. Science, 344(6179), 78–80.
         https://doi.org/10.1126/science.1250551
     '''
+    if lmax < 0:
+        lmax = 3
+
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10809142/Iess2014.sh",  # noqa: E501
+        url="doi:10.5281/zenodo.10809142/Iess2014.sh",
         known_hash="sha256:f393e0ab8a7c0420907ed1f9e33b51c8bf38589e8e67ebdd3a8ab35ba1ad6988",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
@@ -126,8 +129,11 @@ def Park2024_gravity(lmax=3):
         Libration of Enceladus. Journal of Geophysical Research: Planets,
         129(1), e2023JE008054. https://doi.org/10.1029/2023JE008054
     '''
+    if lmax < 0:
+        lmax = 3
+
     fname = _retrieve(
-        url="doi:10.5281/zenodo.10809142/Park2024.sh",  # noqa: E501
+        url="doi:10.5281/zenodo.10809142/Park2024.sh",
         known_hash="sha256:f1b29bec0132f008032a8dbf07366a64cd33c404787ce0839ed1799d4863318f",  # noqa: E501
         downloader=_DOIDownloader(progressbar=True),
         path=_os_cache('pyshtools'),

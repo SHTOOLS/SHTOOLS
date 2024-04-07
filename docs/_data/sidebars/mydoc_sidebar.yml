@@ -36,8 +36,12 @@ entries:
       url: /using-with-python.html
       output: web, pdf
 
-    - title: Constants & Datasets
-      url: /python-datasets-constants.html
+    - title: Constants
+      url: /python-constants.html
+      output: web, pdf
+
+    - title: Datasets
+      url: /python-datasets.html
       output: web, pdf
 
     - title: Tutorials & Guides
