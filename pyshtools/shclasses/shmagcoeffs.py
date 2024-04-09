@@ -122,6 +122,8 @@ class SHMagCoeffs(object):
                             harmonic degree.
     plot_spectrum2d()     : Plot the 2D spectrum of all spherical harmonic
                             degrees and orders.
+    plot_correlation()    : Plot the spectral correlation with another
+                            function.
     to_array()            : Return an array of spherical harmonic coefficients
                             with a different normalization convention.
     to_file()             : Save the spherical harmonic coefficients to a file.
@@ -2170,16 +2172,19 @@ class SHMagCoeffs(object):
     def plot_spectrum(self, function='total', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
                       legend=None, legend_error='error', legend_loc='best',
-                      errors=True, axes_labelsize=None, tick_labelsize=None,
-                      ax=None, show=True, fname=None, **kwargs):
+                      legend_title=None, errors=True, axes_labelsize=None,
+                      tick_labelsize=None, legend_fontsize=None,
+                      legend_titlesize=None, ax=None, show=True, fname=None,
+                      **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
         x.plot_spectrum([function, unit, base, lmax, xscale, yscale, grid,
-                         legend, legend_loc, errors, axes_labelsize,
-                         tick_labelsize, ax, show, fname, **kwargs])
+                         legend, legend_loc, legend_title, errors,
+                         axes_labelsize, tick_labelsize, legend_fontsize,
+                         legend_titlesize, ax, show, fname, **kwargs])
 
         Parameters
         ----------
@@ -2211,12 +2216,18 @@ class SHMagCoeffs(object):
         legend_loc : str, optional, default = 'best'
             Location of the legend, such as 'upper right' or 'lower center'
             (see pyplot.legend for all options).
+        legend_title : str, optional, default = None
+            Title of the legend.
         errors : bool, optional, default = True
             If the coefficients have errors, plot the error spectrum.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        legend_fontsize : int, optional, default = None
+            The font size for the legend entries.
+        legend_titlesize : int, optional, default = None
+            The font size for the legend title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
@@ -2281,6 +2292,20 @@ class SHMagCoeffs(object):
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
 
+        if legend_fontsize is None:
+            legend_fontsize = _mpl.rcParams['legend.fontsize']
+            if isinstance(legend_fontsize, str):
+                legend_fontsize = _mpl.font_manager \
+                                  .FontProperties(size=legend_fontsize) \
+                                  .get_size_in_points()
+
+        if legend_titlesize is None:
+            legend_titlesize = _mpl.rcParams['legend.title_fontsize']
+            if isinstance(legend_fontsize, str):
+                legend_titlesize = _mpl.font_manager \
+                                   .FontProperties(size=legend_titlesize) \
+                                   .get_size_in_points()
+
         axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
 
         if function == 'potential':
@@ -2324,7 +2349,8 @@ class SHMagCoeffs(object):
         axes.grid(grid, which='major')
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
-        axes.legend(loc=legend_loc)
+        axes.legend(loc=legend_loc, fontsize=legend_fontsize,
+                    title=legend_title, title_fontsize=legend_titlesize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
