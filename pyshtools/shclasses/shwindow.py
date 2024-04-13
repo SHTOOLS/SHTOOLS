@@ -1197,7 +1197,7 @@ class SHWindow(object):
                              axes_labelsize=None, tick_labelsize=None,
                              titlesize=None, colorbar=None,
                              cb_label=None, normalize=False, show=True,
-                             ax=None, fname=None, **kwargs):
+                             ax=None, fname=None, imshow_dict=dict()):
         """
         Plot the multitaper coupling matrix.
 
@@ -1210,7 +1210,7 @@ class SHWindow(object):
                                       ylabel, title, axes_labelsize,
                                       tick_labelsize, titlesize,
                                       colorbar, cb_label, normalize, show, ax,
-                                      fname, weights, **kwargs])
+                                      fname, weights, imshow_dict])
 
         Parameters
         ----------
@@ -1259,8 +1259,8 @@ class SHWindow(object):
             An array of matplotlib axes objects where the plots will appear.
         fname : str, optional, default = None
             If present, save the image to the specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to plt.imshow(), such as cmap.
+        imshow_dict : dict, optional, default = dict()
+            Optional arguements that will be passed to plt.imshow().
         """
         if weights is not None:
             if k is not None:
@@ -1320,7 +1320,8 @@ class SHWindow(object):
         if normalize:
             mmt = mmt / mmt.max()
 
-        cim = axes.imshow(mmt, aspect='equal', vmin=vmin, vmax=vmax, **kwargs)
+        cim = axes.imshow(mmt, aspect='equal', vmin=vmin, vmax=vmax,
+                          **imshow_dict)
         if xlabel is not None:
             axes.set_xlabel(xlabel, fontsize=axes_labelsize)
         if ylabel is not None:

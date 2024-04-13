@@ -980,7 +980,8 @@ class Slepian(object):
                              title=None, axes_labelsize=None,
                              tick_labelsize=None, titlesize=None,
                              colorbar=None, cb_label=None, normalize=False,
-                             show=True, ax=None, fname=None, **kwargs):
+                             show=True, ax=None, fname=None,
+                             imshow_dict=dict()):
         """
         Plot the spherical harmonic coupling matrix. This matrix relates the
         power spectrum expectation of the function expressed in a subset of the
@@ -992,7 +993,7 @@ class Slepian(object):
         x.plot_coupling_matrix([nmax, vmin, vmax, xlabel, ylabel, title
                                 axes_labelsize, tick_labelsize,
                                 titlesize, colorbar, cb_label, normalize,
-                                show, ax, fname, **kwargs])
+                                show, ax, fname, imshow_dict])
 
         Parameters
         ----------
@@ -1029,8 +1030,8 @@ class Slepian(object):
             An array of matplotlib axes objects where the plots will appear.
         fname : str, optional, default = None
             If present, save the image to the specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to plt.imshow(), such as cmap.
+        imshow_dict : dict, optional, default = dict()
+            Optional arguements that will be passed to plt.imshow().
         """
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
@@ -1074,7 +1075,8 @@ class Slepian(object):
         if normalize:
             kll = kll / kll.max()
 
-        cim = axes.imshow(kll, aspect='equal', vmin=vmin, vmax=vmax, **kwargs)
+        cim = axes.imshow(kll, aspect='equal', vmin=vmin, vmax=vmax,
+                          **imshow_dict)
         if xlabel is not None:
             axes.set_xlabel(xlabel, fontsize=axes_labelsize)
         if ylabel is not None:
