@@ -18,10 +18,10 @@ Evaluate a real function expressed in real spherical harmonics at a single point
 :   The maximum spherical harmonic degree used in evaluating the function.
 
 `lat` : input, real(dp)
-:   The latitude of the point in DEGREES.
+:   The latitude of the point in degrees.
 
 `lon` : input, real(dp)
-:   The longitude of the point in DEGREES.
+:   The longitude of the point in degrees.
 
 `norm` : input, optional, integer(int32), default = 1
 :   1 (default) = Geodesy 4-pi normalized harmonics; 2 = Schmidt semi-normalized harmonics; 3 = unnormalized harmonics; 4 = orthonormal harmonics.

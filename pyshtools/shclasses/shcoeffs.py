@@ -14,6 +14,7 @@ from scipy.special import factorial as _factorial
 import xarray as _xr
 from pathlib import Path
 
+from ..expand import shlsq as _shlsq
 from ..spectralanalysis import spectrum as _spectrum
 from ..spectralanalysis import cross_spectrum as _cross_spectrum
 from ..shio import convert as _convert
@@ -41,6 +42,7 @@ class SHCoeffs(object):
         x = SHCoeffs.from_file('fname.dat')
         x = SHCoeffs.from_netcdf('ncname.nc')
         x = SHCoeffs.from_cap(theta, lmax)
+        x = SHCoeffs.from_least_squares(data, latitude, longitude, lmax)
 
     The normalization convention of the input coefficents is specified
     by the normalization and csphase parameters, which take the following
@@ -82,6 +84,8 @@ class SHCoeffs(object):
     header2       : A list of values (of type str) from the second header line
                     of the input file used to initialize the class (for
                     'shtools' and 'dov' formatted files only).
+    chi2          : The (weighted) residual sum of squares misfit when
+                    initializing from a least squares inversion.
 
     Each class instance provides the following methods:
 
@@ -142,6 +146,7 @@ class SHCoeffs(object):
               '>>> pyshtools.SHCoeffs.from_file\n'
               '>>> pyshtools.SHCoeffs.from_netcdf\n'
               '>>> pyshtools.SHCoeffs.from_cap\n'
+              '>>> pyshtools.SHCoeffs.from_least_squares\n'
               )
 
     # ---- Factory methods ----
@@ -258,8 +263,8 @@ class SHCoeffs(object):
     def from_zeros(self, lmax, errors=None, error_kind=None, kind='real',
                    normalization='4pi', csphase=1, name=None, units=None):
         """
-        Initialize class with spherical harmonic coefficients set to zero from
-        degree 0 to lmax.
+        Initialize the class with spherical harmonic coefficients set to zero
+        from degree 0 to lmax.
 
         Usage
         -----
@@ -931,6 +936,114 @@ class SHCoeffs(object):
                                    nthreads=nthreads)
 
         return temp
+
+    @classmethod
+    def from_least_squares(self, data, latitude, longitude, lmax, weights=None,
+                           g=None, normalization='4pi', kind='real', csphase=1,
+                           degrees=True, name=None, units=None):
+        """
+        Initialize the class with spherical harmonic coefficients from a least
+        squares inversion of irregularly spaced data.
+
+        Usage
+        -----
+        x = SHCoeffs.from_least_squares(data, latitude, longitude, lmax,
+                                        [weights, g, normalization, csphase,
+                                        kind, degrees, name, units])
+
+        Returns
+        -------
+        x : SHCoeffs class instance.
+
+        Parameters
+        ----------
+        data : float, dimension (nmax)
+            The value of the function at the latitude and longitude
+            coordinates.
+        latitude : float, dimension (nmax)
+            The latitude in degrees of the data.
+        longitude : float, dimension (nmax)
+            The longitude in degrees of the data.
+        lmax : integer
+            The maximum spherical harmonic degree of the coefficients.
+        weights : float, dimension (nmax)
+            The weights used for a weighted least squares inversion.
+        g : float, dimension(nmax, (lmax+1)**2)
+            The precomputed data kernel matrix G obtained from LSQ_G.
+        normalization : str, optional, default = '4pi'
+            '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
+            orthonormalized, Schmidt semi-normalized, or unnormalized
+             coefficients, respectively.
+        csphase : int, optional, default = 1
+            Condon-Shortley phase convention: 1 to exclude the phase factor,
+            or -1 to include it.
+        kind : str, optional, default = 'real'
+            'real' or 'complex' spherical harmonic coefficients.
+        name : str, optional, default = None
+            The name of the dataset.
+        units : str, optional, default = None
+            The units of the spherical harmonic coefficients.
+        degrees : bool, optional, default = True
+            If True, latitude and longitude are in degrees, otherwise they are
+            in radians.
+
+        Notes
+        -----
+        When the number of data points is greater or equal to the number of
+        spherical harmonic coefficients, the solution of the overdetermined
+        system will be determined. If there are more coefficients than data
+        points, then the solution of the underdetermined system that minimizes
+        the solution norm will be determined.
+
+        When weigths are present, they should be set equal to the inverse of
+        the data variance. It is assumed explicitly that each measurement
+        is statistically independent (i.e., the weighting matrix is diagonal).
+        The weighted least squares inversion must be overdetermined.
+
+        If used repeatedly with the same latitude and longitude coordinates,
+        the data kernel matrix G can be precomputed using LSQ_G. The (weighted)
+        residual sum of squares misfit of the least squares inversion is
+        provided by the class attribute chi2.
+        """
+        error_coeffs = None
+        error_kind = None
+
+        if kind.lower() not in ('real', 'complex'):
+            raise ValueError(
+                "Kind must be 'real' or 'complex'. Input value is {:s}."
+                .format(repr(kind))
+                )
+
+        if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
+            raise ValueError(
+                "The normalization must be '4pi', 'ortho', 'schmidt', " +
+                "or 'unnorm'. Input value is {:s}."
+                .format(repr(normalization))
+                )
+
+        if csphase != 1 and csphase != -1:
+            raise ValueError(
+                "csphase must be either 1 or -1. Input value is {:s}."
+                .format(repr(csphase))
+                )
+
+        if normalization.lower() == 'unnorm' and lmax > 85:
+            _warnings.warn("Calculations using unnormalized coefficients " +
+                           "are stable only for degrees less than or equal " +
+                           "to 85. lmax for the coefficients will be set to " +
+                           "85. Input value is {:d}.".format(lmax),
+                           category=RuntimeWarning)
+            lmax = 85
+
+        coeffs, chi2 = _shlsq(data, latitude, longitude, lmax, weights=weights,
+                              g=g, normalization=normalization,
+                              csphase=csphase, kind=kind, degrees=degrees)
+
+        for cls in self.__subclasses__():
+            if cls.istype(kind):
+                return cls(coeffs, errors=error_coeffs, error_kind=error_kind,
+                           normalization=normalization.lower(),
+                           csphase=csphase, name=name, units=units, chi2=chi2)
 
     # ---- Define methods that modify internal variables ----
     def set_coeffs(self, values, ls, ms):
@@ -2354,16 +2467,20 @@ class SHCoeffs(object):
     def plot_spectrum(self, convention='power', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
                       legend=None, legend_error='error', legend_loc='best',
-                      errors=True, axes_labelsize=None, tick_labelsize=None,
-                      ax=None, show=True, fname=None, **kwargs):
+                      legend_title=None, errors=True, axes_labelsize=None,
+                      tick_labelsize=None, legend_fontsize=None,
+                      legend_titlesize=None, ax=None, show=True, fname=None,
+                      **kwargs):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
         x.plot_spectrum([convention, unit, base, lmax, xscale, yscale, grid,
-                         axes_labelsize, tick_labelsize, legend, legend_error,
-                         legend_loc, errors, ax, show, fname, **kwargs])
+                         legend, legend_error, legend_loc, legend_title,
+                         errors, axes_labelsize, tick_labelsize,
+                         legend_fontsize, legend_titlesize, ax, show, fname,
+                         **kwargs])
 
         Parameters
         ----------
@@ -2395,12 +2512,18 @@ class SHCoeffs(object):
         legend_loc : str, optional, default = 'best'
             Location of the legend, such as 'upper right' or 'lower center'
             (see pyplot.legend for all options).
+        legend_title : str, optional, default = None
+            Title of the legend.
         errors : bool, optional, default = True
             If the coefficients have errors, plot the error spectrum.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        legend_fontsize : int, optional, default = None
+            The font size for the legend entries.
+        legend_titlesize : int, optional, default = None
+            The font size for the legend title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
@@ -2465,6 +2588,20 @@ class SHCoeffs(object):
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
 
+        if legend_fontsize is None:
+            legend_fontsize = _mpl.rcParams['legend.fontsize']
+            if isinstance(legend_fontsize, str):
+                legend_fontsize = _mpl.font_manager \
+                                  .FontProperties(size=legend_fontsize) \
+                                  .get_size_in_points()
+
+        if legend_titlesize is None:
+            legend_titlesize = _mpl.rcParams['legend.title_fontsize']
+            if isinstance(legend_fontsize, str):
+                legend_titlesize = _mpl.font_manager \
+                                   .FontProperties(size=legend_titlesize) \
+                                   .get_size_in_points()
+
         axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
         if convention == 'Energy':
             axes.set_ylabel('Energy', fontsize=axes_labelsize)
@@ -2517,7 +2654,8 @@ class SHCoeffs(object):
         axes.grid(grid, which='major')
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
-        axes.legend(loc=legend_loc)
+        axes.legend(loc=legend_loc, fontsize=legend_fontsize,
+                    title=legend_title, title_fontsize=legend_titlesize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2530,17 +2668,21 @@ class SHCoeffs(object):
     def plot_cross_spectrum(self, clm, convention='power', unit='per_l',
                             base=10., lmax=None, xscale='lin', yscale='log',
                             grid=True, legend=None, legend_loc='best',
-                            axes_labelsize=None, tick_labelsize=None,
-                            ax=None, show=True, fname=None, **kwargs):
+                            legend_title=None, axes_labelsize=None,
+                            tick_labelsize=None, legend_fontsize=None,
+                            legend_titlesize=None, ax=None, show=True,
+                            fname=None, **kwargs):
         """
         Plot the cross-spectrum of two functions.
 
         Usage
         -----
         x.plot_cross_spectrum(clm, [convention, unit, base, lmax, xscale,
-                                    yscale, grid, axes_labelsize,
-                                    tick_labelsize, legend, legend_loc, ax,
-                                    show, fname, **kwargs])
+                                    yscale, grid, legend, legend_loc,
+                                    legend_title, axes_labelsize,
+                                    tick_labelsize, legend_fontsize,
+                                    legend_titlesize, ax, show, fname,
+                                    **kwargs])
 
         Parameters
         ----------
@@ -2572,10 +2714,16 @@ class SHCoeffs(object):
         legend_loc : str, optional, default = 'best'
             Location of the legend, such as 'upper right' or 'lower center'
             (see pyplot.legend for all options).
+        legend_title : str, optional, default = None
+            Title of the legend.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        legend_fontsize : int, optional, default = None
+            The font size for the legend entries.
+        legend_titlesize : int, optional, default = None
+            The font size for the legend title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
@@ -2641,6 +2789,20 @@ class SHCoeffs(object):
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
 
+        if legend_fontsize is None:
+            legend_fontsize = _mpl.rcParams['legend.fontsize']
+            if isinstance(legend_fontsize, str):
+                legend_fontsize = _mpl.font_manager \
+                                  .FontProperties(size=legend_fontsize) \
+                                  .get_size_in_points()
+
+        if legend_titlesize is None:
+            legend_titlesize = _mpl.rcParams['legend.title_fontsize']
+            if isinstance(legend_fontsize, str):
+                legend_titlesize = _mpl.font_manager \
+                                   .FontProperties(size=legend_titlesize) \
+                                   .get_size_in_points()
+
         axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
         if convention == 'Energy':
             axes.set_ylabel('Energy', fontsize=axes_labelsize)
@@ -2687,7 +2849,8 @@ class SHCoeffs(object):
         axes.grid(grid, which='major')
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
-        axes.legend(loc=legend_loc)
+        axes.legend(loc=legend_loc, fontsize=legend_fontsize,
+                    title=legend_title, title_fontsize=legend_titlesize)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -4030,7 +4193,7 @@ class SHRealCoeffs(SHCoeffs):
 
     def __init__(self, coeffs, errors=None, error_kind=None,
                  normalization='4pi', csphase=1, name=None, units=None,
-                 copy=True, header=None, header2=None):
+                 copy=True, header=None, header2=None, chi2=None):
         """Initialize Real SH Coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -4064,6 +4227,9 @@ class SHRealCoeffs(SHCoeffs):
                 self.errors = errors
         else:
             self.errors = None
+
+        if chi2 is not None:
+            self.chi2 = chi2
 
     def _make_complex(self):
         """Convert the real SHCoeffs class to the complex class."""
@@ -4256,7 +4422,7 @@ class SHComplexCoeffs(SHCoeffs):
 
     def __init__(self, coeffs, errors=None, error_kind=None,
                  normalization='4pi', csphase=1, name=None, units=None,
-                 copy=True, header=None, header2=None):
+                 copy=True, header=None, header2=None, chi2=None):
         """Initialize Complex coefficients."""
         lmax = coeffs.shape[1] - 1
         # ---- create mask to filter out m<=l ----
@@ -4291,6 +4457,9 @@ class SHComplexCoeffs(SHCoeffs):
                 self.errors = errors
         else:
             self.errors = None
+
+        if chi2 is not None:
+            self.chi2 = chi2
 
     def _make_real(self, check=True):
         """Convert the complex SHCoeffs class to the real class."""
