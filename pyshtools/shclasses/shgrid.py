@@ -393,13 +393,13 @@ class SHGrid(object):
 
     @classmethod
     def from_file(self, fname, binary=False, grid='DH', units=None, name=None,
-                  **kwargs):
+                  load_dict=dict()):
         """
         Initialize the class instance from gridded data in a file.
 
         Usage
         -----
-        x = SHGrid.from_file(fname, [binary, grid, units, name, **kwargs])
+        x = SHGrid.from_file(fname, [binary, grid, units, name, load_dict])
 
         Returns
         -------
@@ -426,13 +426,13 @@ class SHGrid(object):
             The units of the gridded data.
         name : str, optional, default = None
             The name of the dataset.
-        **kwargs : keyword arguments, optional
-            Keyword arguments of numpy.loadtxt() or numpy.load().
+        load_dict : dict, optional, default = dict()
+            Optional arguments passed to numpy.load() and numpy.loadtxt().
         """
         if binary is False:
-            data = _np.loadtxt(fname, **kwargs)
+            data = _np.loadtxt(fname, **load_dict)
         elif binary is True:
-            data = _np.load(fname, **kwargs)
+            data = _np.load(fname, **load_dict)
         else:
             raise ValueError('binary must be True or False. '
                              'Input value is {:s}.'.format(binary))
@@ -528,13 +528,13 @@ class SHGrid(object):
         """
         return _copy.deepcopy(self)
 
-    def to_file(self, filename, binary=False, **kwargs):
+    def to_file(self, filename, binary=False, save_dict=dict()):
         """
         Save gridded data to a file.
 
         Usage
         -----
-        x.to_file(filename, [binary, **kwargs])
+        x.to_file(filename, [binary, save_dict])
 
         Parameters
         ----------
@@ -544,13 +544,13 @@ class SHGrid(object):
         binary : bool, optional, default = False
             If False, save as text using numpy.savetxt(). If True, save as a
             'npy' binary file using numpy.save().
-        **kwargs : keyword arguments, optional
-            Keyword arguments of numpy.savetxt() and numpy.save().
+        save_dict : dict, optional, default = dict()
+            Optional arguments passed to numpy.save() and numpy.savetxt().
         """
         if binary is False:
-            _np.savetxt(filename, self.data, **kwargs)
+            _np.savetxt(filename, self.data, **save_dict)
         elif binary is True:
-            _np.save(filename, self.data, **kwargs)
+            _np.save(filename, self.data, **save_dict)
         else:
             raise ValueError('binary must be True or False. '
                              'Input value is {:s}.'.format(binary))

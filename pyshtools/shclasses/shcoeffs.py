@@ -348,7 +348,7 @@ class SHCoeffs(object):
     def from_file(self, fname, lmax=None, format='shtools', kind='real',
                   errors=None, error_kind=None, normalization='4pi', skip=0,
                   header=False, header2=False, csphase=1, name=None,
-                  units=None, encoding=None, **kwargs):
+                  units=None, encoding=None, load_dict=dict()):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -360,7 +360,7 @@ class SHCoeffs(object):
         x = SHCoeffs.from_file(filename, format='bshc', [lmax, normalization,
                                csphase, name, units])
         x = SHCoeffs.from_file(filename, format='npy', [lmax, normalization,
-                               csphase, name, units, **kwargs])
+                               csphase, name, units, load_dict])
 
         Returns
         -------
@@ -411,8 +411,8 @@ class SHCoeffs(object):
         encoding : str, optional, default = None
             Encoding of the input file when format is 'shtools' or 'dov'. The
             default is to use the system default.
-        **kwargs : keyword argument list, optional for format = 'npy'
-            Keyword arguments of numpy.load() when format is 'npy'.
+        load_dict : dict, optional, default = dict()
+            Optional arguments passed to numpy.load() when format is 'npy'.
 
         Notes
         -----
@@ -501,7 +501,7 @@ class SHCoeffs(object):
             coeffs, lmaxout = _read_bshc(fname, lmax=lmax)
 
         elif format.lower() == 'npy':
-            coeffs = _np.load(fname, **kwargs)
+            coeffs = _np.load(fname, **load_dict)
             lmaxout = coeffs.shape[1] - 1
             if lmax is not None:
                 if lmax < lmaxout:
@@ -1082,7 +1082,7 @@ class SHCoeffs(object):
 
     # ---- IO Routines
     def to_file(self, filename, format='shtools', header=None, header2=None,
-                errors=True, lmax=None, encoding=None, **kwargs):
+                errors=True, lmax=None, encoding=None, save_dict=dict()):
         """
         Save raw spherical harmonic coefficients to a file.
 
@@ -1093,7 +1093,7 @@ class SHCoeffs(object):
         x.to_file(filename, format='dov', [header, header2, errors, lmax,
                                            encoding])
         x.to_file(filename, format='bshc', [lmax])
-        x.to_file(filename, format='npy', [**kwargs])
+        x.to_file(filename, format='npy', [save_dict])
 
         Parameters
         ----------
@@ -1116,8 +1116,8 @@ class SHCoeffs(object):
         encoding : str, optional, default = None
             Encoding of the output file when format is 'shtools' or 'dov'. The
             default is to use the system default.
-        **kwargs : keyword argument list, optional for format = 'npy'
-            Keyword arguments of numpy.save().
+        save_dict : dict, optional, default = dict()
+            Optional arguments passed to numpy.save() when format=  is 'npy'.
 
         Notes
         -----
@@ -1189,7 +1189,7 @@ class SHCoeffs(object):
             _write_bshc(filebase, self.coeffs, lmax=lmax)
 
         elif format.lower() == 'npy':
-            _np.save(filebase, self.coeffs, **kwargs)
+            _np.save(filebase, self.coeffs, **save_dict)
 
         else:
             raise NotImplementedError(
@@ -2470,7 +2470,7 @@ class SHCoeffs(object):
                       legend_title=None, errors=True, axes_labelsize=None,
                       tick_labelsize=None, legend_fontsize=None,
                       legend_titlesize=None, ax=None, show=True, fname=None,
-                      **kwargs):
+                      plot_dict=dict(), legend_dict=dict()):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
@@ -2480,7 +2480,7 @@ class SHCoeffs(object):
                          legend, legend_error, legend_loc, legend_title,
                          errors, axes_labelsize, tick_labelsize,
                          legend_fontsize, legend_titlesize, ax, show, fname,
-                         **kwargs])
+                         plot_dict, legend_dict])
 
         Parameters
         ----------
@@ -2531,8 +2531,10 @@ class SHCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -2637,15 +2639,17 @@ class SHCoeffs(object):
             axes.set_yscale('log', base=base)
 
         if xscale == 'log':
-            axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend, **kwargs)
+            axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend,
+                      **plot_dict)
             if self.errors is not None and errors:
                 axes.plot(ls[1:lmax+1], error_spectrum[1:lmax+1],
-                          label='error', **kwargs)
+                          label='error', **plot_dict)
         else:
-            axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend, **kwargs)
+            axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend,
+                      **plot_dict)
             if self.errors is not None and errors:
                 axes.plot(ls[:lmax+1], error_spectrum[:lmax+1],
-                          label=legend_error, **kwargs)
+                          label=legend_error, **plot_dict)
             if ax is None:
                 axes.set(xlim=(ls[0], ls[lmax]))
             else:
@@ -2655,7 +2659,8 @@ class SHCoeffs(object):
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
         axes.legend(loc=legend_loc, fontsize=legend_fontsize,
-                    title=legend_title, title_fontsize=legend_titlesize)
+                    title=legend_title, title_fontsize=legend_titlesize,
+                    **legend_dict)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2671,7 +2676,7 @@ class SHCoeffs(object):
                             legend_title=None, axes_labelsize=None,
                             tick_labelsize=None, legend_fontsize=None,
                             legend_titlesize=None, ax=None, show=True,
-                            fname=None, **kwargs):
+                            fname=None, plot_dict=dict(), legend_dict=dict()):
         """
         Plot the cross-spectrum of two functions.
 
@@ -2682,7 +2687,7 @@ class SHCoeffs(object):
                                     legend_title, axes_labelsize,
                                     tick_labelsize, legend_fontsize,
                                     legend_titlesize, ax, show, fname,
-                                    **kwargs])
+                                    plot_dict, legend_dict])
 
         Parameters
         ----------
@@ -2731,8 +2736,10 @@ class SHCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -2838,9 +2845,11 @@ class SHCoeffs(object):
             axes.set_yscale('log', base=base)
 
         if xscale == 'log':
-            axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend, **kwargs)
+            axes.plot(ls[1:lmax+1], spectrum[1:lmax+1], label=legend,
+                      **plot_dict)
         else:
-            axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend, **kwargs)
+            axes.plot(ls[:lmax+1], spectrum[:lmax+1], label=legend,
+                      **plot_dict)
             if ax is None:
                 axes.set(xlim=(ls[0], ls[lmax]))
             else:
@@ -2850,7 +2859,8 @@ class SHCoeffs(object):
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
         axes.legend(loc=legend_loc, fontsize=legend_fontsize,
-                    title=legend_title, title_fontsize=legend_titlesize)
+                    title=legend_title, title_fontsize=legend_titlesize,
+                    **legend_dict)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -3855,7 +3865,8 @@ class SHCoeffs(object):
                        grid=True, legend=None, legend_loc='best',
                        axes_labelsize=None, tick_labelsize=None,
                        elinewidth=0.75, ax=None, ax2=None, show=True,
-                       fname=None, **kwargs):
+                       fname=None, plot_dict=dict(), errorbar_dict=dict(),
+                       legend_dict=dict()):
         """
         Plot the admittance and/or correlation with another function.
 
@@ -3863,7 +3874,8 @@ class SHCoeffs(object):
         -----
         x.plot_admitcorr(hlm, [errors, style, lmax, grid, legend, legend_loc,
                                axes_labelsize, tick_labelsize, elinewidth,
-                               ax, ax2, show, fname, **kwargs])
+                               ax, ax2, show, fname, plot_dict, errorbar_dict,
+                               legend_dict])
 
         Parameters
         ----------
@@ -3907,8 +3919,12 @@ class SHCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        errorbar_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.errorbar().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -4002,9 +4018,9 @@ class SHCoeffs(object):
             if errors:
                 admitax.errorbar(ls, admit[:, 0], yerr=admit[:, 1],
                                  label=legend[0], elinewidth=elinewidth,
-                                 **kwargs)
+                                 **errorbar_dict)
             else:
-                admitax.plot(ls, admit, label=legend[0], **kwargs)
+                admitax.plot(ls, admit, label=legend[0], **plot_dict)
             if ax is None:
                 admitax.set(xlim=(0, lmax))
             else:
@@ -4016,7 +4032,7 @@ class SHCoeffs(object):
             admitax.tick_params(labelsize=tick_labelsize)
             if legend[0] is not None:
                 if style != 'combined':
-                    admitax.legend(loc=legend_loc[0])
+                    admitax.legend(loc=legend_loc[0], **legend_dict)
             if style != 'combined':
                 admitax.grid(grid, which='major')
 
@@ -4024,7 +4040,7 @@ class SHCoeffs(object):
             if style == 'combined':
                 # plot with next color
                 next(corrax._get_lines.prop_cycler)['color']
-            corrax.plot(ls, corr, label=legend[1], **kwargs)
+            corrax.plot(ls, corr, label=legend[1], **plot_dict)
             if ax is None:
                 corrax.set(xlim=(0, lmax))
                 corrax.set(ylim=(-1, 1))
@@ -4040,9 +4056,9 @@ class SHCoeffs(object):
                     lines, labels = admitax.get_legend_handles_labels()
                     lines2, labels2 = corrax.get_legend_handles_labels()
                     corrax.legend(lines + lines2, labels + labels2,
-                                  loc=legend_loc[1])
+                                  loc=legend_loc[1], **legend_dict)
                 else:
-                    corrax.legend(loc=legend_loc[1])
+                    corrax.legend(loc=legend_loc[1], **legend_dict)
             if style != 'combined':
                 corrax.grid(grid, which='major')
 
@@ -4060,7 +4076,8 @@ class SHCoeffs(object):
     def plot_admittance(self, hlm, errors=True, lmax=None, grid=True,
                         legend=None, legend_loc='best', axes_labelsize=None,
                         tick_labelsize=None, elinewidth=0.75, ax=None,
-                        show=True, fname=None, **kwargs):
+                        show=True, fname=None, plot_dict=dict(),
+                        errorbar_dict=dict(), legend_dict=dict()):
         """
         Plot the admittance with another function.
 
@@ -4068,7 +4085,8 @@ class SHCoeffs(object):
         -----
         x.plot_admittance(hlm, [errors, lmax, grid, legend, legend_loc,
                                 axes_labelsize, tick_labelsize, elinewidth,
-                                ax, show, fname, **kwargs])
+                                ax, show, fname, plot_dict, errorbar_dict,
+                                legend_dict])
 
         Parameters
         ----------
@@ -4098,8 +4116,12 @@ class SHCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        errorbar_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.errorbar().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -4121,12 +4143,15 @@ class SHCoeffs(object):
                                    axes_labelsize=axes_labelsize,
                                    tick_labelsize=tick_labelsize,
                                    elinewidth=elinewidth, show=True,
-                                   fname=fname, ax=ax, **kwargs)
+                                   fname=fname, ax=ax, plot_dict=plot_dict,
+                                   errorbar_dict=errorbar_dict,
+                                   legend_dict=legend_dict)
 
     def plot_correlation(self, hlm, lmax=None, grid=True, legend=None,
                          legend_loc='best', axes_labelsize=None,
                          tick_labelsize=None, elinewidth=0.75, ax=None,
-                         show=True, fname=None, **kwargs):
+                         show=True, fname=None, plot_dict=dict(),
+                         errorbar_dict=dict(), legend_dict=dict()):
         """
         Plot the correlation with another function.
 
@@ -4134,7 +4159,8 @@ class SHCoeffs(object):
         -----
         x.plot_correlation(hlm, [lmax, grid, legend, legend_loc,
                                  axes_labelsize, tick_labelsize, elinewidth,
-                                 ax, show, fname, **kwargs])
+                                 ax, show, fname, plot_dict, errorbar_dict,
+                                 legend_dict])
 
         Parameters
         ----------
@@ -4162,8 +4188,12 @@ class SHCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        errorbar_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.errorbar().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -4178,7 +4208,10 @@ class SHCoeffs(object):
                                    legend=legend, legend_loc=legend_loc,
                                    axes_labelsize=axes_labelsize,
                                    tick_labelsize=tick_labelsize,
-                                   show=True, fname=fname, ax=ax, **kwargs)
+                                   show=True, fname=fname, ax=ax,
+                                   plot_dict=plot_dict,
+                                   errorbar_dict=errorbar_dict,
+                                   legend_dict=legend_dict)
 
 
 # ================== REAL SPHERICAL HARMONICS ================
