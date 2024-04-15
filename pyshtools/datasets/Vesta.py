@@ -30,7 +30,7 @@ def DLR_SPG_shape(lmax=719):
     will be downloaded. If lmax is not specified, the lowest resolution model
     (719) will be returned. If a negative value for lmax is specified, the
     maximum resolution model will be returned. The coefficients are in units
-    of meters.
+    of meters. This model uses the IAU Claudia double-prime coordinate system.
 
     Parameters
     ----------
@@ -81,7 +81,8 @@ def DLR_SPG_shape(lmax=719):
 def VESTA20H(lmax=20):
     '''
     VESTA20H is a JPL 20 degree and order spherical harmonic model of the
-    gravitational potential of asteroid (4) Vesta.
+    gravitational potential of asteroid (4) Vesta. This model uses a coordinate
+    system that is similar to the IAU Claudia double-prime coordinate system.
 
     Parameters
     ----------
