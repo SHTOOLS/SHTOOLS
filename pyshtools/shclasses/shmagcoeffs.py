@@ -2996,17 +2996,17 @@ class SHMagRealCoeffs(SHMagCoeffs):
             self.errors = None
 
     def __repr__(self):
-        return ('name = {:s}\n'
-                'kind = {:s}\n'
-                'normalization = {:s}\n'
-                'csphase = {:d}\n'
-                'lmax = {:d}\n'
-                'r0 (m) = {:s}\n'
-                'error_kind = {:s}\n'
-                'header = {:s}\n'
-                'header2 = {:s}\n'
-                'units = {:s}\n'
-                'year = {:s}'
+        return (f'  name = {self.name!r}\n'
+                f'  kind = {self.kind!r}\n'
+                f'  normalization = {self.normalization!r}\n'
+                f'  csphase = {self.csphase}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  r0 (m) = {self.r0}\n'
+                f'  error_kind = {self.error_kind!r}\n'
+                f'  header = {self.header}\n'
+                f'  header2 = {self.header2}\n'
+                f'  units = {self.units!r}\n'
+                f'  year = {self.year}'
                 .format(repr(self.name), repr(self.kind),
                         repr(self.normalization), self.csphase, self.lmax,
                         repr(self.r0), repr(self.error_kind),

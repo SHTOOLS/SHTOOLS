@@ -85,20 +85,17 @@ class SHGradient(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('name = {:s}\n'
-               'grid = {:s}\n'
-               'nlat = {:d}\n'
-               'nlon = {:d}\n'
-               'n = {:d}\n'
-               'sampling = {:d}\n'
-               'extend = {}\n'
-               'lmax = {:d}\n'
-               'lmax_calc = {:d}\n'
-               'units = {:s}'
-               .format(repr(self.name), repr(self.grid), self.nlat, self.nlon,
-                       self.n, self.sampling, self.extend, self.lmax,
-                       self.lmax_calc, repr(self.units)))
-        return str
+        return (f'  name = {self.name!r}\n'
+                f'  grid = {self.grid!r}\n'
+                f'  nlat = {self.nlat}\n'
+                f'  nlon = {self.nlon}\n'
+                f'  n = {self.n}\n'
+                f'  sampling = {self.sampling}\n'
+                f'  extend = {self.extend}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  lmax_calc = {self.lmax_calc}\n'
+                f'  units = {self.units!r}'
+                )
 
     def plot_theta(self, projection=None, tick_interval=[30, 30],
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,

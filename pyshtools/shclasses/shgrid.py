@@ -887,19 +887,20 @@ class SHGrid(object):
         return SHGrid.from_array(abs(self.data), grid=self.grid)
 
     def __repr__(self):
-        str = ('name = {:s}\n'
-               'kind = {:s}\n'
-               'grid = {:s}\n'.format(repr(self.name), repr(self.kind),
-                                      repr(self.grid)))
+        str = (f'  name = {self.name!r}\n'
+               f'  kind = {self.kind!r}\n'
+               f'  grid = {self.grid!r}\n'
+               )
         if self.grid == 'DH':
-            str += ('n = {:d}\n'
-                    'sampling = {:d}\n'.format(self.n, self.sampling))
-        str += ('nlat = {:d}\n'
-                'nlon = {:d}\n'
-                'lmax = {:d}\n'
-                'units = {:s}\n'
-                'extend = {}'.format(self.nlat, self.nlon, self.lmax,
-                                     repr(self.units), self.extend))
+            str += (f'  n = {self.n}\n'
+                    f'  sampling = {self.sampling}\n'
+                    )
+        str += (f'  extend = {self.extend}\n'
+                f'  nlat = {self.nlat}\n'
+                f'  nlon = {self.nlon}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  units = {self.units!r}'
+                )
         return str
 
     # ---- Extract grid properties ----

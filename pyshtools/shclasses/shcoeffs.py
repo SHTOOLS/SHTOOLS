@@ -1542,19 +1542,16 @@ class SHCoeffs(object):
                                       'for these operands.')
 
     def __repr__(self):
-        return ('name = {:s}\n'
-                'kind = {:s}\n'
-                'normalization = {:s}\n'
-                'csphase = {:d}\n'
-                'lmax = {:d}\n'
-                'error_kind = {:s}\n'
-                'header = {:s}\n'
-                'header2 = {:s}\n'
-                'units = {:s}'
-                .format(
-                    repr(self.name), repr(self.kind), repr(self.normalization),
-                    self.csphase, self.lmax, repr(self.error_kind),
-                    repr(self.header), repr(self.header2), repr(self.units)))
+        return (f'  name = {self.name!r}\n'
+                f'  kind = {self.kind!r}\n'
+                f'  normalization = {self.normalization!r}\n'
+                f'  csphase = {self.csphase}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  error_kind = {self.error_kind!r}\n'
+                f'  header = {self.header}\n'
+                f'  header2 = {self.header2}\n'
+                f'  units = {self.units!r}'
+                )
 
     # ---- Extract data ----
     def degrees(self):

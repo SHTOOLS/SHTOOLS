@@ -3871,23 +3871,19 @@ class SHGravRealCoeffs(SHGravCoeffs):
             self.errors = None
 
     def __repr__(self):
-        return ('name = {:s}\n'
-                'kind = {:s}\n'
-                'normalization = {:s}\n'
-                'csphase = {:d}\n'
-                'lmax = {:d}\n'
-                'GM (m3 / s2) = {:s}\n'
-                'r0 (m) = {:s}\n'
-                'Omega (rad / s) = {:s}\n'
-                'error_kind = {:s}\n'
-                'header = {:s}\n'
-                'header2 = {:s}\n'
-                'epoch = {:s}'
-                .format(repr(self.name), repr(self.kind),
-                        repr(self.normalization), self.csphase, self.lmax,
-                        repr(self.gm), repr(self.r0), repr(self.omega),
-                        repr(self.error_kind), repr(self.header),
-                        repr(self.header2), repr(self.epoch)))
+        return (f'  name = {self.name!r}\n'
+                f'  kind = {self.kind!r}\n'
+                f'  normalization = {self.normalization!r}\n'
+                f'  csphase = {self.csphase}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  GM (m3 / s2) = {self.gm}\n'
+                f'  r0 (m) = {self.r0}\n'
+                f'  omega (rad / s) = {self.omega}\n'
+                f'  error_kind = {self.error_kind!r}\n'
+                f'  header = {self.header}\n'
+                f'  header2 = {self.header2}\n'
+                f'  epoch = {self.epoch}'
+                )
 
     def _rotate(self, angles, dj_matrix, gm=None, r0=None, omega=None,
                 backend=None, nthreads=None, name=None):

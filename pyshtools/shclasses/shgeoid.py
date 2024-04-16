@@ -99,31 +99,25 @@ class SHGeoid(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('name = {:s}\n'
-               'grid = {:s}\n'
-               'sampling = {:d}\n'
-               'nlat = {:d}\n'
-               'nlon = {:d}\n'
-               'n = {:d}\n'
-               'sampling = {:d}\n'
-               'extend = {}\n'
-               'lmax = {:d}\n'
-               'lmax_calc = {:d}\n'
-               'gm (m3 / s2) = {:e}\n'
-               'reference potential (m2 /s2) = {:e}\n'
-               'a (m)= {:e}\n'
-               'f = {:e}\n'
-               'omega (rad / s) = {:s}\n'
-               'radius of Taylor expansion (m) = {:e}\n'
-               'order of expansion = {:d}\n'
-               'units = {:s}\n'
-               'epoch = {:s}'
-               .format(repr(self.name), repr(self.grid), self.sampling,
-                       self.nlat, self.nlon, self.n, self.sampling,
-                       self.extend, self.lmax, self.lmax_calc, self.gm,
-                       self.potref, self.a, self.f, repr(self.omega), self.r,
-                       self.order, repr(self.units), repr(self.epoch)))
-        return str
+        return (f'  name = {self.name!r}\n'
+                f'  grid = {self.grid!r}\n'
+                f'  sampling = {self.sampling}\n'
+                f'  nlat = {self.nlat}\n'
+                f'  nlon = {self.nlon}\n'
+                f'  n = {self.n}\n'
+                f'  extend = {self.extend}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  lmax_calc = {self.lmax_calc}\n'
+                f'  gm (m3 / s2) = {self.gm}\n'
+                f'  reference potential (m2 /s2) = {self.potref}\n'
+                f'  a (m)= {self.a}\n'
+                f'  f = {self.f}\n'
+                f'  omega (rad / s) = {self.omega}\n'
+                f'  radius of Taylor expansion (m) = {self.r}\n'
+                f'  order of expansion = {self.order}\n'
+                f'  units = {self.units!r}\n'
+                f'  epoch = {self.epoch}'
+                )
 
     def plot(self, projection=None, tick_interval=[30, 30],
              minor_tick_interval=[None, None], xlabel=None, ylabel=None,
