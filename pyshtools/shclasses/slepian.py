@@ -1320,42 +1320,42 @@ class SlepianCap(Slepian):
         print(repr(self))
 
     def __repr__(self):
-        str = 'kind = {:s}\n'.format(repr(self.kind))
+        str = (f'  name = {self.name!r}\n'
+               f'  kind = {self.kind!r}\n'
+               )
 
         if self.theta_degrees:
-            str += 'theta = {:f} degrees\n'.format(self.theta)
+            str += f'  theta (degrees) = {self.theta}\n'
         else:
-            str += 'theta = {:f} radians'.format(self.theta)
+            str += f'  theta (radians) = {self.theta}\n'
 
-        str += ('name = {:s}\n'
-                'lmax = {:d}\n'
-                'nmax = {:d}\n'
-                'nrot = {:s}\n'
-                'shannon = {:f}\n'
-                'area (radians) = {:e}\n'
-                .format(repr(self.name), self.lmax, self.nmax, repr(self.nrot),
-                        self.shannon, self.area))
+        str += (f'  lmax = {self.lmax}\n'
+                f'  nmax = {self.nmax}\n'
+                f'  nrot = {self.nrot}\n'
+                f'  shannon = {self.shannon}\n'
+                f'  area (radians) = {self.area}\n'
+                )
 
         if self.clat is not None:
             if self.coord_degrees:
-                str += 'clat = {:f} degrees\n'.format(self.clat)
+                str += f'  clat (degrees) = {self.clat}\n'
             else:
-                str += 'clat = {:f} radians\n'.format(self.clat)
+                str += f'  clat (radians) = {self.clat}\n'
         else:
-            str += 'clat is not specified\n'
+            str += '  clat is not specified\n'
 
         if self.clon is not None:
             if self.coord_degrees:
-                str += 'clon = {:f} degrees\n'.format(self.clon)
+                str += f'  clon (degrees) = {self.clon}\n'
             else:
-                str += 'clon = {:f} radians\n'.format(self.clon)
+                str += f'  clon (radians) = {self.clon}\n'
         else:
-            str += 'clon is not specified\n'
+            str += '  clon is not specified\n'
 
         if self.dj_matrix is not None:
-            str += 'dj_matrix is stored\n'
+            str += '  dj_matrix is stored'
         else:
-            str += 'dj_matrix is not stored\n'
+            str += '  dj_matrix is not stored'
 
         return str
 
@@ -1437,14 +1437,10 @@ class SlepianMask(Slepian):
         print(repr(self))
 
     def __repr__(self):
-        str = ('name = {:s}\n'
-               'kind = {:s}\n'
-               'lmax = {:d}\n'
-               'nmax = {:d}\n'
-               'shannon = {:f}\n'
-               'area (radians) = {:e}\n'.format(repr(self.name),
-                                                repr(self.kind), self.lmax,
-                                                self.nmax, self.shannon,
-                                                self.area))
-
-        return str
+        return (f'  name = {self.name!r}\n'
+                f'  kind = {self.kind!r}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  nmax = {self.nmax}\n'
+                f'  shannon = {self.shannon}\n'
+                f'  area (radians) = {self.area}'
+                )

@@ -1724,48 +1724,47 @@ class SHWindowCap(SHWindow):
         print(repr(self))
 
     def __repr__(self):
-        str = ('name = {:s}\n'
-               'kind = {:s}\n'
-               .format(repr(self.name), repr(self.kind)))
+        str = (f'  name = {self.name!r}\n'
+               f'  kind = {self.kind!r}\n'
+               )
 
         if self.theta_degrees:
-            str += 'theta = {:f} degrees\n'.format(self.theta)
+            str += f'  theta (degrees) = {self.theta}\n'
         else:
-            str += 'theta = {:f} radians'.format(self.theta)
+            str += f'  theta (radians) = {self.theta}\n'
 
-        str += ('lwin = {:d}\n'
-                'nwin = {:d}\n'
-                'nwinrot = {:s}\n'
-                'shannon = {:f}\n'
-                'area (radians) = {:e}\n'
-                .format(self.lwin, self.nwin, repr(self.nwinrot), self.shannon,
-                        self.area))
+        str += (f'  lwin = {self.lwin}\n'
+                f'  nwin = {self.nwin}\n'
+                f'  nwinrot = {self.nwinrot}\n'
+                f'  shannon = {self.shannon}\n'
+                f'  area (radians) = {self.area}\n'
+                )
 
         if self.clat is not None:
             if self.coord_degrees:
-                str += 'clat = {:f} degrees\n'.format(self.clat)
+                str += f'  clat = {self.clat} degrees\n'
             else:
-                str += 'clat = {:f} radians\n'.format(self.clat)
+                str += f'  clat = {self.clat} radians\n'
         else:
-            str += 'clat is not specified\n'
+            str += '  clat is not specified\n'
 
         if self.clon is not None:
             if self.coord_degrees:
-                str += 'clon = {:f} degrees\n'.format(self.clon)
+                str += f'  clon = {self.clon} degrees\n'
             else:
-                str += 'clon = {:f} radians\n'.format(self.clon)
+                str += f'  clon = {self.clon} radians\n'
         else:
-            str += 'clon is not specified\n'
+            str += '  clon is not specified\n'
 
         if self.dj_matrix is not None:
-            str += 'dj_matrix is stored\n'
+            str += '  dj_matrix is stored\n'
         else:
-            str += 'dj_matrix is not stored\n'
+            str += '  dj_matrix is not stored\n'
 
         if self.weights is None:
-            str += 'Taper weights are not set'
+            str += '  taper weights are not set'
         else:
-            str += 'Taper weights are set'
+            str += '  taper weights are set'
 
         return str
 
@@ -1962,19 +1961,17 @@ class SHWindowMask(SHWindow):
         print(repr(self))
 
     def __repr__(self):
-        str = ('name = {:s}\n'
-               'kind = {:s}\n'
-               'lwin = {:d}\n'
-               'nwin = {:d}\n'
-               'shannon = {:f}\n'
-               'area (radians) = {:e}\n'.format(repr(self.name),
-                                                repr(self.kind), self.lwin,
-                                                self.nwin, self.shannon,
-                                                self.area))
+        str = (f'  name = {self.name!r}\n'
+               f'  kind = {self.kind!r}\n'
+               f'  lwin = {self.lwin}\n'
+               f'  nwin = {self.nwin}\n'
+               f'  shannon = {self.shannon}\n'
+               f'  area (radians) = {self.area}\n'
+               )
 
         if self.weights is None:
-            str += 'Taper weights are not set'
+            str += '  taper weights are not set'
         else:
-            str += 'Taper weights are set'
+            str += '  taper weights are set'
 
         return str

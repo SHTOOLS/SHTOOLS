@@ -78,13 +78,11 @@ class SlepianCoeffs(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('name = {:s}\n'
-               'nmax = {:d}\n'
-               'lmax = {:d}\n'
-               'name = {:s}\n'
-               .format(repr(self.name), self.nmax, self.galpha.lmax,
-                       repr(self.name)))
-        str += '\nSlepian functions:\n' + self.galpha.__repr__()
+        str = (f'  name = {self.name!r}\n'
+               f'  nmax = {self.nmax}\n'
+               f'  lmax = {self.galpha.lmax}\n'
+               )
+        str += '\n  Slepian functions:\n' + self.galpha.__repr__()
         return str
 
     def expand(self, nmax=None, grid='DH2', zeros=None, extend=True,

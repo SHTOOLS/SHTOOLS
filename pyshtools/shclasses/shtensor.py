@@ -3392,25 +3392,21 @@ class SHGravTensor(Tensor):
         self._eighh_label = r'$\lambda_{hh}$, ' + self.units
 
     def __repr__(self):
-        str = ('name = {:s}\n'
-               'grid = {:s}\n'
-               'nlat = {:d}\n'
-               'nlon = {:d}\n'
-               'n = {:d}\n'
-               'sampling = {:d}\n'
-               'extend = {}\n'
-               'lmax = {:d}\n'
-               'lmax_calc = {:d}\n'
-               'gm (m3 / s2) = {:e}\n'
-               'a (m)= {:e}\n'
-               'f = {:e}\n'
-               'units = {:s}\n'
-               'epoch = {:s}'
-               .format(repr(self.name), repr(self.grid), self.nlat, self.nlon,
-                       self.n, self.sampling, self.extend, self.lmax,
-                       self.lmax_calc, self.gm, self.a, self.f,
-                       repr(self.units), repr(self.epoch)))
-        return str
+        return (f'  name = {self.name!r}\n'
+                f'  grid = {self.grid!r}\n'
+                f'  nlat = {self.nlat}\n'
+                f'  nlon = {self.nlon}\n'
+                f'  n = {self.n}\n'
+                f'  sampling = {self.sampling}\n'
+                f'  extend = {self.extend}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  lmax_calc = {self.lmax_calc}\n'
+                f'  gm (m3 / s2) = {self.gm}\n'
+                f'  a (m) = {self.a}\n'
+                f'  f = {self.f}\n'
+                f'  units = {self.units!r}\n'
+                f'  epoch = {self.epoch}'
+                )
 
 
 class SHMagTensor(Tensor):
@@ -3559,21 +3555,17 @@ class SHMagTensor(Tensor):
         self._eighh_label = r'$\lambda_{hh}$, ' + self._units_formatted
 
     def __repr__(self):
-        str = ('name = {:s}\n'
-               'grid = {:s}\n'
-               'nlat = {:d}\n'
-               'nlon = {:d}\n'
-               'n = {:d}\n'
-               'sampling = {:d}\n'
-               'extend = {}\n'
-               'lmax = {:d}\n'
-               'lmax_calc = {:d}\n'
-               'a (m)= {:e}\n'
-               'f = {:e}\n'
-               'units = {:s}\n'
-               'year = {:s}'
-               .format(repr(self.name), repr(self.grid), self.nlat, self.nlon,
-                       self.n, self.sampling, self.extend, self.lmax,
-                       self.lmax_calc, self.a, self.f, repr(self.units),
-                       repr(self.year)))
-        return str
+        return (f'  name = {self.name!r}\n'
+                f'  grid = {self.grid!r}\n'
+                f'  nlat = {self.nlat}\n'
+                f'  nlon = {self.nlon}\n'
+                f'  n = {self.n}\n'
+                f'  sampling = {self.sampling}\n'
+                f'  extend = {self.extend}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  lmax_calc = {self.lmax_calc}\n'
+                f'  a (m) = {self.a}\n'
+                f'  f = {self.f}\n'
+                f'  units = {self.units!r}\n'
+                f'  year = {self.year}'
+                )

@@ -120,30 +120,24 @@ class SHGravGrid(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('name = {:s}\n'
-               'grid = {:s}\n'
-               'nlat = {:d}\n'
-               'nlon = {:d}\n'
-               'n = {:d}\n'
-               'sampling = {:d}\n'
-               'extend = {}\n'
-               'lmax = {:d}\n'
-               'lmax_calc = {:d}\n'
-               'gm (m3 / s2) = {:e}\n'
-               'a (m)= {:e}\n'
-               'f = {:e}\n'
-               'omega (rad / s) = {:s}\n'
-               'normal gravity is removed = {:s}\n'
-               'units (gravity) = {:s}\n'
-               'units (potential) = {:s}\n'
-               'epoch = {:s}'
-               .format(repr(self.name), repr(self.grid), self.nlat, self.nlon,
-                       self.n, self.sampling, self.extend, self.lmax,
-                       self.lmax_calc, self.gm, self.a, self.f,
-                       repr(self.omega), repr(self.normal_gravity),
-                       repr(self.units), repr(self.pot_units),
-                       repr(self.epoch)))
-        return str
+        return (f'  name = {self.name!r}\n'
+                f'  grid = {self.grid!r}\n'
+                f'  n = {self.n}\n'
+                f'  nlat = {self.nlat}\n'
+                f'  nlon = {self.nlon}\n'
+                f'  sampling = {self.sampling}\n'
+                f'  extend = {self.extend}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  lmax_calc = {self.lmax_calc}\n'
+                f'  gm (m3 / s2) = {self.gm}\n'
+                f'  a (m)= {self.a}\n'
+                f'  f = {self.f}\n'
+                f'  omega (rad / s) = {self.omega}\n'
+                f'  normal gravity is removed = {self.normal_gravity}\n'
+                f'  units (gravity) = {self.units!r}\n'
+                f'  units (potential) = {self.pot_units!r}\n'
+                f'  epoch = {self.epoch}'
+                )
 
     def plot_rad(self, projection=None, tick_interval=[30, 30],
                  minor_tick_interval=[None, None], xlabel=None, ylabel=None,
