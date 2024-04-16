@@ -298,9 +298,9 @@ class SHGrid(object):
             sin2 = _np.sin(_np.deg2rad(temp.lons() - alpha))**2
             for ilat, lat in enumerate(temp.lats()):
                 temp.data[ilat, :] = 1. / _np.sqrt(
-                    _np.cos(_np.deg2rad(lat))**2 * cos2 / a**2 +
-                    _np.cos(_np.deg2rad(lat))**2 * sin2 / b**2 +
-                    _np.sin(_np.deg2rad(lat))**2 / c**2
+                    _np.cos(_np.deg2rad(lat))**2
+                    * (cos2 / a**2 + sin2 / b**2)
+                    + _np.sin(_np.deg2rad(lat))**2 / c**2
                     )
 
         return temp
