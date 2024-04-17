@@ -115,6 +115,11 @@ The following is the list of implemented datasets. Additional older or deprecate
 | DLR_SPG_shape | 5759 degree and order spherical harmonic shape model of asteroid (4) Vesta based on the DLR stereo-photogrammetric DTM (Wieczorek 2024). |
 | VESTA20H | JPL 20 degree and order spherical harmonic model of the gravitational potential of asteroid (4) Vesta (Konopliv et al. 2014). |
 
+### (16) Psyche
+
+| Dataset | Description |
+| ---------- | ----------- |
+| Shepard2021_shape | 29 degree and order spherical harmonic model of the shape of asteroid (16) Vesta based on the Shepard et al. (2021) shape model (Wieczorek 2024). |
 
 ### (433) Eros
 
