@@ -69,7 +69,7 @@ volume = _Constant(
     abbrev='volume_pluto',
     name='Volume of Pluto',
     value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
-    unit='m',
+    unit='m3',
     uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
     volume_equivalent_radius.uncertainty,
     reference='Derived from volume_equivalent_radius_pluto')
