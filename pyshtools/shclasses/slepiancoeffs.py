@@ -78,13 +78,11 @@ class SlepianCoeffs(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('name = {:s}\n'
-               'nmax = {:d}\n'
-               'lmax = {:d}\n'
-               'name = {:s}\n'
-               .format(repr(self.name), self.nmax, self.galpha.lmax,
-                       repr(self.name)))
-        str += '\nSlepian functions:\n' + self.galpha.__repr__()
+        str = (f'  name = {self.name!r}\n'
+               f'  nmax = {self.nmax}\n'
+               f'  lmax = {self.galpha.lmax}\n'
+               )
+        str += '\n  Slepian functions:\n' + self.galpha.__repr__()
         return str
 
     def expand(self, nmax=None, grid='DH2', zeros=None, extend=True,
@@ -235,7 +233,8 @@ class SlepianCoeffs(object):
                       base=10., lmax=None, xscale='lin', yscale='log',
                       grid=True, legend=None, legend_loc='best',
                       axes_labelsize=None, tick_labelsize=None, show=True,
-                      ax=None, fname=None, **kwargs):
+                      ax=None, fname=None, plot_dict=dict(),
+                      legend_dict=dict()):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
@@ -243,7 +242,8 @@ class SlepianCoeffs(object):
         -----
         x.plot_spectrum([nmax, convention, unit, base, lmax, xscale, yscale,
                          grid, legend, legend_loc, axes_labelsize,
-                         tick_labelsize, legend, show, ax, fname, **kwargs])
+                         tick_labelsize, legend, show, ax, fname, plot_dict,
+                         legend_dict])
 
         Parameters
         ----------
@@ -287,8 +287,10 @@ class SlepianCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -322,7 +324,9 @@ class SlepianCoeffs(object):
                                            tick_labelsize=tick_labelsize,
                                            legend=legend,
                                            legend_loc=legend_loc, show=show,
-                                           ax=ax, fname=fname, **kwargs)
+                                           ax=ax, fname=fname,
+                                           plot_dict=plot_dict,
+                                           legend_dict=legend_dict)
             return fig, axes
         else:
             temp.plot_spectrum(convention=convention, unit=unit,
@@ -331,4 +335,5 @@ class SlepianCoeffs(object):
                                axes_labelsize=axes_labelsize,
                                tick_labelsize=tick_labelsize,
                                legend=legend, legend_loc=legend_loc, show=show,
-                               ax=ax, fname=fname, **kwargs)
+                               ax=ax, fname=fname, plot_dict=plot_dict,
+                               legend_dict=legend_dict)

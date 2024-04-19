@@ -348,7 +348,7 @@ class SHMagCoeffs(object):
                   normalization='schmidt', skip=0, header=True, header2=False,
                   errors=None, error_kind=None, csphase=1, r0_index=0,
                   header_units='m', file_units='nT', name=None, units='nT',
-                  year=None, encoding=None, **kwargs):
+                  year=None, encoding=None, load_dict=dict()):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -367,7 +367,7 @@ class SHMagCoeffs(object):
                                   units, year])
         x = SHMagCoeffs.from_file(filename, format='npy', r0, [lmax,
                                   normalization, csphase, file_units, name,
-                                  units, year, **kwargs])
+                                  units, year, load_dict])
 
         Returns
         -------
@@ -436,8 +436,8 @@ class SHMagCoeffs(object):
         encoding : str, optional, default = None
             Encoding of the input file when format is 'shtools', 'dov' or
             'igrf'. The default is to use the system default.
-        **kwargs : keyword argument list, optional for format = 'npy'
-            Keyword arguments of numpy.load() when format is 'npy'.
+        load_dict : dict, optional, default = dict()
+            Optional arguments passed to numpy.load() when format is 'npy'.
 
         Notes
         -----
@@ -581,7 +581,7 @@ class SHMagCoeffs(object):
         elif format.lower() == 'npy':
             if r0 is None:
                 raise ValueError('For binary npy files, r0 must be specified.')
-            coeffs = _np.load(fname, **kwargs)
+            coeffs = _np.load(fname, **load_dict)
             lmaxout = coeffs.shape[1] - 1
             if lmax is not None:
                 if lmax < lmaxout:
@@ -974,7 +974,7 @@ class SHMagCoeffs(object):
 
     # ---- IO routines ----
     def to_file(self, filename, format='shtools', header=None, errors=True,
-                lmax=None, encoding=None, **kwargs):
+                lmax=None, encoding=None, save_dict=dict()):
         """
         Save spherical harmonic coefficients to a file.
 
@@ -983,7 +983,7 @@ class SHMagCoeffs(object):
         x.to_file(filename, [format='shtools', header, errors, encoding])
         x.to_file(filename, format='dov', [header, errors, encoding])
         x.to_file(filename, format='bshc', [lmax])
-        x.to_file(filename, format='npy', [**kwargs])
+        x.to_file(filename, format='npy', [save_dict])
 
         Parameters
         ----------
@@ -1003,8 +1003,8 @@ class SHMagCoeffs(object):
         encoding : str, optional, default = None
             Encoding of the output file when format is 'shtools' or 'dov'. The
             default is to use the system default.
-        **kwargs : keyword argument list, optional for format = 'npy'
-            Keyword arguments of numpy.save().
+        save_dict : dict, optional, default = dict()
+            Optional arguments passed to numpy.save() when format is 'npy'.
 
         Notes
         -----
@@ -1087,7 +1087,7 @@ class SHMagCoeffs(object):
             _write_bshc(filebase, self.coeffs, lmax=lmax)
 
         elif format == 'npy':
-            _np.save(filename, self.coeffs, **kwargs)
+            _np.save(filename, self.coeffs, **save_dict)
         else:
             raise NotImplementedError(
                 'format={:s} not implemented.'.format(repr(format)))
@@ -2175,7 +2175,7 @@ class SHMagCoeffs(object):
                       legend_title=None, errors=True, axes_labelsize=None,
                       tick_labelsize=None, legend_fontsize=None,
                       legend_titlesize=None, ax=None, show=True, fname=None,
-                      **kwargs):
+                      plot_dict=dict(), legend_dict=dict()):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
@@ -2184,7 +2184,8 @@ class SHMagCoeffs(object):
         x.plot_spectrum([function, unit, base, lmax, xscale, yscale, grid,
                          legend, legend_loc, legend_title, errors,
                          axes_labelsize, tick_labelsize, legend_fontsize,
-                         legend_titlesize, ax, show, fname, **kwargs])
+                         legend_titlesize, ax, show, fname, plot_dict,
+                         legend_dict])
 
         Parameters
         ----------
@@ -2235,8 +2236,10 @@ class SHMagCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -2333,12 +2336,12 @@ class SHMagCoeffs(object):
 
         if self.errors is not None and errors:
             axes.plot(ls[1:lmax + 1], spectrum[1:lmax + 1], label=legend,
-                      **kwargs)
+                      **plot_dict)
             axes.plot(ls[1:lmax + 1], error_spectrum[1:lmax + 1],
-                      label=legend_error, **kwargs)
+                      label=legend_error, **plot_dict)
         else:
             axes.plot(ls[1:lmax + 1], spectrum[1: lmax + 1], label=legend,
-                      **kwargs)
+                      **plot_dict)
 
         if xscale == 'lin':
             if ax is None:
@@ -2350,7 +2353,8 @@ class SHMagCoeffs(object):
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
         axes.legend(loc=legend_loc, fontsize=legend_fontsize,
-                    title=legend_title, title_fontsize=legend_titlesize)
+                    title=legend_title, title_fontsize=legend_titlesize,
+                    **legend_dict)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2849,7 +2853,7 @@ class SHMagCoeffs(object):
     def plot_correlation(self, hlm, lmax=None, grid=True, legend=None,
                          legend_loc='best', axes_labelsize=None,
                          tick_labelsize=None, ax=None, show=True, fname=None,
-                         **kwargs):
+                         plot_dict=dict(), legend_dict=dict()):
         """
         Plot the correlation with another function.
 
@@ -2857,7 +2861,7 @@ class SHMagCoeffs(object):
         -----
         x.plot_correlation(hlm, [lmax, grid, legend, legend_loc,
                                  axes_labelsize, tick_labelsize,
-                                 ax, show, fname, **kwargs])
+                                 ax, show, fname, plot_dict, legend_dict])
 
         Parameters
         ----------
@@ -2883,8 +2887,10 @@ class SHMagCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -2920,7 +2926,7 @@ class SHMagCoeffs(object):
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
 
-        axes.plot(ls, corr, label=legend, **kwargs)
+        axes.plot(ls, corr, label=legend, **plot_dict)
         if ax is None:
             axes.set(xlim=(0, lmax))
             axes.set(ylim=(-1, 1))
@@ -2933,7 +2939,7 @@ class SHMagCoeffs(object):
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
         if legend is not None:
-            axes.legend(loc=legend_loc)
+            axes.legend(loc=legend_loc, **legend_dict)
         axes.grid(grid, which='major')
 
         if ax is None:
@@ -2990,17 +2996,17 @@ class SHMagRealCoeffs(SHMagCoeffs):
             self.errors = None
 
     def __repr__(self):
-        return ('name = {:s}\n'
-                'kind = {:s}\n'
-                'normalization = {:s}\n'
-                'csphase = {:d}\n'
-                'lmax = {:d}\n'
-                'r0 (m) = {:s}\n'
-                'error_kind = {:s}\n'
-                'header = {:s}\n'
-                'header2 = {:s}\n'
-                'units = {:s}\n'
-                'year = {:s}'
+        return (f'  name = {self.name!r}\n'
+                f'  kind = {self.kind!r}\n'
+                f'  normalization = {self.normalization!r}\n'
+                f'  csphase = {self.csphase}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  r0 (m) = {self.r0}\n'
+                f'  error_kind = {self.error_kind!r}\n'
+                f'  header = {self.header}\n'
+                f'  header2 = {self.header2}\n'
+                f'  units = {self.units!r}\n'
+                f'  year = {self.year}'
                 .format(repr(self.name), repr(self.kind),
                         repr(self.normalization), self.csphase, self.lmax,
                         repr(self.r0), repr(self.error_kind),
