@@ -1,5 +1,5 @@
 """
-    Class for the height of the geoid.
+Class for the height of the geoid.
 """
 import numpy as _np
 import copy as _copy

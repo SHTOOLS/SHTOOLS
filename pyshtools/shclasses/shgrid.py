@@ -1,5 +1,7 @@
 """
-    Spherical Harmonic Grid classes
+Spherical Harmonic Grid classes
+
+    SHGrid: DHRealGrid, DHComplexGrid, GLQRealGrid, GLQComplexGrid
 """
 import numpy as _np
 import matplotlib as _mpl
@@ -1518,7 +1520,8 @@ class SHGrid(object):
                 fig.savefig(fname)
             return fig, axes
 
-    def plotgmt(self, fig=None, projection='mollweide', region='g',
+    def plotgmt(self, fig=None, projection='mollweide', a=None, b=None, c=None,
+                alpha=0., ellipsoid=None, region='g',
                 rectangle=False, width=None, unit='i', central_latitude=0,
                 central_longitude=0, grid=[30, 30], tick_interval=[30, 30],
                 minor_tick_interval=[None, None], ticks='WSen', title=None,
@@ -1531,17 +1534,19 @@ class SHGrid(object):
                 cb_minor_tick_interval=None, cb_offset=None, cb_power=True,
                 shading=None, shading_azimuth=-45., shading_amplitude=1.0,
                 titlesize=None, axes_labelsize=None, tick_labelsize=None,
-                horizon=60, offset=[None, None], fname=None):
+                horizon=60, grdimage_dict=dict(), offset=[None, None],
+                fname=None):
         """
         Plot projected data using the Generic Mapping Tools (pygmt). Use
         fig.show() to display the figure.
 
         Usage
         -----
-        fig = x.plotgmt([fig, projection, region, rectangle, width, unit,
-                         central_latitude, central_longitude, grid,
-                         tick_interval, minor_tick_interval, ticks, title,
-                         title_offset cmap, cmap_limits, cmap_rlimits,
+        fig = x.plotgmt([fig, projection, a, b, c, alpha, ellipsoid, region,
+                         rectangle, width, unit, central_latitude,
+                         central_longitude, grid, tick_interval,
+                         minor_tick_interval, ticks, title,
+                         title_offset, cmap, cmap_limits, cmap_rlimits,
                          cmap_limits_complex, cmap_rlimits_complex,
                          cmap_reverse, cmap_continuous,
                          cmap_background_foreground, cmap_scale,
@@ -1549,7 +1554,7 @@ class SHGrid(object):
                          cb_tick_interval, cb_minor_tick_interval, cb_offset,
                          cb_power, shading, shading_azimuth, shading_amplitude,
                          titlesize, axes_labelsize, tick_labelsize, horizon,
-                         offset, fname])
+                         grdimage_dict, offset, fname])
 
         Returns
         -------
@@ -1562,6 +1567,17 @@ class SHGrid(object):
         projection : str, optional, default = 'mollweide'
             The name of a projection (see Notes). Only the first three
             characters are necessary to identify the projection.
+        a, b, c : float, optional, default = None
+            Plot spherical heights with respect to an ellipsoid with principal
+            semiaxis lengths a, b, and c.
+        alpha : float, optional, default = 0
+            Rotate the a and b principal axes about the z axis by the angle
+            alpha in degrees. The longitude of the x and y axes will be alpha
+            and 90 + alpha, respectively.
+        ellipsoid : boule class instance, optional, default = None
+            A boule Sphere, Ellipsoid, or TriaxialEllipsoid class instance that
+            contains the lengths of the principal axes a, b, and c, and the
+            rotation angle alpha.
         region : str or list, optional, default = 'g'
             The map region, which can be the string 'g' for the entire sphere,
             a bounded region specified by the list [west, east, south, north],
@@ -1679,6 +1695,8 @@ class SHGrid(object):
         horizon : float, optional, default = 60
             The horizon (number of degrees from the center to the edge) used
             with the Gnomonic projection.
+        grdimage_dict : dict, optional, default = dict()
+            Optional arguments passed to pygmt.Figure.grdimage().
         offset : list, optional, default = [None, None]
             Offset of the plot in the x and y directions from the current
             origin.
@@ -1773,7 +1791,8 @@ class SHGrid(object):
                                  .get_size_in_points()
 
         figure = self._plot_pygmt(
-            fig=fig, projection=projection, region=region, rectangle=rectangle,
+            fig=fig, projection=projection, a=a, b=b, c=c, alpha=alpha,
+            ellipsoid=ellipsoid, region=region, rectangle=rectangle,
             width=width, unit=unit, central_latitude=central_latitude,
             central_longitude=central_longitude, grid=grid,
             tick_interval=tick_interval,
@@ -1790,7 +1809,7 @@ class SHGrid(object):
             shading=shading, shading_azimuth=shading_azimuth,
             shading_amplitude=shading_amplitude, titlesize=titlesize,
             axes_labelsize=axes_labelsize, tick_labelsize=tick_labelsize,
-            horizon=horizon, offset=offset)
+            horizon=horizon, grdimage_dict=grdimage_dict, offset=offset)
 
         if fname is not None:
             figure.savefig(fname)
@@ -2389,7 +2408,8 @@ class DHRealGrid(SHGrid):
         if ax is None:
             return fig, axes
 
-    def _plot_pygmt(self, fig=None, projection=None, region=None,
+    def _plot_pygmt(self, fig=None, projection=None, a=None, b=None, c=None,
+                    alpha=None, ellipsoid=None, region=None,
                     rectangle=None, width=None, unit=None,
                     central_latitude=None, central_longitude=None, grid=None,
                     tick_interval=None, minor_tick_interval=None, ticks=None,
@@ -2402,10 +2422,22 @@ class DHRealGrid(SHGrid):
                     cb_minor_tick_interval=None, cb_power=None, shading=None,
                     shading_azimuth=None, shading_amplitude=None,
                     titlesize=None, axes_labelsize=None, tick_labelsize=None,
-                    horizon=None, offset=[None, None], cb_offset=None):
+                    horizon=None, grdimage_dict=None, offset=[None, None],
+                    cb_offset=None):
         """
         Plot projected data using pygmt.
         """
+        if (a is not None or c is not None or ellipsoid is not None):
+            temp = SHGrid.from_ellipsoid(lmax=self.lmax, a=a, b=b, c=c,
+                                         alpha=alpha, ellipsoid=ellipsoid,
+                                         grid=self.grid, kind=self.kind,
+                                         sampling=self.sampling,
+                                         extend=self.extend)
+            data = self - temp
+
+        else:
+            data = self
+
         center = [central_longitude, central_latitude]
 
         if projection.lower()[0:3] == 'mollweide'[0:3]:
@@ -2540,10 +2572,10 @@ class DHRealGrid(SHGrid):
             figure = fig
 
         if cmap_limits is None and cmap_rlimits is None:
-            cmap_limits = [self.min(), self.max()]
+            cmap_limits = [data.min(), data.max()]
         elif cmap_rlimits is not None:
-            cmap_limits = [self.max() * cmap_rlimits[0],
-                           self.max() * cmap_rlimits[1]]
+            cmap_limits = [data.max() * cmap_rlimits[0],
+                           data.max() * cmap_rlimits[1]]
             if len(cmap_rlimits) == 3:
                 cmap_limits.append(cmap_rlimits[2])
 
@@ -2589,9 +2621,9 @@ class DHRealGrid(SHGrid):
                            continuous=cmap_continuous, background=background,
                            log=log)
             figure.shift_origin(xshift=xshift, yshift=yshift)
-            figure.grdimage(self.to_xarray(), region=region,
+            figure.grdimage(data.to_xarray(), region=region,
                             projection=proj_str, frame=frame,
-                            shading=shading_str)
+                            shading=shading_str, **grdimage_dict)
             if colorbar is not None:
                 if shading is not None:
                     figure.colorbar(position=position, frame=cb_str,
@@ -2770,7 +2802,8 @@ class DHComplexGrid(SHGrid):
         if ax is None:
             return fig, axes
 
-    def _plot_pygmt(self, fig=None, projection=None, region=None,
+    def _plot_pygmt(self, fig=None, projection=None, a=None, b=None, c=None,
+                    alpha=None, ellipsoid=None, region=None,
                     rectangle=None, width=None, unit=None,
                     central_latitude=None, central_longitude=None, grid=None,
                     tick_interval=None, minor_tick_interval=None, ticks=None,
@@ -2783,7 +2816,7 @@ class DHComplexGrid(SHGrid):
                     cb_minor_tick_interval=None, titlesize=None,
                     title_offset=None, axes_labelsize=None,
                     tick_labelsize=None, horizon=None, offset=None,
-                    cb_offset=None):
+                    grdimage_dict=None, cb_offset=None):
         """
         Plot projected data using pygmt.
         """
@@ -2792,7 +2825,8 @@ class DHComplexGrid(SHGrid):
         else:
             figure = fig
 
-        self.to_imag().plotgmt(fig=figure, projection=projection,
+        self.to_imag().plotgmt(fig=figure, projection=projection, a=a, b=b,
+                               c=c, alpha=alpha, ellipsoid=ellipsoid,
                                region=region, rectangle=rectangle, width=width,
                                unit=unit, central_latitude=central_latitude,
                                central_longitude=central_longitude,
@@ -2813,7 +2847,7 @@ class DHComplexGrid(SHGrid):
                                titlesize=titlesize, title_offset=title_offset,
                                axes_labelsize=axes_labelsize,
                                tick_labelsize=tick_labelsize, horizon=horizon,
-                               offset=offset)
+                               grdimage_dict=grdimage_dict, offset=offset)
 
         offset_real = _np.copy(offset)
         if offset_real[1] is None:
@@ -2821,7 +2855,8 @@ class DHComplexGrid(SHGrid):
         else:
             offset_real[1] += width / 2. + 50. / 72.
 
-        self.to_real().plotgmt(fig=figure, projection=projection,
+        self.to_real().plotgmt(fig=figure, projection=projection, a=a, b=b,
+                               c=c, alpha=alpha, ellipsoid=ellipsoid,
                                region=region, rectangle=rectangle, width=width,
                                unit=unit, central_latitude=central_latitude,
                                central_longitude=central_longitude,
@@ -2842,7 +2877,8 @@ class DHComplexGrid(SHGrid):
                                titlesize=titlesize, title_offset=title_offset,
                                axes_labelsize=axes_labelsize,
                                tick_labelsize=tick_labelsize,
-                               horizon=horizon, offset=offset_real)
+                               horizon=horizon, grdimage_dict=grdimage_dict,
+                               offset=offset_real)
 
         return figure
 
@@ -2992,7 +3028,6 @@ class GLQRealGrid(SHGrid):
             temp = SHGrid.from_ellipsoid(lmax=self.lmax, a=a, b=b, c=c,
                                          alpha=alpha, ellipsoid=ellipsoid,
                                          grid=self.grid, kind=self.kind,
-                                         sampling=self.sampling,
                                          extend=self.extend)
             data = self.data - temp.data
         else:

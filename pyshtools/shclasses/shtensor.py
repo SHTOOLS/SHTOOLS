@@ -1,5 +1,5 @@
 """
-    Class for the gravity and magnetic field 'gradient' tensors.
+Class for the gravity and magnetic field 'gradient' tensors.
 """
 import numpy as _np
 import matplotlib as _mpl

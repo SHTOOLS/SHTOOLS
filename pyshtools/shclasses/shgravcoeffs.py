@@ -1,5 +1,5 @@
 """
-    Class for spherical harmonic coefficients of the gravitational potential.
+Class for spherical harmonic coefficients of the gravitational potential.
 """
 import numpy as _np
 import matplotlib as _mpl
@@ -1013,7 +1013,7 @@ class SHGravCoeffs(object):
         """
         Initialize a class of gravitational potential spherical harmonic
         coefficients by calculuting the gravitational potential associatiated
-        with relief along an interface.
+        with relief along a spherical interface.
 
         Usage
         -----
@@ -2406,9 +2406,9 @@ class SHGravCoeffs(object):
                sampling=2, extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened and rotating ellipsoid of the
-        three components of the gravity vector, the gravity disturbance, and
-        the gravity potential. Alternatively, compute the gravity vector at
-        specified coordinates.
+        three spherical components of the gravity vector, the gravity
+        disturbance, and the gravity potential. Alternatively, compute the
+        gravity vector at specified coordinates.
 
         Usage
         -----

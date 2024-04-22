@@ -1,5 +1,5 @@
 """
-    Class for spherical harmonic coefficients of the magnetic potential.
+Class for spherical harmonic coefficients of the magnetic potential.
 """
 import numpy as _np
 import matplotlib as _mpl
