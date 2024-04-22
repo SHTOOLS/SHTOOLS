@@ -1790,7 +1790,8 @@ class SHGrid(object):
                        legend_loc='best', xlabel=None,
                        ylabel='Fraction', title=None, grid=False,
                        axes_labelsize=None, tick_labelsize=None,
-                       titlesize=None, ax=None, show=True, fname=None):
+                       titlesize=None, ax=None, hist_dict=dict(), show=True,
+                       fname=None):
         """
         Plot an area-weighted histogram of the gridded data, normalized such
         that the integral over the range is unity. If ellipsoid parameters are
@@ -1801,8 +1802,8 @@ class SHGrid(object):
         x.plot_histogram([bins, range, a, b, c, alpha, ellipsoid, cumulative,
                           histtype, orientation, xscale, yscale, color, legend,
                           legend_loc, xlabel, ylabel, title, grid,
-                          axes_labelsize, tick_labelsize, titlesize, ax, show,
-                          fname])
+                          axes_labelsize, tick_labelsize, titlesize, ax,
+                          hist_dict, show, fname])
 
         Parameters
         ----------
@@ -1864,6 +1865,8 @@ class SHGrid(object):
             The font size of the title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
+        hist_dict : dict, optional, default = dict()
+            Optional arguments passed to matplotlib.pyplot.hist().
         show : bool, optional, default = True
             If True, plot to the screen.
         fname : str, optional, default = None
@@ -1908,7 +1911,8 @@ class SHGrid(object):
                                          alpha=alpha, ellipsoid=ellipsoid)
         axes.hist(bin_edges[:-1], bin_edges, weights=hist,
                   cumulative=cumulative, histtype=histtype,
-                  orientation=orientation, color=color, label=legend)
+                  orientation=orientation, color=color, label=legend,
+                  **hist_dict)
 
         if xscale == 'log':
             axes.set_xscale('log')
