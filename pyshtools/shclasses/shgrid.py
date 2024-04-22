@@ -1091,14 +1091,15 @@ class SHGrid(object):
     def plot3d(self, elevation=20, azimuth=30, cmap='viridis',
                cmap_limits=None, cmap_rlimits=None, cmap_reverse=False,
                title=False, titlesize=None, scale=4., ax=None, show=True,
-               fname=None):
+               plot_surface_dict=dict(), fname=None):
         """
         Plot a 3-dimensional representation of the data.
 
         Usage
         -----
         x.plot3d([elevation, azimuth, cmap, cmap_limits, cmap_rlimits,
-                  cmap_reverse, title, titlesize, scale, ax, show, fname])
+                  cmap_reverse, title, titlesize, scale, ax, show,
+                  plot_surface_dict, fname])
 
         Parameters
         ----------
@@ -1130,6 +1131,8 @@ class SHGrid(object):
             Axes3DSubplot object.
         show : bool, optional, default = True
             If True, plot the image to the screen.
+        plot_surface_dict : dict, optional, default = dict()
+            Optional arguments passed to Axes3D.plot_surface().
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
@@ -1260,7 +1263,7 @@ class SHGrid(object):
 
         # plot data
         ax3d.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=colors,
-                          shade=False)
+                          shade=False, **plot_surface_dict)
         ax3d.set(xlim=(-1., 1.), ylim=(-1., 1.), zlim=(-1., 1.),
                  xticks=[-1, 1], yticks=[-1, 1], zticks=[-1, 1])
         ax3d.set_axis_off()
@@ -1287,7 +1290,8 @@ class SHGrid(object):
              cb_ylabel=None, cb_tick_interval=None,
              cb_minor_tick_interval=None, cb_offset=None, cb_width=None,
              grid=False, axes_labelsize=None, tick_labelsize=None, xlabel=True,
-             ylabel=True, ax=None, ax2=None, show=True, fname=None):
+             ylabel=True, ax=None, ax2=None, imshow_dict=dict(), show=True,
+             fname=None):
         """
         Plot the data using a Cartopy projection or a matplotlib cylindrical
         projection.
@@ -1301,7 +1305,7 @@ class SHGrid(object):
                           cb_triangles, cb_label, cb_ylabel, cb_tick_interval,
                           cb_minor_tick_interval, cb_offset, cb_width, grid,
                           titlesize, axes_labelsize, tick_labelsize, ax, ax2,
-                          show, fname])
+                          imsow_dict, show, fname])
 
         Parameters
         ----------
@@ -1388,6 +1392,8 @@ class SHGrid(object):
             A single matplotlib axes object where the plot will appear. If the
             grid is complex, the complex component of the grid will be plotted
             on this axes.
+        imshow_dict : dict, optional, default = dict()
+            Optional arguments passed to matplotlib.pyplot.imshow().
         show : bool, optional, default = True
             If True, plot the image to the screen.
         fname : str, optional, default = None
@@ -1462,7 +1468,8 @@ class SHGrid(object):
                 cmap_limits_complex=cmap_limits_complex,
                 cmap_rlimits_complex=cmap_rlimits_complex,
                 cmap_reverse=cmap_reverse, cmap_scale=cmap_scale,
-                cb_offset=cb_offset, cb_width=cb_width)
+                cb_offset=cb_offset, cb_width=cb_width,
+                imshow_dict=imshow_dict)
         else:
             if self.kind == 'complex':
                 if (ax is None and ax2 is not None) or (ax2 is None and
@@ -1485,7 +1492,8 @@ class SHGrid(object):
                        cmap_limits_complex=cmap_limits_complex,
                        cmap_rlimits_complex=cmap_limits_complex,
                        cmap_reverse=cmap_reverse, cmap_scale=cmap_scale,
-                       cb_width=cb_width, cb_ylabel=cb_ylabel)
+                       cb_width=cb_width, cb_ylabel=cb_ylabel,
+                       imshow_dict=imshow_dict)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2071,7 +2079,7 @@ class DHRealGrid(SHGrid):
               cb_ylabel=None, cb_minor_tick_interval=None, cmap_limits=None,
               cmap_rlimits=None, cmap_rlimits_complex=None,
               cmap_limits_complex=None, cmap_scale=None, cb_offset=None,
-              cmap_reverse=None, cb_width=None):
+              cmap_reverse=None, cb_width=None, imshow_dict=None):
         """Plot the data as a matplotlib cylindrical projection,
            or with Cartopy when projection is specified."""
         if ax is None:
@@ -2229,7 +2237,8 @@ class DHRealGrid(SHGrid):
             axes.set_global()
             cim = axes.imshow(
                 self.data, transform=_ccrs.PlateCarree(central_longitude=0.0),
-                origin='upper', extent=extent, cmap=cmap_scaled, norm=norm)
+                origin='upper', extent=extent, cmap=cmap_scaled, norm=norm,
+                **imshow_dict)
             if isinstance(projection, _ccrs.PlateCarree):
                 axes.set_xticks(
                     xticks, crs=_ccrs.PlateCarree(central_longitude=0.0))
@@ -2248,7 +2257,7 @@ class DHRealGrid(SHGrid):
                                crs=_ccrs.PlateCarree(central_longitude=0.0))
         else:
             cim = axes.imshow(self.data, origin='upper', extent=extent,
-                              cmap=cmap_scaled, norm=norm)
+                              cmap=cmap_scaled, norm=norm, **imshow_dict)
             axes.set(xlim=(0, 360), ylim=(-90, 90))
             axes.set_xlabel(xlabel, fontsize=axes_labelsize)
             axes.set_ylabel(ylabel, fontsize=axes_labelsize)
@@ -2673,7 +2682,7 @@ class DHComplexGrid(SHGrid):
               cb_tick_interval=None, cb_minor_tick_interval=None,
               cmap_limits=None, cmap_rlimits=None, cmap_rlimits_complex=None,
               cmap_reverse=None, cmap_limits_complex=None, cmap_scale=None,
-              cb_offset=None, cb_width=None):
+              cb_offset=None, cb_width=None, imshow_dict=None):
         """Plot the raw data as a matplotlib simple cylindrical projection,
            or with Cartopy when projection is specified."""
         if ax is None:
@@ -2707,7 +2716,7 @@ class DHComplexGrid(SHGrid):
                             cb_width=cb_width, cmap=cmap,
                             cmap_limits=cmap_limits, cmap_rlimits=cmap_rlimits,
                             cmap_reverse=cmap_reverse, cmap_scale=cmap_scale,
-                            ax=axreal)
+                            ax=axreal, imshow_dict=imshow_dict)
 
         self.to_imag().plot(projection=projection, tick_interval=tick_interval,
                             minor_tick_interval=minor_tick_interval,
@@ -2723,7 +2732,8 @@ class DHComplexGrid(SHGrid):
                             cmap_rlimits=cmap_rlimits_complex,
                             cmap_scale=cmap_scale, cmap_reverse=cmap_reverse,
                             cb_offset=cb_offset, cb_width=cb_width,
-                            xlabel=xlabel, ylabel=ylabel, ax=axcomplex)
+                            xlabel=xlabel, ylabel=ylabel, ax=axcomplex,
+                            imshow_dict=imshow_dict)
 
         if ax is None:
             return fig, axes
@@ -2942,7 +2952,8 @@ class GLQRealGrid(SHGrid):
               cb_tick_interval=None, ticks=None, cb_minor_tick_interval=None,
               cmap_limits=None, cmap_rlimits=None, cmap_limits_complex=None,
               cmap_rlimits_complex=None, cmap_scale=None, cb_ylabel=None,
-              cb_offset=None, cb_width=None, cmap_reverse=None):
+              cb_offset=None, cb_width=None, cmap_reverse=None,
+              imshow_dict=None):
         """Plot the data using a matplotlib cylindrical projection."""
         if ax is None:
             if colorbar is not None:
@@ -3073,7 +3084,7 @@ class GLQRealGrid(SHGrid):
         # plot image, ticks, and annotations
         extent = (-0.5, self.nlon-0.5, -0.5, self.nlat-0.5)
         cim = axes.imshow(self.data, extent=extent, origin='upper',
-                          cmap=cmap_scaled, norm=norm)
+                          cmap=cmap_scaled, norm=norm, **imshow_dict)
         axes.set(xticks=xticks, yticks=yticks)
         axes.set_xlabel(xlabel, fontsize=axes_labelsize)
         axes.set_ylabel(ylabel, fontsize=axes_labelsize)
@@ -3277,7 +3288,7 @@ class GLQComplexGrid(SHGrid):
               cb_minor_tick_interval=None, cmap_limits=None, cmap_rlimits=None,
               cmap_limits_complex=None, cmap_rlimits_complex=None,
               cmap_reverse=None, cmap_scale=None, cb_offset=None,
-              cb_width=None):
+              cb_width=None, imshow_dict=None):
         """Plot the raw data using a simply cylindrical projection."""
         if ax is None:
             if colorbar is not None:
@@ -3310,7 +3321,7 @@ class GLQComplexGrid(SHGrid):
                             cb_width=cb_width, cmap=cmap,
                             cmap_limits=cmap_limits, cmap_rlimits=cmap_rlimits,
                             cmap_reverse=cmap_reverse, cmap_scale=cmap_scale,
-                            ax=axreal)
+                            ax=axreal, imshow_dict=imshow_dict)
 
         self.to_imag().plot(projection=projection, tick_interval=tick_interval,
                             minor_tick_interval=minor_tick_interval,
@@ -3326,7 +3337,8 @@ class GLQComplexGrid(SHGrid):
                             cmap_rlimits=cmap_rlimits_complex,
                             cmap_reverse=cmap_reverse, cmap_scale=cmap_scale,
                             cb_ylabel=cb_ylabel, cb_width=cb_width,
-                            xlabel=xlabel, ylabel=ylabel, ax=axcomplex)
+                            xlabel=xlabel, ylabel=ylabel, ax=axcomplex,
+                            imshow_dict=imshow_dict)
 
         if ax is None:
             return fig, axes
