@@ -1281,7 +1281,8 @@ class SHGrid(object):
                 fig.savefig(fname)
             return fig, ax3d
 
-    def plot(self, projection=None, tick_interval=[30, 30], ticks='WSen',
+    def plot(self, projection=None, a=None, b=None, c=None, alpha=0.,
+             ellipsoid=None, tick_interval=[30, 30], ticks='WSen',
              minor_tick_interval=[None, None], title=None, titlesize=None,
              title_offset=None, colorbar=None, cmap='viridis',
              cmap_limits=None, cmap_limits_complex=None, cmap_rlimits=None,
@@ -1312,6 +1313,17 @@ class SHGrid(object):
         projection : Cartopy projection class, optional, default = None
             The Cartopy projection class used to project the gridded data,
             for Driscoll and Healy sampled grids only.
+        a, b, c : float, optional, default = None
+            Plot spherical heights with respect to an ellipsoid with principal
+            semiaxis lengths a, b, and c.
+        alpha : float, optional, default = 0
+            Rotate the a and b principal axes about the z axis by the angle
+            alpha in degrees. The longitude of the x and y axes will be alpha
+            and 90 + alpha, respectively.
+        ellipsoid : boule class instance, optional, default = None
+            A boule Sphere, Ellipsoid, or TriaxialEllipsoid class instance that
+            contains the lengths of the principal axes a, b, and c, and the
+            rotation angle alpha.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
@@ -1456,7 +1468,8 @@ class SHGrid(object):
 
         if ax is None and ax2 is None:
             fig, axes = self._plot(
-                projection=projection, colorbar=colorbar,
+                projection=projection, a=a, b=b, c=c, alpha=alpha,
+                ellipsoid=ellipsoid, colorbar=colorbar,
                 cb_triangles=cb_triangles, cb_label=cb_label, grid=grid,
                 axes_labelsize=axes_labelsize, tick_labelsize=tick_labelsize,
                 title=title, titlesize=titlesize, title_offset=title_offset,
@@ -1477,7 +1490,8 @@ class SHGrid(object):
                     raise ValueError('For complex grids, one must specify '
                                      'both optional arguments ax and ax2.')
             self._plot(projection=projection,
-                       ax=ax, ax2=ax2, colorbar=colorbar,
+                       ax=ax, ax2=ax2, a=a, b=b, c=c, alpha=alpha,
+                       ellipsoid=ellipsoid, colorbar=colorbar,
                        cb_triangles=cb_triangles, cb_label=cb_label,
                        grid=grid, axes_labelsize=axes_labelsize,
                        tick_labelsize=tick_labelsize, title=title,
@@ -2075,7 +2089,8 @@ class DHRealGrid(SHGrid):
                                      copy=False, name=name)
         return coeffs
 
-    def _plot(self, projection=None, xlabel=None, ylabel=None, ax=None,
+    def _plot(self, projection=None, a=None, b=None, c=None, alpha=None,
+              ellipsoid=None, xlabel=None, ylabel=None, ax=None,
               ax2=None, colorbar=None, cb_triangles=None, cb_label=None,
               grid=False, axes_labelsize=None, tick_labelsize=None, title=None,
               titlesize=None, title_offset=None, cmap=None, tick_interval=None,
@@ -2086,6 +2101,16 @@ class DHRealGrid(SHGrid):
               cmap_reverse=None, cb_width=None, imshow_dict=None):
         """Plot the data as a matplotlib cylindrical projection,
            or with Cartopy when projection is specified."""
+        if (a is not None or c is not None or ellipsoid is not None):
+            temp = SHGrid.from_ellipsoid(lmax=self.lmax, a=a, b=b, c=c,
+                                         alpha=alpha, ellipsoid=ellipsoid,
+                                         grid=self.grid, kind=self.kind,
+                                         sampling=self.sampling,
+                                         extend=self.extend)
+            data = self.data - temp.data
+        else:
+            data = self.data
+
         if ax is None:
             if colorbar is not None:
                 if colorbar in set(['top', 'bottom']):
@@ -2134,10 +2159,10 @@ class DHRealGrid(SHGrid):
 
         # make colormap
         if cmap_limits is None and cmap_rlimits is None:
-            cmap_limits = [self.min(), self.max()]
+            cmap_limits = [data.min(), data.max()]
         elif cmap_rlimits is not None:
-            cmap_limits = [self.max() * cmap_rlimits[0],
-                           self.max() * cmap_rlimits[1]]
+            cmap_limits = [data.max() * cmap_rlimits[0],
+                           data.max() * cmap_rlimits[1]]
             if len(cmap_rlimits) == 3:
                 cmap_limits.append(cmap_rlimits[2])
 
@@ -2240,7 +2265,7 @@ class DHRealGrid(SHGrid):
         if projection is not None:
             axes.set_global()
             cim = axes.imshow(
-                self.data, transform=_ccrs.PlateCarree(central_longitude=0.0),
+                data, transform=_ccrs.PlateCarree(central_longitude=0.0),
                 origin='upper', extent=extent, cmap=cmap_scaled, norm=norm,
                 **imshow_dict)
             if isinstance(projection, _ccrs.PlateCarree):
@@ -2260,7 +2285,7 @@ class DHRealGrid(SHGrid):
                 axes.gridlines(xlocs=xticks-180, ylocs=yticks,
                                crs=_ccrs.PlateCarree(central_longitude=0.0))
         else:
-            cim = axes.imshow(self.data, origin='upper', extent=extent,
+            cim = axes.imshow(data, origin='upper', extent=extent,
                               cmap=cmap_scaled, norm=norm, **imshow_dict)
             axes.set(xlim=(0, 360), ylim=(-90, 90))
             axes.set_xlabel(xlabel, fontsize=axes_labelsize)
@@ -2678,7 +2703,8 @@ class DHComplexGrid(SHGrid):
                                      copy=False, name=name)
         return coeffs
 
-    def _plot(self, projection=None, xlabel=None, ylabel=None, colorbar=None,
+    def _plot(self, projection=None, a=None, b=None, c=None, alpha=None,
+              ellipsoid=None, xlabel=None, ylabel=None, colorbar=None,
               cb_triangles=None, cb_label=None, grid=False, ticks=None,
               axes_labelsize=None, tick_labelsize=None, title=None,
               titlesize=None, title_offset=None, cmap=None, ax=None, ax2=None,
@@ -2706,7 +2732,8 @@ class DHComplexGrid(SHGrid):
             axreal = ax
             axcomplex = ax2
 
-        self.to_real().plot(projection=projection, tick_interval=tick_interval,
+        self.to_real().plot(projection=projection, a=a, b=b, c=c, alpha=alpha,
+                            ellipsoid=ellipsoid, tick_interval=tick_interval,
                             minor_tick_interval=minor_tick_interval,
                             colorbar=colorbar, cb_triangles=cb_triangles,
                             cb_label=cb_label, ticks=ticks,
@@ -2722,7 +2749,8 @@ class DHComplexGrid(SHGrid):
                             cmap_reverse=cmap_reverse, cmap_scale=cmap_scale,
                             ax=axreal, imshow_dict=imshow_dict)
 
-        self.to_imag().plot(projection=projection, tick_interval=tick_interval,
+        self.to_imag().plot(projection=projection, a=a, b=b, c=c, alpha=alpha,
+                            ellipsoid=ellipsoid, tick_interval=tick_interval,
                             minor_tick_interval=minor_tick_interval,
                             colorbar=colorbar, cb_triangles=cb_triangles,
                             cb_label=cb_label, ticks=ticks,
@@ -2948,7 +2976,8 @@ class GLQRealGrid(SHGrid):
                                      copy=False, name=name)
         return coeffs
 
-    def _plot(self, projection=None, xlabel=None, ylabel=None, ax=None,
+    def _plot(self, projection=None, a=None, b=None, c=None, alpha=None,
+              ellipsoid=None, xlabel=None, ylabel=None, ax=None,
               ax2=None, colorbar=None, cb_triangles=None, cb_label=None,
               grid=False, axes_labelsize=None, tick_labelsize=None,
               title=None, titlesize=None, title_offset=None, cmap=None,
@@ -2959,6 +2988,16 @@ class GLQRealGrid(SHGrid):
               cb_offset=None, cb_width=None, cmap_reverse=None,
               imshow_dict=None):
         """Plot the data using a matplotlib cylindrical projection."""
+        if (a is not None or c is not None or ellipsoid is not None):
+            temp = SHGrid.from_ellipsoid(lmax=self.lmax, a=a, b=b, c=c,
+                                         alpha=alpha, ellipsoid=ellipsoid,
+                                         grid=self.grid, kind=self.kind,
+                                         sampling=self.sampling,
+                                         extend=self.extend)
+            data = self.data - temp.data
+        else:
+            data = self.data
+
         if ax is None:
             if colorbar is not None:
                 if colorbar in set(['top', 'bottom']):
@@ -2992,10 +3031,10 @@ class GLQRealGrid(SHGrid):
 
         # make colormap
         if cmap_limits is None and cmap_rlimits is None:
-            cmap_limits = [self.min(), self.max()]
+            cmap_limits = [data.min(), data.max()]
         elif cmap_rlimits is not None:
-            cmap_limits = [self.max() * cmap_rlimits[0],
-                           self.max() * cmap_rlimits[1]]
+            cmap_limits = [data.max() * cmap_rlimits[0],
+                           data.max() * cmap_rlimits[1]]
             if len(cmap_rlimits) == 3:
                 cmap_limits.append(cmap_rlimits[2])
 
@@ -3087,7 +3126,7 @@ class GLQRealGrid(SHGrid):
 
         # plot image, ticks, and annotations
         extent = (-0.5, self.nlon-0.5, -0.5, self.nlat-0.5)
-        cim = axes.imshow(self.data, extent=extent, origin='upper',
+        cim = axes.imshow(data, extent=extent, origin='upper',
                           cmap=cmap_scaled, norm=norm, **imshow_dict)
         axes.set(xticks=xticks, yticks=yticks)
         axes.set_xlabel(xlabel, fontsize=axes_labelsize)
@@ -3283,7 +3322,8 @@ class GLQComplexGrid(SHGrid):
                                      copy=False, name=name)
         return coeffs
 
-    def _plot(self, projection=None, minor_xticks=[], minor_yticks=[],
+    def _plot(self, projection=None, a=None, b=None, c=None, alpha=None,
+              ellipsoid=None, minor_xticks=[], minor_yticks=[],
               xlabel=None, ylabel=None, ax=None, ax2=None, colorbar=None,
               cb_triangles=None, cb_label=None, grid=False, ticks=None,
               axes_labelsize=None, tick_labelsize=None, title=None,
@@ -3311,7 +3351,8 @@ class GLQComplexGrid(SHGrid):
             axreal = ax
             axcomplex = ax2
 
-        self.to_real().plot(projection=projection, tick_interval=tick_interval,
+        self.to_real().plot(projection=projection, a=a, b=b, c=c, alpha=alpha,
+                            ellipsoid=ellipsoid, tick_interval=tick_interval,
                             minor_tick_interval=minor_tick_interval,
                             colorbar=colorbar, cb_triangles=cb_triangles,
                             cb_label=cb_label, ticks=ticks,
@@ -3327,7 +3368,8 @@ class GLQComplexGrid(SHGrid):
                             cmap_reverse=cmap_reverse, cmap_scale=cmap_scale,
                             ax=axreal, imshow_dict=imshow_dict)
 
-        self.to_imag().plot(projection=projection, tick_interval=tick_interval,
+        self.to_imag().plot(projection=projection, a=a, b=b, c=c, alpha=alpha,
+                            ellipsoid=ellipsoid, tick_interval=tick_interval,
                             minor_tick_interval=minor_tick_interval,
                             colorbar=colorbar, cb_triangles=cb_triangles,
                             cb_label=cb_label, ticks=ticks,
