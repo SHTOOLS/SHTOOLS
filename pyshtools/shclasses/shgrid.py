@@ -10,6 +10,9 @@ import xarray as _xr
 from ..backends import backend_module
 from ..backends import preferred_backend
 from ..backends import shtools as _shtools
+from boule import Sphere as _Sphere
+from boule import Ellipsoid as _Ellipsoid
+from boule import TriaxialEllipsoid as _TriaxialEllipsoid
 
 try:
     import cartopy.crs as _ccrs
@@ -231,18 +234,18 @@ class SHGrid(object):
                 return cls(array, units=units, name=name, copy=False)
 
     @classmethod
-    def from_ellipsoid(self, lmax, a, b=None, c=None, alpha=0.,
-                       grid='DH', kind='real', sampling=2, units=None,
-                       name=None, extend=True):
+    def from_ellipsoid(self, lmax, a=None, b=None, c=None, alpha=0.,
+                       ellipsoid=None, grid='DH', kind='real', sampling=2,
+                       units=None, name=None, extend=True):
         """
         Initialize the class instance with a triaxial ellipsoid whose principal
         axes are aligned with the x, y, and z axes. Optionally, rotate the
-        a and b principal axes about the z axis by alpha.
+        a and b principal axes about the z axis by the angle alpha.
 
         Usage
         -----
-        x = SHGrid.from_ellipsoid(lmax, a, [b, c, alpha, grid, kind,
-                                            sampling, units, name, extend])
+        x = SHGrid.from_ellipsoid(lmax, [a, b, c, alpha, ellipsoid, grid, kind,
+                                         sampling, units, name, extend])
 
         Returns
         -------
@@ -252,16 +255,20 @@ class SHGrid(object):
         ----------
         lmax : int
             The maximum spherical harmonic degree resolvable by the grid.
-        a : float
+        a : float, optional, default = None
             Length of the principal axis aligned with the x axis.
         b : float, optional, default = a
             Length of the principal axis aligned with the y axis.
         c : float, optional, default = b
             Length of the principal axis aligned with the z axis.
         alpha : float, optional, default = 0
-            Rotate the a and b principal axes about the z axis by alpha in
-            degrees. The longitude of the x and y axes will be alpha and
-            90 + alpha, respectively.
+            Rotate the a and b principal axes about the z axis by the angle
+            alpha in degrees. The longitude of the x and y axes will be alpha
+            and 90 + alpha, respectively.
+        ellipsoid : boule class instance, optional, default = None
+            A boule Sphere, Ellipsoid, or TriaxialEllipsoid class instance that
+            contains the lengths of the principal axes a, b, and c, and the
+            rotation angle alpha.
         grid : str, optional, default = 'DH'
             'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
             Quadrature grids, respectively.
@@ -280,17 +287,24 @@ class SHGrid(object):
             If True, include the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
         """
+        if ellipsoid is not None:
+            if not isinstance(ellipsoid,
+                              (_Sphere, _Ellipsoid, _TriaxialEllipsoid)):
+                raise ValueError('ellipsoid must be a boule class instance.')
+            a = ellipsoid.semimajor_axis
+            b = ellipsoid.semimedium_axis
+            c = ellipsoid.semiminor_axis
+            alpha = ellipsoid.semimajor_axis_longitude
+
         temp = self.from_zeros(lmax, grid=grid, kind=kind, sampling=sampling,
                                units=units, extend=extend, empty=True,
                                name=name)
         if c is None and b is None:
             temp.data[:, :] = a
-        elif c is not None and b is None:
-            for ilat, lat in enumerate(temp.lats()):
-                temp.data[ilat, :] = 1. / _np.sqrt(
-                    _np.cos(_np.deg2rad(lat))**2 / a**2 +
-                    _np.sin(_np.deg2rad(lat))**2 / c**2
-                    )
+        elif c is not None and (b is None or a == b):
+            temp.data[:, :] = 1. / _np.sqrt(
+                _np.cos(_np.deg2rad(temp.lats()))**2 / a**2 +
+                _np.sin(_np.deg2rad(temp.lats()))**2 / c**2)[:, _np.newaxis]
         else:
             if c is None:
                 c = b
@@ -955,14 +969,17 @@ class SHGrid(object):
             return self._lons()
 
     # ---- Functions that act on the data ----
-    def histogram(self, bins=10, range=None):
+    def histogram(self, bins=10, range=None, a=None, b=None, c=None,
+                  alpha=0., ellipsoid=None):
         """
         Return an area-weighted histogram of the gridded data, normalized such
-        that the integral over the range is unity.
+        that the integral over the range is unity. If ellipsoid parameters are
+        input, use spherical heights with respect to the ellipsoid.
 
         Usage
         -----
-        hist, bin_edges = x.historgram([bins, range])
+        hist, bin_edges = x.historgram([bins, range, a, b, c, alpha,
+                                        ellipsoid])
 
         Returns
         -------
@@ -983,12 +1000,24 @@ class SHGrid(object):
              defined by numpy.histogram_bin_edges.
         range : (float, float), optional, default = None
             The lower and upper range of the bins.
+        a, b, c : float, optional, default = None
+            Compute the histogram using spherical heights with respect to an
+            ellipsoid with principal semiaxis lengths a, b, and c.
+        alpha : float, optional, default = 0
+            Rotate the a and b principal axes about the z axis by the angle
+            alpha in degrees. The longitude of the x and y axes will be alpha
+            and 90 + alpha, respectively.
+        ellipsoid : boule class instance, optional, default = None
+            A boule Sphere, Ellipsoid, or TriaxialEllipsoid class instance that
+            contains the lengths of the principal axes a, b, and c, and the
+            rotation angle alpha.
 
         Notes
         -----
-        This method does not work with complex data.
+        This method is not implemented for complex data.
         """
-        return self._histogram(bins=bins, range=range)
+        return self._histogram(bins=bins, range=range, a=a, b=b, c=c,
+                               alpha=alpha, ellipsoid=ellipsoid)
 
     def expand(self, normalization='4pi', csphase=1, lmax_calc=None, name=None,
                backend=None, nthreads=None):
@@ -1746,7 +1775,8 @@ class SHGrid(object):
         if fig is None:
             return figure
 
-    def plot_histogram(self, bins=10, range=None, cumulative=False,
+    def plot_histogram(self, bins=10, range=None, a=None, b=None, c=None,
+                       alpha=0., ellipsoid=None, cumulative=False,
                        histtype='bar', orientation='vertical', xscale='lin',
                        yscale='lin', color=None, legend=None,
                        legend_loc='best', xlabel=None,
@@ -1755,14 +1785,16 @@ class SHGrid(object):
                        titlesize=None, ax=None, show=True, fname=None):
         """
         Plot an area-weighted histogram of the gridded data, normalized such
-        that the integral over the range is unity.
+        that the integral over the range is unity. If ellipsoid parameters are
+        input, use spherical heights with respect to the ellipsoid.
 
         Usage
         -----
-        x.plot_histogram([bins, range, cumulative, histtype, orientation,
-                          xscale, yscale, color, legend, legend_loc, xlabel,
-                          ylabel, title, grid, axes_labelsize, tick_labelsize,
-                          titlesize, ax, show, fname])
+        x.plot_histogram([bins, range, a, b, c, alpha, ellipsoid, cumulative,
+                          histtype, orientation, xscale, yscale, color, legend,
+                          legend_loc, xlabel, ylabel, title, grid,
+                          axes_labelsize, tick_labelsize, titlesize, ax, show,
+                          fname])
 
         Parameters
         ----------
@@ -1775,6 +1807,17 @@ class SHGrid(object):
              defined by numpy.histogram_bin_edges.
         range : (float, float), optional, default = None
             The lower and upper range of the bins.
+        a, b, c : float, optional, default = None
+            Compute the histogram using spherical heights with respect to an
+            ellipsoid with principal semiaxis lengths a, b, and c.
+        alpha : float, optional, default = 0
+            Rotate the a and b principal axes about the z axis by the angle
+            alpha in degrees. The longitude of the x and y axes will be alpha
+            and 90 + alpha, respectively.
+        ellipsoid : boule class instance, optional, default = None
+            A boule Sphere, Ellipsoid, or TriaxialEllipsoid class instance that
+            contains the lengths of the principal axes a, b, and c, and the
+            rotation angle alpha.
         cumulative : bool or -1, optional, default = False
             If True, then a histogram is computed where each bin gives the
             counts in that bin plus all bins for smaller values. If cumulative
@@ -1822,8 +1865,8 @@ class SHGrid(object):
         Notes
         -----
         This method calls histogram() to bin the data, and then uses
-        matplotlib.pyplot.hist() to plot the binned data. This method does not
-        work with complex data.
+        matplotlib.pyplot.hist() to plot the binned data. This method is not
+        implemented for complex data.
         """
         if self.kind == 'complex':
             raise NotImplementedError(
@@ -1853,7 +1896,8 @@ class SHGrid(object):
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
 
-        hist, bin_edges = self.histogram(bins=bins, range=range)
+        hist, bin_edges = self.histogram(bins=bins, range=range, a=a, b=b, c=c,
+                                         alpha=alpha, ellipsoid=ellipsoid)
         axes.hist(bin_edges[:-1], bin_edges, weights=hist,
                   cumulative=cumulative, histtype=histtype,
                   orientation=orientation, color=color, label=legend)
@@ -1947,7 +1991,8 @@ class DHRealGrid(SHGrid):
             lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
-    def _histogram(self, bins=None, range=None):
+    def _histogram(self, bins=None, range=None, a=None, b=None, c=None,
+                   alpha=None, ellipsoid=None):
         """Return an area-weighted histogram normalized to unity."""
         delta_phi = self.lons()[1] - self.lons()[0]
         delta_phi *= _np.pi / 180.
@@ -1973,7 +2018,17 @@ class DHRealGrid(SHGrid):
             da[i, :] = _np.cos(theta1 * _np.pi / 180.) - \
                 _np.cos(theta2 * _np.pi / 180.)
 
-        return _np.histogram(self.data[:, :self.nlon-self.extend],
+        if (a is not None or c is not None or ellipsoid is not None):
+            temp = SHGrid.from_ellipsoid(lmax=self.lmax, a=a, b=b, c=c,
+                                         alpha=alpha, ellipsoid=ellipsoid,
+                                         grid=self.grid, kind=self.kind,
+                                         sampling=self.sampling,
+                                         extend=self.extend)
+            data = self.data - temp.data
+        else:
+            data = self.data
+
+        return _np.histogram(data[:, :self.nlon-self.extend],
                              bins=bins,
                              weights=da[:, :self.nlon-self.extend],
                              density=True, range=range)
@@ -2578,7 +2633,8 @@ class DHComplexGrid(SHGrid):
 
     def _histogram(self, **kwargs):
         """Return an area-weighted histogram normalized to unity."""
-        raise NotImplementedError('histogram() does not support complex data.')
+        raise NotImplementedError('histogram() is not implemented for '
+                                  'complex data.')
 
     def _expand(self, normalization, csphase, lmax_calc, backend, nthreads,
                 name):
@@ -2815,7 +2871,8 @@ class GLQRealGrid(SHGrid):
             lons = _np.linspace(0.0, 360.0 - 360.0 / self.nlon, num=self.nlon)
         return lons
 
-    def _histogram(self, bins=None, range=None):
+    def _histogram(self, bins=None, range=None, a=None, b=None, c=None,
+                   alpha=None, ellipsoid=None):
         """Return an area-weighted histogram normalized to unity."""
         delta_phi = self.lons()[1] - self.lons()[0]
         delta_phi *= _np.pi / 180.
@@ -2835,7 +2892,16 @@ class GLQRealGrid(SHGrid):
         theta1 = 90.0 - (self.lats()[i] + self.lats()[i-1]) / 2.
         da[i, :] = _np.cos(theta1 * _np.pi / 180.) + 1
 
-        return _np.histogram(self.data[:, :self.nlon-self.extend],
+        if (a is not None or c is not None or ellipsoid is not None):
+            temp = SHGrid.from_ellipsoid(lmax=self.lmax, a=a, b=b, c=c,
+                                         alpha=alpha, ellipsoid=ellipsoid,
+                                         grid=self.grid, kind=self.kind,
+                                         extend=self.extend)
+            data = self.data - temp.data
+        else:
+            data = self.data
+
+        return _np.histogram(data[:, :self.nlon-self.extend],
                              bins=bins,
                              weights=da[:, :self.nlon-self.extend],
                              density=True, range=range)
@@ -3171,7 +3237,8 @@ class GLQComplexGrid(SHGrid):
 
     def _histogram(self, **kwargs):
         """Return an area-weighted histogram normalized to unity."""
-        raise NotImplementedError('histogram() does not support complex data.')
+        raise NotImplementedError('histogram() is not implemented for '
+                                  'complex data.')
 
     def _expand(self, normalization, csphase, lmax_calc, backend, nthreads,
                 name):
