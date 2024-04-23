@@ -13,7 +13,7 @@ class SHGeoid(object):
     """
     Class for the height of the geoid. The class is initialized from a class
     instance of SHGravCoeffs using the method geoid(). Geoid heights are
-    referenced to a flattened ellipsoid of semimajor axis a and flattening f.
+    with respect to a flattened ellipsoid of semimajor axis a and flattening f.
 
     Attributes:
 

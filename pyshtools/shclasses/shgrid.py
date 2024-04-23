@@ -1315,6 +1315,11 @@ class SHGrid(object):
         projection : Cartopy projection class, optional, default = None
             The Cartopy projection class used to project the gridded data,
             for Driscoll and Healy sampled grids only.
+        ellipsoid : boule class instance, optional, default = None
+            Plot spherical heights with respect to an ellipsoid defined by a
+            boule Sphere, Ellipsoid, or TriaxialEllipsoid class instance. The
+            boule class instance contains the lengths of the principal axes a,
+            b, and c, and the rotation angle alpha.
         a, b, c : float, optional, default = None
             Plot spherical heights with respect to an ellipsoid with principal
             semiaxis lengths a, b, and c.
@@ -1322,10 +1327,6 @@ class SHGrid(object):
             Rotate the a and b principal axes about the z axis by the angle
             alpha in degrees. The longitude of the x and y axes will be alpha
             and 90 + alpha, respectively.
-        ellipsoid : boule class instance, optional, default = None
-            A boule Sphere, Ellipsoid, or TriaxialEllipsoid class instance that
-            contains the lengths of the principal axes a, b, and c, and the
-            rotation angle alpha.
         tick_interval : list or tuple, optional, default = [30, 30]
             Intervals to use when plotting the x and y ticks. If set to None,
             ticks will not be plotted.
@@ -1567,6 +1568,11 @@ class SHGrid(object):
         projection : str, optional, default = 'mollweide'
             The name of a projection (see Notes). Only the first three
             characters are necessary to identify the projection.
+        ellipsoid : boule class instance, optional, default = None
+            Plot spherical heights with respect to an ellipsoid defined by a
+            boule Sphere, Ellipsoid, or TriaxialEllipsoid class instance. The
+            boule class instance contains the lengths of the principal axes a,
+            b, and c, and the rotation angle alpha.
         a, b, c : float, optional, default = None
             Plot spherical heights with respect to an ellipsoid with principal
             semiaxis lengths a, b, and c.
@@ -1574,10 +1580,6 @@ class SHGrid(object):
             Rotate the a and b principal axes about the z axis by the angle
             alpha in degrees. The longitude of the x and y axes will be alpha
             and 90 + alpha, respectively.
-        ellipsoid : boule class instance, optional, default = None
-            A boule Sphere, Ellipsoid, or TriaxialEllipsoid class instance that
-            contains the lengths of the principal axes a, b, and c, and the
-            rotation angle alpha.
         region : str or list, optional, default = 'g'
             The map region, which can be the string 'g' for the entire sphere,
             a bounded region specified by the list [west, east, south, north],
@@ -1849,6 +1851,12 @@ class SHGrid(object):
              defined by numpy.histogram_bin_edges.
         range : (float, float), optional, default = None
             The lower and upper range of the bins.
+        ellipsoid : boule class instance, optional, default = None
+            Compute the histogram using spherical heights with respect to an
+            ellipsoid defined by a boule Sphere, Ellipsoid, or
+            TriaxialEllipsoid class instance. The boule class instance contains
+            the lengths of the principal axes a, b, and c, and the rotation
+            angle alpha.
         a, b, c : float, optional, default = None
             Compute the histogram using spherical heights with respect to an
             ellipsoid with principal semiaxis lengths a, b, and c.
@@ -1856,10 +1864,6 @@ class SHGrid(object):
             Rotate the a and b principal axes about the z axis by the angle
             alpha in degrees. The longitude of the x and y axes will be alpha
             and 90 + alpha, respectively.
-        ellipsoid : boule class instance, optional, default = None
-            A boule Sphere, Ellipsoid, or TriaxialEllipsoid class instance that
-            contains the lengths of the principal axes a, b, and c, and the
-            rotation angle alpha.
         cumulative : bool or -1, optional, default = False
             If True, then a histogram is computed where each bin gives the
             counts in that bin plus all bins for smaller values. If cumulative
