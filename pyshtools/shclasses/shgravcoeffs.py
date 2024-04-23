@@ -2401,9 +2401,9 @@ class SHGravCoeffs(object):
         return clm
 
     # ---- Routines that return different gravity-related class instances ----
-    def expand(self, a=None, f=None, r=None, colat=None, lat=None, lon=None,
-               degrees=True, lmax=None, lmax_calc=None, normal_gravity=True,
-               sampling=2, extend=True, name=None):
+    def expand(self, ellipsoid=None, a=None, f=None, r=None, colat=None,
+               lat=None, lon=None, degrees=True, lmax=None, lmax_calc=None,
+               normal_gravity=True, sampling=2, extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened and rotating ellipsoid of the
         three spherical components of the gravity vector, the gravity
@@ -2412,10 +2412,10 @@ class SHGravCoeffs(object):
 
         Usage
         -----
-        grids = x.expand([a, f, lmax, lmax_calc, normal_gravity, sampling,
-                          extend, name])
-        g = x.expand(lat, lon, [a, f, r, lmax, lmax_calc, degrees])
-        g = x.expand(colat, lon, [a, f, r, lmax, lmax_calc, degrees])
+        grids = x.expand([ellipsoid, a, f, lmax, lmax_calc, normal_gravity,
+                          sampling, extend, name])
+        g = x.expand(lat, lon, [ellipsoid, a, f, r, lmax, lmax_calc, degrees])
+        g = x.expand(colat, lon, [ellipsoid, a, f, r, lmax, lmax_calc, degrees])
 
         Returns
         -------
@@ -2425,20 +2425,26 @@ class SHGravCoeffs(object):
 
         Parameters
         ----------
+        ellipsoid : boule class instance, optional, default = None
+            A boule Sphere or Ellipsoid class instance that contains the
+            reference elllipsoid parameters: the semimajor axis length a, the
+            flattening f, the angular rotation rate omega, and the ellipsoid
+            GM.
         a : optional, float, default = self.r0
             The semi-major axis of the flattened ellipsoid on which the field
-            is computed.
+            is computed when ellipsoid is not present.
         f : optional, float, default = 0
-            The flattening of the reference ellipsoid: f=(a-b)/a.
+            The flattening, (a-b)/a, of the reference ellipsoid to use when
+            ellipsoid is not present.
+        lat : float, ndarray, or list, optional, default = None
+            Latitude coordinates where the gravity is to be evaluated.
+        colat : float, ndarray, or list, optional, default = None
+            Colatitude coordinates where the gravity is to be evaluated.
+        lon : float, ndarray, or list, optional, default = None
+            Longitude coordinates where the gravity is to be evaluated.
         r : float, ndarray, or list, optional, default = None
             The radii where the gravity is to be evaluated. When present, a and
-            f are ignored. r must be the same shape as lat, colat, and lon.
-        lat : int, float, ndarray, or list, optional, default = None
-            Latitude coordinates where the gravity is to be evaluated.
-        colat : int, float, ndarray, or list, optional, default = None
-            Colatitude coordinates where the gravity is to be evaluated.
-        lon : int, float, ndarray, or list, optional, default = None
-            Longitude coordinates where the gravity is to be evaluated.
+            f are ignored, and r must be the same shape as lat, colat, and lon.
         degrees : bool, optional, default = True
             True if lat, colat and lon are in degrees, False if in radians.
         lmax : optional, integer, default = self.lmax
@@ -2450,9 +2456,9 @@ class SHGravCoeffs(object):
             functions. This must be less than or equal to lmax.
         normal_gravity : optional, bool, default = True
             If True (and if a, f and x.omega are set explicitly), the normal
-            gravity (the gravitational acceleration on the rotating ellipsoid)
-            will be subtracted from the total gravitational acceleration,
-            yielding the "gravity disturbance." This is done using Somigliana's
+            gravity (the gravity acceleration on the rotating ellipsoid)
+            will be subtracted from the total gravity acceleration, yielding
+            the "gravity disturbance." This is done using Somigliana's
             formula (after converting geocentric to geodetic coordinates).
         sampling : optional, integer, default = 2
             If 1 the output grids are equally sampled (n by n). If 2 (default),
@@ -2477,12 +2483,13 @@ class SHGravCoeffs(object):
         are specified, this method will instead return the gravity vector.
 
         If the angular rotation rate omega is specified in the SHGravCoeffs
-        instance, both the potential and gravity vectors will be calculated in
-        a body-fixed rotating reference frame and will include the contribution
-        from the centrifugal force. If normal_gravity is set to True, and a, f,
-        and omega are all set explicitly, the normal gravity will be removed
-        from the magnitude of the gravity vector, yielding the gravity
-        disturbance.
+        instance, or if a boule ellipsoid is input, both the potential and
+        gravity vectors will be calculated in a body-fixed rotating reference
+        frame and will include the contribution from the centrifugal force.
+        If normal_gravity is set to True, and if (a, f, omega) are all set
+        explicitly (or if a boule ellipsoid is input), the normal gravity will
+        be removed from the magnitude of the gravity vector, yielding the
+        gravity disturbance.
 
         The gravitational potential is given by
 
@@ -2503,12 +2510,19 @@ class SHGravCoeffs(object):
         if a is not None and f is not None and self.omega is not None \
                 and normal_gravity is True:
             ng = 1
+        elif ellipsoid is not None and normal_gravity is True:
+            ng = 1
         else:
             ng = 0
-        if a is None:
-            a = self.r0
-        if f is None:
-            f = 0.
+
+        if ellipsoid is not None:
+            a = ellipsoid.semimajor_axis
+            f = ellipsoid.flattening
+        else:
+            if a is None:
+                a = self.r0
+            if f is None:
+                f = 0.
 
         if (lat is not None or colat is not None) and lon is not None:
             if lmax_calc is None:
@@ -2520,10 +2534,7 @@ class SHGravCoeffs(object):
                 else:
                     temp = _np.pi/2.
 
-                if isinstance(colat, list):
-                    lat = list(map(lambda x: temp - x, colat))
-                else:
-                    lat = temp - colat
+                lat = temp - _np.array(colat)
 
             values = self._expand_coord(a=a, f=f, radius=r, lat=lat, lon=lon,
                                         degrees=degrees, lmax_calc=lmax_calc,
@@ -3952,7 +3963,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
                                       r=radius, lat=latin, lon=lonin,
                                       lmax=lmax_calc, omega=self.omega)
 
-        elif isinstance(lat, _np.ndarray):
+        elif isinstance(lat, (_np.ndarray, list, tuple)):
             values = _np.empty((len(lat), 3), dtype=_np.float64)
             for i, (r, latitude, longitude) in enumerate(zip(radius, latin,
                                                              lonin)):
@@ -3963,16 +3974,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
                                                   omega=self.omega)
             return values
 
-        elif isinstance(lat, list):
-            values = []
-            for r, latitude, longitude in zip(radius, latin, lonin):
-                values.append(
-                    _MakeGravGridPoint(coeffs, gm=self.gm, r0=self.r0,
-                                       r=r, lat=latitude, lon=longitude,
-                                       lmax=lmax_calc, omega=self.omega))
-            return values
-
         else:
-            raise ValueError('lat and lon must be either an int, float, '
-                             'ndarray, or list. Input types are {:s} and {:s}.'
+            raise ValueError('lat and lon must be either a float, '
+                             'ndarray, list, or tuple. Input types are {:s} and {:s}.'
                              .format(repr(type(lat)), repr(type(lon))))
