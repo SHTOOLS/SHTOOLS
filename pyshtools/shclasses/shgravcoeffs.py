@@ -2403,7 +2403,8 @@ class SHGravCoeffs(object):
     # ---- Routines that return different gravity-related class instances ----
     def expand(self, ellipsoid=None, a=None, f=None, r=None, colat=None,
                lat=None, lon=None, degrees=True, lmax=None, lmax_calc=None,
-               normal_gravity=True, sampling=2, extend=True, name=None):
+               normal_gravity=True, normal_gravity_gm=None, omega=None,
+               sampling=2, extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened and rotating ellipsoid of the
         three spherical components of the gravity vector, the gravity
@@ -2413,15 +2414,17 @@ class SHGravCoeffs(object):
         Usage
         -----
         grids = x.expand([ellipsoid, a, f, lmax, lmax_calc, normal_gravity,
-                          sampling, extend, name])
-        g = x.expand(lat, lon, [ellipsoid, a, f, r, lmax, lmax_calc, degrees])
-        g = x.expand(colat, lon, [ellipsoid, a, f, r, lmax, lmax_calc, degrees])
+                          normal_gravity_gm, omega, sampling, extend, name])
+        g = x.expand([lat, lon, ellipsoid, a, f, r, lmax, lmax_calc, omega,
+                      degrees])
+        g = x.expand([colat, lon, ellipsoid, a, f, r, lmax, lmax_calc, omega,
+                      degrees])
 
         Returns
         -------
         grids : SHGravGrid class instance.
-        g     : (r, theta, phi) components of the gravity vector at the
-                specified points.
+        g     : Matrix of [r, theta, phi] components of the gravity vector at
+                the specified points.
 
         Parameters
         ----------
@@ -2455,11 +2458,16 @@ class SHGravCoeffs(object):
             The maximum spherical harmonic degree used in evaluating the
             functions. This must be less than or equal to lmax.
         normal_gravity : optional, bool, default = True
-            If True (and if a, f and x.omega are set explicitly), the normal
+            If True (and if a, f and self.omega are set explicitly), the normal
             gravity (the gravity acceleration on the rotating ellipsoid)
             will be subtracted from the total gravity acceleration, yielding
             the "gravity disturbance." This is done using Somigliana's
             formula (after converting geocentric to geodetic coordinates).
+        normal_gravity_gm : optional, float, default = self.gm
+            The GM to use when computing the normal gravity. If not specified,
+            the GM of the gravitational potential model will be used.
+        omega : optional, float, default = self.omega
+            The angular rotation rate used to compute the normal gravity.
         sampling : optional, integer, default = 2
             If 1 the output grids are equally sampled (n by n). If 2 (default),
             the grids are equally spaced in degrees.
@@ -2472,24 +2480,27 @@ class SHGravCoeffs(object):
         Notes
         -----
         This method will create 2-dimensional cylindrical maps of the three
-        components of the gravity vector (gravitational force + centrifugal
-        force), the magnitude of the gravity vector, and the gravity
-        potential, and return these as an SHGravGrid class instance. Each map
-        is stored as an SHGrid class instance using Driscoll and Healy grids
-        that are either equally sampled (n by n) or equally spaced in degrees
-        latitude and longitude. All grids use geocentric coordinates, the
-        output is in SI units, and the sign of the radial components is
-        positive when directed upwards. If latitude and longitude coordinates
-        are specified, this method will instead return the gravity vector.
+        spherical components of the gravity vector (gravitational force +
+        centrifugal force), the magnitude of the gravity vector and the
+        gravity potential, and return these as an SHGravGrid class instance.
+        Each map is stored as an SHGrid class instance using Driscoll and Healy
+        grids that are either equally sampled (n by n) or equally spaced in
+        degrees latitude and longitude. All grids use geocentric spherical
+        coordinates, the output is in SI units, and the sign of the radial
+        components is positive when directed upwards. If latitude and longitude
+        coordinates are specified, this method will instead return the gravity
+        vector at the specified coordinates.
 
-        If the angular rotation rate omega is specified in the SHGravCoeffs
-        instance, or if a boule ellipsoid is input, both the potential and
-        gravity vectors will be calculated in a body-fixed rotating reference
-        frame and will include the contribution from the centrifugal force.
-        If normal_gravity is set to True, and if (a, f, omega) are all set
+        If the angular rotation rate omega is specified, if a boule ellipsoid
+        is input, or omega is set in the SHGravCoeffs instance, both the
+        potential and gravity grids will be calculated in a body-fixed
+        rotating reference frame and will include the contribution from the
+        centrifugal force. If not specified, the output grids will correspond
+        to the external gravitation without the centrifugal force. If
+        normal_gravity is set to True, and if (a, f, omega) are all set
         explicitly (or if a boule ellipsoid is input), the normal gravity will
-        be removed from the magnitude of the gravity vector, yielding the
-        gravity disturbance.
+        be removed from the gravity magnitude grid, yielding the gravity
+        disturbance.
 
         The gravitational potential is given by
 
@@ -2500,52 +2511,52 @@ class SHGravCoeffs(object):
             B = Grad V.
 
         The coefficients are referenced to the radius r0, and the function is
-        computed on a flattened ellipsoid with semi-major axis a (i.e., the
-        mean equatorial radius) and flattening f. To convert m/s^2 to mGals,
-        multiply the gravity grids by 10^5.
+        computed on a flattened ellipsoid with semi-major axis a and flattening
+        f. To convert from m/s^2 to mGals, multiply the gravity grids by 10^5.
         """
         if lat is not None and colat is not None:
             raise ValueError('lat and colat can not both be specified.')
 
-        if a is not None and f is not None and self.omega is not None \
-                and normal_gravity is True:
-            ng = 1
-        elif ellipsoid is not None and normal_gravity is True:
-            ng = 1
-        else:
-            ng = 0
+        if omega is None:
+            omega = self.omega
+        if lmax is None:
+            lmax = self.lmax
+        if lmax_calc is None:
+            lmax_calc = lmax
 
         if ellipsoid is not None:
             a = ellipsoid.semimajor_axis
             f = ellipsoid.flattening
+            normal_gravity_gm = ellipsoid.geocentric_grav_const
+            omega = ellipsoid.angular_velocity
         else:
             if a is None:
                 a = self.r0
             if f is None:
                 f = 0.
+            if normal_gravity_gm is None:
+                normal_gravity_gm = self.gm
+
+        if a is not None and f is not None and omega is not None \
+                and normal_gravity is True:
+            ng = 1
+        else:
+            ng = 0
 
         if (lat is not None or colat is not None) and lon is not None:
-            if lmax_calc is None:
-                lmax_calc = self.lmax
-
             if colat is not None:
                 if degrees:
                     temp = 90.
                 else:
                     temp = _np.pi/2.
-
                 lat = temp - _np.array(colat)
 
             values = self._expand_coord(a=a, f=f, radius=r, lat=lat, lon=lon,
                                         degrees=degrees, lmax_calc=lmax_calc,
-                                        omega=self.omega)
+                                        omega=omega)
             return values
 
         else:
-            if lmax is None:
-                lmax = self.lmax
-            if lmax_calc is None:
-                lmax_calc = lmax
             if name is None:
                 name = self.name
 
@@ -2553,11 +2564,12 @@ class SHGravCoeffs(object):
                                    errors=False)
             rad, theta, phi, total, pot = _MakeGravGridDH(
                 coeffs, self.gm, self.r0, a=a, f=f, lmax=lmax,
-                lmax_calc=lmax_calc, sampling=sampling, omega=self.omega,
-                normal_gravity=ng, extend=extend)
+                lmax_calc=lmax_calc, sampling=sampling, omega=omega,
+                normal_gravity=ng, normal_gravity_gm=normal_gravity_gm,
+                extend=extend)
 
             return _SHGravGrid(rad, theta, phi, total, pot, self.gm, a, f,
-                               self.omega, normal_gravity, lmax, lmax_calc,
+                               omega, normal_gravity, lmax, lmax_calc,
                                units='m/s2', pot_units='m2/s2',
                                epoch=self.epoch, name=name)
 
@@ -3961,7 +3973,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
         if _np.isscalar(lat):
             return _MakeGravGridPoint(coeffs, gm=self.gm, r0=self.r0,
                                       r=radius, lat=latin, lon=lonin,
-                                      lmax=lmax_calc, omega=self.omega)
+                                      lmax=lmax_calc, omega=omega)
 
         elif isinstance(lat, (_np.ndarray, list, tuple)):
             values = _np.empty((len(lat), 3), dtype=_np.float64)
@@ -3971,10 +3983,11 @@ class SHGravRealCoeffs(SHGravCoeffs):
                                                   r0=self.r0, r=r,
                                                   lat=latitude, lon=longitude,
                                                   lmax=lmax_calc,
-                                                  omega=self.omega)
+                                                  omega=omega)
             return values
 
         else:
             raise ValueError('lat and lon must be either a float, '
-                             'ndarray, list, or tuple. Input types are {:s} and {:s}.'
-                             .format(repr(type(lat)), repr(type(lon))))
+                             'ndarray, list, or tuple. Input types are {:s} '
+                             'and {:s}.'.format(repr(type(lat)),
+                                                repr(type(lon))))
