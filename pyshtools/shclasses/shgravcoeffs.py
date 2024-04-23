@@ -2573,16 +2573,17 @@ class SHGravCoeffs(object):
                                units='m/s2', pot_units='m2/s2',
                                epoch=self.epoch, name=name)
 
-    def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, degree0=False,
-               sampling=2, extend=True, name=None):
+    def tensor(self, ellipsoid=None, a=None, f=None, lmax=None, lmax_calc=None,
+               degree0=False, sampling=2, extend=True, name=None):
         """
-        Create 2D cylindrical maps on a flattened ellipsoid of the 9
-        components of the gravity "gradient" tensor in a local north-oriented
+        Create 2D cylindrical maps on a flattened ellipsoid of the 9 components
+        of the gravitational "gradient" tensor in a local north-oriented
         reference frame, and return an SHGravTensor class instance.
 
         Usage
         -----
-        tensor = x.tensor([a, f, lmax, lmax_calc, sampling, extend, name])
+        tensor = x.tensor([ellipsoid, a, f, lmax, lmax_calc, sampling, extend,
+                           name])
 
         Returns
         -------
@@ -2590,8 +2591,11 @@ class SHGravCoeffs(object):
 
         Parameters
         ----------
+        ellipsoid : boule class instance, optional, default = None
+            A boule Sphere or Ellipsoid class instance that contains the
+            reference elllipsoid semimajor axis length a and flattening f.
         a : optional, float, default = self.r0
-            The semi-major axis of the flattened ellipsoid on which the field
+            The semi-major axis of the flattened ellipsoid on which the tensor
             is computed.
         f : optional, float, default = 0
             The flattening of the reference ellipsoid: f=(a-b)/a.
@@ -2617,14 +2621,14 @@ class SHGravCoeffs(object):
         Notes
         -----
         This method will create 2-dimensional cylindrical maps for the 9
-        components of the gravity 'gradient' tensor and return an SHGravTensor
-        class instance. The components are
+        components of the gravitational 'gradient' tensor and return an
+        SHGravTensor class instance. The components are
 
             (Vxx, Vxy, Vxz)
             (Vyx, Vyy, Vyz)
             (Vzx, Vzy, Vzz)
 
-        where the reference frame is north-oriented, where x points north, y
+        and the reference frame is north-oriented, where x points north, y
         points west, and z points upward (all tangent or perpendicular to a
         sphere of radius r, where r is the local radius of the flattened
         ellipsoid). The gravitational potential is defined as
@@ -2636,10 +2640,10 @@ class SHGravCoeffs(object):
 
             B = Grad V.
 
-        The components of the gravity tensor are calculated according to eq. 1
-        in Petrovskaya and Vershkov (2006), which is based on eq. 3.28 in Reed
-        (1973) (noting that Reed's equations are in terms of latitude and that
-        the y axis points east):
+        The components of the gravitational tensor are calculated according to
+        eq. 1 in Petrovskaya and Vershkov (2006), which is based on eq. 3.28 in
+        Reed (1973) (noting that Reed's equations are in terms of latitude and
+        that the y axis points east):
 
             Vzz = Vrr
             Vxx = 1/r Vr + 1/r^2 Vtt
@@ -2663,16 +2667,21 @@ class SHGravCoeffs(object):
         gravity gradients in the local north-oriented and orbital reference
         frames, J. Geod., 80, 117-127, 2006.
         """
-        if a is None:
-            a = self.r0
-        if f is None:
-            f = 0.
         if lmax is None:
             lmax = self.lmax
         if lmax_calc is None:
             lmax_calc = lmax
         if name is None:
             name = self.name
+
+        if ellipsoid is not None:
+            a = ellipsoid.semimajor_axis
+            f = ellipsoid.flattening
+        else:
+            if a is None:
+                a = self.r0
+            if f is None:
+                f = 0.
 
         coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
 
@@ -2687,16 +2696,17 @@ class SHGravCoeffs(object):
                              1.e9*vyz, self.gm, a, f, lmax, lmax_calc,
                              units='Eötvös', epoch=self.epoch, name=name)
 
-    def geoid(self, potref, a=None, f=None, r=None, omega=None, order=2,
-              lmax=None, lmax_calc=None, grid='DH2', extend=True, name=None):
+    def geoid(self, ellipsoid=None, potref=None, a=None, f=None, r=None,
+              omega=None, order=2, lmax=None, lmax_calc=None, grid='DH2',
+              extend=True, name=None):
         """
         Create a global map of the height of the geoid and return an SHGeoid
         class instance.
 
         Usage
         -----
-        geoid = x.geoid(potref, [a, f, r, omega, order, lmax, lmax_calc, grid,
-                                 extend, name])
+        geoid = x.geoid([ellipsoid, potref, a, f, r, omega, order, lmax,
+                         lmax_calc, grid, extend, name])
 
         Returns
         -------
@@ -2704,16 +2714,20 @@ class SHGravCoeffs(object):
 
         Parameters
         ----------
-        potref : float
+        ellipsoid : boule class instance, optional, default = None
+            A boule Sphere or Ellipsoid class instance that contains the
+            reference elllipsoid semimajor axis length a, flattening f, and
+            reference potential. Either ellipsoid or potref must be present.
+        potref : float, optional, default = None
             The value of the potential on the chosen geoid, in m2 / s2.
         a : optional, float, default = self.r0
-            The semi-major axis of the flattened ellipsoid on which the field
-            is computed.
+            The semi-major axis of the flattened ellipsoid that is used as a
+            reference for the geoid heights.
         f : optional, float, default = 0
-            The flattening of the reference ellipsoid: f=(a-b)/a.
+            The flattening of the reference ellipsoid, (a-b)/a.
         r : optional, float, default = self.r0
-            The radius of the reference sphere that the Taylor expansion of the
-            potential is calculated on.
+            The radius of the reference sphere where the Taylor expansion of
+            the potential is performed.
         order : optional, integer, default = 2
             The order of the Taylor series expansion of the potential about the
             reference radius r. This can be either 1, 2, or 3.
@@ -2740,33 +2754,48 @@ class SHGravCoeffs(object):
         This method will create a global map of the geoid height, accurate to
         either first, second, or third order, using the method described in
         Wieczorek (2007; equation 19-20). The algorithm expands the potential
-        in a Taylor series on a spherical interface of radius r, and computes
+        in a Taylor series on a spherical interface with radius r, and computes
         the height above this interface to the potential potref exactly from
-        the linear, quadratic, or cubic equation at each grid point. If the
-        optional parameters a and f are specified, the geoid height will be
-        referenced to a flattened ellipsoid with semi-major axis a and
-        flattening f. The pseudo-rotational potential is explicitly accounted
-        for by using the angular rotation rate omega of the planet in the
-        SHGravCoeffs class instance. If omega is explicitly specified for this
-        method, it will override the value present in the class instance.
+        the linear, quadratic, or cubic equation at each grid point.
+
+        If a boule ellipsoid or the optional parameters a and f are specified,
+        the geoid height will be calculated with respect to a flattened
+        ellipsoid with semi-major axis a and flattening f. The centrifugal
+        potential in the rotating coordinate frame is explicitly accounted for
+        by using the angular rotation rate omega of the planet. If omega is
+        explicitly specified, or if a boule ellipsoid is input, these values
+        will override the value present in the class instance.
 
         Reference
         ----------
         Wieczorek, M. A. Gravity and topography of the terrestrial planets,
         Treatise on Geophysics, 10, 165-206, 2007.
         """
-        if a is None:
-            a = self.r0
-        if f is None:
-            f = 0.
-        if r is None:
-            r = self.r0
+        if potref is None and ellipsoid is None:
+            raise ValueError('Either a boule ellipsoid or a value for potref '
+                             'must be provided to geoid().')
+
         if lmax is None:
             lmax = self.lmax
         if lmax_calc is None:
             lmax_calc = lmax
         if name is None:
             name = self.name
+        if r is None:
+            r = self.r0
+
+        if ellipsoid is not None:
+            a = ellipsoid.semimajor_axis
+            f = ellipsoid.flattening
+            omega = ellipsoid.angular_velocity
+            potref = ellipsoid.reference_normal_gravity_potential
+        else:
+            if a is None:
+                a = self.r0
+            if f is None:
+                f = 0.
+            if omega is None:
+                omega = self.omega
 
         if grid.upper() in ('DH', 'DH1'):
             sampling = 1
@@ -2778,9 +2807,6 @@ class SHGravCoeffs(object):
                     "Input value is {:s}.".format(repr(grid)))
 
         coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
-
-        if omega is None:
-            omega = self.omega
 
         geoid = _MakeGeoidGridDH(coeffs, self.r0, self.gm, potref, lmax=lmax,
                                  omega=omega, r=r, order=order,
