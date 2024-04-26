@@ -1138,9 +1138,9 @@ class SHGrid(object):
             if isinstance(cmap, _mpl.colors.Colormap):
                 cmap_scaled = cmap._resample(num)
             else:
-                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+                cmap_scaled = _plt.get_cmap(cmap, num)
         else:
-            cmap_scaled = _mpl.cm.get_cmap(cmap)
+            cmap_scaled = _plt.get_cmap(cmap)
         if cmap_reverse:
             cmap_scaled = cmap_scaled.reversed()
 
@@ -2079,9 +2079,9 @@ class DHRealGrid(SHGrid):
             if isinstance(cmap, _mpl.colors.Colormap):
                 cmap_scaled = cmap._resample(num)
             else:
-                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+                cmap_scaled = _plt.get_cmap(cmap, num)
         else:
-            cmap_scaled = _mpl.cm.get_cmap(cmap)
+            cmap_scaled = _plt.get_cmap(cmap)
 
         if cmap_reverse:
             cmap_scaled = cmap_scaled.reversed()
@@ -2923,9 +2923,9 @@ class GLQRealGrid(SHGrid):
             if isinstance(cmap, _mpl.colors.Colormap):
                 cmap_scaled = cmap._resample(num)
             else:
-                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+                cmap_scaled = _plt.get_cmap(cmap, num)
         else:
-            cmap_scaled = _mpl.cm.get_cmap(cmap)
+            cmap_scaled = _plt.get_cmap(cmap)
 
         if cmap_reverse:
             cmap_scaled = cmap_scaled.reversed()
