@@ -1589,10 +1589,9 @@ class SHGrid(object):
         cb_ylabel : str, optional, default = None
             Text label for the y axis of the colorbar
         cb_tick_interval : float, optional, default = None
-            Annotation interval on the colorbar. If cmap_scale is 'log' and
-            cb_power is True, then use 1 to annotate each power of 10, use 2
-            to annotate 3 intervals per decade, and use 3 to annotate 10
-            intervals per decade.
+            Annotation interval on the colorbar. If cmap_scale is 'log', use 1
+            to annotate each power of 10 (default), use 2 to annotate 3
+            intervals per decade, or use 3 to annotate 10 intervals per decade.
         cb_minor_tick_interval : float, optional, default = None
             Colorbar minor tick interval as described in cb_tick_interval.
         cb_offset : float or int, optional, default = None
@@ -1720,6 +1719,8 @@ class SHGrid(object):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
+        if cmap_scale == 'log' and cb_tick_interval == None:
+            cb_tick_interval=1
 
         figure = self._plot_pygmt(
             fig=fig, projection=projection, region=region, rectangle=rectangle,
