@@ -76,7 +76,7 @@ The following is the list of implemented datasets. Additional older or deprecate
 
 | Dataset | Description |
 | ---------- | ----------- |
-| LOLA_shape_pa | 5759 degree and order spherical harmonic model of the shape of Earth's Moon in a principal axis coordinate system (Wieczorek 2024). |
+| LDEM_shape_pa | 11519 degree and order spherical harmonic model of the shape of Earth's Moon in a principal axis coordinate system (Wieczorek 2024). |
 | LOLA_shape | 5759 degree and order spherical harmonic model of the shape of Earth's Moon in mean Earth/polar axis coordinate system (Wieczorek 2024). |
 | GRGM900C | GSFC 900 degree and order spherical harmonic model of the gravitational potential of the Moon. This model applies a Kaula constraint for degrees greater than 600 (Lemoine et al. 2014). |
 | GRGM1200B | GSFC 1200 degree and order spherical harmonic model of the gravitational potential of the Moon (Goossens et al. 2020). This model applies a Kaula constraint for degrees greater than 600. |
