@@ -13,6 +13,10 @@ import gzip as _gzip
 import shutil as _shutil
 from pathlib import Path
 
+from boule import Sphere as _Sphere
+from boule import Ellipsoid as _Ellipsoid
+from boule import TriaxialEllipsoid as _TriaxialEllipsoid
+
 from .shcoeffs import SHCoeffs as _SHCoeffs
 from .shcoeffs import SHRealCoeffs as _SHRealCoeffs
 from .shgrid import DHRealGrid as _DHRealGrid
@@ -2525,6 +2529,9 @@ class SHGravCoeffs(object):
             lmax_calc = lmax
 
         if ellipsoid is not None:
+            if not isinstance(ellipsoid,
+                              (_Sphere, _Ellipsoid, _TriaxialEllipsoid)):
+                raise ValueError('ellipsoid must be a boule class instance.')
             a = ellipsoid.semimajor_axis
             f = ellipsoid.flattening
             normal_gravity_gm = ellipsoid.geocentric_grav_const
@@ -2675,6 +2682,9 @@ class SHGravCoeffs(object):
             name = self.name
 
         if ellipsoid is not None:
+            if not isinstance(ellipsoid,
+                              (_Sphere, _Ellipsoid, _TriaxialEllipsoid)):
+                raise ValueError('ellipsoid must be a boule class instance.')
             a = ellipsoid.semimajor_axis
             f = ellipsoid.flattening
         else:
@@ -2785,10 +2795,16 @@ class SHGravCoeffs(object):
             r = self.r0
 
         if ellipsoid is not None:
+            if not isinstance(ellipsoid,
+                              (_Sphere, _Ellipsoid, _TriaxialEllipsoid)):
+                raise ValueError('ellipsoid must be a boule class instance.')
             a = ellipsoid.semimajor_axis
             f = ellipsoid.flattening
             omega = ellipsoid.angular_velocity
-            potref = ellipsoid.reference_normal_gravity_potential
+            if isinstance(ellipsoid, _Sphere):
+                potref = ellipsoid.reference_normal_gravitational_potential
+            else:
+                potref = ellipsoid.reference_normal_gravity_potential
         else:
             if a is None:
                 a = self.r0

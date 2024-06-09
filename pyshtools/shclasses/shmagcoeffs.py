@@ -13,6 +13,10 @@ import gzip as _gzip
 import shutil as _shutil
 from pathlib import Path
 
+from boule import Sphere as _Sphere
+from boule import Ellipsoid as _Ellipsoid
+from boule import TriaxialEllipsoid as _TriaxialEllipsoid
+
 from .shcoeffs import SHCoeffs as _SHCoeffs
 from .shmaggrid import SHMagGrid as _SHMagGrid
 from .shtensor import SHMagTensor as _SHMagTensor
@@ -2024,6 +2028,9 @@ class SHMagCoeffs(object):
             lmax_calc = lmax
 
         if ellipsoid is not None:
+            if not isinstance(ellipsoid,
+                              (_Sphere, _Ellipsoid, _TriaxialEllipsoid)):
+                raise ValueError('ellipsoid must be a boule class instance.')
             a = ellipsoid.semimajor_axis
             f = ellipsoid.flattening
         else:
@@ -2158,6 +2165,9 @@ class SHMagCoeffs(object):
             name = self.name
 
         if ellipsoid is not None:
+            if not isinstance(ellipsoid,
+                              (_Sphere, _Ellipsoid, _TriaxialEllipsoid)):
+                raise ValueError('ellipsoid must be a boule class instance.')
             a = ellipsoid.semimajor_axis
             f = ellipsoid.flattening
         else:
