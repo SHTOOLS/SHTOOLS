@@ -39,7 +39,7 @@ jobs:
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel
           CIBW_ENVIRONMENT_WINDOWS: PATH="C:\\msys64\\ucrt64\\bin;$PATH" MSYSTEM="UCRT64"
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"  # adds DLLs to wheel
-          CIBW_SKIP: "*-manylinux_i686 *-musllinux* *-win32"
+          CIBW_SKIP: "*-manylinux_i686 *-musllinux* *-win32 pp3*"
           # CIBW_ARCHS_LINUX: "auto aarch64"
 
       - uses: actions/upload-artifact@v4
