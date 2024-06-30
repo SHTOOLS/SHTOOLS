@@ -36,7 +36,7 @@ jobs:
           CIBW_BEFORE_ALL_WINDOWS: >
             C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -Syu" &&
             C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -S mingw-w64-ucrt-x86_64-gcc-fortran mingw-w64-ucrt-x86_64-openblas mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-fftw"
-          CIBW_ENVIRONMENT_WINDOWS: PATH=$PATH;'C:\\msys64\\ucrt64\\bin' MSYSTEM='UCRT64'
+          CIBW_ENVIRONMENT_WINDOWS: PATH='$PATH;C:\\msys64\\ucrt64\\bin' MSYSTEM='UCRT64'
           # NEED TO REPAIR WHEEL WITH DELVEWHEEL
           CIBW_SKIP: "*-manylinux_i686 *-musllinux* *-win32"
           # CIBW_ARCHS_LINUX: "auto aarch64"
