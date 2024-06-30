@@ -36,8 +36,7 @@ jobs:
           CIBW_BEFORE_ALL_WINDOWS: >
             C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -Syu" &&
             C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -S mingw-w64-ucrt-x86_64-gcc-fortran mingw-w64-ucrt-x86_64-openblas mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-fftw"
-          # NOTE: oldest-supported-numpy causes issues with pp310-win_amd64
-          CIBW_BEFORE_BUILD_WINDOWS: 'pip install "numpy<2.0.0" "delvewheel"'
+          CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel
           CIBW_ENVIRONMENT_WINDOWS: PATH="C:\\msys64\\ucrt64\\bin;$PATH" MSYSTEM="UCRT64"
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"  # adds DLLs to wheel
           CIBW_SKIP: "*-manylinux_i686 *-musllinux* *-win32"

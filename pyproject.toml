@@ -53,7 +53,8 @@ ducc = ['ducc0>=0.15']
 build-backend = 'mesonpy'
 requires = [
   'meson-python>=0.14',
-  'oldest-supported-numpy',
+  'oldest-supported-numpy; python_version != "3.10"',
+  'numpy==1.22.2; python_version == "3.10"',  # avoids issue with cibuildwheel pp310-win_amd64
   'jupyter-core',
   'setuptools>=64',
   'setuptools_scm>=8',
