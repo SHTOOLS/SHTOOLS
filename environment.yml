@@ -4,4 +4,5 @@ dependencies:
     - pkg-config
     - fftw>=3.3.8
     - blas-devel>=3.8
+    - jupyter
     - pip
