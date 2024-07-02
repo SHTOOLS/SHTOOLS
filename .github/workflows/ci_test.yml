@@ -51,8 +51,8 @@ jobs:
     - name: Install libraries for Windows
       if: ${{ matrix.os == 'windows-latest' }}
       run: |
-        SET PATH=C:\\msys64\\ucrt64\\bin;%PATH% 
-        SET MSYSTEM=UCRT64
+        $env:PATH="C:\\msys64\\ucrt64\\bin;" + $env:PATH 
+        $env:MSYSTEM="UCRT64"
         C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -Syu"
         C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -S mingw-w64-ucrt-x86_64-gcc-fortran mingw-w64-ucrt-x86_64-openblas mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-fftw"
 
@@ -60,7 +60,7 @@ jobs:
       shell: bash -l {0}
       run: |
         conda env list
-        pip install .
+        pip install .[cartopy,pygmt,palettable,ducc]
 
     - name: Run tests
       shell: bash -l {0}
