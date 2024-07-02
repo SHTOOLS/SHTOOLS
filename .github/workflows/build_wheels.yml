@@ -13,6 +13,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build_wheels_aarch64:
+    name: Build wheels for Linux aarch64
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Set up QEMU  # provides aarch64 emulation support
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: all
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.17.0
+        env:
+          CIBW_MANYLINUX_AARCH64_IMAGE: "manylinux_2_28"
+          CIBW_ARCHS_LINUX: "aarch64"
+          CIBW_BEFORE_ALL_LINUX: yum install -y fftw-devel openblas-devel
+          CIBW_SKIP: "*-musllinux* pp3*"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-ubuntu-latest-aarch64
+          path: ./wheelhouse/*.whl
+
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -27,18 +54,10 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Set up QEMU  # provides aarch64 emulation support
-        if: runner.os == 'Linux'
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: all
-
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.17.0
         env:
           CIBW_MANYLINUX_X86_64_IMAGE: "manylinux_2_28"  # ensure we don't use CentOS-based manylinux
-          CIBW_MANYLINUX_AARCH64_IMAGE: "manylinux_2_28"  # more env variables like this can be added if necessary
-          CIBW_ARCHS_LINUX: "auto aarch64"
           CIBW_BEFORE_ALL_MACOS: brew reinstall gcc fftw lapack
           CIBW_BEFORE_ALL_LINUX: yum install -y fftw-devel openblas-devel
           CIBW_BEFORE_ALL_WINDOWS: >
