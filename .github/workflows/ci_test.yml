@@ -30,7 +30,6 @@ jobs:
       uses: conda-incubator/setup-miniconda@v3
       with:
         python-version: ${{ matrix.python-version }}
-        mamba-version: "*"
         channels: conda-forge
         channel-priority: strict
         auto-update-conda: true
@@ -61,7 +60,7 @@ jobs:
       shell: bash -l {0}
       run: |
         conda env list
-        pip install --no-deps .
+        pip install .
 
     - name: Run tests
       shell: bash -l {0}
