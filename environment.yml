@@ -6,7 +6,7 @@ dependencies:
     - setuptools_scm>=8
     - fftw>=3.3.8
     - blas-devel>=3.8
-    - numpy
+    - numpy>=2.0.0
     - scipy>=0.14.0
     - matplotlib-base>=3.3
     - astropy>=4.0
