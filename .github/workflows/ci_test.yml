@@ -1,7 +1,6 @@
 name: Continuous Integration Tests
 
 on:
-  push:  # REMOVE LATER -- REMOVE LATER
   pull_request:
     branches: [master, develop]
 
@@ -16,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
         python-version: ['3.9', '3.12']
 
     steps:
@@ -26,35 +25,39 @@ jobs:
         fetch-depth: 250
         fetch-tags: true
 
-    - name: Install libraries for Ubuntu
-      shell: bash -l {0}
-      if: ${{ matrix.os == 'ubuntu-latest' }}
-      run: |
-        sudo apt-get update && sudo apt-get install libfftw3-dev libblas-dev liblapack-dev g++ gfortran tcsh gmt -y
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+        mamba-version: "*"
+        channels: conda-forge
+        channel-priority: strict
+        auto-update-conda: true
+        miniconda-version: "latest"
+        activate-environment: ci_test
+        environment-file: environment.yml
 
-    - name: Install libraries for macOS
+    - name: Set up Conda environment
+      shell: bash -l {0}
+      run: |
+        conda list -n ci_test
+
+    - name: Install gcc for macOS
       shell: bash -l {0}
       if: ${{ matrix.os == 'macos-latest' }}
       run: |
-        brew reinstall gcc fftw lapack gmt
-
-    - name: Install libraries for Windows
-      if: ${{ matrix.os == 'windows-latest' }}
-      shell: bash -l {0}
-      run: |
-        echo 'PATH=$PATH:"C:\\msys64\\ucrt64\\bin"' >> $GITHUB_ENV
-        echo 'MSYSTEM="UCRT64"' >> $GITHUB_ENV
-        C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -Syu"
-        C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -S mingw-w64-ucrt-x86_64-gcc-fortran mingw-w64-ucrt-x86_64-openblas mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-fftw"
+        brew reinstall gcc
 
     - name: Build using pip
       shell: bash -l {0}
       run: |
-        pip install .[cartopy,pygmt,palettable,ducc]
+        conda env list
+        pip install --no-deps .
 
     - name: Run tests
       shell: bash -l {0}
       run: |
+        conda env list
         python examples/notebooks/test_notebooks.py
         export MPLBACKEND=Agg
         make -C examples/python -f Makefile no-timing

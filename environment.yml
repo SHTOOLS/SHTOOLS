@@ -2,8 +2,23 @@ channels:
     - conda-forge
 dependencies:
     - pkg-config
+    - meson-python>=0.14
+    - setuptools_scm>=8
     - fftw>=3.3.8
     - blas-devel>=3.8
+    - numpy<2.0.0
+    - scipy>=0.14.0
+    - matplotlib-base>=3.3
+    - astropy>=4.0
+    - xarray
+    - requests
+    - pooch>=1.1
+    - tqdm
+    - cartopy>=0.18.0
+    - gmt>=6.3.0
+    - pygmt>=0.7.0
+    - ducc0>=0.15
+    - palettable>=3.3
     - jupyter
-    - pygmt
     - pip
+    - flake8
