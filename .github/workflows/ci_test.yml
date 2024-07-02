@@ -1,6 +1,7 @@
 name: Continuous Integration Tests
 
 on:
+  push:  # REMOVE LATER -- REMOVE LATER
   pull_request:
     branches: [master, develop]
 
@@ -15,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ['3.9', '3.12']
 
     steps:
@@ -47,6 +48,14 @@ jobs:
       if: ${{ matrix.os == 'macos-latest' }}
       run: |
         brew reinstall gcc
+
+    - name: Install libraries for Windows
+      if: ${{ matrix.os == 'windows-latest' }}
+      run: |
+        SET PATH=C:\\msys64\\ucrt64\\bin;%PATH% 
+        SET MSYSTEM=UCRT64
+        C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -Syu"
+        C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -S mingw-w64-ucrt-x86_64-gcc-fortran mingw-w64-ucrt-x86_64-openblas mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-fftw"
 
     - name: Build using pip
       shell: bash -l {0}
