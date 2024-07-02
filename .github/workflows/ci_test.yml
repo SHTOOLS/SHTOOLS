@@ -26,47 +26,35 @@ jobs:
         fetch-depth: 250
         fetch-tags: true
 
-    - name: Setup Miniconda
-      uses: conda-incubator/setup-miniconda@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-        channels: conda-forge
-        channel-priority: strict
-        auto-update-conda: true
-        miniconda-version: "latest"
-        activate-environment: ci_test
-        environment-file: environment.yml
-
-    - name: Set up Conda environment
+    - name: Install libraries for Ubuntu
       shell: bash -l {0}
+      if: ${{ matrix.os == 'ubuntu-latest' }}
       run: |
-        conda list -n ci_test
+        apt-get update && apt-get install libfftw3-dev libblas-dev liblapack-dev g++ gfortran tcsh gmt -y
 
-    - name: Install gcc for macOS
+    - name: Install libraries for macOS
       shell: bash -l {0}
       if: ${{ matrix.os == 'macos-latest' }}
       run: |
-        brew reinstall gcc
+        brew reinstall gcc fftw lapack gmt
 
     - name: Install libraries for Windows
       if: ${{ matrix.os == 'windows-latest' }}
       shell: bash -l {0}
       run: |
-        export PATH=$PATH:"C:\\msys64\\ucrt64\\bin"
-        export MSYSTEM="UCRT64"
+        echo 'PATH=$PATH:"C:\\msys64\\ucrt64\\bin"' >> $GITHUB_ENV
+        echo 'MSYSTEM="UCRT64"' >> $GITHUB_ENV
         C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -Syu"
         C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -S mingw-w64-ucrt-x86_64-gcc-fortran mingw-w64-ucrt-x86_64-openblas mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-fftw"
 
     - name: Build using pip
       shell: bash -l {0}
       run: |
-        conda env list
         pip install .[cartopy,pygmt,palettable,ducc]
 
     - name: Run tests
       shell: bash -l {0}
       run: |
-        conda env list
         python examples/notebooks/test_notebooks.py
         export MPLBACKEND=Agg
         make -C examples/python -f Makefile no-timing

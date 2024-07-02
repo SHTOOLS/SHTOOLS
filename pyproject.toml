@@ -31,7 +31,7 @@ authors = [
 dependencies = [
   'numpy>=2.0.0',
   'scipy>=0.14.0',
-  'matplotlib>=3.3',
+  'matplotlib==3.7.3',
   'astropy>=4.0',
   'xarray',
   'requests',
