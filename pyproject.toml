@@ -29,7 +29,7 @@ authors = [
   { name = 'The SHTOOLS developers', email = 'mark.wieczorek@ipgp.fr' },
 ]
 dependencies = [
-  'numpy<2.0.0',
+  'numpy>=2.0.0',
   'scipy>=0.14.0',
   'matplotlib>=3.3',
   'astropy>=4.0',
