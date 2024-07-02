@@ -50,9 +50,10 @@ jobs:
 
     - name: Install libraries for Windows
       if: ${{ matrix.os == 'windows-latest' }}
+      shell: bash -l {0}
       run: |
-        $env:PATH="C:\\msys64\\ucrt64\\bin;" + $env:PATH 
-        $env:MSYSTEM="UCRT64"
+        export PATH=$PATH:"C:\\msys64\\ucrt64\\bin"
+        export MSYSTEM="UCRT64"
         C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -Syu"
         C:\\msys64\\usr\\bin\\bash.exe -lc "pacman --noconfirm -S mingw-w64-ucrt-x86_64-gcc-fortran mingw-w64-ucrt-x86_64-openblas mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-fftw"
 
