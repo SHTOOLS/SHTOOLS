@@ -1,6 +1,7 @@
 name: Continuous Integration Tests
 
 on:
+  push: # REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE
   pull_request:
     branches: [master, develop]
 
