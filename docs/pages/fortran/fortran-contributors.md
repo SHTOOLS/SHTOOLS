@@ -37,3 +37,5 @@ folder: fortran
 * [EricAtORS](https://github.com/EricAtORS)
 * David Minton / [profminton](https://github.com/profminton)
 * Julia Maia / [jschmaia](https://github.com/jschmaia)
+* David Shin / [spicydonkey](https://github.com/spicydonkey)
+* Ethan Mentzer / [cometbeetle](https://github.com/cometbeetle)
