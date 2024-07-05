@@ -1719,8 +1719,8 @@ class SHGrid(object):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
-        if cmap_scale == 'log' and cb_tick_interval == None:
-            cb_tick_interval=1
+        if cmap_scale == 'log' and cb_tick_interval is None:
+            cb_tick_interval = 1
 
         figure = self._plot_pygmt(
             fig=fig, projection=projection, region=region, rectangle=rectangle,

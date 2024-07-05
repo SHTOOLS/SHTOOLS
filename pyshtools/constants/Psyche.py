@@ -8,43 +8,45 @@ import numpy as _np
 
 from astropy.constants import Constant as _Constant
 from astropy.constants import G as _G
-from . import Sun as _Sun
-
-mass = _Constant(
-    abbrev='mass_psyche',
-    name='Mass of (16) Psyche',
-    value=1.15e-11 * _Sun.mass.value,
-    unit='kg',
-    uncertainty=3.5e-13 * _Sun.mass.value,
-    reference='Baer, J., & Chesley, S. R. (2017). Simultaneous Mass '
-    'Determination for Gravitationally Coupled Asteroids. The Astronomical '
-    'Journal, 154(2), 76. https://doi.org/10.3847/1538-3881/aa7de8')
 
 gm = _Constant(
     abbrev='gm_psyche',
     name='Gravitational constant times the mass of (16) Psyche',
-    value=mass.value * _G.value,
+    value=1.601e9,
     unit='m3 / s2',
-    uncertainty=_np.sqrt((_G.value * mass.uncertainty)**2
-                         + (mass.value * _G.uncertainty)**2),
-    reference='Derived from mass and G')
+    uncertainty=0.017e9,
+    reference='Farnocchia, D., Fuentes-Muñoz, O., Park, R. S., Baer, J., and '
+    'Chesley, S. R. (2024). Mass, Density, and Radius of Asteroid (16) Psyche '
+    'from High-precision Astrometry. The Astronomical Journal, 168(1), 21. '
+    'https://doi.org/10.3847/1538-3881/ad50ca')
+
+mass = _Constant(
+    abbrev='mass_psyche',
+    name='Mass of (16) Psyche',
+    value=gm.value / _G.value,
+    unit='kg',
+    uncertainty=_np.sqrt((gm.uncertainty / _G.value)**2 +
+                         (gm.value * _G.uncertainty / _G.value**2)**2
+                         ),
+    reference='Derived from gm_psyche and G.')
+
 
 mean_radius = _Constant(
     abbrev='mean_radius_psyche',
     name='Mean radius of (16) Psyche',
-    value=112405.7,
+    value=109480.4,
     unit='m',
     uncertainty=0.,
     reference='Shepard2021_shape: Wieczorek, M. (2024). Spherical harmonic '
-    'models of the shape of asteroid (16) Psyche (1.0.0) [Data set]. Zenodo. '
-    'https://doi.org/10.5281/zenodo.10985759')
+    'models of the shape of asteroid (16) Psyche (1.1) [Data set]. Zenodo. '
+    'https://doi.org/10.5281/zenodo.12522382')
 
 r = mean_radius
 
 volume_equivalent_radius = _Constant(
     abbrev='volume_equivalent_radius_psyche',
     name='Volume equivalent radius of (16) Psyche',
-    value=113415.7,
+    value=111380.0,
     unit='m',
     uncertainty=0.,
     reference='Computed using Shepard2021_shape and SHCoeffs.volume()')
@@ -52,7 +54,7 @@ volume_equivalent_radius = _Constant(
 volume = _Constant(
     abbrev='volume_psyche',
     name='Volume of (16) Psyche',
-    value=6110937937813135.0,
+    value=5787758983575747.0,
     unit='m3',
     uncertainty=0.,
     reference='Computed using Shepard2021_shape and SHCoeffs.volume()')

@@ -9,6 +9,7 @@ LOLA_shape_pa (LRO)       :  Wieczorek (2024)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
+from pooch import create as _create
 from pooch import HTTPDownloader as _HTTPDownloader
 from pooch import DOIDownloader as _DOIDownloader
 from ....shclasses import SHCoeffs as _SHCoeffs

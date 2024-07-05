@@ -3,7 +3,7 @@ with the input global cross-power spectra of two functions.
 
 Usage
 -----
-admit, corr = SHAdmitCorr (sgt, sgg, stt, tapers, [lmax, lwin, k, mtdef,
+admit, corr = SHBiasAdmitCorr (sgt, sgg, stt, tapers, [lmax, lwin, k, mtdef,
 taper_wt])
 
 Returns
