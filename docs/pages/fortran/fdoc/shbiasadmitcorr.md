@@ -13,7 +13,7 @@ Calculate the expected multitaper admittance and correlation spectra associated 
 
 ## Usage
 
-call SHAdmitCorr (`sgt`, `sgg`, `stt`, `lmax`, `tapers`, `lwin`, `k`, `admit`, `corr`, `mtdef`, `taper_wt`, `exitstatus`)
+call SHBiasAdmitCorr (`sgt`, `sgg`, `stt`, `lmax`, `tapers`, `lwin`, `k`, `admit`, `corr`, `mtdef`, `taper_wt`, `exitstatus`)
 
 ## Parameters
 
@@ -38,10 +38,10 @@ call SHAdmitCorr (`sgt`, `sgg`, `stt`, `lmax`, `tapers`, `lwin`, `k`, `admit`, `
 `k` : input, integer(int32)
 :   The number of localizing windows to use. Only the first `k` columns of `tapers` will be employed, which corresponds to the `k` best-concentrated localizing windows.
 
-`admit` : output, real(dp), dimension (`lmax`-`lwin`+1) 
+`admit` : output, real(dp), dimension (`lmax`-`lwin`+1)
 :   The biased admittance spectrum obtained using the localized (cross-)power spectra of Sgt and Stt.
 
-`corr` : output, real(dp), dimension (`lmax`-`lwin`+1) 
+`corr` : output, real(dp), dimension (`lmax`-`lwin`+1)
 :   The biased correlation spectrum obtained using the localized (cross-)power spectra of Sgt, Stt, and Sgg.
 
 `mtdef` : optional, input, integer(int32), default = 1
@@ -65,9 +65,9 @@ The default is to apply equal weights to each individual windowed estimate of th
 
 Wieczorek, M. A. and F. J. Simons, Minimum-variance multitaper spectral estimation on the sphere, J. Fourier Anal. Appl., 13, doi:10.1007/s00041-006-6904-1, 665-692, 2007.
 
-Simons, F. J., F. A. Dahlen and M. A. Wieczorek, Spatiospectral concentration on the sphere, SIAM Review, 48, 504-536, doi:10.1137/S0036144504445765, 2006. 
+Simons, F. J., F. A. Dahlen and M. A. Wieczorek, Spatiospectral concentration on the sphere, SIAM Review, 48, 504-536, doi:10.1137/S0036144504445765, 2006.
 
-Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere, 
+Wieczorek, M. A. and F. J. Simons, Localized spectral analysis on the sphere,
 Geophys. J. Int., 162, 655-675.
 
 ## See also
