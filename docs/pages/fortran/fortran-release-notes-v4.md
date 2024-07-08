@@ -32,10 +32,10 @@ folder: fortran
 * Added a new class method `SHCoeffs.from_least_squares()` that allows one to initialize an `SHCoeffs` instance by performing a least squares inversion of irregularly space data.
 
 **Change of normal gravity for rotating spheres**
-The normal gravity is defined as the magnitude of the total gravity (gravitation + centrifugal) on the surface of a reference ellipsoid. Previously, the fortran `NormalGravity` routine set the centrifugal term to zero when the reference ellipsoid was a sphere. For the case of a sphere, it should be noted that the surface does not correspond to an equipotential surface, and the gravity vector is not normal to the surface.
+* The normal gravity is defined as the magnitude of the total gravity (gravitation + centrifugal) on the surface of a reference ellipsoid. Previously, the fortran `NormalGravity` routine set the centrifugal term to zero when the reference ellipsoid was a sphere. For the case of a sphere, it should be noted that the surface does not correspond to an equipotential surface, and the gravity vector is not normal to the surface.
 
 **Packaging**
-We have migrated from using multibuild and Appveyor to cibuildwheel to build our wheels for distribution on pypi.org. We are currently distributing wheels for macOS (intel and Apple silicon), windows, and linux (intel and ARM).
+* We have migrated from using multibuild and Appveyor to cibuildwheel to build our wheels for distribution on pypi.org. We are currently distributing wheels for macOS (intel and Apple silicon), windows, and linux (intel and ARM).
 
 **Other changes**
 * Replaced the undefined attribute `self._vii_units` in `Tensor.to_xarray()` by `self.units`, and added a demo using the fixed `Tensor.to_xarray` method in the tutorial notebook `gravity-and-magnetic-fields.ipynb`.
