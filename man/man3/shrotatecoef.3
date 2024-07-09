@@ -14,7 +14,7 @@
 . ftr VB CB
 . ftr VBI CBI
 .\}
-.TH "shrotatecoef" "1" "2021-02-15" "Fortran 95" "SHTOOLS 4.12"
+.TH "shrotatecoef" "1" "2024-07-02" "Fortran 95" "SHTOOLS 4.13"
 .hy
 .SH SHRotateCoef
 .PP
@@ -115,6 +115,8 @@ convention\[rq], where the second rotation was with respect to the newx
 axis, the Euler angles according to the y convention would be
 \f[V]alpha_y=alpha_x-pi/2\f[R], \f[V]beta_x=beta_y\f[R], and
 \f[V]gamma_y=gamma_x+pi/2\f[R].
+.PP
+This routine is accurate to about spherical harmonic degree 1200.
 .SH See also
 .PP
 djpi2, shrotaterealcoef, shctor, shrtoc, shcilmtocindex, shcindextocilm

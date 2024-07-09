@@ -14,7 +14,7 @@
 . ftr VB CB
 . ftr VBI CBI
 .\}
-.TH "shrotaterealcoef" "1" "2021-02-15" "Fortran 95" "SHTOOLS 4.12"
+.TH "shrotaterealcoef" "1" "2024-07-02" "Fortran 95" "SHTOOLS 4.13"
 .hy
 .SH SHRotateRealCoef
 .PP
@@ -115,6 +115,8 @@ Then the coefficients are converted to indexed form using
 result if converted back to \f[V]cilm\f[R] complex form using
 \f[V]SHCindexToCilm\f[R], and these are finally converted back to real
 form using \f[V]SHctor\f[R].
+.PP
+This routine is accurate to about spherical harmonic degree 1200.
 .SH See also
 .PP
 djpi2, shrotatecoef, shctor, shrtoc, shcilmtocindex, shcindextocilm
