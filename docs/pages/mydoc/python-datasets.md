@@ -120,7 +120,8 @@ The following is the list of implemented datasets. Additional older or deprecate
 
 | Dataset | Description |
 | ---------- | ----------- |
-| Shepard2021_shape | 29 degree and order spherical harmonic model of the shape of asteroid (16) Vesta based on the Shepard et al. (2021) shape model (Wieczorek 2024). |
+| Shepard2021_shape | 10 degree and order spherical harmonic model of the shape of asteroid (16) Vesta based on the Shepard et al. (2021) shape model (Wieczorek 2024). |
+| Shepard2017_shape | 29 degree and order spherical harmonic model of the shape of asteroid (16) Vesta based on the Shepard et al. (2017) shape model (Wieczorek 2024). |
 
 
 ### (433) Eros
