@@ -25,11 +25,11 @@ class SlepianCoeffs(object):
 
     Each class instance defines the following class attributes:
 
+    name            : The name of the class instance.
     falpha          : Array of the Slepian expansion coefficients.
     galpha          : A Slepian class instance that contains the associated
                       Slepian functions.
     nmax            : The number of Slepian expansion coefficients.
-    name            : The name of the dataset.
 
     Each class instance provides the following methods:
 
@@ -78,21 +78,21 @@ class SlepianCoeffs(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('nmax = {:d}\n'
-               'lmax = {:d}\n'
-               'name = {:s}\n'
-               .format(self.nmax, self.galpha.lmax, repr(self.name)))
-        str += '\nSlepian functions:\n' + self.galpha.__repr__()
+        str = (f'  name = {self.name!r}\n'
+               f'  nmax = {self.nmax}\n'
+               f'  lmax = {self.galpha.lmax}\n'
+               )
+        str += '\n  Slepian functions:\n' + self.galpha.__repr__()
         return str
 
     def expand(self, nmax=None, grid='DH2', zeros=None, extend=True,
-               backend=None, nthreads=None):
+               backend=None, nthreads=None, name=None):
         """
         Expand the function on a grid using the first n Slepian coefficients.
 
         Usage
         -----
-        f = x.expand([nmax, grid, zeros, extend])
+        f = x.expand([nmax, grid, zeros, extend, name])
 
         Returns
         -------
@@ -119,8 +119,10 @@ class SlepianCoeffs(object):
             Number of threads to use for the 'ducc' backend. Setting this
             parameter to 0 will use as many threads as there are hardware
             threads on the system.
+        name : str, optional, default = None
+            The name of the SHGrid class instance.
         """
-        if type(grid) is not str:
+        if not isinstance(grid, str):
             raise ValueError('grid must be a string. ' +
                              'Input type was {:s}'
                              .format(str(type(grid))))
@@ -141,25 +143,27 @@ class SlepianCoeffs(object):
             gridout = backend_module(
                 backend=backend, nthreads=nthreads).MakeGridDH(
                     shcoeffs, sampling=1, norm=1, csphase=1, extend=extend)
-            return SHGrid.from_array(gridout, grid='DH', copy=False)
+            return SHGrid.from_array(gridout, grid='DH', copy=False, name=name)
         elif grid.upper() == 'DH2':
             gridout = backend_module(
                 backend=backend, nthreads=nthreads).MakeGridDH(
                     shcoeffs, sampling=2, norm=1, csphase=1, extend=extend)
-            return SHGrid.from_array(gridout, grid='DH', copy=False)
+            return SHGrid.from_array(gridout, grid='DH', copy=False, name=name)
         elif grid.upper() == 'GLQ':
             if backend == "shtools" and zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.galpha.lmax)
             gridout = backend_module(
                 backend=backend, nthreads=nthreads).MakeGridGLQ(
                     shcoeffs, zeros=zeros, norm=1, csphase=1, extend=extend)
-            return SHGrid.from_array(gridout, grid='GLQ', copy=False)
+            return SHGrid.from_array(gridout, grid='GLQ', copy=False,
+                                     name=name)
         else:
             raise ValueError(
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
                 "Input value was {:s}".format(repr(grid)))
 
-    def to_shcoeffs(self, nmax=None, normalization='4pi', csphase=1):
+    def to_shcoeffs(self, nmax=None, normalization='4pi', csphase=1,
+                    name=None):
         """
         Return the spherical harmonic coefficients using the first n Slepian
         coefficients.
@@ -167,7 +171,7 @@ class SlepianCoeffs(object):
         Usage
         -----
 
-        s = x.to_shcoeffs([nmax])
+        s = x.to_shcoeffs([nmax, normalization, csphase, name])
 
         Returns
         -------
@@ -187,8 +191,10 @@ class SlepianCoeffs(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
+        name : str, optional, default = None
+            The name of the SHCoeffs class instance.
         """
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type was {:s}'
                              .format(str(type(normalization))))
@@ -215,7 +221,8 @@ class SlepianCoeffs(object):
             shcoeffs = _shtools.SlepianCoeffsToSH(self.falpha,
                                                   self.galpha.tapers, nmax)
 
-        temp = SHCoeffs.from_array(shcoeffs, normalization='4pi', csphase=1)
+        temp = SHCoeffs.from_array(shcoeffs, normalization='4pi', csphase=1,
+                                   name=name)
 
         if normalization != '4pi' or csphase != 1:
             return temp.convert(normalization=normalization, csphase=csphase)
@@ -226,7 +233,8 @@ class SlepianCoeffs(object):
                       base=10., lmax=None, xscale='lin', yscale='log',
                       grid=True, legend=None, legend_loc='best',
                       axes_labelsize=None, tick_labelsize=None, show=True,
-                      ax=None, fname=None, **kwargs):
+                      ax=None, fname=None, plot_dict=dict(),
+                      legend_dict=dict()):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
@@ -234,7 +242,8 @@ class SlepianCoeffs(object):
         -----
         x.plot_spectrum([nmax, convention, unit, base, lmax, xscale, yscale,
                          grid, legend, legend_loc, axes_labelsize,
-                         tick_labelsize, legend, show, ax, fname, **kwargs])
+                         tick_labelsize, legend, show, ax, fname, plot_dict,
+                         legend_dict])
 
         Parameters
         ----------
@@ -278,8 +287,10 @@ class SlepianCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -313,7 +324,9 @@ class SlepianCoeffs(object):
                                            tick_labelsize=tick_labelsize,
                                            legend=legend,
                                            legend_loc=legend_loc, show=show,
-                                           ax=ax, fname=fname, **kwargs)
+                                           ax=ax, fname=fname,
+                                           plot_dict=plot_dict,
+                                           legend_dict=legend_dict)
             return fig, axes
         else:
             temp.plot_spectrum(convention=convention, unit=unit,
@@ -322,4 +335,5 @@ class SlepianCoeffs(object):
                                axes_labelsize=axes_labelsize,
                                tick_labelsize=tick_labelsize,
                                legend=legend, legend_loc=legend_loc, show=show,
-                               ax=ax, fname=fname, **kwargs)
+                               ax=ax, fname=fname, plot_dict=plot_dict,
+                               legend_dict=legend_dict)

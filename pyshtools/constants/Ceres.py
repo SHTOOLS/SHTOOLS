@@ -56,7 +56,7 @@ volume = _Constant(
     abbrev='volume_ceres',
     name='Volume of (1) Ceres',
     value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
-    unit='m',
+    unit='m3',
     uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
     volume_equivalent_radius.uncertainty,
     reference='Derived from volume_equivalent_radius_ceres')
@@ -85,8 +85,8 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_ceres and mean_radius_ceres.')
 
-omega = _Constant(
-    abbrev='omega_ceres',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_ceres',
     name='Angular spin rate of (1) Ceres',
     value=952.1532635 * 2. * _np.pi / 360. / (24. * 60. * 60.),
     unit='rad / s',
@@ -98,5 +98,75 @@ omega = _Constant(
     'Dawn radiometric tracking and optical data, Icarus, 299, 411-429, '
     'doi:10.1016/j.icarus.2017.08.005.')
 
+rotational_period = _Constant(
+    abbrev='rotational_period_ceres',
+    name='Rotational period of (1) Ceres',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_ceres')
+
+orbit_semimajor_axis = _Constant(
+    abbrev='orbit_semimajor_axis_ceres',
+    name='Semimajor axis of the orbit of (1) Ceres about the Sun',
+    value=2.767254360873952,
+    unit='au',
+    uncertainty=1.0197E-11,
+    reference='Park, R., Folkner, W., Williams, J., & Boggs, D. (2021). The '
+    'JPL Planetary and Lunar Ephemerides DE440 and DE441. The Astronomical '
+    'Journal, 161, 105, https://doi.org/10.3847/1538-3881/abd414. '
+    'Accessed via JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
+    'solution date: 2021-Apr-13 11:04:44')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_ceres',
+    name='Eccentricity of the orbit of (1) Ceres about the Sun',
+    value=0.0789125317658808,
+    unit='',
+    uncertainty=4.7845E-12,
+    reference='Park, R., Folkner, W., Williams, J., & Boggs, D. (2021). The '
+    'JPL Planetary and Lunar Ephemerides DE440 and DE441. The Astronomical '
+    'Journal, 161, 105, https://doi.org/10.3847/1538-3881/abd414. '
+    'Accessed via JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
+    'solution date: 2021-Apr-13 11:04:44')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_ceres',
+    name='Inclination of the orbit of (1) Ceres about the Sun, with respect '
+    'to the mean ecliptic and equinox of J2000',
+    value=10.5868796009696,
+    unit='degrees',
+    uncertainty=4.6112E-9,
+    reference='Park, R., Folkner, W., Williams, J., & Boggs, D. (2021). The '
+    'JPL Planetary and Lunar Ephemerides DE440 and DE441. The Astronomical '
+    'Journal, 161, 105, https://doi.org/10.3847/1538-3881/abd414. '
+    'Accessed via JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
+    'solution date: 2021-Apr-13 11:04:44')
+
+orbit_angular_velocity = _Constant(
+    abbrev='orbit_angular_velocity_ceres',
+    name='Orbital angular velocity of (1) Ceres about the Sun',
+    value=2 * _np.pi / (1681.403889244621 * 24 * 60 * 60),
+    unit='rad / s',
+    uncertainty=2 * _np.pi / (24 * 60 * 60) * 9.2941E-9 / 1681.403889244621**2,
+    reference='Park, R., Folkner, W., Williams, J., & Boggs, D. (2021). The '
+    'JPL Planetary and Lunar Ephemerides DE440 and DE441. The Astronomical '
+    'Journal, 161, 105, https://doi.org/10.3847/1538-3881/abd414. '
+    'Accessed via JPL Solar System Dynamics, https://ssd.jpl.nasa.gov, '
+    'solution date: 2021-Apr-13 11:04:44')
+
+orbit_period = _Constant(
+    abbrev='orbit_period_ceres',
+    name='Orbital period of (1) Ceres',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_ceres')
+
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
+           'volume', 'gravity_mean_radius', 'mean_density',
+           'angular_velocity', 'orbit_semimajor_axis', 'orbit_eccentricity',
+           'orbit_inclination', 'orbit_angular_velocity', 'rotational_period',
+           'orbit_period']

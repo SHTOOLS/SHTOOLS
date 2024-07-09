@@ -11,7 +11,7 @@ try:
     major, minor, patch = ducc0.__version__.split(".")
     if int(major) < 1 and int(minor) < 15:
         raise RuntimeError
-except:
+except Exception:
     ducc0 = None
 
 # setup a few required variables
@@ -20,7 +20,7 @@ if ducc0 is not None:
 
     try:
         nthreads = int(_os.environ["OMP_NUM_THREADS"])
-    except:
+    except Exception:
         nthreads = 0
 
 

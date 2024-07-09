@@ -1,6 +1,6 @@
 # NormalGravity
 
-Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates using the formula of Somigliana.
+Calculate the normal gravity on an ellipsoid or sphere using geocentric coordinates.
 
 # Usage
 
@@ -21,14 +21,18 @@ Calculate the normal gravity on a flattened ellipsoid in geocentric coordinates 
 :   The angular rotation rate of the planet.
 
 `a` : input, real(dp)
-:   The semi-major axis of the flattened ellipsoid on which the normal gravity is computed.
+:   The semi-major axis of the ellipsoid on which the normal gravity is computed.
 
 `b` : input, real(dp)
-:   The semi-minor axis of the flattened ellipsoid on which the normal gravity is computed.
+:   The semi-minor axis of the ellipsoid on which the normal gravity is computed.
 
 # Description
 
-`NormalGravity` will calculate the magnitude of the predicted gravity (in m/s^2) on a flattened ellipsoid using Somigliana's formula. The latitude is input in geocentric coordinates in degrees, which is later converted to geodetic coordinates in the routine for use with Somigliana's formula. Other input parameters include `gm`, the product of the gravitational constant and the planet's mass, and the semi-major and semi-minor axes of the planet, `a` and `b`, respectively. For further details, see sections 2.7 and 2.8 of Physical Geodesy (Hofmann-Wellenhof and Moritz).
+`NormalGravity` will compute the magnitude of the total gravity (gravitation and centrifugal) on the surface of a rotating ellipsoid (in m/s^2).  The latitude is input in geocentric coordinates in degrees.
+
+For a rotating ellipsoid, the surface corresponds to a constant potential, and the gravity vector is normal to the surface. The normal gravity is computed using Somigliana's formula, as taken from Physical Geodesy (Hofmann-Wellenhof and Moritz, 2nd ed., sections 2.7 and 2.8). In this routine, the geodetic latitude is computed internally from the input geocentric latitude.
+
+For the case of a sphere (a is equal to b), the normal gravity is defined as the magnitude of the sum of the normal gravitation (GM/r^2) and the centrifugal gravity. For a rotating sphere, the surface does not correspond to a constant potential and the gravity vector is not normal to the surface.
 
 # References
 

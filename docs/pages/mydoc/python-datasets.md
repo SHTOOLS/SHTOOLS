@@ -1,9 +1,9 @@
 ---
-title: "Constants and datasets"
+title: "Datasets"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: mydoc_sidebar
-permalink: python-datasets-constants.html
-summary: pyshtools provides easy access to many research-grade datasets and common physical constants.
+permalink: python-datasets.html
+summary: pyshtools provides easy access to many research-grade and historical datasets.
 toc: true
 folder: mydoc
 ---
@@ -18,40 +18,9 @@ table:nth-of-type(n) th:nth-of-type(2) {
 }
 </style>
 
-## Constants
-
-The *constants* subpackage defines physical constants related to the terrestrial planets and moons. Each constant is an instance of an [astropy](http://docs.astropy.org/en/stable/constants/index.html) `Constant` class, which has the attributes `name`, `value`, `uncertainty`, `unit`, and `reference`.
-
-Each body can have several attributes, including
-* `gm`,
-* `mass`,
-* `mean_radius` (aliased as `r`),
-* `volume_equivalent_radius`,
-* `volume`
-* `mean_density`
-* `gravity_mean_radius`
-* `omega` (rotation rate)
-
-Additional parameters are defined when appropriate. To see all information about an individual constant, it is only necessary to use the print function:
-```python
-In [1]: print(pysh.constants.Mars.mean_radius)
-  Name   = Mean radius of Mars
-  Value  = 3389500.0
-  Uncertainty  = 0.0
-  Unit  = m
-  Reference = MOLA_shape: Wieczorek, M. (2024). Spherical harmonic models of the shape of Mars (1.0.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10794059
-```
-To use the value of a constant in a calculation, such as in this simple calculation of the circumference in kilometers, it is only necessary to access its `value` attribute:
-
-```python
-In [2]: 2 * np.pi * pysh.constants.Mars.mean_radius.value / 1000
-21296.856598685208
-```
-Physical constants from the *Committee on Data for Science and Technology* are provided in the submodule `codata`, and a few of these (such as `G` and `mu0`) are referenced in the main constants namespace.
-
 ## Datasets
 
-pyshtools provides easy access to many research-grade gravity, topography, and magnetic field datasets of the terrestrial planets. To load a dataset, it is only necessary to call the relevant method from the *datasets* submodule as in these examples:
+pyshtools provides easy access to many research-grade gravity, shape, and magnetic field datasets of the terrestrial planets, moons, and asteroids. To load a dataset, it is only necessary to call the relevant method from the *datasets* submodule as in these examples:
 ```
     hlm = pysh.datasets.Venus.VenusTopo719()  # Venus shape
     clm = pysh.datasets.Earth.EGM2008()  # Earth gravity
@@ -61,7 +30,7 @@ pyshtools provides easy access to many research-grade gravity, topography, and m
 
 When accessing a dataset, the file will first be downloaded from the original source using [pooch](https://www.fatiando.org/pooch/latest/) and then stored in the pyshtools subdirectory of the user's cache directory (if it had not been done previously). The file hash will be verified to ensure that it has not been modified, and the file will then be used to initialize and return an `SHCoeffs`, `SHGravCoeffs` or `SHMagCoeffs` class instance. In most cases the files are stored in their original form: If they need to be decompressed or unzipped, this is done on the fly when they are used. Only when zip archives contain several files are the files stored in unzipped form.
 
-The coefficients can be read up to a maximum specified degree by providing the optional variable `lmax`. For IGRF magnetic field coefficients, the year of the output coefficients can be specified by the optional argument `year` (the default is 2020).
+The coefficients can be read up to a maximum specified degree by providing the optional variable `lmax`. For some datasets (such as the shape of Mars), several different models of differing resolution exist, and only the smallest file that is necessary based on the user input value of `lmax` will be downloaded. For IGRF magnetic field coefficients, the year of the output coefficients can be specified by the optional argument `year` (the default is 2020).
 
 The following is the list of implemented datasets. Additional older or deprecated datasets can be found in the `historical` module for each body.
 
@@ -107,7 +76,7 @@ The following is the list of implemented datasets. Additional older or deprecate
 
 | Dataset | Description |
 | ---------- | ----------- |
-| LOLA_shape_pa | 5759 degree and order spherical harmonic model of the shape of Earth's Moon in a principal axis coordinate system (Wieczorek 2024). |
+| LDEM_shape_pa | 11519 degree and order spherical harmonic model of the shape of Earth's Moon in a principal axis coordinate system (Wieczorek 2024). |
 | LOLA_shape | 5759 degree and order spherical harmonic model of the shape of Earth's Moon in mean Earth/polar axis coordinate system (Wieczorek 2024). |
 | GRGM900C | GSFC 900 degree and order spherical harmonic model of the gravitational potential of the Moon. This model applies a Kaula constraint for degrees greater than 600 (Lemoine et al. 2014). |
 | GRGM1200B | GSFC 1200 degree and order spherical harmonic model of the gravitational potential of the Moon (Goossens et al. 2020). This model applies a Kaula constraint for degrees greater than 600. |
@@ -125,7 +94,7 @@ The following is the list of implemented datasets. Additional older or deprecate
 | MOLA_shape | 5759 degree and order spherical harmonic model of the shape of the planet Mars (Wieczorek 2024). |
 | GMM3 | GSFC 120 degree and order spherical harmonic model of the gravitational potential of Mars (Genova et al. 2016). This model applies a Kaula constraint for degrees greater than 90. |
 | GMM3_RM1_1E0 | GSFC 150 degree and order spherical harmonic model of the gravitational potential of Mars (Goossens et al. 2017). This model uses the same data as GMM3, but with a rank-minus-1 constraint based on gravity from surface topography for degrees greater than 50 with a value of lambda equal to 1. |
-| MRO120D |JPL 120 degree and order spherical harmonic model of the gravitational potential of Mars (Konopliv et al. 2016). This model applies a Kaula constraint for degrees greater than 80. |
+| MRO120F |JPL 120 degree and order spherical harmonic model of the gravitational potential of Mars (Konopliv et al. 2020). This model applies a Kaula constraint for degrees greater than 80. |
 | Langlais2019 | 134 degree and order spherical harmonic model of the magnetic potential of Mars (Langlais et al. 2019). This model makes use of data from MGS MAG, MGS ER and MAVEN MAG. |
 | Morschhauser2014 | 110 degree and order spherical harmonic model of the magnetic potential of Mars (Morschhauser et al. 2014). |
 
@@ -147,6 +116,13 @@ The following is the list of implemented datasets. Additional older or deprecate
 | VESTA20H | JPL 20 degree and order spherical harmonic model of the gravitational potential of asteroid (4) Vesta (Konopliv et al. 2014). |
 
 
+### (16) Psyche
+
+| Dataset | Description |
+| ---------- | ----------- |
+| Shepard2021_shape | 29 degree and order spherical harmonic model of the shape of asteroid (16) Vesta based on the Shepard et al. (2021) shape model (Wieczorek 2024). |
+
+
 ### (433) Eros
 
 | Dataset | Description |
@@ -154,6 +130,13 @@ The following is the list of implemented datasets. Additional older or deprecate
 | NLR_shape | 719 degree and order spherical harmonic shape model of asteroid (433) Eros based on laser altimeter data (Wieczorek 2024). |
 | SPC_shape | 511 degree and order spherical harmonic shape model of asteroid (433) Eros based on a stereo-photoclinometry shape model (Wieczorek 2024). |
 | JGE15A01 | JPL 15 degree and order spherical harmonic model of the gravitational potential of asteroid (433) Eros (Miller et al. 2002). |
+
+
+### Jupiter
+
+| Dataset | Description |
+| ---------- | ----------- |
+| Kaspi2023_gravity | Degree 40 and order 0 spherical harmonic model of the gravitational potential of Jupiter (Kaspi et al. 2023). |
 
 
 ### Io (Jupiter)
@@ -186,6 +169,13 @@ The following is the list of implemented datasets. Additional older or deprecate
 | Anderson2001 | Degree and order 2 spherical harmonic model of the gravitational potential of Callisto (Anderson et al. 2001). |
 
 
+### Saturn
+
+| Dataset | Description |
+| ---------- | ----------- |
+| Jacobson2022_gravity | Degree 12 and order 0 spherical harmonic model of the gravitational potential of Saturn (Jacobson 2022). |
+
+
 ### Titan (Saturn)
 
 | Dataset | Description |
@@ -202,3 +192,17 @@ The following is the list of implemented datasets. Additional older or deprecate
 | JPL_SPC_shape | Degree and order 1023 spherical harmonic model of the shape of Saturn's moon Enceladus based on the JPL stereo-photoclinometric DTM (Wieczorek 2024). |
 | Iess2014_gravity | Degree and order 3 spherical harmonic model of the gravitational field of Saturn's moon Enceladus (Iess et al. 2014). |
 | Park2024_gravity | Degree and order 3 spherical harmonic model of the gravitational field of Saturn's moon Enceladus (Park et al. 2024). |
+
+
+### Uranus
+
+| Dataset | Description |
+| ---------- | ----------- |
+| Jacobson2014_gravity | Degree 6 and order 0 spherical harmonic model of the gravitational potential of Uranus (Jacobson 2014). |
+
+
+### Neptune
+
+| Dataset | Description |
+| ---------- | ----------- |
+| Jacobson2009_gravity | Degree 4 and order 0 spherical harmonic model of the gravitational potential of Neptune (Jacobson 2009). |

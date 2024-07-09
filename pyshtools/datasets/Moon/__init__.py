@@ -3,7 +3,7 @@ Datasets related to Earth's Moon.
 
 Shape
 -----
-LOLA_shape_pa     :  Wieczorek (2024)
+LDEM_shape_pa     :  Wieczorek (2024)
 LOLA_shape        :  Wieczorek (2024)
 
 Gravity
@@ -27,22 +27,23 @@ from pooch import DOIDownloader as _DOIDownloader
 from ...shclasses import SHCoeffs as _SHCoeffs
 from ...shclasses import SHGravCoeffs as _SHGravCoeffs
 from ...shclasses import SHMagCoeffs as _SHMagCoeffs
-from ...constants.Moon import omega as _omega
+from ...constants.Moon import angular_velocity as _omega
 from . import historical  # noqa: F401
 
 
-def LOLA_shape_pa(lmax=719):
+def LDEM_shape_pa(lmax=719):
     '''
-    LOLA_shape_pa is a spherical harmonic model of the shape of Earth's Moon in
+    LDEM_shape_pa is a spherical harmonic model of the shape of Earth's Moon in
     a principal axis coordinate system based on LOLA laser altimetry data
-    obtained by the Lunar Reconaissance Orbiter mission. The maximum spherical
-    harmonic degree of the model is 5759, which has an effective spatial
-    resolution of 64 pixels per degree. Three lower resolution models are
-    available in this archive (with lmax of 719, 1439 and 2879), and only the
-    smallest that is required by the user input lmax will be downloaded. If
-    lmax is not specified, the lowest resolution model (719) will be returned.
-    If a negative value for lmax is specified, the maximum resolution model
-    will be returned. The coefficients are in units of meters.
+    obtained by the Lunar Reconaissance Orbiter mission and terrain camera data
+    from the Kaguya mission. The maximum spherical harmonic degree of the model
+    is 11519, which has an effective spatial resolution of 128 pixels per
+    degree. Four lower resolution models are available in this archive (with
+    lmax of 719, 1439, 2879, 5759), and only the smallest that is required by
+    the user input lmax will be downloaded. If lmax is not specified, the
+    lowest resolution model (719) will be returned. If a negative value for
+    lmax is specified, the maximum resolution model will be returned. The
+    coefficients are in units of meters.
 
     This shape model uses the same coordinate system as most lunar gravity
     models. For a mean Earth/polar axis model, use LOLA_shape instead.
@@ -55,39 +56,45 @@ def LOLA_shape_pa(lmax=719):
     Reference
     ---------
     Wieczorek, M. (2024). Spherical harmonic models of the shape of the Moon
-        (principal axis coordinate system) [LOLA] (1.0.1) [Data set]. Zenodo.
-        https://doi.org/10.5281/zenodo.10820750
-    LRO LOLA Team (2013). LRO-L-LOLA-4-GDR-V1.0, NASA Planetary Data System.
+        (principal axis coordinate system) [LDEM128] (1.0.0) [Data set].
+        Zenodo. https://doi.org/10.5281/zenodo.11533784
+    Neumann, G. (2024). LOLA MOON_PA gridded dataset [Data set]. NASA Goddard
+        Space Flight Center Planetary Geodesy Data Archive.
+        doi:10.60903/LOLA_PA.
     '''
     archive = _create(
         path=_os_cache('pyshtools'),
-        base_url="doi:10.5281/zenodo.10820750",
+        base_url="doi:10.5281/zenodo.11533784",
         registry={
-            "Moon_LOLA_shape_pa_5759.bshc.gz": "sha256:1569338a88475e184ac8b7424327b0e03cb1f8f0a3cec70bd9bfe41635f68671",  # noqa: E501
-            "Moon_LOLA_shape_pa_2879.bshc.gz": "sha256:6ee87880956fdbdf85f9c0b2e9996514735198fbcb19fd0d0c7881bf50c50496",  # noqa: E501
-            "Moon_LOLA_shape_pa_1439.bshc.gz": "sha256:6c4619f845c9902d999879cbf6956c368290a17fc2887d41267800aade386c56",  # noqa: E501
-            "Moon_LOLA_shape_pa_719.bshc.gz": "sha256:71877e8c1dd80205941b6ca0e7df73943abc52be125d1d8cc76bea2dcee5942b",  # noqa: E501
+            "Moon_LDEM128_shape_pa_11519.sh.gz": "sha256:a819b6e7f153df63632f035647e6ad6319c698e6d264228e7c5e2646afb787ad",  # noqa: E501
+            "Moon_LDEM128_shape_pa_5759.sh.gz": "sha256:c3aaca21de1355e8e235104432d2d5ac3f76ef43717da69b313e9a1a44b6c7e3",  # noqa: E501
+            "Moon_LDEM128_shape_pa_2879.sh.gz": "sha256:fa52e88be6db0f1b8e3b8cf6785c4c89904581aa910a3153671c65a33e462b50",  # noqa: E501
+            "Moon_LDEM128_shape_pa_1439.sh.gz": "sha256:093c46ccc753a40e8041be6106334375f38e3f828c57cc28994799406f7703b4",  # noqa: E501
+            "Moon_LDEM128_shape_pa_719.sh.gz": "sha256:b3a3842363f91d95b992831f77a6ff9aacaae83bf0a93123372aa142149298c3",  # noqa: E501
             },
         )
 
     if lmax < 0:
-        lmax = 5759
+        lmax = 11519
 
     if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Moon_LOLA_shape_pa_719.bshc.gz",
+        fname = archive.fetch("Moon_LDEM128_shape_pa_719.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
     elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Moon_LOLA_shape_pa_1439.bshc.gz",
+        fname = archive.fetch("Moon_LDEM128_shape_pa_1439.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
     elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Moon_LOLA_shape_pa_2879.bshc.gz",
+        fname = archive.fetch("Moon_LDEM128_shape_pa_2879.sh.gz",
+                              downloader=_DOIDownloader(progressbar=True))
+    elif lmax > 2879 and lmax <= 5759:
+        fname = archive.fetch("Moon_LDEM128_shape_pa_5759.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
     else:
-        fname = archive.fetch("Moon_LOLA_shape_pa_5759.bshc.gz",
+        fname = archive.fetch("Moon_LDEM128_shape_pa_11519.sh.gz",
                               downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 5759)
+        lmax = min(lmax, 11519)
 
-    return _SHCoeffs.from_file(fname, lmax=lmax, name='LOLA_shape_pa (Moon)',
+    return _SHCoeffs.from_file(fname, lmax=lmax, name='LDEM_shape_pa (Moon)',
                                units='m', format='bshc')
 
 
@@ -106,7 +113,7 @@ def LOLA_shape(lmax=719):
 
     This shape model should not be used in conjuction with most lunar gravity
     models, which use a principal axis coordinate system. For a principal axis
-    model, use LOLA_shape_pa instead.
+    model, use LDEM_shape_pa instead.
 
     Parameters
     ----------
@@ -175,6 +182,9 @@ def T2015_449(lmax=449):
         Journal of Geophysical Research Planets, 123, 291-316,
         doi:10.1002/2017JE005418.
     '''
+    if lmax < 0:
+        lmax = 449
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.3873648/T2015_449.sh.gz",
         known_hash="sha256:4db0b77b3863f38d6fb6e62c5c1116bf7123b77c5aad65df7dae598714edd655",  # noqa: E501
@@ -205,6 +215,9 @@ def Ravat2020(lmax=450):
         gradients, Journal of Geophysical Research: Planets, 125,
         e2019JE006187, doi:10.1029/2019JE006187.
     '''
+    if lmax < 0:
+        lmax = 450
+
     fname = _retrieve(
         url="https://uknowledge.uky.edu/cgi/viewcontent.cgi?filename=4&article=1001&context=ees_data&type=additional",  # noqa: E501
         known_hash="sha256:dd1128d7819a8de097f3abeba93fee4cb80fced5bd63d56cca5a9bc70ac2bea9",  # noqa: E501
@@ -235,6 +248,9 @@ def GRGM900C(lmax=900):
         GRAIL primary and extended mission data, Geophysical Research Letters,
         41, 3382-3389, doi:10.1002/2014GL060027.
     '''
+    if lmax < 0:
+        lmax = 900
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/grail/grail-l-lgrs-5-rdr-v1/grail_1001/shadr/gggrx_0900c_sha.tab",  # noqa: E501
         known_hash="sha256:dab6ab06e0d3d7cbc594ea4bd03151a65534ed5fdf4f147ae38662428c04454e",  # noqa: E501
@@ -266,8 +282,11 @@ def GRGM1200B(lmax=1200):
         Geophysical Research Planets, 125, e2019JE006086,
         doi:10.1029/2019JE006086.
     '''
+    if lmax < 0:
+        lmax = 1200
+
     fname = _retrieve(
-        url="https://pgda.gsfc.nasa.gov/data/MoonRM1/sha.grgm1200b_sigma",  # noqa: E501
+        url="https://pgda.gsfc.nasa.gov/data/MoonRM1/sha.grgm1200b_sigma",
         known_hash="sha256:f08a988b43f3eaa5a2089045a9b7e41e02f16542c7912b87ea34366fafa39bc5",  # noqa: E501
         downloader=_HTTPDownloader(progressbar=True),
         path=_os_cache('pyshtools'),
@@ -299,6 +318,9 @@ def GRGM1200B_RM1_1E0(lmax=1200):
         Geophysical Research Planets, 125, e2019JE006086,
         doi:10.1029/2019JE006086.
     '''
+    if lmax < 0:
+        lmax = 1200
+
     fname = _retrieve(
         url="https://pgda.gsfc.nasa.gov/data/MoonRM1/sha.grgm1200b_rm1_1e0_sigma",  # noqa: E501
         known_hash="sha256:d42536cc716f5da8e067aa79a253c310e9d53d1d3b3ae7b43fa4517654d20d35",  # noqa: E501
@@ -331,6 +353,9 @@ def GL0900D(lmax=900):
         gravity fields from the GRAIL Primary and Extended Missions,
         Geophysical Research Letters, 41, 1452-1458, doi:10.1002/2013GL059066.
     '''
+    if lmax < 0:
+        lmax = 900
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/grail/grail-l-lgrs-5-rdr-v1/grail_1001/shadr/jggrx_0900d_sha.tab",  # noqa: E501
         known_hash="sha256:0ead4e6260729c53fe29dcc6d954d473e87eb3ae1f4d932496a1417fd62fcdc6",  # noqa: E501
@@ -361,6 +386,9 @@ def GL1500E(lmax=1500):
         gravity fields from the GRAIL Primary and Extended Missions,
         Geophysical Research Letters, 41, 1452-1458, doi:10.1002/2013GL059066.
     '''
+    if lmax < 0:
+        lmax = 1500
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/grail/grail-l-lgrs-5-rdr-v1/grail_1001/shadr/jggrx_1500e_sha.tab",  # noqa: E501
         known_hash="sha256:93a7467b9241f6f94c131126c87fd3b81cfc3d223c474ee3444bf162b7c97f5a",  # noqa: E501
@@ -372,6 +400,6 @@ def GL1500E(lmax=1500):
                                    name='GL1500E (Moon)', encoding='utf-8')
 
 
-__all__ = ['LOLA_shape_pa', 'LOLA_shape', 'T2015_449', 'Ravat2020', 'GRGM900C',
+__all__ = ['LDEM_shape_pa', 'LOLA_shape', 'T2015_449', 'Ravat2020', 'GRGM900C',
            'GRGM1200B', 'GRGM1200B_RM1_1E0', 'GL0900D', 'GL1500E',
            'historical']

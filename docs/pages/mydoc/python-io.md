@@ -26,8 +26,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | [shwrite](shwrite.html) | Write shtools-formatted spherical harmonic coefficients to a text file. |
 | [read_dov](read_dov.html) | Read spherical harmonic coefficients from a text file formatted as [degree, order, value]. |
 | [write_dov](write_dov.html) | Write spherical harmonic coefficients to a text file formatted as [degree, order, value]. |
-| [read_bsch](read_bshc.html) | Read real spherical harmonic coefficients from a binary bsch-formatted file. |
-| [write_bsch](write_bshc.html) | Write real spherical harmonic coefficients to a binary bsch-formatted file. |
+| [read_bshc](read_bshc.html) | Read real spherical harmonic coefficients from a binary bshc-formatted file. |
+| [write_bshc](write_bshc.html) | Write real spherical harmonic coefficients to a binary bshc-formatted file. |
 | [read_icgem_gfc](read_icgem_gfc.html) | Read real spherical harmonic gravitational potential coefficients and associated errors from an ICGEM GFC formatted file. |
 | [write_icgem_gfc](write_icgem_gfc.html) | Write real spherical harmonic gravitational potential coefficients and associated errors to an ICGEM GFC formatted file. |
 | [read_igrf](read_igrf.html) | Read IGRF real spherical harmonic coefficients, and return the magnetic potential coefficients for the specified year. |

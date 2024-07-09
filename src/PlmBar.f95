@@ -17,7 +17,7 @@ subroutine PlmBar(p, lmax, z, csphase, cnorm, exitstatus)
 !   subsequent rescaling factors of sin(theta) will be directly applied to Plm,
 !   and then this number will be multipled by the old value of rescalem.
 !
-!   Temporary variables in saved in an allocated array. In order to explicitly
+!   Temporary variables are saved in an allocated array. In order to explicitly
 !   deallocate this memory, call this routine with a spherical harmonic degree
 !   of -1.
 !

@@ -35,6 +35,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `x = SHCoeffs.from_file()` | Initialize using coefficients from a file. |
 | `x = SHCoeffs.from_netcdf()` | Initialize using coefficients from a netcdf file. |
 | `x = SHCoeffs.from_cap()` | Initialize using coefficients of a spherical cap. |
+| `x = SHCoeffs.from_least_squares()` | Initialize using coefficients from a least squares inversion. |
 
 ## Class attributes
 
@@ -51,6 +52,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `units` | The units of the spherical harmonic coefficients. |
 | `header` | A list of values from the header line of the input file used to initialize the class. |
 | `header2` | A list of values from the second header line of the input file used to initialize the class. |
+| `chi2` | The (weighted) residual sum of squares misfit when initializing from a least squares inversion. |
 
 ## Class methods
 

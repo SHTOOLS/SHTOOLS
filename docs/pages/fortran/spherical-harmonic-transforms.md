@@ -3,7 +3,7 @@ title: "Spherical harmonic transforms"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: fortran_sidebar
 permalink: spherical-harmonic-transforms.html
-summary: 
+summary:
 toc: true
 folder: fortran
 ---
@@ -39,13 +39,18 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | [MakeGridGLQC](makegridglqc.html) | Create a 2D complex map from a set of complex spherical harmonic coefficients sampled on a the Gauss-Legendre quadrature nodes. |
 | [GLQGridCoord](glqgridcoord.html) | Compute the latitude and longitude coordinates used in Gauss-Legendre quadrature grids. |
 
+## Least squares inversion
+
+| Routine name | Description |
+| ------------ | ----------- |
+| [SHExpandLSQ](shexpandlsq.html) | Determine the spherical harmonic coefficients of an irregularly sampled function using a (weighted) least squares inversion. |
+| [LSQ_G](lsq_g.html) | Compute the data kernel matrix G that is used when computing spherical harmonic coefficients by least squares inversion. |
+
 ## Other routines
 
 | Routine name | Description |
 | ------------ | ----------- |
-| [SHExpandLSQ](shexpandlsq.html) | Expand a set of irregularly sampled data points into spherical harmonics using a (weighted) least squares inversion. |
 | [MakeGrid2D](makegrid2d.html) | Create a 2D cylindrical map with arbitrary grid spacing from a set of spherical harmonic coefficients. |
 | [MakeGridPoint](makegridpoint.html) | Evaluate a real function expressed in real spherical harmonics at a single point. |
 | [MakeGridPointC](makegridpointc.html) | Evaluate a complex function expressed in complex spherical harmonics at a single point. |
 | [SHMultiply](shmultiply.html) | Multiply two functions and determine the spherical harmonic coefficients of the resulting function. |
-

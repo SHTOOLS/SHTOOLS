@@ -30,6 +30,7 @@ class SHWindow(object):
 
     Each class instance defines the following class attributes:
 
+    name            : The name of the class isntance.
     kind            : Either 'cap' or 'mask'.
     tapers          : Matrix containing the spherical harmonic coefficients
                       (in packed form) of either the unrotated spherical cap
@@ -118,7 +119,7 @@ class SHWindow(object):
     @classmethod
     def from_cap(cls, theta, lwin, clat=None, clon=None, nwin=None,
                  theta_degrees=True, coord_degrees=True, dj_matrix=None,
-                 weights=None, taper_degrees=None):
+                 weights=None, taper_degrees=None, name=None):
         """
         Construct spherical cap localization windows.
 
@@ -126,7 +127,7 @@ class SHWindow(object):
         -----
         x = SHWindow.from_cap(theta, lwin, [clat, clon, nwin, theta_degrees,
                                             coord_degrees, dj_matrix, weights,
-                                            taper_degrees])
+                                            taper_degrees, name])
 
         Returns
         -------
@@ -156,6 +157,8 @@ class SHWindow(object):
                         default = None
             Boolean or int array defining which spherical harmonic degrees were
             used (True or 1) to construct the windows.
+        name : str, optional, default = None
+            The name of the class instance.
         """
         if theta_degrees:
             tapers, eigenvalues, taper_order = _shtools.SHReturnTapers(
@@ -166,18 +169,20 @@ class SHWindow(object):
 
         return SHWindowCap(theta, tapers, eigenvalues, taper_order,
                            clat, clon, nwin, theta_degrees, coord_degrees,
-                           dj_matrix, weights, taper_degrees, copy=False)
+                           dj_matrix, weights, taper_degrees, copy=False,
+                           name=name)
 
     @classmethod
     def from_mask(cls, dh_mask, lwin, nwin=None, weights=None,
-                  taper_degrees=None):
+                  taper_degrees=None, name=None):
         """
         Construct localization windows that are optimally concentrated within
         the region specified by a mask.
 
         Usage
         -----
-        x = SHWindow.from_mask(dh_mask, lwin, [nwin, weights, taper_degrees])
+        x = SHWindow.from_mask(dh_mask, lwin, [nwin, weights, taper_degrees,
+                                               name])
 
         Returns
         -------
@@ -201,6 +206,8 @@ class SHWindow(object):
                         default = None
             Boolean or int array defining which spherical harmonic degrees were
             used (True or 1) to construct the windows.
+        name : str, optional, default = None
+            The name of the class instance.
         """
         if nwin is None:
             nwin = (lwin + 1)**2
@@ -234,7 +241,7 @@ class SHWindow(object):
             data, lwin, ntapers=nwin, degrees=taper_degrees)
 
         return SHWindowMask(tapers, eigenvalues, weights, area, taper_degrees,
-                            copy=False)
+                            copy=False, name=name)
 
     def copy(self):
         """Return a deep copy of the class instance."""
@@ -306,7 +313,7 @@ class SHWindow(object):
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
         """
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -326,14 +333,14 @@ class SHWindow(object):
         return self._to_array(
             itaper, normalization=normalization.lower(), csphase=csphase)
 
-    def to_shcoeffs(self, itaper, normalization='4pi', csphase=1):
+    def to_shcoeffs(self, itaper, normalization='4pi', csphase=1, name=None):
         """
         Return the spherical harmonic coefficients of taper i as a SHCoeffs
         class instance.
 
         Usage
         -----
-        clm = x.to_shcoeffs(itaper, [normalization, csphase])
+        clm = x.to_shcoeffs(itaper, [normalization, csphase, name])
 
         Returns
         -------
@@ -350,8 +357,10 @@ class SHWindow(object):
         csphase : int, optional, default = 1
             Condon-Shortley phase convention: 1 to exclude the phase factor,
             or -1 to include it.
+        name : str, optional, default = None
+            The name of the SHCoeffs class instance.
         """
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -371,17 +380,17 @@ class SHWindow(object):
         coeffs = self.to_array(itaper, normalization=normalization.lower(),
                                csphase=csphase)
         return SHCoeffs.from_array(coeffs, normalization=normalization.lower(),
-                                   csphase=csphase, copy=False)
+                                   csphase=csphase, copy=False, name=name)
 
     def to_shgrid(self, itaper, grid='DH2', lmax=None, zeros=None,
-                  extend=True):
+                  extend=True, name=None):
         """
         Evaluate the coefficients of taper i on a spherical grid and return
         a SHGrid class instance.
 
         Usage
         -----
-        f = x.to_shgrid(itaper, [grid, lmax, zeros, extend])
+        f = x.to_shgrid(itaper, [grid, lmax, zeros, extend, name])
 
         Returns
         -------
@@ -404,6 +413,8 @@ class SHWindow(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
+        name : str, optional, default = None
+            The name of the SHGrid class instance.
 
         Notes
         -----
@@ -413,7 +424,7 @@ class SHWindow(object):
         """
         if lmax is None:
             lmax = self.lwin
-        if type(grid) is not str:
+        if not isinstance(grid, str):
             raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
@@ -421,19 +432,20 @@ class SHWindow(object):
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=1,
                                           lmax=lmax, norm=1, csphase=1,
                                           extend=extend)
-            return SHGrid.from_array(gridout, grid='DH', copy=False)
+            return SHGrid.from_array(gridout, grid='DH', copy=False, name=name)
         elif grid.upper() == 'DH2':
             gridout = _shtools.MakeGridDH(self.to_array(itaper), sampling=2,
                                           lmax=lmax, norm=1, csphase=1,
                                           extend=extend)
-            return SHGrid.from_array(gridout, grid='DH', copy=False)
+            return SHGrid.from_array(gridout, grid='DH', copy=False, name=name)
         elif grid.upper() == 'GLQ':
             if zeros is None:
                 zeros, weights = _shtools.SHGLQ(self.lmax)
             gridout = _shtools.MakeGridGLQ(self.to_array(itaper), zeros,
                                            lmax=lmax, norm=1, csphase=1,
                                            extend=extend)
-            return SHGrid.from_array(gridout, grid='GLQ', copy=False)
+            return SHGrid.from_array(gridout, grid='GLQ', copy=False,
+                                     name=name)
         else:
             raise ValueError(
                 "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
@@ -1070,19 +1082,19 @@ class SHWindow(object):
         """
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -1185,7 +1197,7 @@ class SHWindow(object):
                              axes_labelsize=None, tick_labelsize=None,
                              titlesize=None, colorbar=None,
                              cb_label=None, normalize=False, show=True,
-                             ax=None, fname=None, **kwargs):
+                             ax=None, fname=None, imshow_dict=dict()):
         """
         Plot the multitaper coupling matrix.
 
@@ -1198,7 +1210,7 @@ class SHWindow(object):
                                       ylabel, title, axes_labelsize,
                                       tick_labelsize, titlesize,
                                       colorbar, cb_label, normalize, show, ax,
-                                      fname, weights, **kwargs])
+                                      fname, weights, imshow_dict])
 
         Parameters
         ----------
@@ -1247,8 +1259,8 @@ class SHWindow(object):
             An array of matplotlib axes objects where the plots will appear.
         fname : str, optional, default = None
             If present, save the image to the specified file.
-        kwargs : optional
-            Keyword arguements that will be sent to plt.imshow(), such as cmap.
+        imshow_dict : dict, optional, default = dict()
+            Optional arguements that will be passed to plt.imshow().
         """
         if weights is not None:
             if k is not None:
@@ -1268,19 +1280,19 @@ class SHWindow(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -1308,7 +1320,8 @@ class SHWindow(object):
         if normalize:
             mmt = mmt / mmt.max()
 
-        cim = axes.imshow(mmt, aspect='equal', vmin=vmin, vmax=vmax, **kwargs)
+        cim = axes.imshow(mmt, aspect='equal', vmin=vmin, vmax=vmax,
+                          **imshow_dict)
         if xlabel is not None:
             axes.set_xlabel(xlabel, fontsize=axes_labelsize)
         if ylabel is not None:
@@ -1363,7 +1376,7 @@ class SHWindowCap(SHWindow):
 
     def __init__(self, theta, tapers, eigenvalues, taper_order,
                  clat, clon, nwin, theta_degrees, coord_degrees, dj_matrix,
-                 weights, taper_degrees, copy=True):
+                 weights, taper_degrees, copy=True, name=None):
         self.kind = 'cap'
         self.theta = theta
         self.clat = clat
@@ -1375,6 +1388,7 @@ class SHWindowCap(SHWindow):
         self.weights = weights
         self.nwinrot = None
         self.taper_degrees = taper_degrees
+        self.name = name
 
         if (self.theta_degrees):
             self.area = 2 * _np.pi * (1 - _np.cos(_np.radians(self.theta)))
@@ -1710,46 +1724,47 @@ class SHWindowCap(SHWindow):
         print(repr(self))
 
     def __repr__(self):
-        str = 'kind = {:s}\n'.format(repr(self.kind))
+        str = (f'  name = {self.name!r}\n'
+               f'  kind = {self.kind!r}\n'
+               )
 
         if self.theta_degrees:
-            str += 'theta = {:f} degrees\n'.format(self.theta)
+            str += f'  theta (degrees) = {self.theta}\n'
         else:
-            str += 'theta = {:f} radians'.format(self.theta)
+            str += f'  theta (radians) = {self.theta}\n'
 
-        str += ('lwin = {:d}\n'
-                'nwin = {:d}\n'
-                'nwinrot = {:s}\n'
-                'shannon = {:f}\n'
-                'area (radians) = {:e}\n'
-                .format(self.lwin, self.nwin, repr(self.nwinrot), self.shannon,
-                        self.area))
+        str += (f'  lwin = {self.lwin}\n'
+                f'  nwin = {self.nwin}\n'
+                f'  nwinrot = {self.nwinrot}\n'
+                f'  shannon = {self.shannon}\n'
+                f'  area (radians) = {self.area}\n'
+                )
 
         if self.clat is not None:
             if self.coord_degrees:
-                str += 'clat = {:f} degrees\n'.format(self.clat)
+                str += f'  clat = {self.clat} degrees\n'
             else:
-                str += 'clat = {:f} radians\n'.format(self.clat)
+                str += f'  clat = {self.clat} radians\n'
         else:
-            str += 'clat is not specified\n'
+            str += '  clat is not specified\n'
 
         if self.clon is not None:
             if self.coord_degrees:
-                str += 'clon = {:f} degrees\n'.format(self.clon)
+                str += f'  clon = {self.clon} degrees\n'
             else:
-                str += 'clon = {:f} radians\n'.format(self.clon)
+                str += f'  clon = {self.clon} radians\n'
         else:
-            str += 'clon is not specified\n'
+            str += '  clon is not specified\n'
 
         if self.dj_matrix is not None:
-            str += 'dj_matrix is stored\n'
+            str += '  dj_matrix is stored\n'
         else:
-            str += 'dj_matrix is not stored\n'
+            str += '  dj_matrix is not stored\n'
 
         if self.weights is None:
-            str += 'Taper weights are not set'
+            str += '  taper weights are not set'
         else:
-            str += 'Taper weights are set'
+            str += '  taper weights are set'
 
         return str
 
@@ -1765,11 +1780,12 @@ class SHWindowMask(SHWindow):
         return kind == 'mask'
 
     def __init__(self, tapers, eigenvalues, weights, area, taper_degrees,
-                 copy=True):
+                 copy=True, name=None):
         self.kind = 'mask'
         self.lwin = _np.sqrt(tapers.shape[0]).astype(int) - 1
         self.nwin = tapers.shape[1]
         self.taper_degrees = taper_degrees
+        self.name = name
 
         if copy:
             self.weights = weights
@@ -1945,17 +1961,17 @@ class SHWindowMask(SHWindow):
         print(repr(self))
 
     def __repr__(self):
-        str = ('kind = {:s}\n'
-               'lwin = {:d}\n'
-               'nwin = {:d}\n'
-               'shannon = {:f}\n'
-               'area (radians) = {:e}\n'.format(repr(self.kind), self.lwin,
-                                                self.nwin, self.shannon,
-                                                self.area))
+        str = (f'  name = {self.name!r}\n'
+               f'  kind = {self.kind!r}\n'
+               f'  lwin = {self.lwin}\n'
+               f'  nwin = {self.nwin}\n'
+               f'  shannon = {self.shannon}\n'
+               f'  area (radians) = {self.area}\n'
+               )
 
         if self.weights is None:
-            str += 'Taper weights are not set'
+            str += '  taper weights are not set'
         else:
-            str += 'Taper weights are set'
+            str += '  taper weights are set'
 
         return str

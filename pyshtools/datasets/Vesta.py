@@ -16,7 +16,7 @@ from pooch import HTTPDownloader as _HTTPDownloader
 from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..shclasses import SHCoeffs as _SHCoeffs
-from ..constants.Vesta import omega as _omega
+from ..constants.Vesta import angular_velocity as _omega
 
 
 def DLR_SPG_shape(lmax=719):
@@ -30,7 +30,7 @@ def DLR_SPG_shape(lmax=719):
     will be downloaded. If lmax is not specified, the lowest resolution model
     (719) will be returned. If a negative value for lmax is specified, the
     maximum resolution model will be returned. The coefficients are in units
-    of meters.
+    of meters. This model uses the IAU Claudia double-prime coordinate system.
 
     Parameters
     ----------
@@ -81,7 +81,8 @@ def DLR_SPG_shape(lmax=719):
 def VESTA20H(lmax=20):
     '''
     VESTA20H is a JPL 20 degree and order spherical harmonic model of the
-    gravitational potential of asteroid (4) Vesta.
+    gravitational potential of asteroid (4) Vesta. This model uses a coordinate
+    system that is similar to the IAU Claudia double-prime coordinate system.
 
     Parameters
     ----------
@@ -97,6 +98,9 @@ def VESTA20H(lmax=20):
         landmark positions, and ephemeris from the Dawn tracking and optical
         data. Icarus, 240, 103-117, doi:10.1016/j.icarus.2013.09.005.
     '''
+    if lmax < 0:
+        lmax = 20
+
     fname = _retrieve(
         url="https://sbnarchive.psi.edu/pds3/dawn/grav/DWNVGRS_2/DATA/SHADR/JGDWN_VES20H_SHA.TAB",  # noqa: E501
         known_hash="sha256:389bb30882b43b36877e9ff8bf54c55a210d7ba98cab88e9c4a1fa83ad8484b7",  # noqa: E501

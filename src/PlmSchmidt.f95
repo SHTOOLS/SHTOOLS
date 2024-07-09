@@ -17,7 +17,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
 !   subsequent rescaling factors of sin(theta) will be directly applied to Plm,
 !   and then this number will be multipled by the old value of rescalem.
 !
-!   Temporary variables in saved in an allocated array. In order to explicitly
+!   Temporary variables are saved in an allocated array. In order to explicitly
 !   deallocate this memory, call this routine with a spherical harmonic
 !   degree of -1.
 !
@@ -50,9 +50,9 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
 !
 !   Notes:
 !
-!   1.  The employed normalization is the "geophysical convention." The integral
-!       of (PlmSchmidt*cos(m theta))**2 or (PlmSchmidt*sin (m theta))**2 over
-!       all space is 4 pi.
+!   1.  The employed normalization is the "Schmidt semi-normalized convention."
+!       The integral of (PlmSchmidt*cos(m theta))**2 or
+!       (PlmSchmidt*sin (m theta))**2 over all space is 4 pi/(2l+1).
 !   2.  The integral of PlmSchmidt**2 over (-1,1) is 2 * (2 - delta(0,m)) /
 !       (2l+1). If CNORM=1, then this is equal to 2/(2l+1).
 !   3.  The index of the array p corresponds to l*(l+1)/2 + m + 1. As such
@@ -273,7 +273,7 @@ subroutine PlmSchmidt(p, lmax, z, csphase, cnorm, exitstatus)
 
         ! Calculate P(m+1,m)
         k = kstart + m + 1
-        pm1 = z * sqr(2*m+1) * pm2 
+        pm1 = z * sqr(2*m+1) * pm2
         p(k) = pm1 * rescalem
 
         ! Calculate P(l,m)

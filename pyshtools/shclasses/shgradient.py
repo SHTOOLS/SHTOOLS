@@ -17,11 +17,11 @@ class SHGradient(object):
 
     Attributes:
 
+    name           : The name of the dataset.
     theta          : SHGrid class instance of the theta component of the
                      horizontal gradient.
     phi            : SHGrid class instance of the phi component of the
                      horizontal gradient.
-    units          : The units of the gridded data.
     lmax           : The maximum spherical harmonic degree resolvable by the
                      grids.
     lmax_calc      : The maximum spherical harmonic degree of the function
@@ -33,6 +33,7 @@ class SHGradient(object):
                      equally spaced grids in degrees.
     extend         : True if the grid contains the redundant column for 360 E
                      and the unnecessary row for 90 S.
+    units          : The units of the gridded data.
 
     Methods:
 
@@ -46,7 +47,7 @@ class SHGradient(object):
     """
 
     def __init__(self, theta, phi, lmax, lmax_calc, units=None,
-                 pot_units=None, epoch=None):
+                 pot_units=None, epoch=None, name=None):
         """
         Initialize the SHGradient class.
         """
@@ -61,6 +62,7 @@ class SHGradient(object):
         self.lmax = lmax
         self.lmax_calc = lmax_calc
         self.units = units
+        self.name = name
 
     def copy(self):
         """
@@ -83,19 +85,17 @@ class SHGradient(object):
         print(repr(self))
 
     def __repr__(self):
-        str = ('grid = {:s}\n'
-               'nlat = {:d}\n'
-               'nlon = {:d}\n'
-               'n = {:d}\n'
-               'sampling = {:d}\n'
-               'extend = {}\n'
-               'lmax = {:d}\n'
-               'lmax_calc = {:d}\n'
-               'units = {:s}'
-               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
-                       self.extend, self.lmax, self.lmax_calc,
-                       repr(self.units)))
-        return str
+        return (f'  name = {self.name!r}\n'
+                f'  grid = {self.grid!r}\n'
+                f'  nlat = {self.nlat}\n'
+                f'  nlon = {self.nlon}\n'
+                f'  n = {self.n}\n'
+                f'  sampling = {self.sampling}\n'
+                f'  extend = {self.extend}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  lmax_calc = {self.lmax_calc}\n'
+                f'  units = {self.units!r}'
+                )
 
     def plot_theta(self, projection=None, tick_interval=[30, 30],
                    minor_tick_interval=[None, None], xlabel=None, ylabel=None,

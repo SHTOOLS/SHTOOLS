@@ -56,7 +56,7 @@ volume = _Constant(
     abbrev='volume_titan',
     name='Volume of Titan',
     value=(4 * _np.pi / 3) * volume_equivalent_radius.value**3,
-    unit='m',
+    unit='m3',
     uncertainty=(8 * _np.pi / 3) * volume_equivalent_radius.value**2 *
     volume_equivalent_radius.uncertainty,
     reference='Derived from volume_equivalent_radius_titan')
@@ -85,19 +85,94 @@ gravity_mean_radius = _Constant(
                          ),
     reference='Derived from gm_titan and mean_radius_titan.')
 
-omega = _Constant(
-    abbrev='omega_titan',
+angular_velocity = _Constant(
+    abbrev='angular_velocity_titan',
     name='Angular spin rate of Titan',
-    value=22.5769768 * 2. * _np.pi / 360. / (24. * 60. * 60.),
+    value=2 * _np.pi / (15.945448 * 24 * 60 * 60),
     unit='rad / s',
     uncertainty=0.,
-    reference='Archinal, B. A., Acton, C. H., A’Hearn, M. F., Conrad, A., '
-    'Consolmagno, G. J., Duxbury, T., Hestroffer, D., Hilton, J. L., Kirk, '
-    'R. L., Klioner, S. A., McCarthy, D., Meech, K., Oberst, J., Ping, J., '
-    'Seidelmann, P. K., Tholen, D. J., Thomas, P. C., & Williams, I. P. '
-    '(2018). Report of the IAU Working Group on Cartographic Coordinates and '
-    'Rotational Elements: 2015. Celestial Mechanics and Dynamical Astronomy, '
-    '130(3), 22. https://doi.org/10.1007/s10569-017-9805-5')
+    reference='Jacobson, R. (2022). The Orbits of the Main Saturnian '
+    'Satellites, the Saturnian System Gravity Field, and the Orientation of '
+    "Saturn's Pole. The Astronomical Journal, 164, 199. "
+    'https://doi.org/10.3847/1538-3881/ac90c9')
+
+rotational_period = _Constant(
+    abbrev='rotational_period_titan',
+    name='Rotational period of Titan',
+    value=2. * _np.pi / angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * angular_velocity.uncertainty /
+    angular_velocity.value**2,
+    reference='Derived from angular_velocity_titan')
+
+orbit_semimajor_axis = _Constant(
+    abbrev='orbit_semimajor_axis_titan',
+    name='Semimajor axis of the orbit of Titan about Saturn',
+    value=1221900.e3,
+    unit='m',
+    uncertainty=0.,
+    reference='Jacobson, R. (2022). The Orbits of the Main Saturnian '
+    'Satellites, the Saturnian System Gravity Field, and the Orientation of '
+    "Saturn's Pole. The Astronomical Journal, 164, 199. "
+    'https://doi.org/10.3847/1538-3881/ac90c9')
+
+orbit_eccentricity = _Constant(
+    abbrev='orbit_eccentricity_titan',
+    name='Eccentricity of the orbit of Titan about Saturn',
+    value=0.029,
+    unit='',
+    uncertainty=0.,
+    reference='Jacobson, R. (2022). The Orbits of the Main Saturnian '
+    'Satellites, the Saturnian System Gravity Field, and the Orientation of '
+    "Saturn's Pole. The Astronomical Journal, 164, 199. "
+    'https://doi.org/10.3847/1538-3881/ac90c9')
+
+orbit_inclination = _Constant(
+    abbrev='orbit_inclination_titan',
+    name='Inclination of the orbit of Titan about Saturn with respect '
+    'to the Laplace plane',
+    value=0.3,
+    unit='degrees',
+    uncertainty=0.,
+    reference='Jacobson, R. (2022). The Orbits of the Main Saturnian '
+    'Satellites, the Saturnian System Gravity Field, and the Orientation of '
+    "Saturn’s Pole. The Astronomical Journal, 164, 199. "
+    'https://doi.org/10.3847/1538-3881/ac90c9')
+
+orbit_angular_velocity = _Constant(
+    abbrev='orbit_angular_velocity_titan',
+    name='Orbital angular velocity of Titan about Saturn',
+    value=2 * _np.pi / (15.945448 * 24 * 60 * 60),
+    unit='rad / s',
+    uncertainty=0.,
+    reference='Jacobson, R. (2022). The Orbits of the Main Saturnian '
+    'Satellites, the Saturnian System Gravity Field, and the Orientation of '
+    "Saturn's Pole. The Astronomical Journal, 164, 199. "
+    'https://doi.org/10.3847/1538-3881/ac90c9')
+
+orbit_tilt = _Constant(
+    abbrev='orbit_tilt_titan',
+    name='Angle between the Titan Laplace plane and the equatorial plane '
+    'of Saturn',
+    value=0.6,
+    unit='degrees',
+    uncertainty=0.,
+    reference='Jacobson, R. (2022). The Orbits of the Main Saturnian '
+    'Satellites, the Saturnian System Gravity Field, and the Orientation of '
+    "Saturn's Pole. The Astronomical Journal, 164, 199. "
+    'https://doi.org/10.3847/1538-3881/ac90c9')
+
+orbit_period = _Constant(
+    abbrev='orbit_period_titan',
+    name='Orbital period of Titan',
+    value=2. * _np.pi / orbit_angular_velocity.value,
+    unit='s',
+    uncertainty=2. * _np.pi * orbit_angular_velocity.uncertainty /
+    orbit_angular_velocity.value**2,
+    reference='Derived from orbit_angular_velocity_titan')
 
 __all__ = ['gm', 'mass', 'mean_radius', 'r', 'volume_equivalent_radius',
-           'volume', 'gravity_mean_radius', 'mean_density', 'omega']
+           'volume', 'gravity_mean_radius', 'mean_density', 'angular_velocity',
+           'orbit_semimajor_axis', 'orbit_eccentricity',
+           'orbit_inclination', 'orbit_angular_velocity', 'orbit_tilt',
+           'rotational_period', 'orbit_period']

@@ -15,7 +15,7 @@ from pooch import HTTPDownloader as _HTTPDownloader
 from pooch import DOIDownloader as _DOIDownloader
 from ...shclasses import SHCoeffs as _SHCoeffs
 from ...shclasses import SHGravCoeffs as _SHGravCoeffs
-from ...constants.Venus import omega as _omega
+from ...constants.Venus import angular_velocity as _omega
 from . import historical  # noqa: F401
 
 
@@ -35,6 +35,9 @@ def VenusTopo719(lmax=719):
         Treatise on Geophysics, 2nd edition, Oxford, 153-193,
         doi:10.1016/B978-0-444-53802-4.00169-X.
     '''
+    if lmax < 0:
+        lmax = 719
+
     fname = _retrieve(
         url="doi:10.5281/zenodo.3870926/VenusTopo719.shape.gz",
         known_hash="sha256:9fcb04fb21eb7090df68e42458f6d7495a27ff62687b46534057ed608786cf3b",  # noqa: E501
@@ -60,6 +63,9 @@ def MGNP180U(lmax=180):
     Konopliv, A.S., Banerdt, W.B., Sjogren, W.L. (1999). Venus gravity: 180th
         degree and order model, Icarus, 139, 3-18, doi:10.1006/icar.1999.6086.
     '''
+    if lmax < 0:
+        lmax = 180
+
     fname = _retrieve(
         url="https://pds-geosciences.wustl.edu/mgn/mgn-v-rss-5-gravity-l2-v1/mg_5201/gravity/shgj180u.a01",  # noqa: E501
         known_hash="sha256:d59e2bb90c104ca1157681454a4c016ed4d1cb0e496861b1d3b35829403cf53b",  # noqa: E501

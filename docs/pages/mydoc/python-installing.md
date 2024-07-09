@@ -36,6 +36,7 @@ sudo dnf group install "C Development Tools and Libraries" "Development Tools"
 sudo dnf install cmake gcc-fortran
 # macOS
 xcode-select --install
+brew install gcc
 ```
 Next, clone the SHTOOLS repo and enter the directory
 ```bash

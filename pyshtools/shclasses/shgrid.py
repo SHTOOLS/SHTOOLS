@@ -42,6 +42,7 @@ class SHGrid(object):
 
     The class instance defines the following class attributes:
 
+    name       : The name of the dataset.
     data       : Gridded array of the data.
     nlat, nlon : The number of latitude and longitude bands in the grid.
     n          : The number of samples in latitude for 'DH' grids.
@@ -53,13 +54,13 @@ class SHGrid(object):
     kind       : Either 'real' or 'complex' for the data type.
     grid       : Either 'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-
                  Legendre Quadrature grids.
-    units      : The units of the gridded data.
     zeros      : The cos(colatitude) nodes used with Gauss-Legendre
                  Quadrature grids. Default is None.
     weights    : The latitudinal weights used with Gauss-Legendre
                  Quadrature grids. Default is None.
     extend     : True if the grid contains the redundant column for 360 E and
                  (for 'DH' grids) the unnecessary row for 90 S.
+    units      : The units of the gridded data.
 
     Each class instance provides the following methods:
 
@@ -103,13 +104,13 @@ class SHGrid(object):
 
     # ---- Factory methods ----
     @classmethod
-    def from_array(self, array, grid='DH', units=None, copy=True):
+    def from_array(self, array, grid='DH', units=None, name=None, copy=True):
         """
         Initialize the class instance from an input array.
 
         Usage
         -----
-        x = SHGrid.from_array(array, [grid, units, copy])
+        x = SHGrid.from_array(array, [grid, units, name, copy])
 
         Returns
         -------
@@ -125,6 +126,8 @@ class SHGrid(object):
             Quadrature grids, respectively.
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         copy : bool, optional, default = True
             If True (default), make a copy of array when initializing the class
             instance. If False, initialize the class instance with a reference
@@ -135,7 +138,7 @@ class SHGrid(object):
         else:
             kind = 'real'
 
-        if type(grid) is not str:
+        if not isinstance(grid, str):
             raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
@@ -147,17 +150,17 @@ class SHGrid(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
-                return cls(array, units=units, copy=copy)
+                return cls(array, units=units, name=name, copy=copy)
 
     @classmethod
     def from_zeros(self, lmax, grid='DH', kind='real', sampling=2,
-                   units=None, extend=True, empty=False):
+                   units=None, name=None, extend=True, empty=False):
         """
         Initialize the class instance using an array of zeros.
 
         Usage
         -----
-        x = SHGrid.from_zeros(lmax, [grid, kind, sampling, units, extend,
+        x = SHGrid.from_zeros(lmax, [grid, kind, sampling, units, name, extend,
                                      empty])
 
         Returns
@@ -180,6 +183,8 @@ class SHGrid(object):
             with extend=True).
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         extend : bool, optional, default = True
             If True, include the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
@@ -187,7 +192,7 @@ class SHGrid(object):
             If True, create the data array using numpy.empty() and do not
             initialize with zeros.
         """
-        if type(grid) is not str:
+        if not isinstance(grid, str):
             raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
@@ -223,19 +228,21 @@ class SHGrid(object):
 
         for cls in self.__subclasses__():
             if cls.istype(kind) and cls.isgrid(grid):
-                return cls(array, units=units, copy=False)
+                return cls(array, units=units, name=name, copy=False)
 
     @classmethod
-    def from_ellipsoid(self, lmax, a, b=None, c=None, grid='DH', kind='real',
-                       sampling=2, units=None, extend=True):
+    def from_ellipsoid(self, lmax, a, b=None, c=None, alpha=0.,
+                       grid='DH', kind='real', sampling=2, units=None,
+                       name=None, extend=True):
         """
         Initialize the class instance with a triaxial ellipsoid whose principal
-        axes are aligned with the x, y, and z axes.
+        axes are aligned with the x, y, and z axes. Optionally, rotate the
+        a and b principal axes about the z axis by alpha.
 
         Usage
         -----
-        x = SHGrid.from_ellipsoid(lmax, a, [b, c, grid, kind, sampling,
-                                            units, extend])
+        x = SHGrid.from_ellipsoid(lmax, a, [b, c, alpha, grid, kind,
+                                            sampling, units, name, extend])
 
         Returns
         -------
@@ -243,14 +250,18 @@ class SHGrid(object):
 
         Parameters
         ----------
+        lmax : int
+            The maximum spherical harmonic degree resolvable by the grid.
         a : float
             Length of the principal axis aligned with the x axis.
         b : float, optional, default = a
             Length of the principal axis aligned with the y axis.
         c : float, optional, default = b
             Length of the principal axis aligned with the z axis.
-        lmax : int
-            The maximum spherical harmonic degree resolvable by the grid.
+        alpha : float, optional, default = 0
+            Rotate the a and b principal axes about the z axis by alpha in
+            degrees. The longitude of the x and y axes will be alpha and
+            90 + alpha, respectively.
         grid : str, optional, default = 'DH'
             'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
             Quadrature grids, respectively.
@@ -263,12 +274,15 @@ class SHGrid(object):
             with extend=True).
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         extend : bool, optional, default = True
             If True, include the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
         """
         temp = self.from_zeros(lmax, grid=grid, kind=kind, sampling=sampling,
-                               units=units, extend=extend, empty=True)
+                               units=units, extend=extend, empty=True,
+                               name=name)
         if c is None and b is None:
             temp.data[:, :] = a
         elif c is not None and b is None:
@@ -280,20 +294,20 @@ class SHGrid(object):
         else:
             if c is None:
                 c = b
-            cos2 = _np.cos(_np.deg2rad(temp.lons()))**2
-            sin2 = _np.sin(_np.deg2rad(temp.lons()))**2
+            cos2 = _np.cos(_np.deg2rad(temp.lons() - alpha))**2
+            sin2 = _np.sin(_np.deg2rad(temp.lons() - alpha))**2
             for ilat, lat in enumerate(temp.lats()):
                 temp.data[ilat, :] = 1. / _np.sqrt(
-                    _np.cos(_np.deg2rad(lat))**2 * cos2 / a**2 +
-                    _np.cos(_np.deg2rad(lat))**2 * sin2 / b**2 +
-                    _np.sin(_np.deg2rad(lat))**2 / c**2
+                    _np.cos(_np.deg2rad(lat))**2
+                    * (cos2 / a**2 + sin2 / b**2)
+                    + _np.sin(_np.deg2rad(lat))**2 / c**2
                     )
 
         return temp
 
     @classmethod
     def from_cap(self, theta, clat, clon, lmax, grid='DH', kind='real',
-                 sampling=2, degrees=True, units=None, extend=True):
+                 sampling=2, degrees=True, units=None, name=None, extend=True):
         """
         Initialize the class instance with an array equal to unity within
         a spherical cap and zero elsewhere.
@@ -301,7 +315,7 @@ class SHGrid(object):
         Usage
         -----
         x = SHGrid.from_cap(theta, clat, clon, lmax, [grid, kind, sampling,
-                            degrees, units, extend])
+                            degrees, units, name, extend])
 
         Returns
         -------
@@ -330,12 +344,14 @@ class SHGrid(object):
             If True, theta, clat, and clon are in degrees.
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         extend : bool, optional, default = True
             If True, include the longitudinal band for 360 E (DH and GLQ grids)
             and the latitudinal band for 90 S (DH grids only).
         """
         temp = self.from_zeros(lmax, grid=grid, kind=kind, sampling=sampling,
-                               units=units, extend=extend)
+                               units=units, extend=extend, name=name)
 
         if degrees is True:
             theta = _np.deg2rad(theta)
@@ -376,13 +392,14 @@ class SHGrid(object):
         return temp
 
     @classmethod
-    def from_file(self, fname, binary=False, grid='DH', units=None, **kwargs):
+    def from_file(self, fname, binary=False, grid='DH', units=None, name=None,
+                  load_dict=dict()):
         """
         Initialize the class instance from gridded data in a file.
 
         Usage
         -----
-        x = SHGrid.from_file(fname, [binary, grid, units, **kwargs])
+        x = SHGrid.from_file(fname, [binary, grid, units, name, load_dict])
 
         Returns
         -------
@@ -407,27 +424,30 @@ class SHGrid(object):
             Quadrature grids, respectively.
         units : str, optional, default = None
             The units of the gridded data.
-        **kwargs : keyword arguments, optional
-            Keyword arguments of numpy.loadtxt() or numpy.load().
+        name : str, optional, default = None
+            The name of the dataset.
+        load_dict : dict, optional, default = dict()
+            Optional arguments passed to numpy.load() and numpy.loadtxt().
         """
         if binary is False:
-            data = _np.loadtxt(fname, **kwargs)
+            data = _np.loadtxt(fname, **load_dict)
         elif binary is True:
-            data = _np.load(fname, **kwargs)
+            data = _np.load(fname, **load_dict)
         else:
             raise ValueError('binary must be True or False. '
                              'Input value is {:s}.'.format(binary))
 
-        return self.from_array(data, grid=grid, units=units, copy=False)
+        return self.from_array(data, grid=grid, units=units, name=name,
+                               copy=False)
 
     @classmethod
-    def from_xarray(self, data_array, grid='DH', units=None):
+    def from_xarray(self, data_array, grid='DH', units=None, name=None):
         """
         Initialize the class instance from an xarray DataArray object.
 
         Usage
         -----
-        x = SHGrid.from_xarray(data_array, [grid, units])
+        x = SHGrid.from_xarray(data_array, [grid, units, name])
 
         Returns
         -------
@@ -445,26 +465,28 @@ class SHGrid(object):
             Quadrature grids, respectively.
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         """
         try:
             units = data_array.units
-        except:
+        except Exception:
             pass
 
         array = data_array.values
         if data_array.coords[data_array.dims[0]].values[0] == -90.:
             array = _np.flipud(array)
 
-        return self.from_array(array, grid=grid, units=units)
+        return self.from_array(array, grid=grid, units=units, name=name)
 
     @classmethod
-    def from_netcdf(self, netcdf, grid='DH', units=None):
+    def from_netcdf(self, netcdf, grid='DH', units=None, name=None):
         """
         Initialize the class instance from a netcdf formatted file or object.
 
         Usage
         -----
-        x = SHGrid.from_netcdf(netcdf, [grid, units])
+        x = SHGrid.from_netcdf(netcdf, [grid, units, name])
 
         Returns
         -------
@@ -479,6 +501,8 @@ class SHGrid(object):
             Quadrature grids, respectively.
         units : str, optional, default = None
             The units of the gridded data.
+        name : str, optional, default = None
+            The name of the dataset.
         """
         data_array = _xr.open_dataarray(netcdf)
         if data_array.coords[data_array.dims[0]].values[0] == -90.:
@@ -488,10 +512,10 @@ class SHGrid(object):
 
         try:
             units = data_array.units
-        except:
+        except Exception:
             pass
 
-        return self.from_array(array, grid=grid, units=units)
+        return self.from_array(array, grid=grid, units=units, name=name)
 
     # ---- I/O methods ----
     def copy(self):
@@ -504,13 +528,13 @@ class SHGrid(object):
         """
         return _copy.deepcopy(self)
 
-    def to_file(self, filename, binary=False, **kwargs):
+    def to_file(self, filename, binary=False, save_dict=dict()):
         """
         Save gridded data to a file.
 
         Usage
         -----
-        x.to_file(filename, [binary, **kwargs])
+        x.to_file(filename, [binary, save_dict])
 
         Parameters
         ----------
@@ -520,13 +544,13 @@ class SHGrid(object):
         binary : bool, optional, default = False
             If False, save as text using numpy.savetxt(). If True, save as a
             'npy' binary file using numpy.save().
-        **kwargs : keyword arguments, optional
-            Keyword arguments of numpy.savetxt() and numpy.save().
+        save_dict : dict, optional, default = dict()
+            Optional arguments passed to numpy.save() and numpy.savetxt().
         """
         if binary is False:
-            _np.savetxt(filename, self.data, **kwargs)
+            _np.savetxt(filename, self.data, **save_dict)
         elif binary is True:
-            _np.save(filename, self.data, **kwargs)
+            _np.save(filename, self.data, **save_dict)
         else:
             raise ValueError('binary must be True or False. '
                              'Input value is {:s}.'.format(binary))
@@ -683,7 +707,7 @@ class SHGrid(object):
         grid : SHGrid class instance
         """
         return SHGrid.from_array(self.to_array().real, grid=self.grid,
-                                 units=self.units, copy=False)
+                                 units=self.units, name=self.name, copy=False)
 
     def to_imag(self):
         """
@@ -699,7 +723,7 @@ class SHGrid(object):
         grid : SHGrid class instance
         """
         return SHGrid.from_array(self.to_array().imag, grid=self.grid,
-                                 units=self.units, copy=False)
+                                 units=self.units, name=self.name, copy=False)
 
     def info(self):
         """
@@ -863,17 +887,20 @@ class SHGrid(object):
         return SHGrid.from_array(abs(self.data), grid=self.grid)
 
     def __repr__(self):
-        str = ('kind = {:s}\n'
-               'grid = {:s}\n'.format(repr(self.kind), repr(self.grid)))
+        str = (f'  name = {self.name!r}\n'
+               f'  kind = {self.kind!r}\n'
+               f'  grid = {self.grid!r}\n'
+               )
         if self.grid == 'DH':
-            str += ('n = {:d}\n'
-                    'sampling = {:d}\n'.format(self.n, self.sampling))
-        str += ('nlat = {:d}\n'
-                'nlon = {:d}\n'
-                'lmax = {:d}\n'
-                'units = {:s}\n'
-                'extend = {}'.format(self.nlat, self.nlon, self.lmax,
-                                     repr(self.units), self.extend))
+            str += (f'  n = {self.n}\n'
+                    f'  sampling = {self.sampling}\n'
+                    )
+        str += (f'  extend = {self.extend}\n'
+                f'  nlat = {self.nlat}\n'
+                f'  nlon = {self.nlon}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  units = {self.units!r}'
+                )
         return str
 
     # ---- Extract grid properties ----
@@ -963,14 +990,15 @@ class SHGrid(object):
         """
         return self._histogram(bins=bins, range=range)
 
-    def expand(self, normalization='4pi', csphase=1, lmax_calc=None,
+    def expand(self, normalization='4pi', csphase=1, lmax_calc=None, name=None,
                backend=None, nthreads=None):
         """
         Expand the grid into spherical harmonics.
 
         Usage
         -----
-        clm = x.expand([normalization, csphase, lmax_calc, backend, nthreads])
+        clm = x.expand([normalization, csphase, lmax_calc, name, backend,
+                        nthreads])
 
         Returns
         -------
@@ -987,6 +1015,8 @@ class SHGrid(object):
             or -1 to include it.
         lmax_calc : int, optional, default = x.lmax
             Maximum spherical harmonic degree to return.
+        name : str, optional, default = None
+            The name of the dataset.
         backend : str, optional, default = preferred_backend()
             Name of the preferred backend, either 'shtools' or 'ducc'.
         nthreads : int, optional, default = 1
@@ -1001,7 +1031,7 @@ class SHGrid(object):
         90 N and S are downweighted to zero and have no influence on the
         returned spherical harmonic coefficients.
         """
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. ' +
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -1021,10 +1051,12 @@ class SHGrid(object):
 
         if backend is None:
             backend = preferred_backend()
+        if name is None:
+            name = self.name
 
         return self._expand(normalization=normalization, csphase=csphase,
                             lmax_calc=lmax_calc, backend=backend,
-                            nthreads=nthreads)
+                            nthreads=nthreads, name=name)
 
     # ---- Plotting routines ----
     def plot3d(self, elevation=20, azimuth=30, cmap='viridis',
@@ -1106,9 +1138,9 @@ class SHGrid(object):
             if isinstance(cmap, _mpl.colors.Colormap):
                 cmap_scaled = cmap._resample(num)
             else:
-                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+                cmap_scaled = _plt.get_cmap(cmap, num)
         else:
-            cmap_scaled = _mpl.cm.get_cmap(cmap)
+            cmap_scaled = _plt.get_cmap(cmap)
         if cmap_reverse:
             cmap_scaled = cmap_scaled.reversed()
 
@@ -1353,19 +1385,19 @@ class SHGrid(object):
             minor_tick_interval = [None, None]
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -1557,10 +1589,9 @@ class SHGrid(object):
         cb_ylabel : str, optional, default = None
             Text label for the y axis of the colorbar
         cb_tick_interval : float, optional, default = None
-            Annotation interval on the colorbar. If cmap_scale is 'log' and
-            cb_power is True, then use 1 to annotate each power of 10, use 2
-            to annotate 3 intervals per decade, and use 3 to annotate 10
-            intervals per decade.
+            Annotation interval on the colorbar. If cmap_scale is 'log', use 1
+            to annotate each power of 10 (default), use 2 to annotate 3
+            intervals per decade, or use 3 to annotate 10 intervals per decade.
         cb_minor_tick_interval : float, optional, default = None
             Colorbar minor tick interval as described in cb_tick_interval.
         cb_offset : float or int, optional, default = None
@@ -1672,22 +1703,24 @@ class SHGrid(object):
                                  .format(repr(colorbar)))
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
+        if cmap_scale == 'log' and cb_tick_interval is None:
+            cb_tick_interval = 1
 
         figure = self._plot_pygmt(
             fig=fig, projection=projection, region=region, rectangle=rectangle,
@@ -1804,19 +1837,19 @@ class SHGrid(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -1867,7 +1900,7 @@ class DHRealGrid(SHGrid):
     def isgrid(grid):
         return grid == 'DH'
 
-    def __init__(self, array, units=None, copy=True):
+    def __init__(self, array, units=None, copy=True, name=None):
         self.nlat, self.nlon = array.shape
 
         if self.nlat % 2 != 0:
@@ -1892,6 +1925,7 @@ class DHRealGrid(SHGrid):
         self.grid = 'DH'
         self.kind = 'real'
         self.units = units
+        self.name = name
 
         if copy:
             self.data = _np.copy(array)
@@ -1945,7 +1979,8 @@ class DHRealGrid(SHGrid):
                              weights=da[:, :self.nlon-self.extend],
                              density=True, range=range)
 
-    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads,
+                name):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -1971,7 +2006,7 @@ class DHRealGrid(SHGrid):
         coeffs = SHCoeffs.from_array(cilm,
                                      normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
-                                     copy=False)
+                                     copy=False, name=name)
         return coeffs
 
     def _plot(self, projection=None, xlabel=None, ylabel=None, ax=None,
@@ -2045,9 +2080,9 @@ class DHRealGrid(SHGrid):
             if isinstance(cmap, _mpl.colors.Colormap):
                 cmap_scaled = cmap._resample(num)
             else:
-                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+                cmap_scaled = _plt.get_cmap(cmap, num)
         else:
-            cmap_scaled = _mpl.cm.get_cmap(cmap)
+            cmap_scaled = _plt.get_cmap(cmap)
 
         if cmap_reverse:
             cmap_scaled = cmap_scaled.reversed()
@@ -2431,7 +2466,7 @@ class DHRealGrid(SHGrid):
             # generate shading from self
             shading_str = "+a{:}+nt{:}+m0".format(shading_azimuth,
                                                   shading_amplitude)
-        elif type(shading) is str:
+        elif isinstance(shading, str):
             shading_str = shading  # external filename
             if shading_azimuth is not None:
                 shading_str += "+a{:}+nt{:}+m0".format(shading_azimuth,
@@ -2488,7 +2523,7 @@ class DHComplexGrid(SHGrid):
     def isgrid(grid):
         return grid == 'DH'
 
-    def __init__(self, array, units=None, copy=True):
+    def __init__(self, array, units=None, copy=True, name=None):
         self.nlat, self.nlon = array.shape
 
         if self.nlat % 2 != 0:
@@ -2513,6 +2548,7 @@ class DHComplexGrid(SHGrid):
         self.grid = 'DH'
         self.kind = 'complex'
         self.units = units
+        self.name = name
 
         if copy:
             self.data = _np.copy(array)
@@ -2545,7 +2581,8 @@ class DHComplexGrid(SHGrid):
         """Return an area-weighted histogram normalized to unity."""
         raise NotImplementedError('histogram() does not support complex data.')
 
-    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads,
+                name):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -2570,7 +2607,7 @@ class DHComplexGrid(SHGrid):
                 lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
-                                     copy=False)
+                                     copy=False, name=name)
         return coeffs
 
     def _plot(self, projection=None, xlabel=None, ylabel=None, colorbar=None,
@@ -2727,7 +2764,8 @@ class GLQRealGrid(SHGrid):
     def isgrid(grid):
         return grid == 'GLQ'
 
-    def __init__(self, array, zeros=None, weights=None, units=None, copy=True):
+    def __init__(self, array, zeros=None, weights=None, units=None, copy=True,
+                 name=None):
         self.nlat, self.nlon = array.shape
         self.lmax = self.nlat - 1
 
@@ -2752,6 +2790,7 @@ class GLQRealGrid(SHGrid):
         self.grid = 'GLQ'
         self.kind = 'real'
         self.units = units
+        self.name = name
 
         if copy:
             self.data = _np.copy(array)
@@ -2802,7 +2841,8 @@ class GLQRealGrid(SHGrid):
                              weights=da[:, :self.nlon-self.extend],
                              density=True, range=range)
 
-    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads,
+                name):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -2826,7 +2866,7 @@ class GLQRealGrid(SHGrid):
                 norm=norm, csphase=csphase, lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
-                                     copy=False)
+                                     copy=False, name=name)
         return coeffs
 
     def _plot(self, projection=None, xlabel=None, ylabel=None, ax=None,
@@ -2884,9 +2924,9 @@ class GLQRealGrid(SHGrid):
             if isinstance(cmap, _mpl.colors.Colormap):
                 cmap_scaled = cmap._resample(num)
             else:
-                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+                cmap_scaled = _plt.get_cmap(cmap, num)
         else:
-            cmap_scaled = _mpl.cm.get_cmap(cmap)
+            cmap_scaled = _plt.get_cmap(cmap)
 
         if cmap_reverse:
             cmap_scaled = cmap_scaled.reversed()
@@ -3084,7 +3124,8 @@ class GLQComplexGrid(SHGrid):
     def isgrid(grid):
         return grid == 'GLQ'
 
-    def __init__(self, array, zeros=None, weights=None, units=None, copy=True):
+    def __init__(self, array, zeros=None, weights=None, units=None, copy=True,
+                 name=None):
         self.nlat, self.nlon = array.shape
         self.lmax = self.nlat - 1
 
@@ -3109,6 +3150,7 @@ class GLQComplexGrid(SHGrid):
         self.grid = 'GLQ'
         self.kind = 'complex'
         self.units = units
+        self.name = name
 
         if copy:
             self.data = _np.copy(array)
@@ -3132,7 +3174,8 @@ class GLQComplexGrid(SHGrid):
         """Return an area-weighted histogram normalized to unity."""
         raise NotImplementedError('histogram() does not support complex data.')
 
-    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads):
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads,
+                name):
         """Expand the grid into real spherical harmonics."""
         from .shcoeffs import SHCoeffs
         if normalization.lower() == '4pi':
@@ -3156,7 +3199,7 @@ class GLQComplexGrid(SHGrid):
                 norm=norm, csphase=csphase, lmax_calc=lmax_calc)
         coeffs = SHCoeffs.from_array(cilm, normalization=normalization.lower(),
                                      csphase=csphase, units=self.units,
-                                     copy=False)
+                                     copy=False, name=name)
         return coeffs
 
     def _plot(self, projection=None, minor_xticks=[], minor_yticks=[],

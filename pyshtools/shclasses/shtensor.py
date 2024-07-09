@@ -3145,23 +3145,23 @@ class Tensor(object):
             desc = 'magnetic field tensor component '
 
         _vxx = self.vxx.to_xarray(title=desc+'(Vxx)', long_name='$V_{xx}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vxy = self.vxy.to_xarray(title=desc+'(Vxy)', long_name='$V_{xy}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vxz = self.vxz.to_xarray(title=desc+'(Vxz)', long_name='$V_{xz}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vyx = self.vyx.to_xarray(title=desc+'(Vyx)', long_name='$V_{yx}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vyy = self.vyy.to_xarray(title=desc+'(Vyy)', long_name='$V_{yy}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vyz = self.vyz.to_xarray(title=desc+'(Vyz)', long_name='$V_{yz}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vzx = self.vzx.to_xarray(title=desc+'(Vzx)', long_name='$V_{zx}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vzy = self.vzy.to_xarray(title=desc+'(Vzy)', long_name='$V_{zy}$',
-                                  units=self._vii_units)
+                                  units=self.units)
         _vzz = self.vzz.to_xarray(title=desc+'(Vzz)', long_name='$V_{zz}$',
-                                  units=self._vii_units)
+                                  units=self.units)
 
         dataset = _xr.Dataset({'vxx': _vxx, 'vxy': _vxy, 'vxz': _vxz,
                                'vyx': _vyx, 'vyy': _vyy, 'vyz': _vyz,
@@ -3210,13 +3210,13 @@ class Tensor(object):
 
             _eig1 = self.eig1.to_xarray(title=desc1,
                                         long_name=r'${\lambda}_1$',
-                                        units=self._vii_units)
+                                        units=self.units)
             _eig2 = self.eig2.to_xarray(title=desc2,
                                         long_name=r'${\lambda}_2$',
-                                        units=self._vii_units)
+                                        units=self.units)
             _eig3 = self.eig3.to_xarray(title=desc3,
                                         long_name=r'${\lambda}_3$',
-                                        units=self._vii_units)
+                                        units=self.units)
 
             dataset['eig1'] = _eig1
             dataset['eig2'] = _eig2
@@ -3237,13 +3237,13 @@ class Tensor(object):
 
             _eigh1 = self.eigh1.to_xarray(title=desc1,
                                           long_name=r'${\lambda}_{h1}$',
-                                          units=self._vii_units)
+                                          units=self.units)
             _eigh2 = self.eigh2.to_xarray(title=desc2,
                                           long_name=r'${\lambda}_{h2}$',
-                                          units=self._vii_units)
+                                          units=self.units)
             _eighh = self.eighh.to_xarray(title=desc3,
                                           long_name=r'${\lambda}_{hh}$',
-                                          units=self._vii_units)
+                                          units=self.units)
 
             dataset['eigh1'] = _eigh1
             dataset['eigh2'] = _eigh2
@@ -3260,6 +3260,7 @@ class SHGravTensor(Tensor):
 
     Attributes:
 
+    name             : The name of the dataset.
     vxx, vxy, vzz,   : The 9 components of the gravity tensor.
     vyx, vyy, vyz,
     vzx, vzy, vzz
@@ -3329,7 +3330,7 @@ class SHGravTensor(Tensor):
     """
 
     def __init__(self, vxx, vyy, vzz, vxy, vxz, vyz, gm, a, f, lmax,
-                 lmax_calc, units='Eötvös', epoch=None):
+                 lmax_calc, units='Eötvös', name=None, epoch=None):
         """
         Initialize the SHGravTensor class.
         """
@@ -3363,6 +3364,7 @@ class SHGravTensor(Tensor):
         self.eigh1 = None
         self.eigh2 = None
         self.eighh = None
+        self.name = name
         self.units = units
         self.epoch = epoch
 
@@ -3390,23 +3392,21 @@ class SHGravTensor(Tensor):
         self._eighh_label = r'$\lambda_{hh}$, ' + self.units
 
     def __repr__(self):
-        str = ('grid = {:s}\n'
-               'nlat = {:d}\n'
-               'nlon = {:d}\n'
-               'n = {:d}\n'
-               'sampling = {:d}\n'
-               'extend = {}\n'
-               'lmax = {:d}\n'
-               'lmax_calc = {:d}\n'
-               'gm (m3 / s2) = {:e}\n'
-               'a (m)= {:e}\n'
-               'f = {:e}\n'
-               'units = {:s}\n'
-               'epoch = {:s}'
-               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
-                       self.extend, self.lmax, self.lmax_calc, self.gm, self.a,
-                       self.f, repr(self.units), repr(self.epoch)))
-        return str
+        return (f'  name = {self.name!r}\n'
+                f'  grid = {self.grid!r}\n'
+                f'  nlat = {self.nlat}\n'
+                f'  nlon = {self.nlon}\n'
+                f'  n = {self.n}\n'
+                f'  sampling = {self.sampling}\n'
+                f'  extend = {self.extend}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  lmax_calc = {self.lmax_calc}\n'
+                f'  gm (m3 / s2) = {self.gm}\n'
+                f'  a (m) = {self.a}\n'
+                f'  f = {self.f}\n'
+                f'  units = {self.units!r}\n'
+                f'  epoch = {self.epoch}'
+                )
 
 
 class SHMagTensor(Tensor):
@@ -3417,6 +3417,7 @@ class SHMagTensor(Tensor):
 
     Attributes:
 
+    name             : The name of the dataset.
     vxx, vxy, vzz,   : The 9 components of the magnetic field tensor.
     vyx, vyy, vyz,
     vzx, vzy, vzz
@@ -3485,7 +3486,7 @@ class SHMagTensor(Tensor):
     """
 
     def __init__(self, vxx, vyy, vzz, vxy, vxz, vyz, a, f, lmax,
-                 lmax_calc, units=None, year=None):
+                 lmax_calc, units=None, name=None, year=None):
         """
         Initialize the SHMagTensor class.
         """
@@ -3518,6 +3519,7 @@ class SHMagTensor(Tensor):
         self.eigh1 = None
         self.eigh2 = None
         self.eighh = None
+        self.name = name
         self.units = units
         self.year = year
         if self.units.lower() == 'nt/m':
@@ -3553,19 +3555,17 @@ class SHMagTensor(Tensor):
         self._eighh_label = r'$\lambda_{hh}$, ' + self._units_formatted
 
     def __repr__(self):
-        str = ('grid = {:s}\n'
-               'nlat = {:d}\n'
-               'nlon = {:d}\n'
-               'n = {:d}\n'
-               'sampling = {:d}\n'
-               'extend = {}\n'
-               'lmax = {:d}\n'
-               'lmax_calc = {:d}\n'
-               'a (m)= {:e}\n'
-               'f = {:e}\n'
-               'units = {:s}\n'
-               'year = {:s}'
-               .format(self.grid, self.nlat, self.nlon, self.n, self.sampling,
-                       self.extend, self.lmax, self.lmax_calc, self.a,
-                       self.f, repr(self.units), repr(self.year)))
-        return str
+        return (f'  name = {self.name!r}\n'
+                f'  grid = {self.grid!r}\n'
+                f'  nlat = {self.nlat}\n'
+                f'  nlon = {self.nlon}\n'
+                f'  n = {self.n}\n'
+                f'  sampling = {self.sampling}\n'
+                f'  extend = {self.extend}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  lmax_calc = {self.lmax_calc}\n'
+                f'  a (m) = {self.a}\n'
+                f'  f = {self.f}\n'
+                f'  units = {self.units!r}\n'
+                f'  year = {self.year}'
+                )

@@ -74,6 +74,7 @@ class SHGravCoeffs(object):
     Once initialized, each class instance defines the following class
     attributes:
 
+    name          : The name of the dataset.
     lmax          : The maximum spherical harmonic degree of the coefficients.
     coeffs        : The raw coefficients with the specified normalization and
                     csphase conventions. This is a three-dimensional array
@@ -94,7 +95,6 @@ class SHGravCoeffs(object):
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
     kind          : The coefficient data type (only 'real' is permissible).
-    name          : The name of the dataset.
     epoch         : The epoch time of the spherical harmonic coefficients.
     header        : A list of values (of type str) from the header line of the
                     input file used to initialize the class (for 'shtools'
@@ -237,7 +237,7 @@ class SHGravCoeffs(object):
         if _np.iscomplexobj(coeffs):
             raise TypeError('The input array must be real.')
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -388,7 +388,7 @@ class SHGravCoeffs(object):
                   header=True, header2=False, errors=None, error_kind=None,
                   csphase=1, r0_index=0, gm_index=1, omega_index=None,
                   header_units='m', set_degree0=True, name=None, epoch=None,
-                  encoding=None, quiet=False, **kwargs):
+                  encoding=None, quiet=False, load_dict=dict()):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -407,7 +407,7 @@ class SHGravCoeffs(object):
                                    name])
         x = SHGravCoeffs.from_file(filename, format='npy', gm, r0, [lmax,
                                    omega, normalization, csphase, set_degree0,
-                                   name, **kwargs])
+                                   name, load_dict])
 
         Returns
         -------
@@ -492,8 +492,8 @@ class SHGravCoeffs(object):
         quiet : bool, default = False
             If True, suppress warnings about undefined keywords when reading
             ICGEM formatted files.
-        **kwargs : keyword argument list, optional for format = 'npy'
-            Keyword arguments of numpy.load() when format is 'npy'.
+        load_dict : dict, optional, default = dict()
+            Optional arguments passed to numpy.load() when format is 'npy'.
 
         Notes
         -----
@@ -534,7 +534,7 @@ class SHGravCoeffs(object):
             r0_index = None
             gm_index = None
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -656,7 +656,7 @@ class SHGravCoeffs(object):
             if gm is None or r0 is None:
                 raise ValueError('For binary npy files, gm and r0 must be '
                                  'specified.')
-            coeffs = _np.load(fname, **kwargs)
+            coeffs = _np.load(fname, **load_dict)
             lmaxout = coeffs.shape[1] - 1
             if lmax is not None:
                 if lmax < lmaxout:
@@ -773,7 +773,7 @@ class SHGravCoeffs(object):
         Note that the degree 0 term is set to 1, and the degree-1 terms are
         set to 0.
         """
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -922,10 +922,10 @@ class SHGravCoeffs(object):
 
         try:
             normalization = ds.coeffs.normalization
-        except:
+        except Exception:
             pass
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
@@ -938,7 +938,7 @@ class SHGravCoeffs(object):
 
         try:
             csphase = ds.coeffs.csphase
-        except:
+        except Exception:
             pass
 
         if csphase != 1 and csphase != -1:
@@ -949,19 +949,19 @@ class SHGravCoeffs(object):
 
         try:
             gm = ds.coeffs.GM
-        except:
+        except Exception:
             raise ValueError("coeffs.GM must be specified in the netcdf file.")
         try:
             r0 = ds.coeffs.r0
-        except:
+        except Exception:
             raise ValueError("coeffs.r0 must be specified in the netcdf file.")
         try:
             omega = ds.coeffs.omega
-        except:
+        except Exception:
             omega = None
         try:
             epoch = ds.coeffs.epoch
-        except:
+        except Exception:
             pass
 
         lmaxout = ds.dims['degree'] - 1
@@ -992,7 +992,7 @@ class SHGravCoeffs(object):
             serrors = serrors[:lmaxout+1, :lmaxout+1]
             errors = _np.array([cerrors, serrors])
             error_kind = ds.errors.error_kind
-        except:
+        except Exception:
             errors = None
             error_kind = None
 
@@ -1108,28 +1108,26 @@ class SHGravCoeffs(object):
         if backend is None:
             backend = preferred_backend()
 
-        if type(shape) is not _SHRealCoeffs and type(shape) is not _DHRealGrid:
+        if not isinstance(shape, (_SHRealCoeffs, _DHRealGrid)):
             raise ValueError('shape must be of type SHRealCoeffs '
                              'or DHRealGrid. Input type is {:s}.'
                              .format(repr(type(shape))))
 
-        if (not issubclass(type(rho), float) and type(rho) is not int
-                and type(rho) is not _np.ndarray and
-                type(rho) is not _SHRealCoeffs and
-                type(rho is not _DHRealGrid)):
+        if not isinstance(rho, (float, int, _np.ndarray, _SHRealCoeffs,
+                                _DHRealGrid)):
             raise ValueError('rho must be of type float, int, ndarray, '
                              'SHRealCoeffs or DHRealGrid. Input type is {:s}.'
                              .format(repr(type(rho))))
 
-        if type(shape) is _SHRealCoeffs:
+        if isinstance(shape, _SHRealCoeffs):
             shape = shape.expand(lmax=lmax_grid, lmax_calc=lmax_calc,
                                  backend=backend, nthreads=nthreads)
 
-        if type(rho) is _SHRealCoeffs:
+        if isinstance(rho, _SHRealCoeffs):
             rho = rho.expand(lmax=lmax_grid, lmax_calc=lmax_calc,
                              backend=backend, nthreads=nthreads)
 
-        if type(rho) is _DHRealGrid:
+        if isinstance(rho, _DHRealGrid):
             if shape.lmax != rho.lmax:
                 raise ValueError('The grids for shape and rho must have the '
                                  'same size. '
@@ -1292,7 +1290,7 @@ class SHGravCoeffs(object):
     # ---- IO routines ----
     def to_file(self, filename, format='shtools', header=None, errors=True,
                 lmax=None, modelname=None, tide_system='unknown',
-                encoding=None, **kwargs):
+                encoding=None, save_dict=dict()):
         """
         Save spherical harmonic coefficients to a file.
 
@@ -1303,7 +1301,7 @@ class SHGravCoeffs(object):
         x.to_file(filename, format='bshc', [lmax])
         x.to_file(filename, format='icgem', [header, errors, lmax, modelname,
                                              tide_system, encoding])
-        x.to_file(filename, format='npy', [**kwargs])
+        x.to_file(filename, format='npy', [save_dict])
 
         Parameters
         ----------
@@ -1328,8 +1326,8 @@ class SHGravCoeffs(object):
         encoding : str, optional, default = None
             Encoding of the output file when format is 'shtools', 'dov' or
             'icgem'. The default is to use the system default.
-        **kwargs : keyword argument list, optional for format = 'npy'
-            Keyword arguments of numpy.save().
+        save_dict : dict, optional, default = dict()
+            Optional arguments passed to numpy.save() when format is 'npy'.
 
         Notes
         -----
@@ -1439,7 +1437,7 @@ class SHGravCoeffs(object):
                                  encoding=encoding)
 
         elif format.lower() == 'npy':
-            _np.save(filename, self.coeffs, **kwargs)
+            _np.save(filename, self.coeffs, **save_dict)
 
         else:
             raise NotImplementedError(
@@ -2099,7 +2097,8 @@ class SHGravCoeffs(object):
 
     # ---- Operations that return a new SHGravCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
-               body=False, dj_matrix=None, backend=None, nthreads=None):
+               body=False, dj_matrix=None, name=None, backend=None,
+               nthreads=None):
         """
         Rotate either the coordinate system used to express the spherical
         harmonic coefficients or the physical body, and return a new class
@@ -2108,7 +2107,7 @@ class SHGravCoeffs(object):
         Usage
         -----
         x_rotated = x.rotate(alpha, beta, gamma, [degrees, convention,
-                             body, dj_matrix, backend, nthreads])
+                             body, dj_matrix, name, backend, nthreads])
 
         Returns
         -------
@@ -2130,6 +2129,8 @@ class SHGravCoeffs(object):
         dj_matrix : ndarray, optional, default = None
             The djpi2 rotation matrix computed by a call to djpi2 (not used if
             the backend is 'ducc').
+        name : str, optional, default = self.name
+            The name of the dataset.
         backend : str, optional, default = preferred_backend()
             Name of the preferred backend, either 'shtools' or 'ducc'.
         nthreads : int, optional, default = 1
@@ -2179,7 +2180,7 @@ class SHGravCoeffs(object):
         True. This rotation is accomplished by performing the inverse rotation
         using the angles (-gamma, -beta, -alpha).
         """
-        if type(convention) is not str:
+        if not isinstance(convention, str):
             raise ValueError('convention must be a string. Input type is {:s}.'
                              .format(str(type(convention))))
 
@@ -2208,17 +2209,17 @@ class SHGravCoeffs(object):
 
         rot = self._rotate(angles, dj_matrix, gm=self.gm, r0=self.r0,
                            omega=self.omega, backend=backend,
-                           nthreads=nthreads)
+                           nthreads=nthreads, name=name)
         return rot
 
-    def convert(self, normalization=None, csphase=None, lmax=None):
+    def convert(self, normalization=None, csphase=None, lmax=None, name=None):
         """
         Return an SHGravCoeffs class instance with a different normalization
         convention.
 
         Usage
         -----
-        clm = x.convert([normalization, csphase, lmax])
+        clm = x.convert([normalization, csphase, lmax, name])
 
         Returns
         -------
@@ -2235,6 +2236,8 @@ class SHGravCoeffs(object):
             the phase factor, or -1 to include it.
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2253,9 +2256,11 @@ class SHGravCoeffs(object):
             csphase = self.csphase
         if lmax is None:
             lmax = self.lmax
+        if name is None:
+            name = self.name
 
         # check argument consistency
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -2277,23 +2282,23 @@ class SHGravCoeffs(object):
                 coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
                 errors=errors, error_kind=self.error_kind,
                 normalization=normalization.lower(),
-                csphase=csphase, epoch=self.epoch, copy=False)
+                csphase=csphase, epoch=self.epoch, copy=False, name=name)
         else:
             coeffs = self.to_array(normalization=normalization.lower(),
                                    csphase=csphase, lmax=lmax)
             return SHGravCoeffs.from_array(
                 coeffs, gm=self.gm, r0=self.r0, omega=self.omega,
                 normalization=normalization.lower(), csphase=csphase,
-                epoch=self.epoch, copy=False)
+                epoch=self.epoch, copy=False, name=name)
 
-    def pad(self, lmax, copy=True):
+    def pad(self, lmax, copy=True, name=None):
         """
         Return an SHGravCoeffs class where the coefficients are zero padded or
         truncated to a different lmax.
 
         Usage
         -----
-        clm = x.pad(lmax)
+        clm = x.pad(lmax, [copy, name])
 
         Returns
         -------
@@ -2306,11 +2311,17 @@ class SHGravCoeffs(object):
         copy : bool, optional, default = True
             If True, make a copy of x when initializing the class instance.
             If False, modify x itself.
+        name : str, optional, default = self.name
+            The name of the dataset.
         """
         if copy:
             clm = self.copy()
         else:
             clm = self
+
+        if name is None:
+            name = self.name
+        clm.name = name
 
         if lmax <= self.lmax:
             clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]
@@ -2333,14 +2344,14 @@ class SHGravCoeffs(object):
         clm.lmax = lmax
         return clm
 
-    def change_ref(self, gm=None, r0=None, lmax=None):
+    def change_ref(self, gm=None, r0=None, lmax=None, name=None):
         """
         Return a new SHGravCoeffs class instance with a different reference gm
         or r0.
 
         Usage
         -----
-        clm = x.change_ref([gm, r0, lmax])
+        clm = x.change_ref([gm, r0, lmax, name])
 
         Returns
         -------
@@ -2355,6 +2366,8 @@ class SHGravCoeffs(object):
             The reference radius of the spherical harmonic coefficients.
         lmax : int, optional, default = self.lmax
             Maximum spherical harmonic degree to output.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2367,7 +2380,10 @@ class SHGravCoeffs(object):
         if lmax is None:
             lmax = self.lmax
 
-        clm = self.pad(lmax)
+        if name is None:
+            name = self.name
+
+        clm = self.pad(lmax, name=name)
 
         if gm is not None and gm != self.gm:
             clm.coeffs *= self.gm / gm
@@ -2387,7 +2403,7 @@ class SHGravCoeffs(object):
     # ---- Routines that return different gravity-related class instances ----
     def expand(self, a=None, f=None, r=None, colat=None, lat=None, lon=None,
                degrees=True, lmax=None, lmax_calc=None, normal_gravity=True,
-               sampling=2, extend=True):
+               sampling=2, extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened and rotating ellipsoid of the
         three components of the gravity vector, the gravity disturbance, and
@@ -2397,7 +2413,7 @@ class SHGravCoeffs(object):
         Usage
         -----
         grids = x.expand([a, f, lmax, lmax_calc, normal_gravity, sampling,
-                          extend])
+                          extend, name])
         g = x.expand(lat, lon, [a, f, r, lmax, lmax_calc, degrees])
         g = x.expand(colat, lon, [a, f, r, lmax, lmax_calc, degrees])
 
@@ -2444,6 +2460,8 @@ class SHGravCoeffs(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E and the
             latitudinal band for 90 S.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2502,7 +2520,7 @@ class SHGravCoeffs(object):
                 else:
                     temp = _np.pi/2.
 
-                if type(colat) is list:
+                if isinstance(colat, list):
                     lat = list(map(lambda x: temp - x, colat))
                 else:
                     lat = temp - colat
@@ -2517,6 +2535,8 @@ class SHGravCoeffs(object):
                 lmax = self.lmax
             if lmax_calc is None:
                 lmax_calc = lmax
+            if name is None:
+                name = self.name
 
             coeffs = self.to_array(normalization='4pi', csphase=1,
                                    errors=False)
@@ -2528,10 +2548,10 @@ class SHGravCoeffs(object):
             return _SHGravGrid(rad, theta, phi, total, pot, self.gm, a, f,
                                self.omega, normal_gravity, lmax, lmax_calc,
                                units='m/s2', pot_units='m2/s2',
-                               epoch=self.epoch)
+                               epoch=self.epoch, name=name)
 
     def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, degree0=False,
-               sampling=2, extend=True):
+               sampling=2, extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened ellipsoid of the 9
         components of the gravity "gradient" tensor in a local north-oriented
@@ -2539,7 +2559,7 @@ class SHGravCoeffs(object):
 
         Usage
         -----
-        tensor = x.tensor([a, f, lmax, lmax_calc, sampling, extend])
+        tensor = x.tensor([a, f, lmax, lmax_calc, sampling, extend, name])
 
         Returns
         -------
@@ -2568,6 +2588,8 @@ class SHGravCoeffs(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E and the
             latitudinal band for 90 S.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2626,6 +2648,8 @@ class SHGravCoeffs(object):
             lmax = self.lmax
         if lmax_calc is None:
             lmax_calc = lmax
+        if name is None:
+            name = self.name
 
         coeffs = self.to_array(normalization='4pi', csphase=1, errors=False)
 
@@ -2638,10 +2662,10 @@ class SHGravCoeffs(object):
 
         return _SHGravTensor(1.e9*vxx, 1.e9*vyy, 1.e9*vzz, 1.e9*vxy, 1.e9*vxz,
                              1.e9*vyz, self.gm, a, f, lmax, lmax_calc,
-                             units='Eötvös', epoch=self.epoch)
+                             units='Eötvös', epoch=self.epoch, name=name)
 
     def geoid(self, potref, a=None, f=None, r=None, omega=None, order=2,
-              lmax=None, lmax_calc=None, grid='DH2', extend=True):
+              lmax=None, lmax_calc=None, grid='DH2', extend=True, name=None):
         """
         Create a global map of the height of the geoid and return an SHGeoid
         class instance.
@@ -2649,7 +2673,7 @@ class SHGravCoeffs(object):
         Usage
         -----
         geoid = x.geoid(potref, [a, f, r, omega, order, lmax, lmax_calc, grid,
-                                 extend])
+                                 extend, name])
 
         Returns
         -------
@@ -2685,6 +2709,8 @@ class SHGravCoeffs(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E and the
             latitudinal band for 90 S.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2716,6 +2742,8 @@ class SHGravCoeffs(object):
             lmax = self.lmax
         if lmax_calc is None:
             lmax_calc = lmax
+        if name is None:
+            name = self.name
 
         if grid.upper() in ('DH', 'DH1'):
             sampling = 1
@@ -2737,22 +2765,27 @@ class SHGravCoeffs(object):
                                  sampling=sampling, extend=extend)
 
         return _SHGeoid(geoid, self.gm, potref, a, f, omega, r, order,
-                        lmax, lmax_calc, units='m', epoch=self.epoch)
+                        lmax, lmax_calc, units='m', epoch=self.epoch,
+                        name=name)
 
     # ---- Plotting routines ----
     def plot_spectrum(self, function='geoid', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
                       legend=None, legend_error='error', legend_loc='best',
-                      axes_labelsize=None, errors=True, tick_labelsize=None,
-                      ax=None, show=True, fname=None, **kwargs):
+                      legend_title=None, axes_labelsize=None, errors=True,
+                      tick_labelsize=None, legend_fontsize=None,
+                      legend_titlesize=None, ax=None, show=True, fname=None,
+                      plot_dict=dict(), legend_dict=dict()):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
         x.plot_spectrum([function, unit, base, lmax, xscale, yscale, grid,
-                         legend, legend_loc, errors, axes_labelsize,
-                         tick_labelsize, ax, show, fname, **kwargs])
+                         legend, legend_loc, legend_title, errors,
+                         axes_labelsize, tick_labelsize, legend_fontsize,
+                         legend_titlesize, ax, show, fname, plot_dict,
+                         legend_dict])
 
         Parameters
         ----------
@@ -2784,12 +2817,18 @@ class SHGravCoeffs(object):
         legend_loc : str, optional, default = 'best'
             Location of the legend, such as 'upper right' or 'lower center'
             (see pyplot.legend for all options).
+        legend_title : str, optional, default = None
+            Title of the legend.
         errors : bool, optional, default = True
             If the coefficients have errors, plot the error spectrum.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        legend_fontsize : int, optional, default = None
+            The font size for the legend entries.
+        legend_titlesize : int, optional, default = None
+            The font size for the legend title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
@@ -2797,8 +2836,10 @@ class SHGravCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -2848,16 +2889,30 @@ class SHGravCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
+
+        if legend_fontsize is None:
+            legend_fontsize = _mpl.rcParams['legend.fontsize']
+            if isinstance(legend_fontsize, str):
+                legend_fontsize = _mpl.font_manager \
+                                  .FontProperties(size=legend_fontsize) \
+                                  .get_size_in_points()
+
+        if legend_titlesize is None:
+            legend_titlesize = _mpl.rcParams['legend.title_fontsize']
+            if isinstance(legend_fontsize, str):
+                legend_titlesize = _mpl.font_manager \
+                                   .FontProperties(size=legend_titlesize) \
+                                   .get_size_in_points()
 
         axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
 
@@ -2885,12 +2940,12 @@ class SHGravCoeffs(object):
 
         if self.errors is not None and errors:
             axes.plot(ls[2:lmax + 1], spectrum[2:lmax + 1], label=legend,
-                      **kwargs)
+                      **plot_dict)
             axes.plot(ls[2:lmax + 1], error_spectrum[2:lmax + 1],
-                      label=legend_error, **kwargs)
+                      label=legend_error, **plot_dict)
         else:
             axes.plot(ls[2:lmax + 1], spectrum[2: lmax + 1], label=legend,
-                      **kwargs)
+                      **plot_dict)
 
         if xscale == 'lin':
             if ax is None:
@@ -2901,7 +2956,9 @@ class SHGravCoeffs(object):
         axes.grid(grid, which='major')
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
-        axes.legend(loc=legend_loc)
+        axes.legend(loc=legend_loc, fontsize=legend_fontsize,
+                    title=legend_title, title_fontsize=legend_titlesize,
+                    **legend_dict)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -3039,19 +3096,19 @@ class SHGravCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -3174,9 +3231,9 @@ class SHGravCoeffs(object):
             if isinstance(cmap, _mpl.colors.Colormap):
                 cmap_scaled = cmap._resample(num)
             else:
-                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+                cmap_scaled = _plt.get_cmap(cmap, num)
         else:
-            cmap_scaled = _mpl.cm.get_cmap(cmap)
+            cmap_scaled = _plt.get_cmap(cmap)
         if cmap_reverse:
             cmap_scaled = cmap_scaled.reversed()
 
@@ -3407,7 +3464,8 @@ class SHGravCoeffs(object):
                        style='separate', lmax=None, grid=True, legend=None,
                        legend_loc='best', axes_labelsize=None,
                        tick_labelsize=None, elinewidth=0.75, ax=None, ax2=None,
-                       show=True, fname=None, **kwargs):
+                       show=True, fname=None, plot_dict=dict(),
+                       errorbar_dict=dict(), legend_dict=dict()):
         """
         Plot the admittance and/or correlation with another function.
 
@@ -3415,7 +3473,8 @@ class SHGravCoeffs(object):
         -----
         x.plot_admitcorr(hlm, [errors, function, style, lmax, grid, legend,
                                legend_loc, axes_labelsize, tick_labelsize,
-                               elinewidth, ax, ax2, show, fname, **kwargs])
+                               elinewidth, ax, ax2, show, fname, plot_dict,
+                               errorbar_dict, legend_dict])
 
         Parameters
         ----------
@@ -3463,8 +3522,12 @@ class SHGravCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        errorbar_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.errorbar().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -3540,18 +3603,18 @@ class SHGravCoeffs(object):
         elif style == 'combined':
             legend_loc = [legend_loc, legend_loc]
         else:
-            if type(legend_loc) is str:
+            if isinstance(legend_loc, str):
                 legend_loc = [legend_loc, legend_loc]
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
@@ -3560,9 +3623,9 @@ class SHGravCoeffs(object):
             if errors:
                 admitax.errorbar(ls, admit[:, 0], yerr=admit[:, 1],
                                  label=legend[0], elinewidth=elinewidth,
-                                 **kwargs)
+                                 **errorbar_dict)
             else:
-                admitax.plot(ls, admit, label=legend[0], **kwargs)
+                admitax.plot(ls, admit, label=legend[0], **plot_dict)
             if ax is None:
                 admitax.set(xlim=(0, lmax))
             else:
@@ -3579,7 +3642,7 @@ class SHGravCoeffs(object):
             admitax.tick_params(labelsize=tick_labelsize)
             if legend[0] is not None:
                 if style != 'combined':
-                    admitax.legend(loc=legend_loc[0])
+                    admitax.legend(loc=legend_loc[0], **legend_dict)
             if style != 'combined':
                 admitax.grid(grid, which='major')
 
@@ -3587,7 +3650,7 @@ class SHGravCoeffs(object):
             if style == 'combined':
                 # plot with next color
                 next(corrax._get_lines.prop_cycler)['color']
-            corrax.plot(ls, corr, label=legend[1], **kwargs)
+            corrax.plot(ls, corr, label=legend[1], **plot_dict)
             if ax is None:
                 corrax.set(xlim=(0, lmax))
                 corrax.set(ylim=(-1, 1))
@@ -3603,9 +3666,9 @@ class SHGravCoeffs(object):
                     lines, labels = admitax.get_legend_handles_labels()
                     lines2, labels2 = corrax.get_legend_handles_labels()
                     corrax.legend(lines + lines2, labels + labels2,
-                                  loc=legend_loc[1])
+                                  loc=legend_loc[1], **legend_dict)
                 else:
-                    corrax.legend(loc=legend_loc[1])
+                    corrax.legend(loc=legend_loc[1], **legend_dict)
             if style != 'combined':
                 corrax.grid(grid, which='major')
 
@@ -3624,7 +3687,8 @@ class SHGravCoeffs(object):
                         lmax=None, grid=True, legend=None,
                         legend_loc='best', axes_labelsize=None,
                         tick_labelsize=None, elinewidth=0.75, ax=None,
-                        show=True, fname=None, **kwargs):
+                        show=True, fname=None, plot_dict=dict(),
+                        errorbar_dict=dict(), legend_dict=dict()):
         """
         Plot the admittance with another function.
 
@@ -3632,7 +3696,8 @@ class SHGravCoeffs(object):
         -----
         x.plot_admittance(hlm, [errors, function, lmax, grid, legend,
                                 legend_loc, axes_labelsize, tick_labelsize,
-                                elinewidth, ax, show, fname, **kwargs])
+                                elinewidth, ax, show, fname, plot_dict,
+                                errorbar_dict, legend_dict])
 
         Parameters
         ----------
@@ -3666,8 +3731,12 @@ class SHGravCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        errorbar_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.errorbar().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -3689,12 +3758,15 @@ class SHGravCoeffs(object):
                                    axes_labelsize=axes_labelsize,
                                    tick_labelsize=tick_labelsize,
                                    elinewidth=elinewidth, show=True,
-                                   fname=fname, ax=ax, **kwargs)
+                                   fname=fname, ax=ax, plot_dict=plot_dict,
+                                   errorbar_dict=errorbar_dict,
+                                   legend_dict=legend_dict)
 
     def plot_correlation(self, hlm, lmax=None, grid=True, legend=None,
                          legend_loc='best', axes_labelsize=None,
                          tick_labelsize=None, elinewidth=0.75, ax=None,
-                         show=True, fname=None, **kwargs):
+                         show=True, fname=None, plot_dict=dict(),
+                         legend_dict=dict()):
         """
         Plot the correlation with another function.
 
@@ -3702,7 +3774,7 @@ class SHGravCoeffs(object):
         -----
         x.plot_correlation(hlm, [lmax, grid, legend, legend_loc,
                                  axes_labelsize, tick_labelsize, elinewidth,
-                                 ax, show, fname, **kwargs])
+                                 ax, show, fname, plot_dict, legend_dict])
 
         Parameters
         ----------
@@ -3730,8 +3802,10 @@ class SHGravCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -3746,7 +3820,9 @@ class SHGravCoeffs(object):
                                    legend=legend, legend_loc=legend_loc,
                                    axes_labelsize=axes_labelsize,
                                    tick_labelsize=tick_labelsize,
-                                   show=True, fname=fname, ax=ax, **kwargs)
+                                   show=True, fname=fname, ax=ax,
+                                   plot_dict=plot_dict,
+                                   legend_dict=legend_dict)
 
 
 class SHGravRealCoeffs(SHGravCoeffs):
@@ -3795,26 +3871,22 @@ class SHGravRealCoeffs(SHGravCoeffs):
             self.errors = None
 
     def __repr__(self):
-        return ('kind = {:s}\n'
-                'normalization = {:s}\n'
-                'csphase = {:d}\n'
-                'lmax = {:d}\n'
-                'GM (m3 / s2) = {:s}\n'
-                'r0 (m) = {:s}\n'
-                'Omega (rad / s) = {:s}\n'
-                'error_kind = {:s}\n'
-                'header = {:s}\n'
-                'header2 = {:s}\n'
-                'name = {:s}\n'
-                'epoch = {:s}'
-                .format(repr(self.kind), repr(self.normalization),
-                        self.csphase, self.lmax, repr(self.gm), repr(self.r0),
-                        repr(self.omega), repr(self.error_kind),
-                        repr(self.header), repr(self.header2),
-                        repr(self.name), repr(self.epoch)))
+        return (f'  name = {self.name!r}\n'
+                f'  kind = {self.kind!r}\n'
+                f'  normalization = {self.normalization!r}\n'
+                f'  csphase = {self.csphase}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  GM (m3 / s2) = {self.gm}\n'
+                f'  r0 (m) = {self.r0}\n'
+                f'  omega (rad / s) = {self.omega}\n'
+                f'  error_kind = {self.error_kind!r}\n'
+                f'  header = {self.header}\n'
+                f'  header2 = {self.header2}\n'
+                f'  epoch = {self.epoch}'
+                )
 
     def _rotate(self, angles, dj_matrix, gm=None, r0=None, omega=None,
-                backend=None, nthreads=None):
+                backend=None, nthreads=None, name=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         if self.lmax > 1200 and backend.lower() == "shtools":
             _warnings.warn("The rotate() method is accurate only to about" +
@@ -3840,11 +3912,12 @@ class SHGravRealCoeffs(SHGravCoeffs):
             return SHGravCoeffs.from_array(
                 temp, errors=self.errors, normalization=self.normalization,
                 csphase=self.csphase, copy=False, gm=gm, r0=r0, omega=omega,
-                epoch=self.epoch)
+                epoch=self.epoch, name=name)
         else:
             return SHGravCoeffs.from_array(coeffs, errors=self.errors,
                                            gm=gm, r0=r0, omega=omega,
-                                           epoch=self.epoch, copy=False)
+                                           epoch=self.epoch, copy=False,
+                                           name=name)
 
     def _expand_coord(self, a, f, radius, lat, lon, degrees, lmax_calc, omega):
         """Evaluate the gravity at the coordinates lat and lon."""
@@ -3879,7 +3952,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
                                       r=radius, lat=latin, lon=lonin,
                                       lmax=lmax_calc, omega=self.omega)
 
-        elif type(lat) is _np.ndarray:
+        elif isinstance(lat, _np.ndarray):
             values = _np.empty((len(lat), 3), dtype=_np.float64)
             for i, (r, latitude, longitude) in enumerate(zip(radius, latin,
                                                              lonin)):
@@ -3890,7 +3963,7 @@ class SHGravRealCoeffs(SHGravCoeffs):
                                                   omega=self.omega)
             return values
 
-        elif type(lat) is list:
+        elif isinstance(lat, list):
             values = []
             for r, latitude, longitude in zip(radius, latin, lonin):
                 values.append(

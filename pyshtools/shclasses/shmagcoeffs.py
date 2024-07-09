@@ -65,6 +65,7 @@ class SHMagCoeffs(object):
     Once initialized, each class instance defines the following class
     attributes:
 
+    name          : The name of the dataset.
     lmax          : The maximum spherical harmonic degree of the coefficients.
     coeffs        : The raw coefficients with the specified normalization and
                     csphase conventions. This is a three-dimensional array
@@ -82,7 +83,6 @@ class SHMagCoeffs(object):
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
     kind          : The coefficient data type (only 'real' is permissible).
-    name          : The name of the dataset.
     units         : The units of the spherical harmonic coefficients.
     year          : The year of the time-variable spherical harmonic
                     coefficients.
@@ -122,6 +122,8 @@ class SHMagCoeffs(object):
                             harmonic degree.
     plot_spectrum2d()     : Plot the 2D spectrum of all spherical harmonic
                             degrees and orders.
+    plot_correlation()    : Plot the spectral correlation with another
+                            function.
     to_array()            : Return an array of spherical harmonic coefficients
                             with a different normalization convention.
     to_file()             : Save the spherical harmonic coefficients to a file.
@@ -197,7 +199,7 @@ class SHMagCoeffs(object):
         if _np.iscomplexobj(coeffs):
             raise TypeError('The input array must be real.')
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -346,7 +348,7 @@ class SHMagCoeffs(object):
                   normalization='schmidt', skip=0, header=True, header2=False,
                   errors=None, error_kind=None, csphase=1, r0_index=0,
                   header_units='m', file_units='nT', name=None, units='nT',
-                  year=None, encoding=None, **kwargs):
+                  year=None, encoding=None, load_dict=dict()):
         """
         Initialize the class with spherical harmonic coefficients from a file.
 
@@ -365,7 +367,7 @@ class SHMagCoeffs(object):
                                   units, year])
         x = SHMagCoeffs.from_file(filename, format='npy', r0, [lmax,
                                   normalization, csphase, file_units, name,
-                                  units, year, **kwargs])
+                                  units, year, load_dict])
 
         Returns
         -------
@@ -434,8 +436,8 @@ class SHMagCoeffs(object):
         encoding : str, optional, default = None
             Encoding of the input file when format is 'shtools', 'dov' or
             'igrf'. The default is to use the system default.
-        **kwargs : keyword argument list, optional for format = 'npy'
-            Keyword arguments of numpy.load() when format is 'npy'.
+        load_dict : dict, optional, default = dict()
+            Optional arguments passed to numpy.load() when format is 'npy'.
 
         Notes
         -----
@@ -475,7 +477,7 @@ class SHMagCoeffs(object):
             r0_index = None
         header2_list = None
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -579,7 +581,7 @@ class SHMagCoeffs(object):
         elif format.lower() == 'npy':
             if r0 is None:
                 raise ValueError('For binary npy files, r0 must be specified.')
-            coeffs = _np.load(fname, **kwargs)
+            coeffs = _np.load(fname, **load_dict)
             lmaxout = coeffs.shape[1] - 1
             if lmax is not None:
                 if lmax < lmaxout:
@@ -697,7 +699,7 @@ class SHMagCoeffs(object):
         of the random realization can be fixed exactly to the input spectrum by
         setting exact_power to True.
         """
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -848,10 +850,10 @@ class SHMagCoeffs(object):
 
         try:
             normalization = ds.coeffs.normalization
-        except:
+        except Exception:
             pass
 
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type was {:s}'
                              .format(str(type(normalization))))
@@ -864,7 +866,7 @@ class SHMagCoeffs(object):
 
         try:
             csphase = ds.coeffs.csphase
-        except:
+        except Exception:
             pass
 
         if csphase != 1 and csphase != -1:
@@ -875,7 +877,7 @@ class SHMagCoeffs(object):
 
         try:
             units = ds.coeffs.units
-        except:
+        except Exception:
             pass
 
         if units.lower() not in ('nt', 't'):
@@ -884,12 +886,12 @@ class SHMagCoeffs(object):
 
         try:
             r0 = ds.coeffs.r0
-        except:
+        except Exception:
             raise ValueError("coeffs.r0 must be specified in the netcdf file.")
 
         try:
             year = ds.coeffs.year
-        except:
+        except Exception:
             pass
 
         lmaxout = ds.dims['degree'] - 1
@@ -920,7 +922,7 @@ class SHMagCoeffs(object):
             serrors = serrors[:lmaxout+1, :lmaxout+1]
             errors = _np.array([cerrors, serrors])
             error_kind = ds.errors.error_kind
-        except:
+        except Exception:
             errors = None
             error_kind = None
 
@@ -972,7 +974,7 @@ class SHMagCoeffs(object):
 
     # ---- IO routines ----
     def to_file(self, filename, format='shtools', header=None, errors=True,
-                lmax=None, encoding=None, **kwargs):
+                lmax=None, encoding=None, save_dict=dict()):
         """
         Save spherical harmonic coefficients to a file.
 
@@ -981,7 +983,7 @@ class SHMagCoeffs(object):
         x.to_file(filename, [format='shtools', header, errors, encoding])
         x.to_file(filename, format='dov', [header, errors, encoding])
         x.to_file(filename, format='bshc', [lmax])
-        x.to_file(filename, format='npy', [**kwargs])
+        x.to_file(filename, format='npy', [save_dict])
 
         Parameters
         ----------
@@ -1001,8 +1003,8 @@ class SHMagCoeffs(object):
         encoding : str, optional, default = None
             Encoding of the output file when format is 'shtools' or 'dov'. The
             default is to use the system default.
-        **kwargs : keyword argument list, optional for format = 'npy'
-            Keyword arguments of numpy.save().
+        save_dict : dict, optional, default = dict()
+            Optional arguments passed to numpy.save() when format is 'npy'.
 
         Notes
         -----
@@ -1085,7 +1087,7 @@ class SHMagCoeffs(object):
             _write_bshc(filebase, self.coeffs, lmax=lmax)
 
         elif format == 'npy':
-            _np.save(filename, self.coeffs, **kwargs)
+            _np.save(filename, self.coeffs, **save_dict)
         else:
             raise NotImplementedError(
                 'format={:s} not implemented.'.format(repr(format)))
@@ -1579,7 +1581,8 @@ class SHMagCoeffs(object):
 
     # ---- Operations that return a new SHMagCoeffs class instance ----
     def rotate(self, alpha, beta, gamma, degrees=True, convention='y',
-               body=False, dj_matrix=None, backend=None, nthreads=None):
+               body=False, dj_matrix=None, name=None, backend=None,
+               nthreads=None):
         """
         Rotate either the coordinate system used to express the spherical
         harmonic coefficients or the physical body, and return a new class
@@ -1588,7 +1591,7 @@ class SHMagCoeffs(object):
         Usage
         -----
         x_rotated = x.rotate(alpha, beta, gamma, [degrees, convention,
-                             body, dj_matrix, backend, nthreads])
+                             body, dj_matrix, name, backend, nthreads])
 
         Returns
         -------
@@ -1610,6 +1613,8 @@ class SHMagCoeffs(object):
         dj_matrix : ndarray, optional, default = None
             The djpi2 rotation matrix computed by a call to djpi2 (not used if
             the backend is 'ducc').
+        name : str, optional, default = self.name
+            The name of the dataset.
         backend : str, optional, default = preferred_backend()
             Name of the preferred backend, either 'shtools' or 'ducc'.
         nthreads : int, optional, default = 1
@@ -1659,7 +1664,7 @@ class SHMagCoeffs(object):
         True. This rotation is accomplished by performing the inverse rotation
         using the angles (-gamma, -beta, -alpha).
         """
-        if type(convention) is not str:
+        if not isinstance(convention, str):
             raise ValueError('convention must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(convention))))
@@ -1694,17 +1699,17 @@ class SHMagCoeffs(object):
                            category=RuntimeWarning)
 
         rot = self._rotate(angles, dj_matrix, r0=self.r0, backend=backend,
-                           nthreads=nthreads)
+                           nthreads=nthreads, name=name)
         return rot
 
-    def convert(self, normalization=None, csphase=None, lmax=None):
+    def convert(self, normalization=None, csphase=None, lmax=None, name=None):
         """
         Return an SHMagCoeffs class instance with a different normalization
         convention.
 
         Usage
         -----
-        clm = x.convert([normalization, csphase, lmax])
+        clm = x.convert([normalization, csphase, lmax, name])
 
         Returns
         -------
@@ -1721,6 +1726,8 @@ class SHMagCoeffs(object):
             the phase factor, or -1 to include it.
         lmax : int, optional, default = x.lmax
             Maximum spherical harmonic degree to output.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -1739,9 +1746,11 @@ class SHMagCoeffs(object):
             csphase = self.csphase
         if lmax is None:
             lmax = self.lmax
+        if name is None:
+            name = self.name
 
         # check argument consistency
-        if type(normalization) is not str:
+        if not isinstance(normalization, str):
             raise ValueError('normalization must be a string. '
                              'Input type is {:s}.'
                              .format(str(type(normalization))))
@@ -1762,22 +1771,24 @@ class SHMagCoeffs(object):
             return SHMagCoeffs.from_array(
                 coeffs, r0=self.r0, errors=errors, error_kind=self.error_kind,
                 normalization=normalization.lower(),
-                csphase=csphase, units=self.units, year=self.year, copy=False)
+                csphase=csphase, units=self.units, year=self.year, copy=False,
+                name=name)
         else:
             coeffs = self.to_array(normalization=normalization.lower(),
                                    csphase=csphase, lmax=lmax)
             return SHMagCoeffs.from_array(
                 coeffs, r0=self.r0, normalization=normalization.lower(),
-                csphase=csphase, units=self.units, year=self.year, copy=False)
+                csphase=csphase, units=self.units, year=self.year, copy=False,
+                name=name)
 
-    def pad(self, lmax, copy=True):
+    def pad(self, lmax, copy=True, name=None):
         """
         Return an SHMagCoeffs class where the coefficients are zero padded or
         truncated to a different lmax.
 
         Usage
         -----
-        clm = x.pad(lmax)
+        clm = x.pad(lmax, [copy, name])
 
         Returns
         -------
@@ -1790,11 +1801,17 @@ class SHMagCoeffs(object):
         copy : bool, optional, default = True
             If True, make a copy of x when initializing the class instance.
             If False, modify x itself.
+        name : str, optional, default = self.name
+            The name of the dataset.
         """
         if copy:
             clm = self.copy()
         else:
             clm = self
+
+        if name is None:
+            name = self.name
+        clm.name = name
 
         if lmax <= self.lmax:
             clm.coeffs = clm.coeffs[:, :lmax+1, :lmax+1]
@@ -1817,13 +1834,13 @@ class SHMagCoeffs(object):
         clm.lmax = lmax
         return clm
 
-    def change_ref(self, r0=None, lmax=None):
+    def change_ref(self, r0=None, lmax=None, name=None):
         """
         Return a new SHMagCoeffs class instance with a different reference r0.
 
         Usage
         -----
-        clm = x.change_ref([r0, lmax])
+        clm = x.change_ref([r0, lmax, name])
 
         Returns
         -------
@@ -1835,6 +1852,8 @@ class SHMagCoeffs(object):
             The reference radius of the spherical harmonic coefficients.
         lmax : int, optional, default = self.lmax
             Maximum spherical harmonic degree to output.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -1847,7 +1866,10 @@ class SHMagCoeffs(object):
         if lmax is None:
             lmax = self.lmax
 
-        clm = self.pad(lmax)
+        if name is None:
+            name = self.name
+
+        clm = self.pad(lmax, name=name)
 
         if r0 is not None and r0 != self.r0:
             for l in _np.arange(lmax+1):
@@ -1858,14 +1880,14 @@ class SHMagCoeffs(object):
 
         return clm
 
-    def change_units(self, units=None, lmax=None):
+    def change_units(self, units=None, lmax=None, name=None):
         """
         Return a new SHMagCoeffs class instance with the internal coefficients
         converted to either nT or T.
 
         Usage
         -----
-        clm = x.change_units([units, lmax])
+        clm = x.change_units([units, lmax, name])
 
         Returns
         -------
@@ -1878,13 +1900,17 @@ class SHMagCoeffs(object):
             either 'T' or 'nT'.
         lmax : int, optional, default = self.lmax
             Maximum spherical harmonic degree to output.
+        name : str, optional, default = self.name
+            The name of the dataset.
         """
         if lmax is None:
             lmax = self.lmax
         if units is None:
             units = self.units
+        if name is None:
+            name = self.name
 
-        clm = self.pad(lmax)
+        clm = self.pad(lmax, name=name)
 
         if units != self.units:
             if units.lower() == 't' and self.units.lower() == 'nt':
@@ -1905,7 +1931,7 @@ class SHMagCoeffs(object):
     # ---- Routines that return different magnetic-related class instances ----
     def expand(self, a=None, f=None, r=None, lat=None, colat=None, lon=None,
                degrees=True, lmax=None, lmax_calc=None, sampling=2,
-               extend=True):
+               extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened ellipsoid of all three
         components of the magnetic field, the total magnetic intensity,
@@ -1914,7 +1940,7 @@ class SHMagCoeffs(object):
 
         Usage
         -----
-        grids = x.expand([a, f, lmax, lmax_calc, sampling, extend])
+        grids = x.expand([a, f, lmax, lmax_calc, sampling, extend, name])
         g = x.expand(lat, lon, [a, f, r, lmax, lmax_calc, degrees])
         g = x.expand(colat, lon, [a, f, r, lmax, lmax_calc, degrees])
 
@@ -1956,6 +1982,8 @@ class SHMagCoeffs(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E and the
             latitudinal band for 90 S.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2000,7 +2028,7 @@ class SHMagCoeffs(object):
                 else:
                     temp = _np.pi/2.
 
-                if type(colat) is list:
+                if isinstance(colat, list):
                     lat = list(map(lambda x: temp - x, colat))
                 else:
                     lat = temp - colat
@@ -2014,6 +2042,8 @@ class SHMagCoeffs(object):
                 lmax = self.lmax
             if lmax_calc is None:
                 lmax_calc = lmax
+            if name is None:
+                name = self.name
 
             coeffs = self.to_array(normalization='schmidt', csphase=1,
                                    errors=False)
@@ -2024,10 +2054,10 @@ class SHMagCoeffs(object):
 
         return _SHMagGrid(rad, theta, phi, total, pot, a, f, lmax, lmax_calc,
                           units=self.units, pot_units=self.units+' m',
-                          year=self.year)
+                          year=self.year, name=name)
 
     def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, sampling=2,
-               extend=True):
+               extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened ellipsoid of the 9
         components of the magnetic field tensor in a local north-oriented
@@ -2035,7 +2065,7 @@ class SHMagCoeffs(object):
 
         Usage
         -----
-        tensor = x.tensor([a, f, lmax, lmax_calc, sampling, extend])
+        tensor = x.tensor([a, f, lmax, lmax_calc, sampling, extend, name])
 
         Returns
         -------
@@ -2061,6 +2091,8 @@ class SHMagCoeffs(object):
         extend : bool, optional, default = True
             If True, compute the longitudinal band for 360 E and the
             latitudinal band for 90 S.
+        name : str, optional, default = self.name
+            The name of the dataset.
 
         Notes
         -----
@@ -2119,6 +2151,8 @@ class SHMagCoeffs(object):
             lmax = self.lmax
         if lmax_calc is None:
             lmax_calc = lmax
+        if name is None:
+            name = self.name
 
         coeffs = self.to_array(normalization='schmidt', csphase=1,
                                errors=False)
@@ -2132,22 +2166,26 @@ class SHMagCoeffs(object):
             sampling=sampling, extend=extend)
 
         return _SHMagTensor(vxx, vyy, vzz, vxy, vxz, vyz, a, f, lmax,
-                            lmax_calc, units=units, year=self.year)
+                            lmax_calc, units=units, year=self.year, name=name)
 
     # ---- Plotting routines ----
     def plot_spectrum(self, function='total', unit='per_l', base=10.,
                       lmax=None, xscale='lin', yscale='log', grid=True,
                       legend=None, legend_error='error', legend_loc='best',
-                      errors=True, axes_labelsize=None, tick_labelsize=None,
-                      ax=None, show=True, fname=None, **kwargs):
+                      legend_title=None, errors=True, axes_labelsize=None,
+                      tick_labelsize=None, legend_fontsize=None,
+                      legend_titlesize=None, ax=None, show=True, fname=None,
+                      plot_dict=dict(), legend_dict=dict()):
         """
         Plot the spectrum as a function of spherical harmonic degree.
 
         Usage
         -----
         x.plot_spectrum([function, unit, base, lmax, xscale, yscale, grid,
-                         legend, legend_loc, errors, axes_labelsize,
-                         tick_labelsize, ax, show, fname, **kwargs])
+                         legend, legend_loc, legend_title, errors,
+                         axes_labelsize, tick_labelsize, legend_fontsize,
+                         legend_titlesize, ax, show, fname, plot_dict,
+                         legend_dict])
 
         Parameters
         ----------
@@ -2179,12 +2217,18 @@ class SHMagCoeffs(object):
         legend_loc : str, optional, default = 'best'
             Location of the legend, such as 'upper right' or 'lower center'
             (see pyplot.legend for all options).
+        legend_title : str, optional, default = None
+            Title of the legend.
         errors : bool, optional, default = True
             If the coefficients have errors, plot the error spectrum.
         axes_labelsize : int, optional, default = None
             The font size for the x and y axes labels.
         tick_labelsize : int, optional, default = None
             The font size for the x and y tick labels.
+        legend_fontsize : int, optional, default = None
+            The font size for the legend entries.
+        legend_titlesize : int, optional, default = None
+            The font size for the legend title.
         ax : matplotlib axes object, optional, default = None
             A single matplotlib axes object where the plot will appear.
         show : bool, optional, default = True
@@ -2192,8 +2236,10 @@ class SHMagCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -2238,16 +2284,30 @@ class SHMagCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
+
+        if legend_fontsize is None:
+            legend_fontsize = _mpl.rcParams['legend.fontsize']
+            if isinstance(legend_fontsize, str):
+                legend_fontsize = _mpl.font_manager \
+                                  .FontProperties(size=legend_fontsize) \
+                                  .get_size_in_points()
+
+        if legend_titlesize is None:
+            legend_titlesize = _mpl.rcParams['legend.title_fontsize']
+            if isinstance(legend_fontsize, str):
+                legend_titlesize = _mpl.font_manager \
+                                   .FontProperties(size=legend_titlesize) \
+                                   .get_size_in_points()
 
         axes.set_xlabel('Spherical harmonic degree', fontsize=axes_labelsize)
 
@@ -2276,12 +2336,12 @@ class SHMagCoeffs(object):
 
         if self.errors is not None and errors:
             axes.plot(ls[1:lmax + 1], spectrum[1:lmax + 1], label=legend,
-                      **kwargs)
+                      **plot_dict)
             axes.plot(ls[1:lmax + 1], error_spectrum[1:lmax + 1],
-                      label=legend_error, **kwargs)
+                      label=legend_error, **plot_dict)
         else:
             axes.plot(ls[1:lmax + 1], spectrum[1: lmax + 1], label=legend,
-                      **kwargs)
+                      **plot_dict)
 
         if xscale == 'lin':
             if ax is None:
@@ -2292,7 +2352,9 @@ class SHMagCoeffs(object):
         axes.grid(grid, which='major')
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
-        axes.legend(loc=legend_loc)
+        axes.legend(loc=legend_loc, fontsize=legend_fontsize,
+                    title=legend_title, title_fontsize=legend_titlesize,
+                    **legend_dict)
 
         if ax is None:
             fig.tight_layout(pad=0.5)
@@ -2430,19 +2492,19 @@ class SHMagCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
         if titlesize is None:
             titlesize = _mpl.rcParams['axes.titlesize']
-            if type(titlesize) is str:
+            if isinstance(titlesize, str):
                 titlesize = _mpl.font_manager \
                                  .FontProperties(size=titlesize) \
                                  .get_size_in_points()
@@ -2561,9 +2623,9 @@ class SHMagCoeffs(object):
             if isinstance(cmap, _mpl.colors.Colormap):
                 cmap_scaled = cmap._resample(num)
             else:
-                cmap_scaled = _mpl.cm.get_cmap(cmap, num)
+                cmap_scaled = _plt.get_cmap(cmap, num)
         else:
-            cmap_scaled = _mpl.cm.get_cmap(cmap)
+            cmap_scaled = _plt.get_cmap(cmap)
         if cmap_reverse:
             cmap_scaled = cmap_scaled.reversed()
 
@@ -2791,7 +2853,7 @@ class SHMagCoeffs(object):
     def plot_correlation(self, hlm, lmax=None, grid=True, legend=None,
                          legend_loc='best', axes_labelsize=None,
                          tick_labelsize=None, ax=None, show=True, fname=None,
-                         **kwargs):
+                         plot_dict=dict(), legend_dict=dict()):
         """
         Plot the correlation with another function.
 
@@ -2799,7 +2861,7 @@ class SHMagCoeffs(object):
         -----
         x.plot_correlation(hlm, [lmax, grid, legend, legend_loc,
                                  axes_labelsize, tick_labelsize,
-                                 ax, show, fname, **kwargs])
+                                 ax, show, fname, plot_dict, legend_dict])
 
         Parameters
         ----------
@@ -2825,8 +2887,10 @@ class SHMagCoeffs(object):
         fname : str, optional, default = None
             If present, and if ax is not specified, save the image to the
             specified file.
-        **kwargs : keyword arguments, optional
-            Keyword arguments for pyplot.plot() and pyplot.errorbar().
+        plot_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.plot().
+        legend_dict : dict, optional, default = dict()
+            Optional arguments passed to pyplot.legend().
 
         Notes
         -----
@@ -2851,18 +2915,18 @@ class SHMagCoeffs(object):
 
         if axes_labelsize is None:
             axes_labelsize = _mpl.rcParams['axes.labelsize']
-            if type(axes_labelsize) is str:
+            if isinstance(axes_labelsize, str):
                 axes_labelsize = _mpl.font_manager \
                                  .FontProperties(size=axes_labelsize) \
                                  .get_size_in_points()
         if tick_labelsize is None:
             tick_labelsize = _mpl.rcParams['xtick.labelsize']
-            if type(tick_labelsize) is str:
+            if isinstance(tick_labelsize, str):
                 tick_labelsize = _mpl.font_manager \
                                  .FontProperties(size=tick_labelsize) \
                                  .get_size_in_points()
 
-        axes.plot(ls, corr, label=legend, **kwargs)
+        axes.plot(ls, corr, label=legend, **plot_dict)
         if ax is None:
             axes.set(xlim=(0, lmax))
             axes.set(ylim=(-1, 1))
@@ -2875,7 +2939,7 @@ class SHMagCoeffs(object):
         axes.minorticks_on()
         axes.tick_params(labelsize=tick_labelsize)
         if legend is not None:
-            axes.legend(loc=legend_loc)
+            axes.legend(loc=legend_loc, **legend_dict)
         axes.grid(grid, which='major')
 
         if ax is None:
@@ -2932,24 +2996,25 @@ class SHMagRealCoeffs(SHMagCoeffs):
             self.errors = None
 
     def __repr__(self):
-        return ('kind = {:s}\n'
-                'normalization = {:s}\n'
-                'csphase = {:d}\n'
-                'lmax = {:d}\n'
-                'r0 (m) = {:s}\n'
-                'error_kind = {:s}\n'
-                'header = {:s}\n'
-                'header2 = {:s}\n'
-                'name = {:s}\n'
-                'units = {:s}\n'
-                'year = {:s}'
-                .format(repr(self.kind), repr(self.normalization),
-                        self.csphase, self.lmax, repr(self.r0),
-                        repr(self.error_kind), repr(self.header),
-                        repr(self.header2), repr(self.name), repr(self.units),
-                        repr(self.year)))
+        return (f'  name = {self.name!r}\n'
+                f'  kind = {self.kind!r}\n'
+                f'  normalization = {self.normalization!r}\n'
+                f'  csphase = {self.csphase}\n'
+                f'  lmax = {self.lmax}\n'
+                f'  r0 (m) = {self.r0}\n'
+                f'  error_kind = {self.error_kind!r}\n'
+                f'  header = {self.header}\n'
+                f'  header2 = {self.header2}\n'
+                f'  units = {self.units!r}\n'
+                f'  year = {self.year}'
+                .format(repr(self.name), repr(self.kind),
+                        repr(self.normalization), self.csphase, self.lmax,
+                        repr(self.r0), repr(self.error_kind),
+                        repr(self.header), repr(self.header2),
+                        repr(self.units), repr(self.year)))
 
-    def _rotate(self, angles, dj_matrix, r0=None, backend=None, nthreads=None):
+    def _rotate(self, angles, dj_matrix, r0=None, backend=None, nthreads=None,
+                name=None):
         """Rotate the coefficients by the Euler angles alpha, beta, gamma."""
         if self.lmax > 1200 and backend.lower() == "shtools":
             _warnings.warn("The rotate() method is accurate only to about" +
@@ -2976,11 +3041,11 @@ class SHMagRealCoeffs(SHMagCoeffs):
                                           normalization=self.normalization,
                                           csphase=self.csphase,
                                           units=self.units, year=self.year,
-                                          copy=False)
+                                          copy=False, name=name)
         else:
             return SHMagCoeffs.from_array(coeffs, r0=r0, errors=self.errors,
                                           units=self.units, year=self.year,
-                                          copy=False)
+                                          copy=False, name=name)
 
     def _expand_coord(self, a, f, radius, lat, lon, degrees, lmax_calc):
         """Evaluate the magnetic field at the coordinates lat and lon."""
@@ -3014,7 +3079,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
             return _MakeMagGridPoint(coeffs, a=self.r0, r=radius, lat=latin,
                                      lon=lonin, lmax=lmax_calc)
 
-        elif type(lat) is _np.ndarray:
+        elif isinstance(lat, _np.ndarray):
             values = _np.empty((len(lat), 3), dtype=_np.float64)
             for i, (r, latitude, longitude) in enumerate(zip(radius, latin,
                                                              lonin)):
@@ -3023,7 +3088,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
                                                  lmax=lmax_calc)
             return values
 
-        elif type(lat) is list:
+        elif isinstance(lat, list):
             values = []
             for r, latitude, longitude in zip(radius, latin, lonin):
                 values.append(
