@@ -37,8 +37,11 @@ Update the documentation files and man pages
 - [ ] Creation and upload of static web site.
 - [ ] Upload of a source tarball as a release asset.
 - [ ] Upload of the source distribution to [pypi](https://pypi.org/project/pyshtools/).
-- [ ] Creation and upload of macOS and Linux binary wheels to [pypi](https://pypi.org/project/pyshtools/). If the workflow doesn't trigger, choose to run the github action on [build-shtools](https://github.com/SHTOOLS/build-shtools).
-- [ ] Manually trigger Appveyor on the [build-shtools](https://github.com/SHTOOLS/build-shtools) repo to create and upload a windows wheel.
+- [ ] Creation and upload of macOS (intel) wheels to [pypi](https://pypi.org/project/pyshtools/).
+- [ ] Creation and upload of macOS (ARM) wheels to [pypi](https://pypi.org/project/pyshtools/).
+- [ ] Creation and upload of windows wheels to [pypi](https://pypi.org/project/pyshtools/).
+- [ ] Creation and upload of linux (intel) wheels to [pypi](https://pypi.org/project/pyshtools/).
+- [ ] Creation and upload of linux (ARM) wheels to [pypi](https://pypi.org/project/pyshtools/).
 
 ### Update Homebrew ###
 - [ ] Verify that the homebrew bot updated the file `shtools.rb` in a pull request, and that this was merged. If this doesn't occur automatically, edit the file `shtools.rb` in the [homebrew-core](https://github.com/Homebrew/homebrew-core) repo and make the following changes:
