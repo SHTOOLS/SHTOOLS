@@ -25,7 +25,7 @@ Make all changes on the branch `develop`. Verify that the version numbers and ot
 Update the documentation files and man pages
 - [ ] `cd docs; bundle update; cd ..` : update the Gemfile for the jekyll web documentation
 - [ ] `make remove-doc` : this ensures that the correct version number will be written to the fortran man pages
-- [ ] `make doc` : make the fortran man pages, create markdown files from the python docstrings, and create web documentation.
+- [ ] `make doc` : make the fortran man pages, create markdown files from the pure python function docstrings, and create web documentation.
 
 ### Release ###
 - [ ] Commit all changes to the `develop` branch and then merge all changes to the `master` branch.
