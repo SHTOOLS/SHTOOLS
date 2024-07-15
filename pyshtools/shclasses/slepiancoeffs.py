@@ -1,5 +1,5 @@
 """
-    Class for Slepian expansion coefficients.
+Class for Slepian expansion coefficients.
 """
 import numpy as _np
 import copy as _copy

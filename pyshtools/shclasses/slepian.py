@@ -1,7 +1,7 @@
 """
-    Class for Slepian functions on the sphere.
+Class for Slepian functions on the sphere.
 
-        Slepian: SlepianCap, SlepianMask
+    Slepian: SlepianCap, SlepianMask
 """
 import numpy as _np
 import matplotlib as _mpl

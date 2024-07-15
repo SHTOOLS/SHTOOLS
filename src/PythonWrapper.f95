@@ -1689,9 +1689,9 @@
 
     subroutine pyMakeGravGridDH(exitstatus,cilm,lmax,gm,r0,a,f,rad,theta,phi,&
                                 total,pot,n,sampling,lmax_calc,omega,&
-                                normal_gravity,extend,phi_d0,phi_d1,total_d0,&
-                                total_d1,rad_d0,rad_d1,cilm_d0,cilm_d1,&
-                                cilm_d2,theta_d0,theta_d1,pot_d0,pot_d1)
+                                normal_gravity,normal_gravity_gm,extend,phi_d0,&
+                                phi_d1,total_d0,total_d1,rad_d0,rad_d1,cilm_d0,&
+                                cilm_d1,cilm_d2,theta_d0,theta_d1,pot_d0,pot_d1)
         use shtools, only: MakeGravGridDH
         use ftypes
         implicit none
@@ -1725,10 +1725,12 @@
         integer(int32),intent(in) :: lmax_calc
         real(dp),intent(in) :: omega
         integer(int32),intent(in) :: normal_gravity
+        real(dp),intent(in)  :: normal_gravity_gm
         integer(int32),intent(in) :: extend
         call MakeGravGridDH(cilm,lmax,gm,r0,a,f,rad,theta,phi,total,n,&
                             sampling=sampling,lmax_calc=lmax_calc,omega=omega,&
-                            normal_gravity=normal_gravity,pot=pot,&
+                            normal_gravity=normal_gravity,&
+                            normal_gravity_gm=normal_gravity_gm,pot=pot,&
                             extend=extend,exitstatus=exitstatus)
     end subroutine pyMakeGravGridDH
 

@@ -4,21 +4,21 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !------------------------------------------------------------------------------
 !
 !   Given the 4pi normalized gravitational spherical harmonic coefficients
-!   CILM, this subroutine will compute 2D Driscol and Healy sampled grids of
-!   the six components of the gravity "gradient" tensor in a local
+!   CILM, this subroutine will compute 2D Driscoll and Healy sampled grids of
+!   the six components of the gravitational "gradient" tensor in a local
 !   north-oriented reference frame:
 !
 !       (Vxx,   Vxy,    Vxz)
 !       (Vyx,   Vyy,    Vyz)
 !       (Vzx,   Vzy,    Vzz)
-!   
+!
 !   where X points NORTH, Y points WEST, and Z points UPWARD. The gravitational
 !   potential is defined as
 !
 !       V = GM/r Sum_{l=0}^LMAX (R0/r)^l Sum_{m=-l}^l C_{lm} Y_{lm},
 !
-!   Laplace's equation implies that Vxx + Vyy + Vzz = 0, and the gravity tensor
-!   is symmetric. The components are calculated according to eq. 1 in
+!   Laplace's equation implies that Vxx + Vyy + Vzz = 0, and the gravitational
+!   tensor is symmetric. The components are calculated according to eq. 1 in
 !   Petrovskaya and Vershkov (2006, J. Geod, 80, 117-127), which is based on
 !   eq. 3.28 in Reed (1973, Ohio State Univ., Dept. Geod. Sci., Rep. 201,
 !   Columbus, OH). Note that Reed's equations are in terms of latitude, and
@@ -34,7 +34,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
 !   where r, t, p stand for radius, theta, and phi, and subscripts on V denote
 !   partial derivatives.
 !
-!   The output grid are in units of 1/s and are cacluated on a flattened
+!   The output grid are in units of 1/s and are calxuated on a flattened
 !   ellipsoid with semi-major axis A and flattening F. To obtain units of
 !   Eotvos (10^-9 s^-1), multiply by 10^9.
 !
@@ -594,7 +594,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                         * (-lmax_comp-1) * prefactor(lmax_comp) * lmax_comp
         coefrp(lmax_comp+1) = coefrp(lmax_comp+1) + tempc
 
-        dpl2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)) * pmm 
+        dpl2 = -(lmax_comp*(lmax_comp+1)-(lmax_comp**2)) * pmm
         tempc = cmplx(cilm(1,lmax_comp+1,lmax_comp+1), &
                         - cilm(2,lmax_comp+1,lmax_comp+1), dp) * dpl2 &
                         * prefactor(lmax_comp)
@@ -923,7 +923,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
             pm1 = z * ff1(m1+1,m1) * pm2
             tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1 &
                     * (-m-2) * prefactor(m+1)  ! (m+1,m)
-            coefr(m1) = coefr(m1) + tempc 
+            coefr(m1) = coefr(m1) + tempc
             coefrs(m1) = coefrs(m1) - tempc ! fsymsign = -1
 
             tempc = cmplx(cilm(1,m1+1,m1), - cilm(2,m1+1,m1), dp) * pm1 &
@@ -1018,7 +1018,7 @@ subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, &
                 coeftps(m1) = coeftps(m1) - tempc * fsymsign(l1,m1)
 
                 dpl2 = -(l * l1 -(m**2)/u**2) * p + z * dpl
-                dpl2s = dpl2 * fsymsign(l1,m1) 
+                dpl2s = dpl2 * fsymsign(l1,m1)
                 tempc = cmplx(cilm(1,l1,m1), - cilm(2,l1,m1), dp) &
                         * prefactor(l)
                 coeftt(m1) = coeftt(m1) + tempc * dpl2

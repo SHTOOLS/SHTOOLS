@@ -1,6 +1,6 @@
 """
-    Class for grids of the three components of the magnetic field, the
-    magnetic intensity, and the magnetic potential.
+Class for grids of the three components of the magnetic field, the
+magnetic intensity, and the magnetic potential.
 """
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt

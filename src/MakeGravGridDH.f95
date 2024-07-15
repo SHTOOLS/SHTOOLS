@@ -1,23 +1,27 @@
 subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                         phi_grid, total_grid, n, sampling, lmax_calc, omega, &
-                        normal_gravity, pot_grid, extend, exitstatus)
+                        normal_gravity, normal_gravity_gm, pot_grid, extend, &
+                        exitstatus)
 !------------------------------------------------------------------------------
 !
 !   Given the spherical harmonic coefficients CILM of the gravitational
-!   potential, this subroutine will compute 2D Driscol and Healy sampled grids
-!   of the three vector components of the gravity vector (gravitational force +
-!   centrifugal force), and the magnitude of the gravity vector in SI units.
-!   The output grids are calculated on a flattened ellipsoid with semi-major
-!   axis A and flattening F. In order to calculate the entire gravity vector,
-!   it is necessary that the degree-0 term be set equal to 1. Radial gravity is
-!   positive when directed UPWARDS.
+!   potential, this subroutine will compute 2D Driscoll and Healy sampled grids
+!   of the three spherical vector components and magnitude of the gravity vector
+!   (gravitational force + centrifugal force) or gravitational vector in SI
+!   units. The output grids are calculated on a flattened ellipsoid with
+!   semi-major axis A and flattening F. In order to calculate the entire
+!   gravity vector on a non-spherical interface, it is necessary that the
+!   degree-0 term be set equal to 1. The radial component of the gravity or
+!   gravitational vector is defined to be positive when directed upwards.
 !
 !   If the optional parameter OMEGA is specified, the gravity vector will be
 !   calculated in the reference frame of a rotating body and will include the
 !   contribution of the centrifugal force. If the parameter NORMAL_GRAVITY is
 !   set to 1, the normal gravity predicted for a flattened ellipsoid with A, F,
 !   and OMEGA will be removed from the magnitude of the total gravity, yielding
-!   the gravity disturbance.
+!   the gravity disturbance. Optionally, a different GM can be used for the
+!   normal gravity than the gravitational potential by specifying the value
+!   NORMAL_GRAVITY_GM.
 !
 !   The gravitational potential is defined as
 !
@@ -47,11 +51,11 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !           cilm        Gravitational spherical harmonic coefficients.
 !           lmax        The maximum spherical harmonic degree of the function,
 !                       used to determine the number of samples N.
-!           GM          Product of the gravitatonal constant and the planet's
+!           GM          Product of the gravitational constant and the planet's
 !                       mass.
 !           r0          Reference radius of the potential coefficients.
 !           a           The semimajor axis of the flattened ellipsoid.
-!           f           Flattening of the planet.
+!           f           The flattening of the ellipsoid.
 !
 !       IN, OPTIONAL
 !           sampling    (1) The output grids are N by N (default).
@@ -64,19 +68,19 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 !                       ellipsoid will be removed from the magnitude of the
 !                       total gravity vector. This is the "gravity
 !                       disturbance."
+!           normal_gravity_gm
+!                       The GM used in calculating the normal gravity. If not
+!                       specified, the GM of the gravitational potential
+!                       coefficients will be used.
 !           extend      If 1, return a grid that contains an additional column
 !                       and row corresponding to 360 E longitude and 90 S
 !                       latitude, respectively.
 !
 !       OUT
-!           rad_grid    Gridded expansion of the radial component of the
-!                       gravity field.
-!           theta_grid  Gridded expansaion of the theta component of the
-!                       gravity field.
-!           phi_grid    Gridded expansaion of the phi component of the
-!                       gravity field.
-!           total_grid  Gridded expansaion of the the magnitude of the
-!                       gravity field.
+!           rad_grid    Grid of the radial component of the gravity field.
+!           theta_grid  Gridd of the theta component of the gravity field.
+!           phi_grid    Gridof the phi component of the gravity field.
+!           total_grid  Grid of the magnitude of the gravity field.
 !           N           Number of samples in latitude. Number of samples in
 !                       longitude is N when sampling is 1 (default), and is 2N
 !                       when sampling is 2.
@@ -112,7 +116,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
     real(dp), intent(in) :: cilm(:,:,:), gm, r0, a, f
     real(dp), intent(out) :: rad_grid(:,:), theta_grid(:,:), phi_grid(:,:), &
                              total_grid(:,:)
-    real(dp), intent(in), optional :: omega
+    real(dp), intent(in), optional :: omega, normal_gravity_gm
     real(dp), intent(out), optional :: pot_grid(:,:)
     integer(int32), intent(in) :: lmax
     integer(int32), intent(out) :: n
@@ -123,7 +127,8 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                       nlat_out, nlong_out, extend_grid
     real(dp) :: grid(4*lmax+4), pi, theta, scalef, rescalem, u, p, dpl, pmm, &
                 pm1, pm2, z, tempr, r_ex, lat, prefactor(lmax), coefr0, &
-                coefu0, coefrs0, coeft0, coefts0, coefp0, coefps0, coefus0, b
+                coefu0, coefrs0, coeft0, coefts0, coefp0, coefps0, coefus0, b, &
+                gm_ng
     complex(dp) :: coef(2*lmax+3), coefr(2*lmax+3), coefrs(2*lmax+3), &
                    coeft(2*lmax+3), coefts(2*lmax+3), coefp(2*lmax+3), &
                    coefps(2*lmax+3), coefu(2*lmax+3), coefus(2*lmax+3), tempc
@@ -653,12 +658,12 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
 
         pm2 = 1.0_dp
 
-        tempr = -cilm(1,1,1) * pm2 ! l = 0 
+        tempr = -cilm(1,1,1) * pm2 ! l = 0
         coefr0 = coefr0 + tempr
         coefrs0 = coefrs0 + tempr   ! fsymsign is always 1 for l=m=0
 
         if (calcu) then
-            tempr = cilm(1,1,1) * pm2  ! l = 0 
+            tempr = cilm(1,1,1) * pm2  ! l = 0
             coefu0 = coefu0 + tempr
             coefus0 = coefus0 + tempr   ! fsymsign is always 1 for l=m=0
         end if
@@ -672,7 +677,7 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
                 prefactor(l) = prefactor(l-1) * r0 / r_ex
             end do
 
-            pm1 = ff1(2,1) * z 
+            pm1 = ff1(2,1) * z
             ! -2 = (l+1) prefactor
             tempr = cilm(1,2,1) * pm1 * (-2) * prefactor(1)
             coefr0 = coefr0 + tempr
@@ -1032,11 +1037,17 @@ subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad_grid, theta_grid, &
         if (normal_gravity == 1) then
             b = a * (1.0_dp - f)
 
+            if (present(normal_gravity_gm)) then
+                gm_ng = normal_gravity_gm
+            else
+                gm_ng = gm
+            end if
+
             do i = 1, nlat_out
                 theta = pi * dble(i-1) / dble(n)
                 lat = (pi / 2.0_dp - theta) * 180.0_dp / pi
                 total_grid(i,1:nlong) = total_grid(i,1:nlong) - &
-                                        NormalGravity(lat, GM, omega, a, b)
+                                        NormalGravity(lat, gm_ng, omega, a, b)
             end do
 
         end if

@@ -1,5 +1,7 @@
 """
-    Spherical Harmonic Coefficients classes
+Spherical Harmonic Coefficients classes
+
+    SHCoeffs: SHRealCoeffs, SHComplexCoeffs
 """
 import os as _os
 import numpy as _np

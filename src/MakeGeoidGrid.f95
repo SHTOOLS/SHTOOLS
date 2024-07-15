@@ -3,22 +3,22 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
                          a, f, extend, exitstatus)
 !------------------------------------------------------------------------------
 !
-!   This subrouine will calculate the height to an equipotential surface with
+!   This subroutine will calculate the height of an equipotential surface with
 !   respect to a spherical reference radius R for a body rotating with angular
 !   rotation rate OMEGA. This method uses a first-, second-, or third-order
 !   Taylor series expansion of the potential, evaluated at radius R. The output
 !   gridype is specificied by GRIDTYPE, which can be either Cartesian 2D,
 !   Guass-Legendre quadrature, or Driscoll and Healy. If the optional
-!   parameters A and F are specified, the geoid will be referenced to a
-!   flattened ellispoid with semimajor axis A and flattening F.
+!   parameters A and F are specified, the geoid heights will be with respect
+!   to a flattened ellipsoid with semimajor axis A and flattening F.
 !
 !   Note that this routine is only strictly valid when the geoid is above the
-!   surface! To calculated the height of the geoid when it is below the
+!   surface. To calculated the height of the geoid when it is below the
 !   surface, one would need to know the density structure of the planet.
 !   Furthermore, the calculation of the potential (and its derivatives) is
 !   only strictly valid when R lies above the maximum radius of the planet.
 !
-!   Latitude is geocentric latitude.
+!   Latitude is geocentric spherical latitude.
 !
 !   Calling Parameters
 !
@@ -394,7 +394,7 @@ subroutine MakeGeoidGrid(geoid, cilm, lmax, r0pot, GM, PotRef, omega, r, &
 
     end select
 
-    ! Create Grid B 
+    ! Create Grid B
     do l = 0, lmax_comp
         cilm2(1:2,l+1,1:l+1) = -(GM / r**2) * dble(l+1) &
                                * cilm1(1:2,l+1,1:l+1) * (r0pot / r)**l
