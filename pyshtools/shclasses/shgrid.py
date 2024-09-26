@@ -2387,7 +2387,7 @@ class DHRealGrid(SHGrid):
         if minor_tick_interval[1] is not None:
             framey += 'f' + str(minor_tick_interval[1])
         if title is not None:
-            ticks += '+t"{:s}"'.format(title)
+            ticks += f'+t{title}'
         frame = [framex, framey, ticks]
 
         position = None
@@ -2429,9 +2429,9 @@ class DHRealGrid(SHGrid):
                 x_str += 'p'
             cb_str.extend([x_str])
             if cb_label is not None:
-                cb_str.extend(['x+l"{:s}"'.format(cb_label)])
+                cb_str.extend([f'x+l{cb_label}'])
             if cb_ylabel is not None:
-                cb_str.extend(['y+l"{:s}"'.format(cb_ylabel)])
+                cb_str.extend([f'y+l{cb_ylabel}'])
 
         if offset[0] is not None:
             xshift = str(offset[0]) + unit
