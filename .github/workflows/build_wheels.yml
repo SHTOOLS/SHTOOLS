@@ -3,7 +3,7 @@ name: Build wheels
 on:
   push:
   pull_request:
-    branches: [master, develop]
+    branches: [master]
   release:
     types:
       - published
