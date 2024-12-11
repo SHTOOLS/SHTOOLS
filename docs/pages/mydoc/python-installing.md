@@ -86,7 +86,7 @@ When installing pyshtools using `pip` or `conda`, the following packages should 
 * [setuptools_scm](https://setuptools-scm.readthedocs.io/en/latest/): required to obtain the pyshtools version number.
 * [scipy](https://www.scipy.org/): required for a few specialized functions.
 * [matplotlib](https://matplotlib.org/): required for most plotting functions.
-* [astropy](https://www.astropy.org/): required for the constants module.
+* [astropy-base](https://www.astropy.org/): required for the constants module.
 * [xarray](https://xarray.pydata.org/en/stable/#): required for netcdf file support.
 * [requests](https://2.python-requests.org/en/master/#): required when reading files from urls.
 * [pooch](https://www.fatiando.org/pooch/latest/index.html): required for reading datasets.

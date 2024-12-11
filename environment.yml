@@ -9,7 +9,7 @@ dependencies:
     - numpy>=1.23.5
     - scipy>=0.14.0
     - matplotlib-base>=3.3
-    - astropy>=4.0
+    - astropy-base>=4.0
     - xarray
     - requests
     - pooch>=1.1
