@@ -8,6 +8,7 @@ python_sources = [
   'Moon.py',
   'Ceres.py',
   'Vesta.py',
+  'Psyche.py',
   'Eros.py',
   'Jupiter.py',
   'Io.py',

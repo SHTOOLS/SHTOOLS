@@ -44,7 +44,7 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `error_kind` | An arbitrary string describing the kind of errors, such as `None`, `'unspecified'`, `'calibrated'` or `'formal'`. |
 | `r0` | The reference radius of the magnetic potential coefficients. |
 | `normalization` | The normalization of the coefficients: `'4pi'`, `'ortho'`, `'schmidt'`, or `'unnorm'`.|
-| `csphase` | Defines whether the Condon-Shortley phase is used (`1`) or not (`-1`). |
+| `csphase` | Defines whether the Condon-Shortley phase is excluded (`1`) or appended (`-1`). |
 | `mask` | A boolean mask that is `True` for the permissible values of degree `l` and order `m`. |
 | `kind` | The coefficient data type (only `'real'` is permissible). |
 | `units` | The units of the spherical harmonic coefficients. |

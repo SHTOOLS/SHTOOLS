@@ -53,11 +53,11 @@ The rotation of a coordinate system or body can be viewed in two complementary w
 (II) Rotation about the initial y axis by beta.
 (III) Rotation about the initial z axis by alpha.
 
-The rotations can further be viewed either as a rotation of the coordinate system or the physical body. For a rotation of the coordinate system without rotation of the physical body, use 
+The rotations can further be viewed either as a rotation of the coordinate system or the physical body. For a rotation of the coordinate system without rotation of the physical body, use
 
 `x(alpha, beta, gamma)`.
 
-For a rotation of the physical body without rotation of the coordinate system, use 
+For a rotation of the physical body without rotation of the coordinate system, use
 
 `x(-gamma, -beta, -alpha)`.
 
@@ -66,6 +66,8 @@ To perform the inverse transform of `x(alpha, beta, gamma)`, use `x(-gamma, -bet
 Note that this routine uses the "y convention", where the second rotation is with respect to the new y axis. If alpha, beta, and gamma were originally defined in terms of the "x convention", where the second rotation was with respect to the new x axis, the Euler angles according to the y convention would be `alpha_y=alpha_x-pi/2`, `beta_x=beta_y`, and `gamma_y=gamma_x+pi/2`.
 
 This routine first converts the real coefficients to complex form using `SHrtoc`. Then the coefficients are converted to indexed form using `SHCilmToCindex`, these are sent to `SHRotateCoef`, the result if converted back to `cilm` complex form using `SHCindexToCilm`, and these are finally converted back to real form using `SHctor`.
+
+This routine is accurate to about spherical harmonic degree 1200.
 
 ## See also
 

@@ -17,12 +17,12 @@ subroutine PlmSchmidt_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
 !   subsequent rescaling factors of sin(theta) will be directly applied to Plm,
 !   and then this number will be multipled by the old value of rescalem.
 !
-!   Temporary variables in saved in an allocated array. In order to explicitly
+!   Temporary variables are saved in an allocated array. In order to explicitly
 !   deallocate this memory, call this routine with a spherical harmonic degree
 !   of -1.
 !
 !   Calling Parameters
-!   
+!
 !       IN
 !           lmax        Maximum spherical harmonic degree to compute.
 !           z           cos(colatitude) or sin(latitude).
@@ -55,9 +55,9 @@ subroutine PlmSchmidt_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
 !
 !   1.  The employed normalization is the "Schmidt semi-normalized convention."
 !       The integral of (PlmSchmidt*cos(m theta))**2 or
-!       (PlmSchmidt*sin (m theta))**2 over all space is 4 pi/(2L+1).
+!       (PlmSchmidt*sin (m theta))**2 over all space is 4 pi/(2l+1).
 !   2.  The integral of PlmSchmidt**2 over (-1,1) is 2 * (2 - delta(0,m)) /
-!       (2L+1). If CNORM = 1, then this is equal to 2/(2l+1).
+!       (2l+1). If CNORM = 1, then this is equal to 2/(2l+1).
 !   3.  The index of the array p corresponds to l*(l+1)/2 + m + 1. As such
 !       the array p should be dimensioned as (lmax+1)*(lmax+2)/2 in the
 !       calling routine.
@@ -312,7 +312,7 @@ subroutine PlmSchmidt_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
 
         ! Calculate P(m+1,m)
         k = kstart + m + 1
-        pm1 = z * sqr(2*m+1) * pm2 
+        pm1 = z * sqr(2*m+1) * pm2
         p(k) = pm1 * rescalem
         dp1(k) = (p(k-m-1) * sqr(2*m+1) - z * (m+1) * p(k)) / u**2
 

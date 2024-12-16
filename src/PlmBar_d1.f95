@@ -17,7 +17,7 @@ subroutine PlmBar_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
 !   subsequent rescaling factors of sin(theta) will be directly applied to Plm,
 !   and then this number will be multipled by the old value of rescalem.
 !
-!   Temporary variables in saved in an allocated array. In order to explicitly
+!   Temporary variables are saved in an allocated array. In order to explicitly
 !   deallocate this memory, call this routine with a spherical harmonic degree
 !   of -1.
 !
@@ -162,7 +162,7 @@ subroutine PlmBar_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
         end if
 
     end if
- 
+
     if (present(csphase)) then
         if (csphase == -1) then
             phase = -1
@@ -240,7 +240,7 @@ subroutine PlmBar_d1(p, dp1, lmax, z, csphase, cnorm, exitstatus)
                 k = k + 1
                 f1(k) = sqr(2*l+1) * sqr(2*l-1) / sqr(l+m) / sqr(l-m)
                 f2(k) = sqr(2*l+1) * sqr(l-m-1) * sqr(l+m-1) &
-                        / sqr(2*l-3) / sqr(l+m) / sqr(l-m) 
+                        / sqr(2*l-3) / sqr(l+m) / sqr(l-m)
             end do
 
             k = k + 2
