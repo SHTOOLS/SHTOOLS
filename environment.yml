@@ -22,4 +22,4 @@ dependencies:
     - jupyter
     - pip
     - flake8
-    - boule
+    - boule>=0.5

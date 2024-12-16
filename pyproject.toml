@@ -37,7 +37,7 @@ dependencies = [
   'requests',
   'pooch>=1.1',
   'tqdm',
-  'boule',
+  'boule>=0.5',
 ]
 
 [project.urls]
