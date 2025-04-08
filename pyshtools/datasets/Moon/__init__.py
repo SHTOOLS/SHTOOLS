@@ -13,6 +13,7 @@ GRGM1200B         :  Goossens et al. (2020)
 GRGM1200B_RM1_1E0 :  Goossens et al. (2020)
 GL0900D           :  Konopliv et al. (2014)
 GL1500E           :  Konopliv et al. (2014)
+GL1800F           :  Park et al. (2025)
 
 Magnetic field
 --------------
@@ -400,6 +401,39 @@ def GL1500E(lmax=1500):
                                    name='GL1500E (Moon)', encoding='utf-8')
 
 
+def GL1800F(lmax=1800):
+    '''
+    GL1800F is a JPL 1800 degree and order spherical harmonic model of
+    the gravitational potential of the Moon. This model uses a rank-minus-1
+    constraint based on gravity from surface topography for degrees greater
+    than 600.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    R. S. Park, A. Berne, A. S. Konopliv, J. T. Keane, I. Matsuyama, F. Nimmo,
+        M. Rovira-Navarro, M. P. Panning, M. Simons, D. J. Stevenson,
+        R. C. Weber, Thermal asymmetry in the Moon's mantle inferred from
+        monthly tidal response, Nature, 2025.
+    '''
+    if lmax < 0:
+        lmax = 1800
+
+    fname = _retrieve(
+        url="https://pds-geosciences.wustl.edu/grail/grail-l-lgrs-5-rdr-v1/grail_1001/shadr/jggrx_1800f_sha.tab",  # noqa: E501
+        known_hash="sha256:d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
+                                   errors=True, omega=_omega.value,
+                                   name='GL1800F (Moon)', encoding='utf-8')
+
+
 __all__ = ['LDEM_shape_pa', 'LOLA_shape', 'T2015_449', 'Ravat2020', 'GRGM900C',
-           'GRGM1200B', 'GRGM1200B_RM1_1E0', 'GL0900D', 'GL1500E',
+           'GRGM1200B', 'GRGM1200B_RM1_1E0', 'GL0900D', 'GL1500E', 'GL1800F',
            'historical']
