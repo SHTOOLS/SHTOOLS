@@ -150,7 +150,7 @@ LAPACK_UNDERSCORE=1  # add an extra underscore to the LAPACK routine names
 ```
 For this case, compiler flags should probably be set so that underscores are not appended to routine names. See [Fortran 95 problems](fortran-95-problems.html) for further information.
 
-To generate 64 bit code, use the compiler option
+To generate 64 bit code (which is usually the default), use the compiler option
 ```bash
 -m64
 ```

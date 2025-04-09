@@ -34,22 +34,22 @@ Typical examples of compiling and linking a program `MyProgram.f95` to the neces
 
 ### gfortran
 ```bash
-gfortran MyProgram.f95 -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -m64 -o MyProgram
+gfortran MyProgram.f95 -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -o MyProgram
 ```
 
 ### Absoft Pro Fortran (f95)
 ```bash
-f95 MyProgram.f95 -p $SHTOOLSMODPATH -L$SHTOOLSLIBPATH -YEXT_NAMES=LCS -YEXT_SFX=_ -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -m64 -o MyProgram
+f95 MyProgram.f95 -p $SHTOOLSMODPATH -L$SHTOOLSLIBPATH -YEXT_NAMES=LCS -YEXT_SFX=_ -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -o MyProgram
 ```
 
 ### g95
 ```bash
-g95 MyProgram.f95 -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -fno-second-underscore -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -m64 -o MyProgram
+g95 MyProgram.f95 -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -fno-second-underscore -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -o MyProgram
 ```
 
 ### Intel Fortran (ifort)
 ```bash
-ifort -fpp -free -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -m64 -Tf MyProgram.f95 -o MyProgram
+ifort -fpp -free -I$SHTOOLSMODPATH -L$SHTOOLSLIBPATH -lSHTOOLS -lfftw3 -lm -llapack -lblas -O3 -Tf MyProgram.f95 -o MyProgram
 ```
 Note that the position of the source file in the above examples might be important for some compilers. Note also that on macOS, linking to the preinstalled LAPACK and BLAS libraries can be accomplished using `-framework Accelerate`. (See [installing SHTOOLS](installing-fortran.html) for more details).
 
