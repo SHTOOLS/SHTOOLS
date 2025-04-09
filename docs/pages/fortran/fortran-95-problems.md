@@ -3,7 +3,7 @@ title: "Fortran 95 problems"
 keywords: spherical harmonics software package, spherical harmonic transform, legendre functions, multitaper spectral analysis, fortran, Python, gravity, magnetic field
 sidebar: fortran_sidebar
 permalink: fortran-95-problems.html
-summary: 
+summary:
 toc: true
 folder: fortran
 ---
@@ -71,7 +71,7 @@ where the find command searches the directory `/usr`. This pathname can then be 
 
 For some compilers, the location of the source file following the compiler name is important. When this is the case, if the source file is not in its correct position, you could receive link errors that resemble the following:
 ```
-gfortran -L../lib -lSHTOOLS TimingAccuracy/TimingAccuracyGLQC.f95 -I../modules/ -L../lib -lfftw3 -lm -m64 -O3 -o TimingAccuracy/TimingAccuracyGLQC
+gfortran -L../lib -lSHTOOLS TimingAccuracy/TimingAccuracyGLQC.f95 -I../modules/ -L../lib -lfftw3 -lm -O3 -o TimingAccuracy/TimingAccuracyGLQC
 /tmp/cchgdOpg.o: In function `MAIN__':
 TimingAccuracyGLQC.f95:(.text+0x5b3): undefined reference to `randomgaussian_'
 TimingAccuracyGLQC.f95:(.text+0xb9b): undefined reference to `shglq_'
@@ -81,7 +81,7 @@ collect2: error: ld returned 1 exit status
 ```
 For this example, successful compilation can be achieved by placing the source file before the library calls:
 ```
-gfortran  TimingAccuracy/TimingAccuracyGLQC.f95 -L../lib -lSHTOOLS -I../modules/ -L../lib -lfftw3 -lm -m64 -O3 -o TimingAccuracy/TimingAccuracyGLQC
+gfortran  TimingAccuracy/TimingAccuracyGLQC.f95 -L../lib -lSHTOOLS -I../modules/ -L../lib -lfftw3 -lm -O3 -o TimingAccuracy/TimingAccuracyGLQC
 ```
 
 ## The linker can't seem to find either the LAPACK, BLAS, or FFTW libraries
