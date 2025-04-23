@@ -644,14 +644,14 @@ def MakeGridDHC(
     """ # noqa
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _ccilm2almi(cilm)
-    alm = _apply_norm(alm, lmax, norm, csphase, False)
+    alm = _apply_norm(alm, lmax_calc, norm, csphase, False)
     res = _np.empty(
         [2 * lmax + 2 + extend, sampling * (2 * lmax + 2) + extend],
         dtype=_np.complex128,
     )
     _synthesize_DH(alm, lmax_calc, extend, res.imag)
     alm = _ccilm2almr(cilm)
-    alm = _apply_norm(alm, lmax, norm, csphase, False)
+    alm = _apply_norm(alm, lmax_calc, norm, csphase, False)
     _synthesize_DH(alm, lmax_calc, extend, res.real)
     return res
 
@@ -990,11 +990,11 @@ def MakeGridGLQC(
     """ # noqa
     lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
     alm = _ccilm2almi(cilm)
-    alm = _apply_norm(alm, lmax, norm, csphase, False)
+    alm = _apply_norm(alm, lmax_calc, norm, csphase, False)
     res = _np.empty([lmax + 1, 2 * lmax + 1 + extend], dtype=_np.complex128)
     _synthesize_GLQ(alm, lmax_calc, extend, res.imag)
     alm = _ccilm2almr(cilm)
-    alm = _apply_norm(alm, lmax, norm, csphase, False)
+    alm = _apply_norm(alm, lmax_calc, norm, csphase, False)
     _synthesize_GLQ(alm, lmax_calc, extend, res.real)
     return res
 
