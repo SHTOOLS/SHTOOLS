@@ -2351,7 +2351,7 @@ class SHCoeffs(object):
             if lmax is None:
                 lmax = self.lmax
             if lmax_calc is None:
-                lmax_calc = self.lmax
+                lmax_calc = min(self.lmax, lmax)
             if backend is None:
                 backend = preferred_backend()
             if name is None:
@@ -2432,7 +2432,7 @@ class SHCoeffs(object):
         if lmax is None:
             lmax = self.lmax
         if lmax_calc is None:
-            lmax_calc = lmax
+            lmax_calc = min(self.lmax, lmax)
         if backend is None:
             backend = preferred_backend()
         if name is None:
