@@ -2041,7 +2041,7 @@ class SHMagCoeffs(object):
             if lmax is None:
                 lmax = self.lmax
             if lmax_calc is None:
-                lmax_calc = self.lmax
+                lmax_calc = min(self.lmax, lmax)
             if name is None:
                 name = self.name
 
@@ -2150,7 +2150,7 @@ class SHMagCoeffs(object):
         if lmax is None:
             lmax = self.lmax
         if lmax_calc is None:
-            lmax_calc = self.lmax
+            lmax_calc = min(self.lmax, lmax)
         if name is None:
             name = self.name
 
