@@ -2534,7 +2534,7 @@ class SHGravCoeffs(object):
             if lmax is None:
                 lmax = self.lmax
             if lmax_calc is None:
-                lmax_calc = lmax
+                lmax_calc = self.lmax
             if name is None:
                 name = self.name
 
@@ -2647,7 +2647,7 @@ class SHGravCoeffs(object):
         if lmax is None:
             lmax = self.lmax
         if lmax_calc is None:
-            lmax_calc = lmax
+            lmax_calc = self.lmax
         if name is None:
             name = self.name
 
@@ -2741,7 +2741,7 @@ class SHGravCoeffs(object):
         if lmax is None:
             lmax = self.lmax
         if lmax_calc is None:
-            lmax_calc = lmax
+            lmax_calc = self.lmax
         if name is None:
             name = self.name
 
