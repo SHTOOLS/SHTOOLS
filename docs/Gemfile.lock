@@ -38,6 +38,7 @@ GEM
       logger
     faraday-net_http (3.1.0)
       net-http
+    ffi (1.17.0)
     ffi (1.17.0-arm64-darwin)
     ffi (1.17.0-x86_64-darwin)
     forwardable-extended (2.6.0)
@@ -217,6 +218,7 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.6.0)
     mercenary (0.3.6)
+    mini_portile2 (2.8.9)
     minima (2.5.1)
       jekyll (>= 3.5, < 5.0)
       jekyll-feed (~> 0.9)
@@ -225,6 +227,9 @@ GEM
     mutex_m (0.2.0)
     net-http (0.4.1)
       uri
+    nokogiri (1.16.6)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.16.6-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.16.6-x86_64-darwin)
@@ -262,16 +267,17 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.8.0)
     uri (0.13.0)
-    webrick (1.8.1)
+    webrick (1.8.2)
 
 PLATFORMS
   arm64-darwin-21
   x86_64-darwin-20
   x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   github-pages
-  webrick (~> 1.7)
+  webrick (~> 1.8)
 
 BUNDLED WITH
    2.3.7
