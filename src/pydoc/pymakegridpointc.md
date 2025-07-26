@@ -14,7 +14,7 @@ value : complex, ndarray
 # Parameters
 
 cilm : complex, dimension (2, lmaxin+1, lmaxin+1)
-:   The complex spherical harmonic coefficients of the function. The coefficients C0lm and C1lm refer to the positive and negative angular orders, respectively, with Clm=cilm[0,1,m] and Cl-m=cilm[1,l,m].
+:   The complex spherical harmonic coefficients of the function. The coefficients C0lm and C1lm refer to the positive and negative angular orders, respectively, with Clm=cilm[0,l,m] and Cl-m=cilm[1,l,m].
 
 lat : float, array_like
 :   The latitude of the point in degrees.
@@ -32,7 +32,7 @@ csphase : integer, array_like, optional, default = 1
 :   1 (default) = do not apply the Condon-Shortley phase factor to the associated Legendre functions; -1 = append the Condon-Shortley phase factor of (-1)^m to the associated Legendre functions.
 
 dealloc : integer, array_like, optional, default = 0
-:   0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the funcion call.
+:   0 (default) = Save variables used in the external Legendre function calls. (1) Deallocate this memory at the end of the function call.
 
 # Description
 
