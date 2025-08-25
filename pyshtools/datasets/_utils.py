@@ -41,8 +41,8 @@ def _choose_sh_model(
     fpath : str
         Path to an existing or downloaded file.
     target_lmax : int
-        The max degree of the selected model (not necessarily the same as
-        `user_lmax`).
+        The degree up to which to evaluate the model. This is typically the
+        same as `user_lmax`, see parameter description for details.
 
     Raises
     ------
