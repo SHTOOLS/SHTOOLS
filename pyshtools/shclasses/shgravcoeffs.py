@@ -197,8 +197,6 @@ class SHGravCoeffs(object):
         gm : float
             The gravitational constant times the mass that is associated with
             the gravitational potential coefficients.
-        mass : float
-            The mass of the planet in kg.
         r0 : float
             The reference radius of the spherical harmonic coefficients.
         omega : float, optional, default = None
