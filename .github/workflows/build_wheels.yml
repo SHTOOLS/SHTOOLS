@@ -55,7 +55,7 @@ jobs:
           fetch-tags: true
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.3.0
+        uses: pypa/cibuildwheel@v3.3
         env:
           CIBW_MANYLINUX_X86_64_IMAGE: "manylinux_2_28"  # ensure we don't use CentOS-based manylinux
           CIBW_BEFORE_ALL_MACOS: brew reinstall gcc fftw lapack
@@ -83,7 +83,7 @@ jobs:
           fetch-tags: true
 
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v3.3
+        uses: conda-incubator/setup-miniconda@v3.3.0
         with:
           python-version: 3.12
           channels: conda-forge
