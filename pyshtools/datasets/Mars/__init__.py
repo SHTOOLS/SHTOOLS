@@ -287,4 +287,4 @@ def Morschhauser2014(lmax=110):
 
 
 __all__ = ['MOLA_shape', 'GMM3', 'GMM3_RM1_1E0', 'MRO120F', 'Langlais2019',
-           'Morschhauser2014', 'historical', 'MarsTopo719']
+           'Morschhauser2014', 'historical', 'MarsTopo719', 'PINN2025']
