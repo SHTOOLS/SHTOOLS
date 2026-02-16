@@ -102,9 +102,8 @@ jobs:
                                           meson-python \
                                           numpy \
                                           pkg-config \
-                                          setuptools_scm \
                                           jupyter
-          pip install build
+          pip install build setuptools-scm
 
       - name: Build sdist
         shell: bash -l {0}
