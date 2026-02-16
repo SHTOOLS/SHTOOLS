@@ -85,9 +85,9 @@ jobs:
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v3.3.0
         with:
-          python-version: 3.12
+          python-version: 3.14
           channels: conda-forge
-          channel-priority: flexible
+          channel-priority: strict
           auto-update-conda: true
           miniconda-version: "latest"
           activate-environment: build_sdist
