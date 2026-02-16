@@ -1,5 +1,5 @@
 """
-    Class for grids of the two components of the horizontal gradient.
+Class for grids of the two components of the horizontal gradient.
 """
 import matplotlib as _mpl
 import matplotlib.pyplot as _plt
