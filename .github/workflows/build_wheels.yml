@@ -87,7 +87,7 @@ jobs:
         with:
           python-version: 3.12
           channels: conda-forge
-          channel-priority: strict
+          channel-priority: flexible
           auto-update-conda: true
           miniconda-version: "latest"
           activate-environment: build_sdist
