@@ -102,8 +102,8 @@ jobs:
                                           numpy \
                                           pkg-config \
                                           setuptools_scm \
-                                          jupyter \
-                                          build
+                                          jupyter
+          pip install build
 
       - name: Build sdist
         shell: bash -l {0}
