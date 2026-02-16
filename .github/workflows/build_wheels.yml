@@ -67,6 +67,7 @@ jobs:
           CIBW_ENVIRONMENT_WINDOWS: PATH="C:\\msys64\\ucrt64\\bin;$PATH" MSYSTEM="UCRT64"
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"  # adds DLLs to wheel
           CIBW_SKIP: "*-manylinux_i686 *-musllinux* *-win32"
+          MACOSX_DEPLOYMENT_TARGET: "15.0"
 
       - uses: actions/upload-artifact@v4
         with:
