@@ -20,6 +20,7 @@ Make all changes on the branch `develop`. Verify that the version numbers and ot
 - [ ] `environment.yml` : update version numbers of the conda environment, if necesseary
 - [ ] `binder/environment.yml` : update version number of pyshtools and other dependencies
 - [ ] `fpm.toml` : update shtools version number
+- [ ] `codemeta.json` : update version number and release date
 - [ ] `AUTHORS.md`, `docs/pages/mydoc/contributors.md`, `docs/pages/fortran/fortran-contributors.md` : Add new contributors, if necessary
 
 Update the documentation files and man pages

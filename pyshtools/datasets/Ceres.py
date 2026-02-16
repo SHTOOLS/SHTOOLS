@@ -8,6 +8,7 @@ JPL_SPC_shape  :  Wieczorek (2024)
 
 Gravity
 -------
+CERES70E       :  Park et al. (2024)
 CERES18D       :  Konopliv et al. (2018)
 '''
 from pooch import os_cache as _os_cache
@@ -135,6 +136,37 @@ def JPL_SPC_shape(lmax=719):
                                units='m', format='bshc')
 
 
+def CERES70E(lmax=70):
+    '''
+    CERES70E is a JPL 70 degree and order spherical harmonic model of the
+    gravitational potential of (1) Ceres.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    Park, R.S., Konopliv, A.S., Asmar, S.W., and Buccino, D.R., Dawn Ceres
+        Derived Gravity Data V4.0, NASA Planetary Data System,
+        DAWN-A-RSS-5-CEGR-V4.0, 2024.
+    '''
+    if lmax < 0:
+        lmax = 70
+
+    fname = _retrieve(
+        url="https://sbnarchive.psi.edu/pds3/dawn/grav/DWNCGRS_2_v4/DATA/SHADR/JGDWN_C70E01_SHA.TAB",  # noqa: E501
+        known_hash="sha256:9fa286877c0b8a7761b8bc68c46b048d2849350aa5d456738414fba122839c79",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
+                                   r0_index=0, gm_index=1, errors=True,
+                                   name='CERES70E', encoding='utf-8',
+                                   omega=_omega.value)
+
+
 def CERES18D(lmax=18):
     '''
     CERES18D is a JPL 18 degree and order spherical harmonic model of the
@@ -169,4 +201,4 @@ def CERES18D(lmax=18):
                                    omega=_omega.value)
 
 
-__all__ = ['DLR_SPG_shape', 'CERES18D']
+__all__ = ['DLR_SPG_shape', 'CERES18D', 'CERES70E']
