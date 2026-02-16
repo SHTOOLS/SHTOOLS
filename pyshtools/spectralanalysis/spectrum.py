@@ -45,23 +45,26 @@ def spectrum(clm, normalization='4pi', degrees=None, lmax=None,
 
     Notes
     -----
-    This function returns either the power spectrum, energy spectrum, or
-    l2-norm spectrum. Total power is defined as the integral of the
-    function squared over all space, divided by the area the function
-    spans. If the mean of the function is zero, this is equivalent to the
-    variance of the function. The total energy is the integral of the
-    function squared over all space and is 4pi times the total power. The
-    l2-norm is the sum of the magnitude of the coefficients squared.
+    This routine returns either the power spectrum, energy spectrum, or
+    l2-norm spectrum of a function that is expressed in spherical harmonics.
+    Total power is defined as the integral of the function squared over all
+    space, divided by the area the function spans. If the mean of the function
+    is zero, this is equivalent to the variance of the function. The total
+    energy is the integral of the function squared over all space and is 4 pi
+    times the total power. For normalized coefficients ('4pi', 'ortho', or
+    'schmidt'), the l2-norm is the sum of the magnitude of the coefficients
+    squared.
 
     The output spectrum can be expresed using one of three units. 'per_l'
-    returns the contribution to the total spectrum from all angular orders
-    at degree l. 'per_lm' returns the average contribution to the total
-    spectrum from a single coefficient at degree l, and is equal to the
-    'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the contribution to
-    the total spectrum from all angular orders over an infinitessimal
-    logarithmic degree band. The contrubution in the band dlog_a(l) is
-    spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base, and where
-    spectrum(l, 'per_dlogl) is equal to spectrum(l, 'per_l')*l*log(a).
+    returns the contribution to the total power, energy or l2-norm from all
+    angular orders at degree l. 'per_lm' returns the average contribution to
+    the total power, energy or l2-norm from a single coefficient at degree l,
+    and is equal to the 'per_l' spectrum divided by (2l+1). 'per_dlogl' returns
+    the contribution to the total power, energy or l2-norm from all angular
+    orders over an infinitessimal logarithmic degree band. The contrubution in
+    the band dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the
+    base, and where spectrum(l, 'per_dlogl) is equal to
+    spectrum(l, 'per_l')*l*log(a).
     """
     if normalization.lower() not in ('4pi', 'ortho', 'schmidt', 'unnorm'):
         raise ValueError("The normalization must be '4pi', 'ortho', " +
@@ -115,15 +118,11 @@ def spectrum(clm, normalization='4pi', degrees=None, lmax=None,
                 array[i] = (clm[0, l, 0:l+1]**2).sum() + \
                            (clm[1, l, 1:l+1]**2).sum()
 
-        if convention.lower() == 'l2norm':
-            return array
-        else:
-            if normalization.lower() == '4pi':
-                pass
-            elif normalization.lower() == 'schmidt':
-                array /= (2. * degrees + 1.)
-            elif normalization.lower() == 'ortho':
-                array /= (4. * _np.pi)
+        if normalization.lower() == 'schmidt':
+            array /= (2. * degrees + 1.)
+
+        if normalization.lower() == 'ortho':
+            array /= (4. * _np.pi)
 
     if convention.lower() == 'energy':
         array *= 4. * _np.pi
