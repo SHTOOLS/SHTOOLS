@@ -15,10 +15,10 @@ from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import create as _create
 from pooch import HTTPDownloader as _HTTPDownloader
-from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..constants.Ceres import angular_velocity as _omega
+from ._utils import _choose_sh_model
 
 
 def DLR_SPG_shape(lmax=719):
@@ -60,22 +60,10 @@ def DLR_SPG_shape(lmax=719):
             },
         )
 
-    if lmax < 0:
-        lmax = 5399
-
-    if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Ceres_DLR_SPG_shape_719.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Ceres_DLR_SPG_shape_1439.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Ceres_DLR_SPG_shape_2879.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    else:
-        fname = archive.fetch("Ceres_DLR_SPG_shape_5399.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 5399)
+    fname, lmax = _choose_sh_model(
+        archive=archive,
+        user_lmax=lmax,
+    )
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='DLR_SPG_shape (Ceres)',
                                units='m', format='bshc')
@@ -121,16 +109,10 @@ def JPL_SPC_shape(lmax=719):
             },
         )
 
-    if lmax < 0:
-        lmax = 1023
-
-    if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Ceres_JPL_SPC_shape_719.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    else:
-        fname = archive.fetch("Ceres_JPL_SPC_shape_1023.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 1023)
+    fname, lmax = _choose_sh_model(
+        archive=archive,
+        user_lmax=lmax,
+    )
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='JPL_SPC_shape (Ceres)',
                                units='m', format='bshc')

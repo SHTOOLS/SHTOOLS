@@ -28,6 +28,7 @@ from ...shclasses import SHMagCoeffs as _SHMagCoeffs
 from pooch import Decompress as _Decompress
 from ...constants.Mars import angular_velocity as _omega
 from . import historical  # noqa: F401
+from .._utils import _choose_sh_model
 
 
 def MOLA_shape(lmax=719):
@@ -67,22 +68,10 @@ def MOLA_shape(lmax=719):
             },
         )
 
-    if lmax < 0:
-        lmax = 5759
-
-    if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Mars_MOLA_shape_719.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Mars_MOLA_shape_1439.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Mars_MOLA_shape_2879.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    else:
-        fname = archive.fetch("Mars_MOLA_shape_5759.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 5759)
+    fname, lmax = _choose_sh_model(
+        archive=archive,
+        user_lmax=lmax,
+    )
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='MOLA_shape (Mars)',
                                units='m', format='bshc')
