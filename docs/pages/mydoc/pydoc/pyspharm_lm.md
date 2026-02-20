@@ -18,38 +18,38 @@ ylm = spharm_lm (l, m, theta, phi, [normalization, kind, csphase, degrees])
 ## Returns
 
 ylm : float or complex, ndarray
-:   The spherical harmonic function ylm, where l and m are the spherical
-    harmonic degree and order, respectively.
+The spherical harmonic function ylm, where l and m are the spherical
+harmonic degree and order, respectively.
 
 ## Parameters
 
 l : integer, array_like
-:   The spherical harmonic degree.
+The spherical harmonic degree.
 
 m : integer, array_like
-:   The spherical harmonic order.
+The spherical harmonic order.
 
 theta : float, array_like
-:   The colatitude in degrees. Use radians if 'degrees' is set to False.
+The colatitude in degrees. Use radians if 'degrees' is set to False.
 
 phi : float, array_like
-:   The longitude in degrees. Use radians if 'degrees' is set to False.
+The longitude in degrees. Use radians if 'degrees' is set to False.
 
 normalization : str, array_like, optional, default = '4pi'
-:   '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
-    orthonormalized, Schmidt semi-normalized, or unnormalized spherical
-    harmonic functions, respectively.
+'4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
+orthonormalized, Schmidt semi-normalized, or unnormalized spherical
+harmonic functions, respectively.
 
 kind : str, array_like, optional, default = 'real'
-:   'real' or 'complex' spherical harmonic coefficients.
+'real' or 'complex' spherical harmonic coefficients.
 
 csphase : integer, array_like, optional, default = 1
-:   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
-    Condon-Shortley phase of (-1)^m will be appended to the spherical
-    harmonic functions.
+If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
+Condon-Shortley phase of (-1)^m will be appended to the spherical
+harmonic functions.
 
 degrees : bool, array_like, optional, default = True
-:   If True, `theta` and `phi` are expressed in degrees.
+If True, `theta` and `phi` are expressed in degrees.
 
 ## Notes
 
@@ -79,4 +79,3 @@ doi:10.1007/s00190-002-0216-2, 2002.
 Wieczorek, M. A., and M. Meschede. SHTools — Tools for working with
 spherical harmonics, Geochem., Geophys., Geosyst., 19, 2574-2592,
 doi:10.1029/2018GC007529, 2018.
-

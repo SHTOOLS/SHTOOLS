@@ -19,21 +19,21 @@ read_igrm(filename, [year])
 ## Returns
 
 clm : ndarray, size (2, 14, 14)
-:   Array of Schmidt semi-normalized coefficients.
+Array of Schmidt semi-normalized coefficients.
 
 ## Parameters
 
 filename : str or pathlib.Path
-:   The filename containing the IGRF formatted spherical harmonic
-    coefficients. filename will be treated as a URL if it starts with
-    'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or
-    '.zip', the file will be uncompressed before parsing.
+The filename containing the IGRF formatted spherical harmonic
+coefficients. filename will be treated as a URL if it starts with
+'http://', 'https://', or 'ftp://'. If filename ends with '.gz' or
+'.zip', the file will be uncompressed before parsing.
 
 year : float, optional, default = 2020.
-:   The year to compute the coefficients.
+The year to compute the coefficients.
 
 encoding : str, optional, default = None
-:   Encoding of the input file. The default is to use the system default.
+Encoding of the input file. The default is to use the system default.
 
 ## Notes
 
@@ -46,4 +46,3 @@ using the provided secular variation. The reference radius is 6371.2 km.
 
 This routine can read the models IGRF-11, 12, and 13. Prior models have a
 different format.
-

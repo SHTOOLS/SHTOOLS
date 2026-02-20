@@ -7,6 +7,76 @@ summary:
 toc: true
 folder: fortran
 ---
+## Version 4.14.0
+
+**Support for Boule ellipsoids**
+This version provides support for using Boule ellipsoids in many routines that compute the shape and gravity field of a planet.
+
+Create a grid of a predefined ellipsoid:
+```
+grid =pysh.SHGrid.from_ellipsoid(ellipsoid=boule.Mars2009, lmax=100)
+grid.plot()
+```
+Create an area-weighted histogram of spherical elevations with respect to an ellipsoid:
+```
+grid = pysh.datasets.Mars.MOLA_shape().expand()
+hist, bin_edges = grid.histogram(ellipsoid=boule.Mars2009)
+fig, ax = grid.plot_histogram(ellipsoid=boule.Mars2009, bins=100)
+```
+Plot spherical heights with respect to an ellipsoid:
+```
+fig, ax = grid.plot(ellipsoid=boule.Mars2009, colorbar='bottom')
+figure = grid.plotgmt(ellipsoid=boule.Mars2009, colorbar='right')
+figure.show()
+```
+Create grids of the spherical gravity vector components, gravity disturbance, and gravity potential on a rotating ellipsoid:
+```
+clm = pysh.datasets.Mars.MRO120F()
+grids = clm.expand(ellipsoid=boule.Mars2009)
+grids.plot()
+```
+Create grids of the gravity gradient tensor on a flattened ellipsoid:
+```
+grids = clm.tensor(ellipsoid=boule.Mars2009, degree0=True)
+grids.plot()
+```
+Create a grid of the geoid height with respect to an ellipsoid:
+```
+geoid = clm.geoid(boule.Mars2009)
+geoid.plot()
+```
+Create grids of the magnetic field tensor on a flattened ellipsoid:
+```
+glm = pysh.datasets.Mars.Langlais2019()
+grids = glm.tensor(ellipsoid=boule.Mars2009)
+grids.plot()
+```
+
+**Datasets**
+* Added the PINN2025 magnetic potential model of Mars (Delcourt and Mittelholz 2025).
+* Added the CERES gravitational potential model CERES70E (Park et al. 2020).
+* Added the lunar gravitational potential model GL1800F (Park et al. 2025).
+
+**Other changes**
+* Fixed `title`, `cb_label`, and `cb_ylabel` strings in `plotgmt()` to work with pygmt 0.12.
+* Minor documentation changes and improvements.
+* Fixed an inconsistency with how the (cross-)spectrum is computed when using the option `l2norm`.
+* Fixed a bug where the optional parameter `lmax` was not treated properly for `SHCoeffs.expand()` when using GLQ grids with the shtools backend.
+* Improved how datasets are downloaded when they have multiple resolutions.
+* Minor changes to how the optional parameters `lmax` and `lmax_calc` are set when making grids from coefficients that could improve performance under certain circumstances.
+* Fixed a bug related to error checking in the python function `YilmIndexVector`.
+
+**Packaging**
+* Require `astropy-base` instead of the full `astropy` package.
+* Updated cibuildwheels version and stopped using Mamba.
+* Removed the `-m64` compiler flag that gives rise to incompatibilites with aarch64 platforms, and which probably is no longer necessary.
+* Added a file `codemeta.json`.
+
+**Reference**
+
+M. A. Wieczorek, M. Meschede, A. Broquet, T. Brugere, A. Corbin, EricAtORS, K. Hansen, A. Hattori, A. Kalinin, Z. E. Kamal, J. Kohler, D. Kutra, K. Leinweber, P. Lobo, J. Maia, E. Mentzer, D. Minton, I. Oshchepkov, P.-L. Phan, O. Poplawski, M. Reinecke, E. Sales de Andrade, E. Schnetter, S. Schröder, D. Shin, J. Sierra, A. Vasishta, A. Walker, xoviat, B. Xu (2024). SHTOOLS: Version 4.14, Zenodo, doi:[10.5281/zenodo.592762](https://doi.org/10.5281/zenodo.592762).
+
+
 ## Version 4.13.0
 
 **More constants**

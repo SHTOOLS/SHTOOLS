@@ -19,16 +19,16 @@ index = PlmIndex (l, m)
 ## Returns
 
 index : integer, ndarray
-:   Index of an array of associated Legendre functions corresponding to
-    degree l and angular order m.
+Index of an array of associated Legendre functions corresponding to
+degree l and angular order m.
 
 ## Parameters
 
 l : integer, array_like
-:   The spherical harmonic degree.
+The spherical harmonic degree.
 
 m : integer, array_like
-:   The angular order.
+The angular order.
 
 ## Notes
 

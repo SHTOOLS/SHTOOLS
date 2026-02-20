@@ -39,3 +39,5 @@ folder: fortran
 * Julia Maia / [jschmaia](https://github.com/jschmaia)
 * David Shin / [spicydonkey](https://github.com/spicydonkey)
 * Ethan Mentzer / [cometbeetle](https://github.com/cometbeetle)
+* Kristian Hansen / [KristianKvistIbsen](https://github.com/KristianKvistIbsen)
+* Zain Eris Kamal / [Humboldt-Penguin](https://github.com/Humboldt-Penguin)

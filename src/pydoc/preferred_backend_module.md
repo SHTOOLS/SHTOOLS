@@ -6,4 +6,3 @@ spherical harmonic transforms in pyshtools.
 # Usage
 
 module = preferred_backend_module()
-

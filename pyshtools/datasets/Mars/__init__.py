@@ -202,7 +202,7 @@ def PINN2025(lmax=139):
 
     References
     ----------
-    Delcourt T., and Mittelholz, A. (2019). Modeling the Crustal Magnetic Field
+    Delcourt T., and Mittelholz, A. (2025). Modeling the Crustal Magnetic Field
         of Mars With Physics-Informed Neural Networks. Journal of Geophysical
         Research: Planets, 130, e2025JE009297, doi:10.1029/2025JE009297.
     '''

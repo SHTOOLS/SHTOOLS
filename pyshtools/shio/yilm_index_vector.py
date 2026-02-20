@@ -29,7 +29,7 @@ def YilmIndexVector(i, l, m):
     harmonic coefficients corresponding to degree l, (positive) angular order
     m and i (1 = cosine, 2 = sine). The index is given by l**2+(i-1)*l+m.
     """
-    if not (i==1 or i==2):
+    if not (i == 1 or i == 2):
         raise ValueError('The index i must be either 1 or 2. '
                          'Input value is {:s}'.format(repr(i)))
     if l < 0:

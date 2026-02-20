@@ -11,48 +11,48 @@ array = mag_spectrum(clm, a, r, [potential, normalization, degrees, lmax,
 # Returns
 
 array : ndarray, shape (len(degrees))
-:   1-D ndarray of the spectrum.
+1-D ndarray of the spectrum.
 
 # Parameters
 
 clm : ndarray, shape (2, lmax + 1, lmax + 1)
-:   ndarray containing the spherical harmonic coefficients.
+ndarray containing the spherical harmonic coefficients.
 
 a : float
-:   The reference radius of the spherical harmonic coefficients.
+The reference radius of the spherical harmonic coefficients.
 
 r : float
-:   The radius at which the spectrum is evaluated.
+The radius at which the spectrum is evaluated.
 
 potential : bool, optional, default = False
-:   If True, calculate the spectrum of the magnetic potential. Otherwise,
-    calculate the spectrum of the magnetic intensity (default).
+If True, calculate the spectrum of the magnetic potential. Otherwise,
+calculate the spectrum of the magnetic intensity (default).
 
 normalization : str, optional, default = 'schmidt'
-:   '4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
-    orthonormalized, Schmidt semi-normalized, or unnormalized coefficients,
-    respectively.
+'4pi', 'ortho', 'schmidt', or 'unnorm' for geodesy 4pi normalized,
+orthonormalized, Schmidt semi-normalized, or unnormalized coefficients,
+respectively.
 
 lmax : int, optional, default = len(clm[0,:,0]) - 1.
-:   Maximum spherical harmonic degree to output.
+Maximum spherical harmonic degree to output.
 
 degrees : ndarray, optional, default = numpy.arange(lmax+1)
-:   Array containing the spherical harmonic degrees where the spectrum
-    is computed.
+Array containing the spherical harmonic degrees where the spectrum
+is computed.
 
 convention : str, optional, default = 'power'
-:   The type of spectrum to return: 'power' for power spectrum, 'energy'
-    for energy spectrum, and 'l2norm' for the l2-norm spectrum.
+The type of spectrum to return: 'power' for power spectrum, 'energy'
+for energy spectrum, and 'l2norm' for the l2-norm spectrum.
 
 unit : str, optional, default = 'per_l'
-:   If 'per_l', return the total contribution to the spectrum for each
-    spherical harmonic degree l. If 'per_lm', return the average
-    contribution to the spectrum for each coefficient at spherical
-    harmonic degree l. If 'per_dlogl', return the spectrum per log
-    interval dlog_a(l).
+If 'per_l', return the total contribution to the spectrum for each
+spherical harmonic degree l. If 'per_lm', return the average
+contribution to the spectrum for each coefficient at spherical
+harmonic degree l. If 'per_dlogl', return the spectrum per log
+interval dlog_a(l).
 
 base : float, optional, default = 10.
-:   The logarithm base when calculating the 'per_dlogl' spectrum.
+The logarithm base when calculating the 'per_dlogl' spectrum.
 
 # Notes
 
@@ -93,4 +93,3 @@ spectrum(l, 'per_dlogl) is equal to spectrum(l, 'per_l')\*l\*log(a).
 When no optional parameters are specified, the Lowes-Mauersberger power
 spectrum is calculated. Explicitly, this corrresponds to convention =
 'power', unit = 'per_l', and potential = False.
-
