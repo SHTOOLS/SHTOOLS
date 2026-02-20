@@ -1,7 +1,7 @@
 """
-    Class for localized spectral analyses on the sphere.
+Class for localized spectral analyses on the sphere.
 
-        SHWindow: SHWindowCap, SHWindowMask
+    SHWindow: SHWindowCap, SHWindowMask
 """
 import numpy as _np
 import matplotlib as _mpl

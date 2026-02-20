@@ -1,5 +1,5 @@
 """
-    Class for spherical harmonic coefficients of the magnetic potential.
+Class for spherical harmonic coefficients of the magnetic potential.
 """
 import numpy as _np
 import matplotlib as _mpl
@@ -12,6 +12,10 @@ from scipy.special import factorial as _factorial
 import gzip as _gzip
 import shutil as _shutil
 from pathlib import Path
+
+from boule import Sphere as _Sphere
+from boule import Ellipsoid as _Ellipsoid
+from boule import TriaxialEllipsoid as _TriaxialEllipsoid
 
 from .shcoeffs import SHCoeffs as _SHCoeffs
 from .shmaggrid import SHMagGrid as _SHMagGrid
@@ -1929,43 +1933,48 @@ class SHMagCoeffs(object):
         return clm
 
     # ---- Routines that return different magnetic-related class instances ----
-    def expand(self, a=None, f=None, r=None, lat=None, colat=None, lon=None,
-               degrees=True, lmax=None, lmax_calc=None, sampling=2,
-               extend=True, name=None):
+    def expand(self, ellipsoid=None, a=None, f=None, r=None, lat=None,
+               colat=None, lon=None, degrees=True, lmax=None, lmax_calc=None,
+               sampling=2, extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened ellipsoid of all three
-        components of the magnetic field, the total magnetic intensity,
-        and the magnetic potential. Alternatively, compute the magnetic field
-        vector at specified coordinates.
+        spherical components of the magnetic field, the total magnetic
+        intensity, and the magnetic potential. Alternatively, compute the
+        magnetic field vector at specified coordinates.
 
         Usage
         -----
-        grids = x.expand([a, f, lmax, lmax_calc, sampling, extend, name])
-        g = x.expand(lat, lon, [a, f, r, lmax, lmax_calc, degrees])
-        g = x.expand(colat, lon, [a, f, r, lmax, lmax_calc, degrees])
+        grids = x.expand([ellipsoid, a, f, lmax, lmax_calc, sampling, extend,
+                          name])
+        g = x.expand([lat, lon, ellipsoid, a, f, r, lmax, lmax_calc, degrees])
+        g = x.expand([colat, lon, ellipsoid, a, f, r, lmax, lmax_calc,
+                      degrees])
 
         Returns
         -------
         grids : SHMagGrid class instance.
-        g     : (r, theta, phi) components of the magnetic field at the
-                specified points.
+        g     : Matrix of [r, theta, phi] components of the magnetic field
+                vector at the specified points.
 
         Parameters
         ----------
+        ellipsoid : boule class instance, optional, default = None
+            A boule Sphere or Ellipsoid class instance that contains the
+            reference elllipsoid semimajor axis length a and flattening f.
         a : optional, float, default = self.r0
             The semi-major axis of the flattened ellipsoid on which the field
             is computed.
         f : optional, float, default = 0
-            The flattening of the reference ellipsoid: f=(a-b)/a.
+            The flattening of the reference ellipsoid, (a-b)/a.
         r : float, ndarray, or list, optional, default = None
             The radii where the magnetic field is to be evaluated. When
-            present, a and f are ignored. r must be the same shape as lat,
+            present, a and f are ignored, and r must be the same shape as lat,
             colat, and lon.
-        lat : int, float, ndarray, or list, optional, default = None
+        lat : float, ndarray, or list, optional, default = None
             Latitude coordinates where the magnetic field is to be evaluated.
-        colat : int, float, ndarray, or list, optional, default = None
+        colat : float, ndarray, or list, optional, default = None
             Colatitude coordinates where the magnetic field is to be evaluated.
-        lon : int, float, ndarray, or list, optional, default = None
+        lon : float, ndarray, or list, optional, default = None
             Longitude coordinates where the magnetic field is to be evaluated.
         degrees : bool, optional, default = True
             True if lat, colat and lon are in degrees, False if in radians.
@@ -1988,11 +1997,11 @@ class SHMagCoeffs(object):
         Notes
         -----
         This method will create 2-dimensional cylindrical maps of the three
-        components of the magnetic field, the total field, and the magnetic
-        potential, and return these as an SHMagGrid class instance. Each
-        map is stored as an SHGrid class instance using Driscoll and Healy
-        grids that are either equally sampled (n by n) or equally spaced
-        in degreess latitude and longitude. All grids use geocentric
+        spherical components of the magnetic field, the total field, and the
+        magnetic potential, and return these as an SHMagGrid class instance.
+        Each map is stored as an SHGrid class instance using Driscoll and Healy
+        grids that are either equally sampled (n by n) or equally spaced in
+        degreess latitude and longitude. All grids use geocentric spherical
         coordinates, and the units are either in nT (for the magnetic field),
         or nT m (for the potential). If latitude and longitude coordinates
         are specified, this method will instead return only the magnetic field
@@ -2007,31 +2016,36 @@ class SHMagCoeffs(object):
         B = - Grad V.
 
         The coefficients are referenced to a radius r0, and the function is
-        computed on a flattened ellipsoid with semi-major axis a (i.e., the
-        mean equatorial radius) and flattening f.
+        computed on a flattened ellipsoid with semi-major axis a and flattening
+        f.
         """
         if lat is not None and colat is not None:
             raise ValueError('lat and colat can not both be specified.')
 
-        if a is None:
-            a = self.r0
-        if f is None:
-            f = 0.
+        if lmax is None:
+            lmax = self.lmax
+        if lmax_calc is None:
+            lmax_calc = lmax
+
+        if ellipsoid is not None:
+            if not isinstance(ellipsoid,
+                              (_Sphere, _Ellipsoid, _TriaxialEllipsoid)):
+                raise ValueError('ellipsoid must be a boule class instance.')
+            a = ellipsoid.semimajor_axis
+            f = ellipsoid.flattening
+        else:
+            if a is None:
+                a = self.r0
+            if f is None:
+                f = 0.
 
         if (lat is not None or colat is not None) and lon is not None:
-            if lmax_calc is None:
-                lmax_calc = self.lmax
-
             if colat is not None:
                 if degrees:
                     temp = 90.
                 else:
                     temp = _np.pi/2.
-
-                if isinstance(colat, list):
-                    lat = list(map(lambda x: temp - x, colat))
-                else:
-                    lat = temp - colat
+                lat = temp - _np.array(colat)
 
             values = self._expand_coord(a=a, f=f, radius=r, lat=lat, lon=lon,
                                         degrees=degrees, lmax_calc=lmax_calc)
@@ -2056,8 +2070,8 @@ class SHMagCoeffs(object):
                           units=self.units, pot_units=self.units+' m',
                           year=self.year, name=name)
 
-    def tensor(self, a=None, f=None, lmax=None, lmax_calc=None, sampling=2,
-               extend=True, name=None):
+    def tensor(self, ellipsoid=None, a=None, f=None, lmax=None, lmax_calc=None,
+               sampling=2, extend=True, name=None):
         """
         Create 2D cylindrical maps on a flattened ellipsoid of the 9
         components of the magnetic field tensor in a local north-oriented
@@ -2065,7 +2079,8 @@ class SHMagCoeffs(object):
 
         Usage
         -----
-        tensor = x.tensor([a, f, lmax, lmax_calc, sampling, extend, name])
+        tensor = x.tensor([ellipsoid, a, f, lmax, lmax_calc, sampling, extend,
+                           name])
 
         Returns
         -------
@@ -2073,11 +2088,14 @@ class SHMagCoeffs(object):
 
         Parameters
         ----------
+        ellipsoid : boule class instance, optional, default = None
+            A boule Sphere or Ellipsoid class instance that contains the
+            reference elllipsoid semimajor axis length a and flattening f.
         a : optional, float, default = self.r0
             The semi-major axis of the flattened ellipsoid on which the field
             is computed.
         f : optional, float, default = 0
-            The flattening of the reference ellipsoid: f=(a-b)/a.
+            The flattening of the reference ellipsoid, (a-b)/a.
         lmax : optional, integer, default = self.lmax
             The maximum spherical harmonic degree that determines the number of
             samples of the output grids, n=2lmax+2, and the latitudinal
@@ -2104,7 +2122,7 @@ class SHMagCoeffs(object):
             (Vyx, Vyy, Vyz)
             (Vzx, Vzy, Vzz)
 
-        where the reference frame is north-oriented, where x points north, y
+        and the reference frame is north-oriented, where x points north, y
         points west, and z points upward (all tangent or perpendicular to a
         sphere of radius r, where r is the local radius of the flattened
         ellipsoid). The magnetic potential is defined as
@@ -2143,16 +2161,24 @@ class SHMagCoeffs(object):
         gravity gradients in the local north-oriented and orbital reference
         frames, J. Geod., 80, 117-127, 2006.
         """
-        if a is None:
-            a = self.r0
-        if f is None:
-            f = 0.
         if lmax is None:
             lmax = self.lmax
         if lmax_calc is None:
             lmax_calc = min(self.lmax, lmax)
         if name is None:
             name = self.name
+
+        if ellipsoid is not None:
+            if not isinstance(ellipsoid,
+                              (_Sphere, _Ellipsoid, _TriaxialEllipsoid)):
+                raise ValueError('ellipsoid must be a boule class instance.')
+            a = ellipsoid.semimajor_axis
+            f = ellipsoid.flattening
+        else:
+            if a is None:
+                a = self.r0
+            if f is None:
+                f = 0.
 
         coeffs = self.to_array(normalization='schmidt', csphase=1,
                                errors=False)
@@ -3079,7 +3105,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
             return _MakeMagGridPoint(coeffs, a=self.r0, r=radius, lat=latin,
                                      lon=lonin, lmax=lmax_calc)
 
-        elif isinstance(lat, _np.ndarray):
+        elif isinstance(lat, (_np.ndarray, list, tuple)):
             values = _np.empty((len(lat), 3), dtype=_np.float64)
             for i, (r, latitude, longitude) in enumerate(zip(radius, latin,
                                                              lonin)):
@@ -3088,17 +3114,9 @@ class SHMagRealCoeffs(SHMagCoeffs):
                                                  lmax=lmax_calc)
             return values
 
-        elif isinstance(lat, list):
-            values = []
-            for r, latitude, longitude in zip(radius, latin, lonin):
-                values.append(
-                    _MakeMagGridPoint(coeffs, a=self.r0, r=r, lat=latitude,
-                                      lon=longitude, lmax=lmax_calc))
-            return values
-
         else:
-            raise ValueError('r, lat and lon must be either an int, float, '
-                             'ndarray, or list. Input types are '
+            raise ValueError('r, lat and lon must be either a float, '
+                             'ndarray, list, or tuple. Input types are '
                              '{:s}, {:s} and {:s}.'
                              .format(repr(type(radius)), repr(type(lat)),
                                      repr(type(lon))))

@@ -91,6 +91,7 @@ When installing pyshtools using `pip` or `conda`, the following packages should 
 * [requests](https://2.python-requests.org/en/master/#): required when reading files from urls.
 * [pooch](https://www.fatiando.org/pooch/latest/index.html): required for reading datasets.
 * [tqdm](https://tqdm.github.io/): required for showing progress bars when downloading datasets.
+* [boule](https://www.fatiando.org/boule/): required when using boule ellipsoids.
 
 When installing pyshtools using `conda`, the following will also be installed automatically:
 

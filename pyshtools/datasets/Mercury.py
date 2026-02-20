@@ -18,10 +18,10 @@ from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import create as _create
 from pooch import HTTPDownloader as _HTTPDownloader
-from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..constants.Mercury import angular_velocity as _omega
+from ._utils import _choose_sh_model
 
 
 def USGS_SPG_shape(lmax=719):
@@ -59,22 +59,10 @@ def USGS_SPG_shape(lmax=719):
             },
         )
 
-    if lmax < 0:
-        lmax = 5759
-
-    if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Mercury_shape_719.sh.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Mercury_shape_1439.sh.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Mercury_shape_2879.sh.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    else:
-        fname = archive.fetch("Mercury_shape_5759.sh.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 5759)
+    fname, lmax = _choose_sh_model(
+        archive=archive,
+        user_lmax=lmax,
+    )
 
     return _SHCoeffs.from_file(fname, lmax=lmax,
                                name='USGS SPG_shape (Mercury)', units='m',

@@ -17,6 +17,7 @@ from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..constants.Enceladus import angular_velocity as _omega
+from ._utils import _choose_sh_model
 
 
 def JPL_SPC_shape(lmax=719):
@@ -57,16 +58,10 @@ def JPL_SPC_shape(lmax=719):
             },
         )
 
-    if lmax < 0:
-        lmax = 1023
-
-    if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Enceladus_JPL_SPC_shape_719.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    else:
-        fname = archive.fetch("Enceladus_JPL_SPC_shape_1023.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 1023)
+    fname, lmax = _choose_sh_model(
+        archive=archive,
+        user_lmax=lmax,
+    )
 
     return _SHCoeffs.from_file(fname, lmax=lmax,
                                name='JPL_SPC_shape (Enceladus)',
