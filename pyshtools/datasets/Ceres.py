@@ -130,6 +130,12 @@ def CERES70E(lmax=70):
 
     Reference
     ---------
+    Park, R. S., Konopliv, A. S., Ermakov, A. I., Castillo-Rogez, J. C.,
+        Fu, R. R., Hughson, K. H. G., Prettyman, T. H., Raymond, C. A.,
+        Scully, J. E. C., Sizemore, H. G., Sori, M. M., Vaughan, A. T., Mitri,
+        G., Schmidt, B. E., & Russell, C. T. (2020). Evidence of non-uniform
+        crust of Ceres from Dawn’s high-resolution gravity data. Nature
+        Astronomy, 4(8), 748–755. https://doi.org/10.1038/s41550-020-1019-1.
     Park, R.S., Konopliv, A.S., Asmar, S.W., and Buccino, D.R., Dawn Ceres
         Derived Gravity Data V4.0, NASA Planetary Data System,
         DAWN-A-RSS-5-CEGR-V4.0, 2024.

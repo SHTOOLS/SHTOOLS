@@ -96,6 +96,7 @@ The following is the list of implemented datasets. Additional older or deprecate
 | GMM3 | GSFC 120 degree and order spherical harmonic model of the gravitational potential of Mars (Genova et al. 2016). This model applies a Kaula constraint for degrees greater than 90. |
 | GMM3_RM1_1E0 | GSFC 150 degree and order spherical harmonic model of the gravitational potential of Mars (Goossens et al. 2017). This model uses the same data as GMM3, but with a rank-minus-1 constraint based on gravity from surface topography for degrees greater than 50 with a value of lambda equal to 1. |
 | MRO120F |JPL 120 degree and order spherical harmonic model of the gravitational potential of Mars (Konopliv et al. 2020). This model applies a Kaula constraint for degrees greater than 80. |
+| PINN2025 | 139 degree and order spherical harmonic model of the magnetic potential of Mars (Delcourt and Mittelholz 2025). This model makes use of data from MGS MAG and MAVEN MAG. |
 | Langlais2019 | 134 degree and order spherical harmonic model of the magnetic potential of Mars (Langlais et al. 2019). This model makes use of data from MGS MAG, MGS ER and MAVEN MAG. |
 | Morschhauser2014 | 110 degree and order spherical harmonic model of the magnetic potential of Mars (Morschhauser et al. 2014). |
 
@@ -106,6 +107,7 @@ The following is the list of implemented datasets. Additional older or deprecate
 | ---------- | ----------- |
 | DLR_SPG_shape | 5399 degree and order spherical harmonic shape model of asteroid (1) Ceres based on the DLR stereo-photogrammetric DTM (Wieczorek 2024). |
 | JPL_SPC_shape | 1023 degree and order spherical harmonic shape model of asteroid (1) Ceres based on the JPL stereo-photoclinometric DTM (Wieczorek 2024). |
+| CERES70E | JPL 70 degree and order spherical harmonic model of the gravitational potential of asteroid (1) Ceres (Park et al. 2020). |
 | CERES18D | JPL 18 degree and order spherical harmonic model of the gravitational potential of asteroid (1) Ceres (Konopliv et al. 2018). |
 
 
