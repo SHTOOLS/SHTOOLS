@@ -13,6 +13,7 @@ GRGM1200B         :  Goossens et al. (2020)
 GRGM1200B_RM1_1E0 :  Goossens et al. (2020)
 GL0900D           :  Konopliv et al. (2014)
 GL1500E           :  Konopliv et al. (2014)
+GL1800F           :  Park et al. (2025)
 
 Magnetic field
 --------------
@@ -29,6 +30,7 @@ from ...shclasses import SHGravCoeffs as _SHGravCoeffs
 from ...shclasses import SHMagCoeffs as _SHMagCoeffs
 from ...constants.Moon import angular_velocity as _omega
 from . import historical  # noqa: F401
+from .._utils import _choose_sh_model
 
 
 def LDEM_shape_pa(lmax=719):
@@ -74,25 +76,10 @@ def LDEM_shape_pa(lmax=719):
             },
         )
 
-    if lmax < 0:
-        lmax = 11519
-
-    if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Moon_LDEM128_shape_pa_719.sh.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Moon_LDEM128_shape_pa_1439.sh.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Moon_LDEM128_shape_pa_2879.sh.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 2879 and lmax <= 5759:
-        fname = archive.fetch("Moon_LDEM128_shape_pa_5759.sh.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    else:
-        fname = archive.fetch("Moon_LDEM128_shape_pa_11519.sh.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 11519)
+    fname, lmax = _choose_sh_model(
+        archive=archive,
+        user_lmax=lmax,
+    )
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='LDEM_shape_pa (Moon)',
                                units='m', format='bshc')
@@ -138,22 +125,10 @@ def LOLA_shape(lmax=719):
             },
         )
 
-    if lmax < 0:
-        lmax = 5759
-
-    if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Moon_LOLA_shape_719.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Moon_LOLA_shape_1439.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Moon_LOLA_shape_2879.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    else:
-        fname = archive.fetch("Moon_LOLA_shape_5759.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 5759)
+    fname, lmax = _choose_sh_model(
+        archive=archive,
+        user_lmax=lmax,
+    )
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='LOLA_shape (Moon)',
                                units='m', format='bshc')
@@ -400,6 +375,39 @@ def GL1500E(lmax=1500):
                                    name='GL1500E (Moon)', encoding='utf-8')
 
 
+def GL1800F(lmax=1800):
+    '''
+    GL1800F is a JPL 1800 degree and order spherical harmonic model of
+    the gravitational potential of the Moon. This model uses a rank-minus-1
+    constraint based on gravity from surface topography for degrees greater
+    than 600.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    R. S. Park, A. Berne, A. S. Konopliv, J. T. Keane, I. Matsuyama, F. Nimmo,
+        M. Rovira-Navarro, M. P. Panning, M. Simons, D. J. Stevenson,
+        R. C. Weber, Thermal asymmetry in the Moon's mantle inferred from
+        monthly tidal response, Nature, 2025.
+    '''
+    if lmax < 0:
+        lmax = 1800
+
+    fname = _retrieve(
+        url="https://pds-geosciences.wustl.edu/grail/grail-l-lgrs-5-rdr-v1/grail_1001/shadr/jggrx_1800f_sha.tab",  # noqa: E501
+        known_hash="sha256:d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
+                                   errors=True, omega=_omega.value,
+                                   name='GL1800F (Moon)', encoding='utf-8')
+
+
 __all__ = ['LDEM_shape_pa', 'LOLA_shape', 'T2015_449', 'Ravat2020', 'GRGM900C',
-           'GRGM1200B', 'GRGM1200B_RM1_1E0', 'GL0900D', 'GL1500E',
+           'GRGM1200B', 'GRGM1200B_RM1_1E0', 'GL0900D', 'GL1500E', 'GL1800F',
            'historical']

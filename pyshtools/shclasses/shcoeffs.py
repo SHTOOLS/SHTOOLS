@@ -1,5 +1,7 @@
 """
-    Spherical Harmonic Coefficients classes
+Spherical Harmonic Coefficients classes
+
+    SHCoeffs: SHRealCoeffs, SHComplexCoeffs
 """
 import os as _os
 import numpy as _np
@@ -72,8 +74,8 @@ class SHCoeffs(object):
                     'unknown', 'unspecified', 'calibrated', 'formal' or None.
     normalization : The normalization of the coefficients: '4pi', 'ortho',
                     'schmidt', or 'unnorm'.
-    csphase       : Defines whether the Condon-Shortley phase is used (1)
-                    or not (-1).
+    csphase       : Defines whether the Condon-Shortley phase is excluded (1)
+                    or appended (-1).
     mask          : A boolean mask that is True for the permissible values of
                     degree l and order m.
     kind          : The coefficient data type: either 'complex' or 'real'.
@@ -1608,24 +1610,25 @@ class SHCoeffs(object):
         Notes
         -----
         This method returns either the power spectrum, energy spectrum, or
-        l2-norm spectrum. Total power is defined as the integral of the
-        function squared over all space, divided by the area the function
-        spans. If the mean of the function is zero, this is equivalent to the
-        variance of the function. The total energy is the integral of the
-        function squared over all space and is 4pi times the total power. For
-        normalized coefficients ('4pi', 'ortho', or 'schmidt'), the l2-norm is
-        the sum of the magnitude of the coefficients squared.
+        l2-norm spectrum of a function that is expressed in spherical
+        harmonics. Total power is defined as the integral of the function
+        squared over all space, divided by the area the function spans. If the
+        mean of the function is zero, this is equivalent to the variance of the
+        function. The total energy is the integral of the function squared over
+        all space and is 4 pi times the total power. For normalized
+        coefficients ('4pi', 'ortho', or 'schmidt'), the l2-norm is the sum of
+        the magnitude of the coefficients squared.
 
         The output spectrum can be expresed using one of three units. 'per_l'
-        returns the contribution to the total spectrum from all angular orders
-        at degree l. 'per_lm' returns the average contribution to the total
-        spectrum from a single coefficient at degree l, which is equal to the
-        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
-        contribution to the total spectrum from all angular orders over an
-        infinitessimal logarithmic degree band. The contrubution in the band
-        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
-        and where spectrum(l, 'per_dlogl) is equal to
-        spectrum(l, 'per_l')*l*log(a).
+        returns the contribution to the total power, energy or l2-norm from all
+        angular orders at degree l. 'per_lm' returns the average contribution
+        to the total power, energy or l2-norm from a single coefficient at
+        degree l, and is equal to the 'per_l' spectrum divided by (2l+1).
+        'per_dlogl' returns the contribution to the total power, energy or
+        l2-norm from all angular orders over an infinitessimal logarithmic
+        degree band. The contrubution in the band dlog_a(l) is
+        spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base, and where
+        spectrum(l, 'per_dlogl) is equal to spectrum(l, 'per_l')*l*log(a).
         """
         s = _spectrum(self.coeffs, normalization=self.normalization,
                       convention=convention, unit=unit, base=base,
@@ -1676,25 +1679,28 @@ class SHCoeffs(object):
         Notes
         -----
         This method returns either the cross-power spectrum, cross-energy
-        spectrum, or l2-cross-norm spectrum. Total cross-power is defined as
-        the integral of the function times the conjugate of clm over all space,
-        divided by the area the functions span. If the means of the functions
-        are zero, this is equivalent to the covariance of the two functions.
-        The total cross-energy is the integral of this function times the
-        conjugate of clm over all space and is 4pi times the total power. The
-        l2-cross-norm is the sum of this function times the conjugate of clm
-        over all angular orders as a function of spherical harmonic degree.
+        spectrum, or l2-cross-norm spectrum of two functions expressed in
+        spherical harmonics. Total cross-power is defined as the integral of
+        the function times the conjugate of the input function (clm) over all
+        space, divided by the area the functions span. If the means of the two
+        functions are zero, this is equivalent to the covariance of the two
+        functions. The total cross-energy is the integral of the function times
+        the conjugate of the input function over all space and is 4 pi times
+        the total power. For normalized coefficients ('4pi', 'ortho', or
+        'schmidt'), the l2-cross norm is the sum of the magnitude of the
+        coefficients of the function multiplied by the conjugate of the
+        coefficients of the input function.
 
         The output spectrum can be expresed using one of three units. 'per_l'
-        returns the contribution to the total spectrum from all angular orders
-        at degree l. 'per_lm' returns the average contribution to the total
-        spectrum from a single coefficient at degree l, and is equal to the
-        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
-        contribution to the total spectrum from all angular orders over an
-        infinitessimal logarithmic degree band. The contrubution in the band
-        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
-        and where spectrum(l, 'per_dlogl) is equal to
-        spectrum(l, 'per_l')*l*log(a).
+        returns the contribution to the total power, energy or l2-norm from all
+        angular orders at degree l. 'per_lm' returns the average contribution
+        to the total power, energy or l2-norm from a single coefficient at
+        degree l, and is equal to the 'per_l' spectrum divided by (2l+1).
+        'per_dlogl' returns the contribution to the total power, energy or
+        l2-norm from all angular orders over an infinitessimal logarithmic
+        degree band. The contrubution in the band dlog_a(l) is
+        spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base, and where
+        spectrum(l, 'per_dlogl) is equal to spectrum(l, 'per_l')*l*log(a).
         """
         if not isinstance(clm, SHCoeffs):
             raise ValueError('clm must be an SHCoeffs class instance. Input '
@@ -2347,7 +2353,7 @@ class SHCoeffs(object):
             if lmax is None:
                 lmax = self.lmax
             if lmax_calc is None:
-                lmax_calc = lmax
+                lmax_calc = min(self.lmax, lmax)
             if backend is None:
                 backend = preferred_backend()
             if name is None:
@@ -2428,7 +2434,7 @@ class SHCoeffs(object):
         if lmax is None:
             lmax = self.lmax
         if lmax_calc is None:
-            lmax_calc = lmax
+            lmax_calc = min(self.lmax, lmax)
         if backend is None:
             backend = preferred_backend()
         if name is None:
@@ -2546,15 +2552,15 @@ class SHCoeffs(object):
         is the sum of the magnitude of the coefficients squared.
 
         The output spectrum can be expresed using one of three units. 'per_l'
-        returns the contribution to the total spectrum from all angular orders
-        at degree l. 'per_lm' returns the average contribution to the total
-        spectrum from a single coefficient at degree l, which is equal to the
-        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
-        contribution to the total spectrum from all angular orders over an
-        infinitessimal logarithmic degree band. The contrubution in the band
-        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
-        and where spectrum(l, 'per_dlogl) is equal to
-        spectrum(l, 'per_l')*l*log(a).
+        returns the contribution to the total power, energy or l2-norm from all
+        angular orders at degree l. 'per_lm' returns the average contribution
+        to the total power, energy or l2-norm from a single coefficient at
+        degree l, and is equal to the 'per_l' spectrum divided by (2l+1).
+        'per_dlogl' returns the contribution to the total power, energy or
+        l2-norm from all angular orders over an infinitessimal logarithmic
+        degree band. The contrubution in the band dlog_a(l) is
+        spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base, and where
+        spectrum(l, 'per_dlogl) is equal to spectrum(l, 'per_l')*l*log(a).
         """
         if lmax is None:
             lmax = self.lmax
@@ -2746,21 +2752,23 @@ class SHCoeffs(object):
         divided by the area the functions span. If the means of the functions
         are zero, this is equivalent to the covariance of the two functions.
         The total cross-energy is the integral of this function times the
-        conjugate of clm over all space and is 4pi times the total power. The
-        l2-cross-norm is the sum of this function times the conjugate of clm
-        over all angular orders as a function of spherical harmonic degree.
+        conjugate of clm over all space and is 4pi times the total power. For
+        normalized coefficients ('4pi', 'ortho', or 'schmidt'), the l2-cross
+        norm is the sum of the magnitude of the coefficients of the function
+        multiplied by the conjugate of the coefficients of the input function.
 
         The output spectrum can be expresed using one of three units. 'per_l'
-        returns the contribution to the total spectrum from all angular orders
-        at degree l. 'per_lm' returns the average contribution to the total
-        spectrum from a single coefficient at degree l, and is equal to the
-        'per_l' spectrum divided by (2l+1). 'per_dlogl' returns the
-        contribution to the total spectrum from all angular orders over an
-        infinitessimal logarithmic degree band. The contrubution in the band
-        dlog_a(l) is spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base,
-        and where spectrum(l, 'per_dlogl) is equal to
-        spectrum(l, 'per_l')*l*log(a). If the input fields are complex, the
-        absolute value of the cross-spectrum will be plotted.
+        returns the contribution to the total power, energy or l2-norm from all
+        angular orders at degree l. 'per_lm' returns the average contribution
+        to the total power, energy or l2-norm from a single coefficient at
+        degree l, and is equal to the 'per_l' spectrum divided by (2l+1).
+        'per_dlogl' returns the contribution to the total power, energy or
+        l2-norm from all angular orders over an infinitessimal logarithmic
+        degree band. The contrubution in the band dlog_a(l) is
+        spectrum(l, 'per_dlogl')*dlog_a(l), where a is the base, and where
+        spectrum(l, 'per_dlogl) is equal to spectrum(l, 'per_l')*l*log(a). If
+        the input fields are complex, the absolute value of the cross-spectrum
+        will be plotted.
         """
         if not isinstance(clm, SHCoeffs):
             raise ValueError('clm must be an SHCoeffs class instance. Input '
@@ -4360,7 +4368,7 @@ class SHRealCoeffs(SHCoeffs):
                 .format(repr(self.normalization)))
 
         if backend == "shtools" and zeros is None:
-            zeros, weights = _shtools.SHGLQ(self.lmax)
+            zeros, weights = _shtools.SHGLQ(lmax)
         data = backend_module(
             backend=backend, nthreads=nthreads).MakeGridGLQ(
                 self.coeffs, zero=zeros, norm=norm,
@@ -4654,7 +4662,7 @@ class SHComplexCoeffs(SHCoeffs):
                 .format(repr(self.normalization)))
 
         if backend == "shtools" and zeros is None:
-            zeros, weights = _shtools.SHGLQ(self.lmax)
+            zeros, weights = _shtools.SHGLQ(lmax)
         data = backend_module(
                 backend=backend, nthreads=nthreads).MakeGridGLQC(
                     self.coeffs, zero=zeros, norm=norm,

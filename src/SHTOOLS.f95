@@ -825,11 +825,12 @@ module SHTOOLS
 
         subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad, theta, phi, &
                                   total, n, sampling, lmax_calc, omega, &
-                                  normal_gravity, pot, extend, exitstatus)
+                                  normal_gravity, normal_gravity_gm, pot, &
+                                  extend, exitstatus)
             use iso_fortran_env, only: int32, dp=>real64
             real(dp), intent(in) :: cilm(:,:,:), gm, r0, a, f
             real(dp), intent(out) :: rad(:,:), theta(:,:), phi(:,:), total(:,:)
-            real(dp), intent(in), optional :: omega
+            real(dp), intent(in), optional :: omega, normal_gravity_gm
             real(dp), intent(out), optional :: pot(:,:)
             integer(int32), intent(in) :: lmax
             integer(int32), intent(out) :: n

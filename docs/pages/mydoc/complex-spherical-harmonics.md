@@ -123,8 +123,8 @@ Finally, pyshtools defines the *energy* of a function as the integral of its squ
 
 The above definitions of the Legendre functions and spherical harmonic functions do not include the Condon-Shortley phase factor of $$(-1)^m$$ that is often employed in the physics and seismology communities [Varshalovich et al. 1988, Dahlen and Tromp 1998]. Nevertheless, this phase can be included in most pyshtools routines by specifying the optional parameter
 
-* `csphase=0` : exclude the Condon-Shortley phase factor (default)
-* `csphase=1` : append the Condon-Shortley phase factor to the Legendre functions.
+* `csphase = 1` : exclude the Condon-Shortley phase factor (default)
+* `csphase = -1` : append the Condon-Shortley phase factor to the Legendre functions.
 
 The choice of the Condon-Shortley phase factor does not affect the numerical value of the power spectrum.
 

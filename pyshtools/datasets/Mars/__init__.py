@@ -13,6 +13,7 @@ MRO120F          :  Konopliv et al. (2020)
 
 Magnetic field
 --------------
+PINN2025         :  Delcourt and Mittelholz (2025)
 Langlais2019     :  Langlais et al. (2019)
 Morschhauser2014 :  Morschhauser et al. (2014)
 '''
@@ -27,6 +28,7 @@ from ...shclasses import SHMagCoeffs as _SHMagCoeffs
 from pooch import Decompress as _Decompress
 from ...constants.Mars import angular_velocity as _omega
 from . import historical  # noqa: F401
+from .._utils import _choose_sh_model
 
 
 def MOLA_shape(lmax=719):
@@ -66,22 +68,10 @@ def MOLA_shape(lmax=719):
             },
         )
 
-    if lmax < 0:
-        lmax = 5759
-
-    if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Mars_MOLA_shape_719.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Mars_MOLA_shape_1439.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Mars_MOLA_shape_2879.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    else:
-        fname = archive.fetch("Mars_MOLA_shape_5759.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 5759)
+    fname, lmax = _choose_sh_model(
+        archive=archive,
+        user_lmax=lmax,
+    )
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='MOLA_shape (Mars)',
                                units='m', format='bshc')
@@ -188,6 +178,38 @@ def MRO120F(lmax=120):
                                    encoding='utf-8')
 
 
+def PINN2025(lmax=139):
+    '''
+    PINN2025 is a 139 degree and order spherical harmonic model of the
+    magnetic potential of Mars. This model makes use of data from MGS MAG
+    and MAVEN MAG. The coefficients are output in units of nT.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    References
+    ----------
+    Delcourt T., and Mittelholz, A. (2025). Modeling the Crustal Magnetic Field
+        of Mars With Physics-Informed Neural Networks. Journal of Geophysical
+        Research: Planets, 130, e2025JE009297, doi:10.1029/2025JE009297.
+    '''
+    if lmax < 0:
+        lmax = 139
+
+    fname = _retrieve(
+        url="doi:10.5281/zenodo.17158287/PINN2025.sh",
+        known_hash="sha256:98fc179bee4e4a4587a2edce58153c2dea4739582c2cd557219ca5aab987cc12",  # noqa: E501
+        downloader=_DOIDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHMagCoeffs.from_file(fname, lmax=lmax,
+                                  header=True, file_units='nT',
+                                  name='PINN2025 (Mars)', units='nT',
+                                  encoding='utf-8')
+
+
 def Langlais2019(lmax=134):
     '''
     Langlais2019 is a 134 degree and order spherical harmonic model of the
@@ -254,4 +276,4 @@ def Morschhauser2014(lmax=110):
 
 
 __all__ = ['MOLA_shape', 'GMM3', 'GMM3_RM1_1E0', 'MRO120F', 'Langlais2019',
-           'Morschhauser2014', 'historical', 'MarsTopo719']
+           'Morschhauser2014', 'historical', 'MarsTopo719', 'PINN2025']

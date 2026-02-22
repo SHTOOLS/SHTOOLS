@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: ['3.9', '3.12']
+        python-version: ['3.11', '3.14']
 
     steps:
     - name: Checkout
@@ -29,7 +29,6 @@ jobs:
       uses: conda-incubator/setup-miniconda@v3
       with:
         python-version: ${{ matrix.python-version }}
-        mamba-version: "*"
         channels: conda-forge
         channel-priority: strict
         auto-update-conda: true

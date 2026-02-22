@@ -1,0 +1,46 @@
+{
+    "@context": "https://w3id.org/codemeta/3.0",
+    "type": "SoftwareSourceCode",
+    "applicationCategory": "Science",
+    "author": [
+        {
+            "id": "https://orcid.org/0000-0001-7007-4222",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Institut de physique du globe de Paris"
+            },
+            "email": "mark.wieczorek@ipgp.fr",
+            "familyName": "Wieczorek",
+            "givenName": "Mark"
+        },
+        {
+            "type": "Role",
+            "schema:author": "https://orcid.org/0000-0001-7007-4222",
+            "roleName": "Maintainer"
+        }
+    ],
+    "codeRepository": "https://github.com/SHTOOLS/SHTOOLS.git",
+    "dateModified": "2024-06-09",
+    "description": "Tools for working with spherical harmonics",
+    "identifier": "10.5281/zenodo.592762",
+    "keywords": [
+        "Spherical harmonics",
+        "Spectral estimation",
+        "Slepian functions",
+        "Legendre functions",
+        "Gravity field",
+        "Magnetic field"
+    ],
+    "license": "https://spdx.org/licenses/BSD-3-Clause",
+    "name": "shtools",
+    "programmingLanguage": [
+        "Python",
+        "Fortran"
+    ],
+    "relatedLink": "https://shtools.github.io/SHTOOLS/",
+    "version": "4.13",
+    "developmentStatus": "active",
+    "issueTracker": "https://github.com/SHTOOLS/SHTOOLS/issues",
+    "referencePublication": "https://doi.org/10.1029/2018GC007529"
+}

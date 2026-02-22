@@ -8,16 +8,17 @@ JPL_SPC_shape  :  Wieczorek (2024)
 
 Gravity
 -------
+CERES70E       :  Park et al. (2024)
 CERES18D       :  Konopliv et al. (2018)
 '''
 from pooch import os_cache as _os_cache
 from pooch import retrieve as _retrieve
 from pooch import create as _create
 from pooch import HTTPDownloader as _HTTPDownloader
-from pooch import DOIDownloader as _DOIDownloader
 from ..shclasses import SHGravCoeffs as _SHGravCoeffs
 from ..shclasses import SHCoeffs as _SHCoeffs
 from ..constants.Ceres import angular_velocity as _omega
+from ._utils import _choose_sh_model
 
 
 def DLR_SPG_shape(lmax=719):
@@ -59,22 +60,10 @@ def DLR_SPG_shape(lmax=719):
             },
         )
 
-    if lmax < 0:
-        lmax = 5399
-
-    if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Ceres_DLR_SPG_shape_719.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 719 and lmax <= 1439:
-        fname = archive.fetch("Ceres_DLR_SPG_shape_1439.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    elif lmax > 1439 and lmax <= 2879:
-        fname = archive.fetch("Ceres_DLR_SPG_shape_2879.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    else:
-        fname = archive.fetch("Ceres_DLR_SPG_shape_5399.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 5399)
+    fname, lmax = _choose_sh_model(
+        archive=archive,
+        user_lmax=lmax,
+    )
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='DLR_SPG_shape (Ceres)',
                                units='m', format='bshc')
@@ -120,19 +109,50 @@ def JPL_SPC_shape(lmax=719):
             },
         )
 
-    if lmax < 0:
-        lmax = 1023
-
-    if lmax >= 0 and lmax <= 719:
-        fname = archive.fetch("Ceres_JPL_SPC_shape_719.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-    else:
-        fname = archive.fetch("Ceres_JPL_SPC_shape_1023.bshc.gz",
-                              downloader=_DOIDownloader(progressbar=True))
-        lmax = min(lmax, 1023)
+    fname, lmax = _choose_sh_model(
+        archive=archive,
+        user_lmax=lmax,
+    )
 
     return _SHCoeffs.from_file(fname, lmax=lmax, name='JPL_SPC_shape (Ceres)',
                                units='m', format='bshc')
+
+
+def CERES70E(lmax=70):
+    '''
+    CERES70E is a JPL 70 degree and order spherical harmonic model of the
+    gravitational potential of (1) Ceres.
+
+    Parameters
+    ----------
+    lmax : int, optional
+        The maximum spherical harmonic degree to return.
+
+    Reference
+    ---------
+    Park, R. S., Konopliv, A. S., Ermakov, A. I., Castillo-Rogez, J. C.,
+        Fu, R. R., Hughson, K. H. G., Prettyman, T. H., Raymond, C. A.,
+        Scully, J. E. C., Sizemore, H. G., Sori, M. M., Vaughan, A. T., Mitri,
+        G., Schmidt, B. E., & Russell, C. T. (2020). Evidence of non-uniform
+        crust of Ceres from Dawn’s high-resolution gravity data. Nature
+        Astronomy, 4(8), 748–755. https://doi.org/10.1038/s41550-020-1019-1.
+    Park, R.S., Konopliv, A.S., Asmar, S.W., and Buccino, D.R., Dawn Ceres
+        Derived Gravity Data V4.0, NASA Planetary Data System,
+        DAWN-A-RSS-5-CEGR-V4.0, 2024.
+    '''
+    if lmax < 0:
+        lmax = 70
+
+    fname = _retrieve(
+        url="https://sbnarchive.psi.edu/pds3/dawn/grav/DWNCGRS_2_v4/DATA/SHADR/JGDWN_C70E01_SHA.TAB",  # noqa: E501
+        known_hash="sha256:9fa286877c0b8a7761b8bc68c46b048d2849350aa5d456738414fba122839c79",  # noqa: E501
+        downloader=_HTTPDownloader(progressbar=True),
+        path=_os_cache('pyshtools'),
+    )
+    return _SHGravCoeffs.from_file(fname, lmax=lmax, header_units='km',
+                                   r0_index=0, gm_index=1, errors=True,
+                                   name='CERES70E', encoding='utf-8',
+                                   omega=_omega.value)
 
 
 def CERES18D(lmax=18):
@@ -169,4 +189,4 @@ def CERES18D(lmax=18):
                                    omega=_omega.value)
 
 
-__all__ = ['DLR_SPG_shape', 'CERES18D']
+__all__ = ['DLR_SPG_shape', 'CERES18D', 'CERES70E']

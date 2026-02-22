@@ -1437,7 +1437,7 @@ python module _SHTOOLS
             integer(int32),optional,intent(in),depend(lmax),intent(hide),check(lmax>=0) :: coef_d0 = lmax+1
         end subroutine SphericalCapCoef
 
-        subroutine MakeGravGridDH(exitstatus,cilm,lmax,gm,r0,a,f,rad,theta,phi,total,pot,n,sampling,lmax_calc,omega,normal_gravity,extend,phi_d0,phi_d1,total_d0,total_d1,rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2,theta_d0,theta_d1,pot_d0,pot_d1)
+        subroutine MakeGravGridDH(exitstatus,cilm,lmax,gm,r0,a,f,rad,theta,phi,total,pot,n,sampling,lmax_calc,omega,normal_gravity,normal_gravity_gm,extend,phi_d0,phi_d1,total_d0,total_d1,rad_d0,rad_d1,cilm_d0,cilm_d1,cilm_d2,theta_d0,theta_d1,pot_d0,pot_d1)
             threadsafe
             fortranname pymakegravgriddh
             integer, parameter :: dp = selected_real_kind(p=15)
@@ -1459,6 +1459,7 @@ python module _SHTOOLS
             integer(int32),optional,intent(in),depend(lmax) :: lmax_calc = lmax
             real(dp),optional,intent(in) :: omega = 0.0
             integer(int32),optional,intent(in) :: normal_gravity = 1
+            real(dp),optional,intent(in),depend(gm) :: normal_gravity_gm = gm
             integer(int32),optional,intent(in) :: extend = 0
             integer(int32),intent(in),intent(hide),depend(lmax,extend),check(lmax>=0) :: phi_d0 = 2*(lmax+1)+extend
             integer(int32),intent(in),intent(hide),depend(sampling,lmax,extend) :: phi_d1 = sampling*2*(lmax+1)+extend

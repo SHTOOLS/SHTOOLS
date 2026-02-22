@@ -19,36 +19,36 @@ plm = legendre (lmax, z, [normalization, csphase, cnorm, packed])
 ## Returns
 
 plm : float, dimension (lmax+1, lmax+1) or ((lmax+1)\*(lmax+2)/2)
-:   An array of associated Legendre functions, plm[l, m], where l and m
-    are the degree and order, respectively. If packed is True, the array
-    is 1-dimensional with the index corresponding to l\*(l+1)/2+m.
+An array of associated Legendre functions, plm[l, m], where l and m
+are the degree and order, respectively. If packed is True, the array
+is 1-dimensional with the index corresponding to l\*(l+1)/2+m.
 
 ## Parameters
 
 lmax : integer
-:   The maximum degree of the associated Legendre functions to be computed.
+The maximum degree of the associated Legendre functions to be computed.
 
 z : float
-:   The argument of the associated Legendre functions.
+The argument of the associated Legendre functions.
 
 normalization : str, optional, default = '4pi'
-:   '4pi', 'ortho', 'schmidt', or 'unnorm' for use with geodesy 4pi
-    normalized, orthonormalized, Schmidt semi-normalized, or unnormalized
-    spherical harmonic functions, respectively.
+'4pi', 'ortho', 'schmidt', or 'unnorm' for use with geodesy 4pi
+normalized, orthonormalized, Schmidt semi-normalized, or unnormalized
+spherical harmonic functions, respectively.
 
 csphase : integer, optional, default = 1
-:   If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
-    Condon-Shortley phase of (-1)^m will be appended to the associated
-    Legendre functions.
+If 1 (default), the Condon-Shortley phase will be excluded. If -1, the
+Condon-Shortley phase of (-1)^m will be appended to the associated
+Legendre functions.
 
 cnorm : integer, optional, default = 0
-:   If 1, the complex normalization of the associated Legendre functions
-    will be used. The default is to use the real normalization.
+If 1, the complex normalization of the associated Legendre functions
+will be used. The default is to use the real normalization.
 
 packed : bool, optional, default = False
-:   If True, return a 1-dimensional packed array with the index
-    corresponding to l\*(l+1)/2+m, where l and m are respectively the
-    degree and order.
+If True, return a 1-dimensional packed array with the index
+corresponding to l\*(l+1)/2+m, where l and m are respectively the
+degree and order.
 
 ## Notes
 
@@ -82,4 +82,3 @@ doi:10.1007/s00190-002-0216-2, 2002.
 Wieczorek, M. A., and M. Meschede. SHTools — Tools for working with
 spherical harmonics, Geochem., Geophys., Geosyst., 19, 2574-2592,
 doi:10.1029/2018GC007529, 2018.
-

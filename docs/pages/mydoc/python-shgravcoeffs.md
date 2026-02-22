@@ -47,13 +47,12 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `r0` | The reference radius of the gravitational potential coefficients. |
 | `omega` | The angular rotation rate of the body. |
 | `normalization` | The normalization of the coefficients: `'4pi'`, `'ortho'`, `'schmidt'`, or `'unnorm'`.|
-| `csphase` | Defines whether the Condon-Shortley phase is used (`1`) or not (`-1`). |
+| `csphase` | Defines whether the Condon-Shortley phase is excluded (`1`) or appended (`-1`). |
 | `mask` | A boolean mask that is `True` for the permissible values of degree `l` and order `m`. |
 | `kind` | The coefficient data type (only `'real'` is permissible). |
 | `epoch` | The epoch time of the spherical harmonic coefficients. |
 | `header` | A list of values from the header line of the input file used to initialize the class. |
 | `header2` | A list of values from the second header line of the input file used to initialize the class. |
-| `epoch` | The epoch time of the spherical harmonic coefficients. |
 
 ## Class methods
 

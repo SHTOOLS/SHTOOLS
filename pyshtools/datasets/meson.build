@@ -1,5 +1,6 @@
 python_sources = [
   '__init__.py',
+  '_utils.py',
   'Mercury.py',
   'Ceres.py',
   'Vesta.py',

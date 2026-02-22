@@ -126,7 +126,7 @@
 ###############################################################################
 
 # The VERSION number is used only for generating the man pages
-VERSION = 4.13
+VERSION = 4.14
 
 LIBNAME = SHTOOLS
 LIBNAMEMP = SHTOOLS-mp
@@ -172,7 +172,7 @@ FLAKE8_FILES = pyshtools examples/python
 # if the short name of the compiler is in $(F95).
 ifeq ($(findstring gfortran,$(F95)),gfortran)
 	# Default gfortran flags
-	F95FLAGS ?= -m64 -fPIC -O3 -std=gnu -ffast-math
+	F95FLAGS ?= -fPIC -O3 -std=gnu -ffast-math
 	# -march=native
 	MODFLAG = -I$(MODPATH)
 	SYSMODFLAG = -I$(SYSMODPATH)
@@ -181,7 +181,7 @@ ifeq ($(findstring gfortran,$(F95)),gfortran)
 	LAPACK ?= -llapack
 else ifeq ($(findstring f95,$(F95)),f95)
 	# Default Absoft f95 flags
-	F95FLAGS ?= -m64 -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=10
+	F95FLAGS ?= -O3 -YEXT_NAMES=LCS -YEXT_SFX=_ -fpic -speed_math=10
 	#-march=host
 	MODFLAG = -p $(MODPATH)
 	SYSMODFLAG = -p $(SYSMODPATH)
@@ -190,7 +190,7 @@ else ifeq ($(findstring f95,$(F95)),f95)
 	LAPACK ?= -llapack
 else ifeq ($(findstring ifort,$(F95)),ifort)
 	# Default intel fortran flags
-	F95FLAGS ?= -m64 -fpp -free -O3 -Tf
+	F95FLAGS ?= -fpp -free -O3 -Tf
 	MODFLAG = -I$(MODPATH)
 	SYSMODFLAG = -I$(SYSMODPATH)
 	OPENMPFLAGS ?= -qopenmp
@@ -198,7 +198,7 @@ else ifeq ($(findstring ifort,$(F95)),ifort)
 	BLAS ?=
 else ifeq ($(findstring ifx,$(F95)),ifx)
 	# Default intel fortran flags
-	F95FLAGS ?= -m64 -fpp -free -O3 -Tf
+	F95FLAGS ?= -fpp -free -O3 -Tf
 	MODFLAG = -I$(MODPATH)
 	SYSMODFLAG = -I$(SYSMODPATH)
 	OPENMPFLAGS ?= -qopenmp
@@ -221,7 +221,7 @@ else ifeq ($(findstring pgf90,$(F95)),pgf90)
 	BLAS ?= -lblas
 	LAPACK ?= -llapack
 else ifeq ($(origin F95FLAGS), undefined)
-	F95FLAGS = -m64 -O3
+	F95FLAGS = -O3
 	MODFLAG = -I$(MODPATH)
 	SYSMODFLAG = -I$(SYSMODPATH)
 	OPENMPFLAGS ?=

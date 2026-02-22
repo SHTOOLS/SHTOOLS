@@ -10,29 +10,29 @@ write_dov(filename, coeffs, [errors, header, header2, lmax, encoding])
 # Parameters
 
 filename : str or pathlib.Path
-:   File name of the 'dov'-formatted spherical harmonic coefficients. If
-    filename ends with '.gz' the file will be automatically compressed with
-    gzip.
+File name of the 'dov'-formatted spherical harmonic coefficients. If
+filename ends with '.gz' the file will be automatically compressed with
+gzip.
 
 coeffs : ndarray, size(2, lmaxin+1, lmaxin+1)
-:   The spherical harmonic coefficients.
+The spherical harmonic coefficients.
 
 errors : ndarray, size(2, lmaxin+1, lmaxin+1), optional, default = None
-:   The errors associated with the spherical harmonic coefficients.
+The errors associated with the spherical harmonic coefficients.
 
 header : str, optional default = None
-:   A string to be written directly before the spherical harmonic
-    coefficients.
+A string to be written directly before the spherical harmonic
+coefficients.
 
 header2 : str, optional default = None
-:   A second string to be written directly before the spherical harmonic
-    coefficients.
+A second string to be written directly before the spherical harmonic
+coefficients.
 
 lmax : int, optional, default = None
-:   The maximum spherical harmonic degree to write to the file.
+The maximum spherical harmonic degree to write to the file.
 
 encoding : str, optional, default = None
-:   Encoding of the output file. The default is to use the system default.
+Encoding of the output file. The default is to use the system default.
 
 # Notes
 
@@ -59,4 +59,3 @@ inceasing order, from 0 to l.
 
 If the filename ends with '.gz', the file will be automatically compressed
 using gzip.
-

@@ -6,4 +6,3 @@ harmonic transforms in pyshtools as a string.
 # Usage
 
 preferred_backend()
-
