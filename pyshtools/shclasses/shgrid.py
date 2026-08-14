@@ -1,7 +1,8 @@
 """
 Spherical Harmonic Grid classes
 
-    SHGrid: DHRealGrid, DHComplexGrid, GLQRealGrid, GLQComplexGrid
+    SHGrid: DHRealGrid, DHComplexGrid, CCRealGrid, CCComplexGrid,
+    GLQRealGrid, GLQComplexGrid
 """
 import numpy as _np
 import matplotlib as _mpl
@@ -12,6 +13,9 @@ import xarray as _xr
 from ..backends import backend_module
 from ..backends import preferred_backend
 from ..backends import shtools as _shtools
+from ..backends import ducc0_wrapper as _ducc0_wrapper
+
+
 from boule import Sphere as _Sphere
 from boule import Ellipsoid as _Ellipsoid
 from boule import TriaxialEllipsoid as _TriaxialEllipsoid
@@ -29,6 +33,25 @@ try:
     _pygmt_module = True
 except ModuleNotFoundError:
     _pygmt_module = False
+
+
+_CC_BACKEND_ERROR = 'Clenshaw-Curtis transforms require the DUCC backend.'
+
+
+def _cc_backend_module(backend, nthreads):
+    """Return DUCC for a Clenshaw-Curtis transform or raise a clear error."""
+    if backend is None:
+        backend = preferred_backend()
+    if backend.lower() != 'ducc' or not _ducc0_wrapper.available():
+        raise RuntimeError(_CC_BACKEND_ERROR)
+    return backend_module(backend='ducc', nthreads=nthreads)
+
+
+def _grid_subclasses(cls):
+    """Yield all concrete SHGrid subclasses, including derived grid types."""
+    for child in cls.__subclasses__():
+        yield child
+        yield from _grid_subclasses(child)
 
 
 class SHGrid(object):
@@ -57,14 +80,15 @@ class SHGrid(object):
                  1 for equally sampled grids (nlat=nlon) or 2 for equally
                  spaced grids in degrees.
     kind       : Either 'real' or 'complex' for the data type.
-    grid       : Either 'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-
-                 Legendre Quadrature grids.
+    grid       : Either 'DH', 'CC', or 'GLQ' for Driscoll and Healy,
+                 Clenshaw-Curtis, or Gauss-Legendre Quadrature grids.
     zeros      : The cos(colatitude) nodes used with Gauss-Legendre
                  Quadrature grids. Default is None.
     weights    : The latitudinal weights used with Gauss-Legendre
                  Quadrature grids. Default is None.
     extend     : True if the grid contains the redundant column for 360 E and
-                 (for 'DH' grids) the unnecessary row for 90 S.
+                 (for 'DH' grids) the unnecessary row for 90 S. CC grids
+                 intrinsically include the South Pole, whether extended or not.
     units      : The units of the gridded data.
 
     Each class instance provides the following methods:
@@ -127,8 +151,8 @@ class SHGrid(object):
             2-D numpy array of the gridded data, where nlat and nlon are the
             number of latitudinal and longitudinal bands, respectively.
         grid : str, optional, default = 'DH'
-            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
-            Quadrature grids, respectively.
+            'DH', 'CC', or 'GLQ' for Driscoll and Healy, Clenshaw-Curtis,
+            or Gauss-Legendre Quadrature grids, respectively.
         units : str, optional, default = None
             The units of the gridded data.
         name : str, optional, default = None
@@ -147,13 +171,13 @@ class SHGrid(object):
             raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
-        if grid.upper() not in set(['DH', 'GLQ']):
+        if grid.upper() not in set(['DH', 'CC', 'GLQ']):
             raise ValueError(
-                "grid must be 'DH' or 'GLQ'. Input value is {:s}."
+                "grid must be 'DH', 'CC', or 'GLQ'. Input value is {:s}."
                 .format(repr(grid))
                 )
 
-        for cls in self.__subclasses__():
+        for cls in _grid_subclasses(self):
             if cls.istype(kind) and cls.isgrid(grid):
                 return cls(array, units=units, name=name, copy=copy)
 
@@ -177,22 +201,23 @@ class SHGrid(object):
         lmax : int
             The maximum spherical harmonic degree resolvable by the grid.
         grid : str, optional, default = 'DH'
-            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss Legendre
-            Quadrature grids, respectively.
+            'DH', 'CC', or 'GLQ' for Driscoll and Healy, Clenshaw-Curtis,
+            or Gauss-Legendre Quadrature grids, respectively.
         kind : str, optional, default = 'real'
             Either 'real' or 'complex' for the data type.
         sampling : int, optional, default = 2
             The longitudinal sampling for Driscoll and Healy grids. Either 1
             for equally sampled grids (nlong=nlat) or 2 for equally spaced
             grids in degrees (nlong=2*nlat with extend=False or nlong=2*nlat-1
-            with extend=True).
+            with extend=True). This parameter applies only to Driscoll and
+            Healy grids.
         units : str, optional, default = None
             The units of the gridded data.
         name : str, optional, default = None
             The name of the dataset.
         extend : bool, optional, default = True
-            If True, include the longitudinal band for 360 E (DH and GLQ grids)
-            and the latitudinal band for 90 S (DH grids only).
+            If True, include the longitudinal band for 360 E (DH, CC, and GLQ
+            grids) and the latitudinal band for 90 S (DH grids only).
         empty : bool, optional, default = False
             If True, create the data array using numpy.empty() and do not
             initialize with zeros.
@@ -201,8 +226,8 @@ class SHGrid(object):
             raise ValueError('grid must be a string. Input type is {:s}.'
                              .format(str(type(grid))))
 
-        if grid.upper() not in set(['DH', 'GLQ']):
-            raise ValueError("grid must be 'DH' or 'GLQ'. " +
+        if grid.upper() not in set(['DH', 'CC', 'GLQ']):
+            raise ValueError("grid must be 'DH', 'CC', or 'GLQ'. " +
                              "Input value is {:s}.".format(repr(grid)))
 
         if grid.upper() == 'DH':
@@ -219,6 +244,9 @@ class SHGrid(object):
             nlon = 2 * nlat - 1
             if extend:
                 nlon += 1
+        elif grid.upper() == 'CC':
+            nlat = lmax + 2
+            nlon = 2 * (nlat - 1) + extend
 
         if kind == 'real':
             if empty:
@@ -231,7 +259,7 @@ class SHGrid(object):
             else:
                 array = _np.zeros((nlat, nlon), dtype=_np.complex128)
 
-        for cls in self.__subclasses__():
+        for cls in _grid_subclasses(self):
             if cls.istype(kind) and cls.isgrid(grid):
                 return cls(array, units=units, name=name, copy=False)
 
@@ -272,8 +300,8 @@ class SHGrid(object):
             contains the lengths of the principal axes a, b, and c, and the
             rotation angle alpha.
         grid : str, optional, default = 'DH'
-            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
-            Quadrature grids, respectively.
+            'DH', 'CC', or 'GLQ' for Driscoll and Healy, Clenshaw-Curtis,
+            or Gauss-Legendre Quadrature grids, respectively.
         kind : str, optional, default = 'real'
             Either 'real' or 'complex' for the data type.
         sampling : int, optional, default = 2
@@ -286,8 +314,8 @@ class SHGrid(object):
         name : str, optional, default = None
             The name of the dataset.
         extend : bool, optional, default = True
-            If True, include the longitudinal band for 360 E (DH and GLQ grids)
-            and the latitudinal band for 90 S (DH grids only).
+            If True, include the longitudinal band for 360 E (DH, CC, and GLQ
+            grids) and the latitudinal band for 90 S (DH grids only).
         """
         if ellipsoid is not None:
             if not isinstance(ellipsoid,
@@ -347,8 +375,8 @@ class SHGrid(object):
         lmax : int
             The maximum spherical harmonic degree resolvable by the grid.
         grid : str, optional, default = 'DH'
-            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
-            Quadrature grids, respectively.
+            'DH', 'CC', or 'GLQ' for Driscoll and Healy, Clenshaw-Curtis,
+            or Gauss-Legendre Quadrature grids, respectively.
         kind : str, optional, default = 'real'
             Either 'real' or 'complex' for the data type.
         sampling : int, optional, default = 2
@@ -363,8 +391,8 @@ class SHGrid(object):
         name : str, optional, default = None
             The name of the dataset.
         extend : bool, optional, default = True
-            If True, include the longitudinal band for 360 E (DH and GLQ grids)
-            and the latitudinal band for 90 S (DH grids only).
+            If True, include the longitudinal band for 360 E (DH, CC, and GLQ
+            grids) and the latitudinal band for 90 S (DH grids only).
         """
         temp = self.from_zeros(lmax, grid=grid, kind=kind, sampling=sampling,
                                units=units, extend=extend, name=name)
@@ -436,8 +464,8 @@ class SHGrid(object):
             If False, read a text file using numpy.loadtxt(). If True, read a
             binary 'npy' file using numpy.load().
         grid : str, optional, default = 'DH'
-            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
-            Quadrature grids, respectively.
+            'DH', 'CC', or 'GLQ' for Driscoll and Healy, Clenshaw-Curtis,
+            or Gauss-Legendre Quadrature grids, respectively.
         units : str, optional, default = None
             The units of the gridded data.
         name : str, optional, default = None
@@ -472,13 +500,16 @@ class SHGrid(object):
         Parameters
         ----------
         xarray : xarray DataArray
-            The xarray DataArray containing the gridded data. For Driscoll and
-            Healy grids, the dimensions of the array must be nlon=nlat,
-            nlon=2*nlat or nlon=2*nlat-1. For Gauss-Legendre Quadrature grids,
-            the dimensions of the array must be nlon=2*nlat-1 or nlon=2*nlat.
+            The xarray DataArray containing the gridded data. DH grids have
+            nlon equal to nlat, 2*nlat, or 2*nlat-1; CC grids have
+            nlat=lmax+2 and nlon=2*(nlat-1); and GLQ grids have nlon equal
+            to 2*nlat-1 or 2*nlat. An extended grid has one additional
+            longitude column.
         grid : str, optional, default = 'DH'
-            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
-            Quadrature grids, respectively.
+            'DH', 'CC', or 'GLQ' for Driscoll and Healy, Clenshaw-Curtis,
+            or Gauss-Legendre Quadrature grids, respectively. Specify 'CC'
+            explicitly for a Clenshaw-Curtis DataArray; its attributes do not
+            select the grid class.
         units : str, optional, default = None
             The units of the gridded data.
         name : str, optional, default = None
@@ -513,8 +544,10 @@ class SHGrid(object):
         netcdf : str or netcdf object or pathlib.Path
             The name of a netcdf file or object.
         grid : str, optional, default = 'DH'
-            'DH' or 'GLQ' for Driscoll and Healy grids or Gauss-Legendre
-            Quadrature grids, respectively.
+            'DH', 'CC', or 'GLQ' for Driscoll and Healy, Clenshaw-Curtis,
+            or Gauss-Legendre Quadrature grids, respectively. Specify 'CC'
+            explicitly for a Clenshaw-Curtis file; its attributes do not
+            select the grid class.
         units : str, optional, default = None
             The units of the gridded data.
         name : str, optional, default = None
@@ -604,7 +637,7 @@ class SHGrid(object):
         if self.grid == 'GLQ':
             attrs['zeros'] = self.zeros
             attrs['weights'] = self.weights
-        else:
+        elif self.grid == 'DH':
             attrs['sampling'] = self.sampling
         if title is not None:
             attrs['title'] = title
@@ -1199,12 +1232,15 @@ class SHGrid(object):
         lats = self.lats()
         lons = self.lons()
 
-        if self.grid == 'DH':
+        if self.grid in ('DH', 'CC'):
             if self.extend:
                 lats_circular = lats
             else:
-                # add south pole
-                lats_circular = _np.append(lats, [-90.])
+                # DH excludes the south pole, while CC already includes it.
+                if self.grid == 'DH':
+                    lats_circular = _np.append(lats, [-90.])
+                else:
+                    lats_circular = lats
         elif self.grid == 'GLQ':
             # add north and south pole
             lats_circular = _np.hstack(([90.], lats, [-90.]))
@@ -1235,6 +1271,13 @@ class SHGrid(object):
                 magn_point[:-1, :-1] = data
                 magn_point[-1, :] = _np.mean(data[-1])
                 magn_point[:-1, -1] = data[:, 0]
+        if self.grid == 'CC':
+            if self.extend:
+                magn_point = data
+            else:
+                magn_point = _np.empty((nlat, nlon + 1), dtype=data.dtype)
+                magn_point[:, :-1] = data
+                magn_point[:, -1] = data[:, 0]
         if self.grid == 'GLQ':
             if self.extend:
                 magn_point = _np.zeros((nlat + 2, nlon))
@@ -1454,12 +1497,12 @@ class SHGrid(object):
         if self.kind == 'complex' and title is None:
             title = ['Real component', 'Imaginary component']
         if xlabel is True:
-            if self.grid == 'DH':
+            if self.grid in ('DH', 'CC'):
                 xlabel = 'Longitude'
             else:
                 xlabel = 'GLQ longitude index'
         if ylabel is True:
-            if self.grid == 'DH':
+            if self.grid in ('DH', 'CC'):
                 ylabel = 'Latitude'
             else:
                 ylabel = 'GLQ latitude index'
@@ -2126,11 +2169,16 @@ class DHRealGrid(SHGrid):
         """Plot the data as a matplotlib cylindrical projection,
            or with Cartopy when projection is specified."""
         if (a is not None or c is not None or ellipsoid is not None):
-            temp = SHGrid.from_ellipsoid(lmax=self.lmax, a=a, b=b, c=c,
-                                         alpha=alpha, ellipsoid=ellipsoid,
-                                         grid=self.grid, kind=self.kind,
-                                         sampling=self.sampling,
-                                         extend=self.extend)
+            if self.grid == 'CC':
+                temp = SHGrid.from_ellipsoid(
+                    lmax=self.lmax, a=a, b=b, c=c, alpha=alpha,
+                    ellipsoid=ellipsoid, grid='CC', kind=self.kind,
+                    extend=self.extend)
+            else:
+                temp = SHGrid.from_ellipsoid(
+                    lmax=self.lmax, a=a, b=b, c=c, alpha=alpha,
+                    ellipsoid=ellipsoid, grid=self.grid, kind=self.kind,
+                    sampling=self.sampling, extend=self.extend)
             data = self.data - temp.data
         else:
             data = self.data
@@ -2276,10 +2324,17 @@ class DHRealGrid(SHGrid):
         else:
             top, labeltop = False, False
 
-        extent = (-360. / self.sampling / self.n / 2.,
-                  360. + 360. / self.sampling / self.n * (self.extend - 0.5),
-                  -90. - 180. / self.n * (self.extend - 0.5),
-                  90. + 180. / 2. / self.n)
+        if self.grid == 'CC':
+            dlon = 360. / (self.nlon-self.extend)
+            dlat = 180. / (self.nlat-1)
+            extent = (-0.5*dlon, 360. + 0.5*dlon,
+                      -90. - 0.5*dlat, 90. + 0.5*dlat)
+        else:
+            extent = (-360. / self.sampling / self.n / 2.,
+                      360. + 360. / self.sampling / self.n
+                      * (self.extend - 0.5),
+                      -90. - 180. / self.n * (self.extend - 0.5),
+                      90. + 180. / 2. / self.n)
 
         # Add space for annotations between plot and colorbar. This will be
         # False for map projections that do not support longitude labels
@@ -2433,11 +2488,16 @@ class DHRealGrid(SHGrid):
         Plot projected data using pygmt.
         """
         if (a is not None or c is not None or ellipsoid is not None):
-            temp = SHGrid.from_ellipsoid(lmax=self.lmax, a=a, b=b, c=c,
-                                         alpha=alpha, ellipsoid=ellipsoid,
-                                         grid=self.grid, kind=self.kind,
-                                         sampling=self.sampling,
-                                         extend=self.extend)
+            if self.grid == 'CC':
+                temp = SHGrid.from_ellipsoid(
+                    lmax=self.lmax, a=a, b=b, c=c, alpha=alpha,
+                    ellipsoid=ellipsoid, grid='CC', kind=self.kind,
+                    extend=self.extend)
+            else:
+                temp = SHGrid.from_ellipsoid(
+                    lmax=self.lmax, a=a, b=b, c=c, alpha=alpha,
+                    ellipsoid=ellipsoid, grid=self.grid, kind=self.kind,
+                    sampling=self.sampling, extend=self.extend)
             data = self - temp
 
         else:
@@ -2886,6 +2946,155 @@ class DHComplexGrid(SHGrid):
                                offset=offset_real)
 
         return figure
+
+
+# ---- Clenshaw-Curtis grid classes ----
+
+class CCRealGrid(DHRealGrid):
+    """Class for real Clenshaw-Curtis grids.
+
+    CC grids include both poles.  They have ``nlat = lmax + 2`` and
+    ``nlon = 2*(nlat-1)``; ``extend=True`` appends only longitude 360 E.
+    """
+
+    @staticmethod
+    def istype(kind):
+        return kind == 'real'
+
+    @staticmethod
+    def isgrid(grid):
+        return grid.upper() == 'CC'
+
+    def __init__(self, array, units=None, copy=True, name=None):
+        if array.ndim != 2:
+            raise ValueError('CC grid array must be two dimensional.')
+        self.nlat, self.nlon = array.shape
+        if self.nlat < 2:
+            raise ValueError('A CC grid requires at least two latitude rings.')
+
+        self.lmax = self.nlat - 2
+        expected_nlon = 2 * (self.nlat - 1)
+        if self.nlon == expected_nlon:
+            self.extend = False
+        elif self.nlon == expected_nlon + 1:
+            self.extend = True
+        else:
+            raise ValueError(
+                'Input array has shape (nlat={:d}, nlon={:d}) but a CC '
+                'grid with this latitude count requires nlon={:d} or {:d}. '
+                .format(self.nlat, self.nlon, expected_nlon,
+                        expected_nlon + 1))
+
+        self.grid = 'CC'
+        self.kind = 'real'
+        self.units = units
+        self.name = name
+        self.data = _np.copy(array) if copy else array
+
+    def _lats(self):
+        return _np.linspace(90.0, -90.0, num=self.nlat)
+
+    def _lons(self):
+        if self.extend:
+            return _np.linspace(0.0, 360.0, num=self.nlon)
+        return _np.linspace(0.0, 360.0 - 360.0 / self.nlon,
+                            num=self.nlon)
+
+    def _histogram(self, bins=None, range=None, a=None, b=None, c=None,
+                   alpha=None, ellipsoid=None):
+        """Return an area-weighted histogram without double-counting 360 E."""
+        if (a is not None or c is not None or ellipsoid is not None):
+            temp = SHGrid.from_ellipsoid(lmax=self.lmax, a=a, b=b, c=c,
+                                         alpha=alpha, ellipsoid=ellipsoid,
+                                         grid='CC', kind=self.kind,
+                                         extend=self.extend)
+            data = self.data - temp.data
+        else:
+            data = self.data
+        theta = _np.radians(90.0 - self.lats())
+        bounds = _np.empty(self.nlat + 1)
+        bounds[0], bounds[-1] = 0.0, _np.pi
+        bounds[1:-1] = (theta[:-1] + theta[1:]) / 2.0
+        ring_weights = _np.cos(bounds[:-1]) - _np.cos(bounds[1:])
+        weights = _np.broadcast_to(ring_weights[:, None], self.data.shape)
+        return _np.histogram(data[:, :self.nlon-self.extend], bins=bins,
+                             weights=weights[:, :self.nlon-self.extend],
+                             density=True, range=range)
+
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads,
+                name):
+        from .shcoeffs import SHCoeffs
+        norm = {'4pi': 1, 'schmidt': 2, 'unnorm': 3,
+                'ortho': 4}.get(normalization.lower())
+        if norm is None:
+            raise ValueError("The normalization must be '4pi', 'ortho', "
+                             "'schmidt' or 'unnorm'.")
+        cilm = _cc_backend_module(backend, nthreads).SHExpandCC(
+            self.data[:, :self.nlon-self.extend], norm=norm,
+            csphase=csphase, lmax_calc=lmax_calc)
+        return SHCoeffs.from_array(cilm, normalization=normalization.lower(),
+                                   csphase=csphase, units=self.units,
+                                   copy=False, name=name)
+
+
+class CCComplexGrid(DHComplexGrid):
+    """Class for complex Clenshaw-Curtis grids."""
+
+    @staticmethod
+    def istype(kind):
+        return kind == 'complex'
+
+    @staticmethod
+    def isgrid(grid):
+        return grid.upper() == 'CC'
+
+    def __init__(self, array, units=None, copy=True, name=None):
+        if array.ndim != 2:
+            raise ValueError('CC grid array must be two dimensional.')
+        self.nlat, self.nlon = array.shape
+        if self.nlat < 2:
+            raise ValueError('A CC grid requires at least two latitude rings.')
+        self.lmax = self.nlat - 2
+        expected_nlon = 2 * (self.nlat - 1)
+        if self.nlon == expected_nlon:
+            self.extend = False
+        elif self.nlon == expected_nlon + 1:
+            self.extend = True
+        else:
+            raise ValueError(
+                'Input array has shape (nlat={:d}, nlon={:d}) but a CC '
+                'grid with this latitude count requires nlon={:d} or {:d}. '
+                .format(self.nlat, self.nlon, expected_nlon,
+                        expected_nlon + 1))
+        self.grid = 'CC'
+        self.kind = 'complex'
+        self.units = units
+        self.name = name
+        self.data = _np.copy(array) if copy else array
+
+    def _lats(self):
+        return _np.linspace(90.0, -90.0, num=self.nlat)
+
+    def _lons(self):
+        if self.extend:
+            return _np.linspace(0.0, 360.0, num=self.nlon)
+        return _np.linspace(0.0, 360.0 - 360.0 / self.nlon,
+                            num=self.nlon)
+
+    def _expand(self, normalization, csphase, lmax_calc, backend, nthreads,
+                name):
+        from .shcoeffs import SHCoeffs
+        norm = {'4pi': 1, 'schmidt': 2, 'unnorm': 3,
+                'ortho': 4}.get(normalization.lower())
+        if norm is None:
+            raise ValueError("The normalization must be '4pi', 'ortho', "
+                             "'schmidt' or 'unnorm'.")
+        cilm = _cc_backend_module(backend, nthreads).SHExpandCCC(
+            self.data[:, :self.nlon-self.extend], norm=norm,
+            csphase=csphase, lmax_calc=lmax_calc)
+        return SHCoeffs.from_array(cilm, normalization=normalization.lower(),
+                                   csphase=csphase, units=self.units,
+                                   copy=False, name=name)
 
 
 # ---- Real Gauss-Legendre Quadrature grid class ----

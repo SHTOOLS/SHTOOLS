@@ -57,6 +57,7 @@ Following such a call, the preferred backend remains unchanged.
 ### ducc
 * Spherical harmonic transforms and rotations are more than 10 times faster than the default *shtools* routines.
 * Supports the use of multiple threads to speed up computations.
+* Clenshaw-Curtis scalar transforms use the stable `ducc0.sht` API and require `ducc0>=0.33`.
 * Spherical harmonic transforms are accurate beyond degree 25,000.
 * Does not implement functions involving localized spectral analyses, Slepian analyses, nor gravity and magnetic field data.
 * The native routines make use orthonormalized spherical harmonics that exclude the Condon-Shortley phase factor: Other normalizations are supported, but require preprocessing in python.

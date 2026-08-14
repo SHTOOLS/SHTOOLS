@@ -29,6 +29,19 @@ from ..shio import write_bshc as _write_bshc
 from ..backends import backend_module
 from ..backends import preferred_backend
 from ..backends import shtools as _shtools
+from ..backends import ducc0_wrapper as _ducc0_wrapper
+
+
+_CC_BACKEND_ERROR = 'Clenshaw-Curtis transforms require the DUCC backend.'
+
+
+def _cc_backend_module(backend, nthreads):
+    """Return DUCC for a Clenshaw-Curtis transform or raise a clear error."""
+    if backend is None:
+        backend = preferred_backend()
+    if backend.lower() != 'ducc' or not _ducc0_wrapper.available():
+        raise RuntimeError(_CC_BACKEND_ERROR)
+    return backend_module(backend='ducc', nthreads=nthreads)
 
 
 class SHCoeffs(object):
@@ -2295,7 +2308,8 @@ class SHCoeffs(object):
         grid : str, optional, default = 'DH2'
             'DH' or 'DH1' for an equisampled lat/lon grid with nlat=nlon,
             'DH2' for an equidistant lat/lon grid with nlon=2*nlat, or 'GLQ'
-            for a Gauss-Legendre quadrature grid.
+            for a Gauss-Legendre quadrature grid. 'CC' selects the
+            Clenshaw-Curtis grid with shape (lmax+2, 2*lmax+2).
         lmax : int, optional, default = x.lmax
             The maximum spherical harmonic degree, which determines the grid
             spacing of the output grid.
@@ -2303,8 +2317,8 @@ class SHCoeffs(object):
             The maximum spherical harmonic degree to use when evaluating the
             function.
         extend : bool, optional, default = True
-            If True, compute the longitudinal band for 360 E (DH and GLQ grids)
-            and the latitudinal band for 90 S (DH grids only).
+            If True, compute the longitudinal band for 360 E (DH, CC, and GLQ
+            grids) and the latitudinal band for 90 S (DH grids only).
         zeros : ndarray, optional, default = None
             The cos(colatitude) nodes used in the Gauss-Legendre Quadrature
             grids.
@@ -2323,7 +2337,8 @@ class SHCoeffs(object):
         a global grid and returns an SHGrid class instance, or (2) evaluates
         the spherical harmonic coefficients for a list of (co)latitude and
         longitude coordinates. For the first case, the grid type is defined
-        by the optional parameter grid, which can be 'DH', 'DH2' or 'GLQ'.For
+        by the optional parameter grid, which can be 'DH', 'DH2', 'CC', or
+        'GLQ'. For
         the second case, the optional parameters lon and either colat or lat
         must be provided.
         """
@@ -2373,6 +2388,10 @@ class SHCoeffs(object):
                                          lmax_calc=lmax_calc, extend=extend,
                                          backend=backend, nthreads=nthreads,
                                          name=name)
+            elif grid.upper() == 'CC':
+                gridout = self._expandCC(lmax=lmax, lmax_calc=lmax_calc,
+                                         extend=extend, backend=backend,
+                                         nthreads=nthreads, name=name)
             elif grid.upper() == 'GLQ':
                 gridout = self._expandGLQ(zeros=zeros, lmax=lmax,
                                           lmax_calc=lmax_calc, extend=extend,
@@ -2380,7 +2399,7 @@ class SHCoeffs(object):
                                           name=name)
             else:
                 raise ValueError(
-                    "grid must be 'DH', 'DH1', 'DH2', or 'GLQ'. " +
+                    "grid must be 'DH', 'DH1', 'DH2', 'CC', or 'GLQ'. " +
                     "Input value is {:s}.".format(repr(grid)))
 
             return gridout
@@ -2456,6 +2475,9 @@ class SHCoeffs(object):
                                            extend=extend, radius=radius,
                                            backend=backend, nthreads=nthreads,
                                            name=name)
+        elif grid.upper() == 'CC':
+            raise NotImplementedError('gradient() does not yet support CC '
+                                      'grids.')
         elif grid.upper() == 'GLQ':
             raise NotImplementedError('gradient() does not support the use '
                                       'of GLQ grids.')
@@ -4378,6 +4400,20 @@ class SHRealCoeffs(SHCoeffs):
                                     copy=False, name=name)
         return gridout
 
+    def _expandCC(self, lmax, lmax_calc, extend, backend, nthreads, name):
+        """Evaluate coefficients on the Clenshaw-Curtis grid."""
+        from .shgrid import SHGrid
+        norm = {'4pi': 1, 'schmidt': 2, 'unnorm': 3,
+                'ortho': 4}.get(self.normalization)
+        if norm is None:
+            raise ValueError("Normalization must be '4pi', 'ortho', "
+                             "'schmidt', or 'unnorm'.")
+        data = _cc_backend_module(backend, nthreads).MakeGridCC(
+            self.coeffs, norm=norm, csphase=self.csphase, lmax=lmax,
+            lmax_calc=lmax_calc, extend=extend)
+        return SHGrid.from_array(data, grid='CC', units=self.units,
+                                 copy=False, name=name)
+
     def _expand_coord(self, lat, lon, lmax_calc, degrees):
         """Evaluate the function at the coordinates lat and lon."""
         if self.normalization == '4pi':
@@ -4671,6 +4707,20 @@ class SHComplexCoeffs(SHCoeffs):
         gridout = SHGrid.from_array(data, grid='GLQ', units=self.units,
                                     copy=False, name=name)
         return gridout
+
+    def _expandCC(self, lmax, lmax_calc, extend, backend, nthreads, name):
+        """Evaluate complex coefficients on a Clenshaw-Curtis grid."""
+        from .shgrid import SHGrid
+        norm = {'4pi': 1, 'schmidt': 2, 'unnorm': 3,
+                'ortho': 4}.get(self.normalization)
+        if norm is None:
+            raise ValueError("Normalization must be '4pi', 'ortho', "
+                             "'schmidt', or 'unnorm'.")
+        data = _cc_backend_module(backend, nthreads).MakeGridCCC(
+            self.coeffs, norm=norm, csphase=self.csphase, lmax=lmax,
+            lmax_calc=lmax_calc, extend=extend)
+        return SHGrid.from_array(data, grid='CC', units=self.units,
+                                 copy=False, name=name)
 
     def _expand_coord(self, lat, lon, lmax_calc, degrees):
         """Evaluate the function at the coordinates lat and lon."""
