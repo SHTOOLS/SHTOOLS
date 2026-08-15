@@ -99,7 +99,7 @@ When installing pyshtools using `conda`, the following will also be installed au
 * [blas-devel](https://anaconda.org/conda-forge/blas-devel): required for the fortran components.
 * [cartopy](https://scitools.org.uk/cartopy/docs/latest/): required for Cartopy map projections.
 * [pygmt](https://www.pygmt.org) (>=0.7): required for pygmt map projections. pygmt requires (see below) *gmt (>=6.3.0)*.
-* [ducc0](https://gitlab.mpcdf.mpg.de/mtr/ducc) (>=0.15): required for using the 'ducc' backend for spherical harmonic transforms.
+* [ducc0](https://gitlab.mpcdf.mpg.de/mtr/ducc) (>=0.33): required for using the 'ducc' backend for spherical harmonic transforms.
 * [palettable](https://jiffyclub.github.io/palettable/): scientific color maps required by one of the tutorials.
 
 Thus, when installing pyshtools with `pip`, it will be necessary to install compatible versions of BLAS, LAPACK and FFTW3, as well as Cartopy, pygmt, and ducc0.
@@ -139,11 +139,11 @@ sudo port install gmt6  # macOS using macports
 
 ### How to install ducc
 
-To make use of the 'ducc' backend for the spherical harmonic transforms, it will be necessary to install the *ducc0 (>=0.15)* package using either `pip` or `conda`:
+To make use of the 'ducc' backend for the spherical harmonic transforms, it will be necessary to install the *ducc0 (>=0.33)* package using either `pip` or `conda`:
 ```bash
-conda install -c conda-forge ducc0>=0.15  # install using conda
-pip install ducc0>=0.15  # install using pip
+conda install -c conda-forge ducc0>=0.33  # install using conda
+pip install ducc0>=0.33  # install using pip
 pip install pyshtools[ducc]  # installs ducc at the same time as pyshtools
-pip install ducc0>=0.15 -no-binary ducc0  # install ducc from source
+pip install ducc0>=0.33 -no-binary ducc0  # install ducc from source
 ```
 Note: By installing *ducc0* from source, it might be possible to benefit from the use of AVX instructions that can improve execution speeds by a factor of about 2.

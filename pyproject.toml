@@ -48,7 +48,7 @@ download = 'https://github.com/SHTOOLS/SHTOOLS/zipball/master'
 cartopy = ['cartopy>=0.18.0']
 pygmt = ['pygmt>=0.7']
 palettable = ['palettable>=3.3']
-ducc = ['ducc0>=0.15']
+ducc = ['ducc0>=0.33']
 
 [build-system]
 build-backend = 'mesonpy'

@@ -131,7 +131,7 @@ def _extract_alm(alm, lmax, norm, csphase):
 
 
 def _synthesize_DH(alm, lmax, extend, out):
-    ducc0.sht.experimental.synthesis_2d(
+    ducc0.sht.synthesis_2d(
         alm=alm.reshape((1, -1)),
         map=out[:, : out.shape[1] - extend].reshape(
             (1, out.shape[0], out.shape[1] - extend)
@@ -147,7 +147,7 @@ def _synthesize_DH(alm, lmax, extend, out):
 
 
 def _synthesize_DH_deriv1(alm, lmax, extend, out):
-    ducc0.sht.experimental.synthesis_2d_deriv1(
+    ducc0.sht.synthesis_2d_deriv1(
         alm=alm.reshape((1, -1)),
         map=out[:, :, : out.shape[2] - extend],
         lmax=lmax,
@@ -162,7 +162,7 @@ def _synthesize_DH_deriv1(alm, lmax, extend, out):
 
 
 def _synthesize_GLQ(alm, lmax, extend, out):
-    ducc0.sht.experimental.synthesis_2d(
+    ducc0.sht.synthesis_2d(
         alm=alm.reshape((1, -1)),
         map=out[:, : out.shape[1] - extend].reshape(
             (1, out.shape[0], out.shape[1] - extend)
@@ -178,7 +178,7 @@ def _synthesize_GLQ(alm, lmax, extend, out):
 
 
 def _analyze_DH(map, lmax):
-    alm = ducc0.sht.experimental.analysis_2d(
+    alm = ducc0.sht.analysis_2d(
         map=map.reshape((1, map.shape[0], map.shape[1])),
         spin=0,
         lmax=lmax,
@@ -189,7 +189,7 @@ def _analyze_DH(map, lmax):
 
 
 def _analyze_GLQ(map, lmax):
-    alm = ducc0.sht.experimental.analysis_2d(
+    alm = ducc0.sht.analysis_2d(
         map=map.reshape((1, map.shape[0], map.shape[1])),
         spin=0,
         lmax=lmax,
