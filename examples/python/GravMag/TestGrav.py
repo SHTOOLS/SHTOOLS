@@ -18,6 +18,7 @@ def main():
     TestGravGrad()
     TestFilter()
     TestMakeMagGrid()
+    TestMagneticRotationNormalization()
 
 
 # ==== TEST FUNCTIONS ====
@@ -179,6 +180,26 @@ def TestMakeMagGrid():
     ax.legend()
 
     fig_spectrum.savefig('Mars_MagPowerSpectrum.png')
+
+
+def TestMagneticRotationNormalization():
+    coeffs = np.zeros((2, 4, 4))
+    coeffs[0, 1, 0] = -30000.
+    coeffs[0, 2, 1] = 1200.
+    coeffs[1, 3, 2] = -400.
+    for normalization in ('4pi', 'schmidt', 'ortho', 'unnorm'):
+        for csphase in (1, -1):
+            original = pysh.SHMagCoeffs.from_array(
+                coeffs, r0=6371200., normalization=normalization,
+                csphase=csphase, year=2020.)
+            rotated = original.rotate(0., 0., 0., backend='shtools')
+            assert rotated.normalization == original.normalization
+            assert rotated.csphase == original.csphase
+            np.testing.assert_allclose(rotated.coeffs, original.coeffs,
+                                       rtol=1.e-13, atol=1.e-10)
+            np.testing.assert_allclose(
+                rotated.expand(lat=45., lon=0.),
+                original.expand(lat=45., lon=0.), rtol=1.e-13, atol=1.e-10)
 
 
 # ==== EXECUTE SCRIPT ====
