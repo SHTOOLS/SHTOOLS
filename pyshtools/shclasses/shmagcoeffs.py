@@ -1679,6 +1679,9 @@ class SHMagCoeffs(object):
                 "Provided value is {:s}.".format(repr(convention))
                 )
 
+        if degrees:
+            alpha, beta, gamma = _np.radians([alpha, beta, gamma])
+
         if convention == 'y':
             if body is True:
                 angles = _np.array([-gamma, -beta, -alpha])
@@ -1691,8 +1694,6 @@ class SHMagCoeffs(object):
             else:
                 angles = _np.array([alpha - _np.pi/2, beta, gamma + _np.pi/2])
 
-        if degrees:
-            angles = _np.radians(angles)
         if backend is None:
             backend = preferred_backend()
 
