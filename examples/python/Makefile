@@ -30,6 +30,7 @@ EXAMPLES = \
 	GravMag/TestGrav.py \
 	GravMag/TestCT.py \
 	Other/TestOther.py \
+	TestCC/TestCC.py \
 	TestLegendre/TestLegendre.py \
 	TimingAccuracy/TimingAccuracyDH.py \
 	TimingAccuracy/TimingAccuracyDHC.py \
@@ -49,6 +50,7 @@ EXAMPLES-NO-TIMING = \
 	GravMag/TestGrav.py \
 	GravMag/TestCT.py \
 	Other/TestOther.py \
+	TestCC/TestCC.py \
 	TestLegendre/TestLegendre.py \
 	$(EMPTY)
 

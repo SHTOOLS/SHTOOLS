@@ -8,8 +8,8 @@ import numpy as _np
 try:
     import ducc0
 
-    major, minor, patch = ducc0.__version__.split(".")
-    if int(major) < 1 and int(minor) < 15:
+    version = tuple(int(part) for part in ducc0.__version__.split("."))
+    if version < (0, 33):
         raise RuntimeError
 except Exception:
     ducc0 = None
@@ -199,6 +199,35 @@ def _analyze_GLQ(map, lmax):
     return alm[0]
 
 
+def _synthesize_CC(alm, lmax, extend, out):
+    """Synthesize an SHTOOLS Clenshaw-Curtis grid."""
+    ducc0.sht.synthesis_2d(
+        alm=alm.reshape((1, -1)),
+        map=out[:, :out.shape[1] - extend].reshape(
+            (1, out.shape[0], out.shape[1] - extend)
+        ),
+        spin=0,
+        lmax=lmax,
+        geometry="CC",
+        nthreads=nthreads,
+    )
+    if extend:
+        out[:, -1] = out[:, 0]
+    return out
+
+
+def _analyze_CC(map, lmax):
+    """Analyze an SHTOOLS Clenshaw-Curtis grid."""
+    alm = ducc0.sht.analysis_2d(
+        map=map.reshape((1, map.shape[0], map.shape[1])),
+        spin=0,
+        lmax=lmax,
+        geometry="CC",
+        nthreads=nthreads,
+    )
+    return alm[0]
+
+
 def _ccilm2almr(cilm):
     lmax = cilm.shape[1] - 1
     alm = _np.empty((_nalm(lmax, lmax),), dtype=_np.complex128)
@@ -263,6 +292,20 @@ def _addImagpart(cilm, alm):
             cilm[1, m:, m].imag += tmp.real
         ofs += lmax + 1 - m
     return cilm
+
+
+def _scale_complex_unnorm_orders(alm, lmax, factor):
+    """Convert DUCC's unnormalized m>0 scaling for complex coefficients.
+
+    The real-valued and complex SHTOOLS coefficient layouts differ by sqrt(2)
+    away from m=0.  DUCC's scalar normalization helper accounts for the real
+    layout; complex unnormalized CC transforms need this additional factor.
+    """
+    ofs = lmax + 1
+    for m in range(1, lmax + 1):
+        alm[ofs: ofs + lmax + 1 - m] *= factor
+        ofs += lmax + 1 - m
+    return alm
 
 
 def _prep_lmax(lmax, lmax_calc, cilm):
@@ -654,6 +697,88 @@ def MakeGridDHC(
     alm = _apply_norm(alm, lmax_calc, norm, csphase, False)
     _synthesize_DH(alm, lmax_calc, extend, res.real)
     return res
+
+
+def MakeGridCC(cilm, lmax=None, norm=1, csphase=1, lmax_calc=None,
+               extend=False):
+    """Create a real Clenshaw-Curtis grid from real coefficients.
+
+    The SHTOOLS CC geometry has ``lmax + 2`` latitude rings,
+    including both poles, and ``2*lmax + 2`` longitude samples.  ``extend``
+    appends only the redundant 360-degree longitude column.
+    """
+    lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
+    alm = _make_alm(cilm, lmax_calc, norm, csphase)
+    out = _np.empty((lmax + 2, 2 * lmax + 2 + extend))
+    return _synthesize_CC(alm, lmax_calc, extend, out)
+
+
+def MakeGridCCC(cilm, lmax=None, norm=1, csphase=1, lmax_calc=None,
+                extend=False):
+    """Create a complex Clenshaw-Curtis grid from complex coefficients."""
+    lmax, lmax_calc, cilm = _prep_lmax(lmax, lmax_calc, cilm)
+    out = _np.empty((lmax + 2, 2 * lmax + 2 + extend),
+                    dtype=_np.complex128)
+    alm = _ccilm2almi(cilm)
+    alm = _apply_norm(alm, lmax_calc, norm, csphase, False)
+    if norm == 3:
+        _scale_complex_unnorm_orders(alm, lmax_calc, _np.sqrt(2.0))
+    _synthesize_CC(alm, lmax_calc, extend, out.imag)
+    alm = _ccilm2almr(cilm)
+    alm = _apply_norm(alm, lmax_calc, norm, csphase, False)
+    if norm == 3:
+        _scale_complex_unnorm_orders(alm, lmax_calc, _np.sqrt(2.0))
+    _synthesize_CC(alm, lmax_calc, extend, out.real)
+    return out
+
+
+def SHExpandCC(gridcc, norm=1, csphase=1, lmax_calc=None):
+    """Expand a real Clenshaw-Curtis grid.
+
+    CC includes both poles and supports degrees through ``nlat - 2``.  Its
+    longitude count must be exactly ``2*(nlat - 1)``; a redundant longitude
+    endpoint belongs to the high-level grid object and is stripped there.
+    """
+    gridcc = _fixdtype(gridcc)
+    nlat, nlon = gridcc.shape
+    if nlat < 2 or nlon != 2 * (nlat - 1):
+        raise RuntimeError("CC grid resolution mismatch")
+    lmax = nlat - 2
+    if lmax_calc is None:
+        lmax_calc = lmax
+    if lmax_calc < 0 or lmax_calc > lmax:
+        raise RuntimeError("lmax_calc must be between zero and lmax")
+    # DUCC's CC quadrature is defined by the map geometry. Analyze at the
+    # map's full bandwidth before truncating, so lmax_calc does not make DUCC
+    # reinterpret a valid higher-resolution CC map as a lower-resolution one.
+    alm = _analyze_CC(gridcc, lmax)
+    cilm = _extract_alm(alm, lmax, norm, csphase)
+    return cilm[:, :lmax_calc + 1, :lmax_calc + 1]
+
+
+def SHExpandCCC(gridcc, norm=1, csphase=1, lmax_calc=None):
+    """Expand a complex Clenshaw-Curtis grid."""
+    nlat, nlon = gridcc.shape
+    if nlat < 2 or nlon != 2 * (nlat - 1):
+        raise RuntimeError("CC grid resolution mismatch")
+    lmax = nlat - 2
+    if lmax_calc is None:
+        lmax_calc = lmax
+    if lmax_calc < 0 or lmax_calc > lmax:
+        raise RuntimeError("lmax_calc must be between zero and lmax")
+    out = _np.zeros((2, lmax + 1, lmax + 1),
+                    dtype=_np.complex128)
+    alm = _analyze_CC(_fixdtype(gridcc.real), lmax)
+    alm = _apply_norm(alm, lmax, norm, csphase, True)
+    if norm == 3:
+        _scale_complex_unnorm_orders(alm, lmax, 1.0/_np.sqrt(2.0))
+    _addRealpart(out, alm)
+    alm = _analyze_CC(_fixdtype(gridcc.imag), lmax)
+    alm = _apply_norm(alm, lmax, norm, csphase, True)
+    if norm == 3:
+        _scale_complex_unnorm_orders(alm, lmax, 1.0/_np.sqrt(2.0))
+    _addImagpart(out, alm)
+    return out[:, :lmax_calc + 1, :lmax_calc + 1]
 
 
 def SHExpandDH(griddh, norm=1, sampling=1, csphase=1, lmax_calc=None):

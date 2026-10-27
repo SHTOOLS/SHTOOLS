@@ -10,7 +10,7 @@ pooch>=1.1
 tqdm
 cartopy>=0.18.0
 pygmt>=0.7.0
-ducc0>=0.15
+ducc0>=0.33
 palettable>=3.3
 jupyter
 flake8

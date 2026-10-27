@@ -16,6 +16,8 @@ Class structure:
     SHGrid
         DHRealGrid
         DHComplexGrid
+        CCRealGrid
+        CCComplexGrid
         GLQRealGrid
         GLQComplexGrid
 
@@ -56,6 +58,8 @@ from .shcoeffs import SHComplexCoeffs
 from .shgrid import SHGrid
 from .shgrid import DHRealGrid
 from .shgrid import DHComplexGrid
+from .shgrid import CCRealGrid
+from .shgrid import CCComplexGrid
 from .shgrid import GLQRealGrid
 from .shgrid import GLQComplexGrid
 
@@ -97,7 +101,8 @@ del shgradient  # noqa: F821
 
 # ---- Define __all__ for use with: from pyshtools import * ----
 __all__ = ['SHCoeffs', 'SHRealCoeffs', 'SHComplexCoeffs', 'SHGrid',
-           'DHRealGrid', 'DHComplexGrid', 'GLQRealGrid', 'GLQComplexGrid',
+           'DHRealGrid', 'DHComplexGrid', 'CCRealGrid', 'CCComplexGrid',
+           'GLQRealGrid', 'GLQComplexGrid',
            'SHWindow', 'SHWindowCap', 'SHWindowMask', 'Slepian', 'SlepianCap',
            'SlepianMask', 'SlepianCoeffs', 'SHGravCoeffs', 'SHGravRealCoeffs',
            'SHGravGrid', 'SHGravTensor', 'SHGeoid', 'SHMagCoeffs',

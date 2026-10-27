@@ -24,6 +24,8 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | ------------- | ----------- |
 | DHRealGrid | Class for real *Driscoll and Healy* (1994) sampled grids.|
 | DHComplexGrid | Class for complex *Driscoll and Healy* (1994) sampled grids. |
+| CCRealGrid | Class for real Clenshaw-Curtis grids. |
+| CCComplexGrid | Class for complex Clenshaw-Curtis grids. |
 | GLQRealGrid | Class for real Gauss-Legendre quadrature sampled grids.| 
 | GLQComplexGrid | Class for complex Gauss-Legendre quadrature sampled grids.|
 
@@ -39,6 +41,10 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `x = SHGrid.from_cap()` | Initialize using a rotated spherical cap. |
 | `x = SHGrid.from_ellipsoid()` | Initialize using a triaxial ellipsoid. |
 
+For Clenshaw-Curtis xarray and NetCDF input, pass `grid='CC'` explicitly to
+`from_xarray()` or `from_netcdf()`. The `grid` attribute is written by the
+export methods but is not used to select a class while importing.
+
 
 ## Class attributes
 
@@ -48,13 +54,13 @@ table:nth-of-type(n) th:nth-of-type(2) {
 | `nlat`, `nlon` | The number of latitude and longitude bands in the grid. |
 | `n` | The number of samples in latitude for `'DH'` grids. |
 | `lmax` | The maximum spherical harmonic degree that can be resolved by the grid sampling. |
-| `sampling` | The longitudinal sampling for Driscoll and Healy grids. Either 1 for equally sampled grids (`nlon` = `nlat`) or 2 for equally spaced grids in degrees. |
+| `sampling` | The longitudinal sampling for Driscoll and Healy grids. Either 1 for equally sampled grids (`nlon` = `nlat`) or 2 for equally spaced grids in degrees. CC has no `sampling` attribute or choice. |
 | `kind` | Either `'complex'` or `'real'` for the data type. |
-| `grid` | Either `'DH'` or `'GLQ'` for Driscoll and Healy grids or Gauss-Legendre quadrature grids. |
+| `grid` | Either `'DH'`, `'CC'`, or `'GLQ'` for Driscoll and Healy, Clenshaw-Curtis, or Gauss-Legendre quadrature grids. |
 | `units` | The units of the gridded data. |
 | `zeros` | The $$\cos(\theta)$$ nodes used with Gauss-Legendre quadrature grids. Default is `None`. |
 | `weights` | The latitudinal weights used with Gauss-Legendre quadrature grids. Default is `None`. |
-| `extend` | True if the grid contains the redundant column for 360 E and (for `'DH'` grids) the unnecessary row for 90 S. |
+| `extend` | True if the grid contains the redundant column for 360 E and (for `'DH'` grids) the unnecessary row for 90 S. CC already includes 90 S, and its extension only adds longitude 360 E. |
 
 ## Class methods
 
