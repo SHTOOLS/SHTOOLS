@@ -3071,6 +3071,7 @@ class SHMagRealCoeffs(SHMagCoeffs):
                                           copy=False, name=name)
         else:
             return SHMagCoeffs.from_array(coeffs, r0=r0, errors=self.errors,
+                                          normalization=self.normalization,
                                           units=self.units, year=self.year,
                                           copy=False, name=name)
 
