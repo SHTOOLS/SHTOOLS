@@ -17,7 +17,7 @@ dependencies:
     - cartopy>=0.18.0
     - gmt>=6.3.0
     - pygmt>=0.7.0
-    - ducc0>=0.15
+    - ducc0>=0.33
     - palettable>=3.3
     - jupyter
     - pip
