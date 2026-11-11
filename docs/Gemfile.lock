@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.2.3)
+    activesupport (8.0.5.2)
       base64
       benchmark (>= 0.3)
       bigdecimal
@@ -13,19 +13,20 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
+      uri (>= 0.13.1)
     addressable (2.8.8)
       public_suffix (>= 2.0.2, < 8.0)
     base64 (0.3.0)
     benchmark (0.5.0)
-    bigdecimal (4.0.1)
+    bigdecimal (4.1.3)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
     colorator (1.1.0)
     commonmarker (0.23.12)
-    concurrent-ruby (1.3.6)
-    connection_pool (2.5.5)
+    concurrent-ruby (1.3.8)
+    connection_pool (3.0.2)
     csv (3.3.5)
     dnsruby (1.73.1)
       base64 (>= 0.2)
@@ -48,6 +49,7 @@ GEM
       net-http (~> 0.5)
     ffi (1.17.3-arm64-darwin)
     ffi (1.17.3-x86_64-darwin)
+    ffi (1.17.3-x86_64-linux-gnu)
     forwardable-extended (2.6.0)
     gemoji (4.1.0)
     github-pages (232)
@@ -106,7 +108,7 @@ GEM
       activesupport (>= 2)
       nokogiri (>= 1.4)
     http_parser.rb (0.8.1)
-    i18n (1.14.8)
+    i18n (1.15.2)
       concurrent-ruby (~> 1.0)
     jekyll (3.10.0)
       addressable (~> 2.4)
@@ -230,13 +232,19 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.7.0)
     mercenary (0.3.6)
+    mini_portile2 (2.8.9)
     minima (2.5.1)
       jekyll (>= 3.5, < 5.0)
       jekyll-feed (~> 0.9)
       jekyll-seo-tag (~> 2.1)
-    minitest (5.27.0)
+    minitest (6.1.0)
+      drb (~> 2.0)
+      prism (>= 1.5, < 3)
     net-http (0.9.1)
       uri (>= 0.11.1)
+    nokogiri (1.18.10)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.18.10-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.10-x86_64-darwin)
@@ -246,6 +254,9 @@ GEM
       sawyer (~> 0.9)
     pathutil (0.16.2)
       forwardable-extended (~> 2.6)
+    prism (2.1.0-arm64-darwin)
+    prism (2.1.0-x86_64-darwin)
+    prism (2.1.0-x86_64-linux-gnu)
     public_suffix (5.1.1)
     racc (1.8.1)
     rb-fsevent (0.11.2)
@@ -279,6 +290,7 @@ PLATFORMS
   arm64-darwin-21
   x86_64-darwin-20
   x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   github-pages
